@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 152 100% 97%;     /* #ECFDF5 surface */
+    --foreground: 161 79% 17%;      /* #064E3B forest */
+    --card: 0 0% 100%;
+    --card-foreground: 161 79% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 161 79% 17%;
+    --primary: 161 94% 30%;         /* #059669 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 152 60% 92%;
+    --secondary-foreground: 161 79% 17%;
+    --muted: 152 40% 94%;
+    --muted-foreground: 161 40% 38%;
+    --accent: 191 91% 37%;          /* #0891B2 cta */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 152 40% 88%;
+    --input: 152 40% 88%;
+    --ring: 161 94% 30%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #ECFDF5;
+    color: #064E3B;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    line-height: 1.2;
+  }
+
+  /* Mapbox overrides */
+  .mapboxgl-map {
+    font-family: 'Inter', system-ui, sans-serif !important;
+  }
+  .mapboxgl-popup-content {
+    border-radius: 16px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(5,150,105,0.14);
+  }
+  .mapboxgl-ctrl-group {
+    border-radius: 14px !important;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(6,78,59,0.10) !important;
+  }
+  .mapboxgl-ctrl button { cursor: pointer; }
+}
+
+@layer utilities {
+  /* Glass morphism helpers */
+  .glass {
+    background: rgba(255, 255, 255, 0.80);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.50);
+  }
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.60);
+  }
+  .glass-dark {
+    background: rgba(6, 78, 59, 0.70);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  /* Scrollbar */
+  .scrollbar-none { scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #a7f3d0 transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar { width: 4px; height: 4px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #a7f3d0;
+    border-radius: 2px;
+  }
+
+  /* Text clamp utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

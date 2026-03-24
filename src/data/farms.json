@@ -1,0 +1,92 @@
+[
+  {
+    "id": "farm-001",
+    "slug": "statky-novak-jizni-cechy",
+    "name": "Statek Novák",
+    "description": "Rodinný statek ve třetí generaci zaměřený na ekologické pěstování zeleniny a ovoce. Prodáváme přímo ze dvora — bez prostředníků, vždy čerstvé. Nabízíme sezónní bedýnky s výběrem toho nejlepšího z naší zahrady.",
+    "categories": ["zelenina", "ovoce", "vejce"],
+    "location": {
+      "lat": 49.0747,
+      "lng": 14.4181,
+      "address": "Třeboňská 42",
+      "city": "Veselí nad Lužnicí",
+      "kraj": "Jihočeský",
+      "zip": "391 81"
+    },
+    "contact": {
+      "phone": "+420 605 123 456",
+      "email": "info@stateknovak.cz",
+      "web": "https://stateknovak.cz",
+      "instagram": "stateknovak"
+    },
+    "openingHours": {
+      "út": { "open": "08:00", "close": "12:00" },
+      "čt": { "open": "08:00", "close": "17:00" },
+      "so": { "open": "07:00", "close": "11:00" }
+    },
+    "images": ["/images/placeholder-farm.jpg"],
+    "verified": true,
+    "createdAt": "2024-03-15T10:00:00Z"
+  },
+  {
+    "id": "farm-002",
+    "slug": "farma-pod-lipami-morava",
+    "name": "Farma Pod Lipami",
+    "description": "Paseme krávy na přirozených pastvinách Vysočiny. Naše mléko a sýry jsou vyráběny tradičními metodami bez přidaných konzervantů. Vítáme skupinové návštěvy a školní exkurze — rezervujte předem.",
+    "categories": ["mléko", "sýry", "maso"],
+    "location": {
+      "lat": 49.5955,
+      "lng": 15.7895,
+      "address": "Náměstí 7",
+      "city": "Polná",
+      "kraj": "Vysočina",
+      "zip": "588 13"
+    },
+    "contact": {
+      "phone": "+420 731 987 654",
+      "email": "farma@podlipami.cz",
+      "instagram": "farma_pod_lipami",
+      "facebook": "FarmaPodLipami"
+    },
+    "openingHours": {
+      "po": { "open": "09:00", "close": "16:00" },
+      "út": { "open": "09:00", "close": "16:00" },
+      "st": { "open": "09:00", "close": "16:00" },
+      "čt": { "open": "09:00", "close": "16:00" },
+      "pá": { "open": "09:00", "close": "14:00" },
+      "so": { "open": "09:00", "close": "12:00" }
+    },
+    "images": ["/images/placeholder-farm.jpg"],
+    "verified": true,
+    "createdAt": "2024-05-20T08:30:00Z"
+  },
+  {
+    "id": "farm-003",
+    "slug": "vcely-a-med-beskydy",
+    "name": "Včely & Med Beskydy",
+    "description": "Rodinné včelařství v srdci Beskyd s více než 80 úly. Nabízíme květový, lesní, lipový a pohankový med. Vše sklízeno ručně a plněno do sklenic přímo u nás. Možnost prohlídky včelnice se včelařem.",
+    "categories": ["med", "byliny"],
+    "location": {
+      "lat": 49.5353,
+      "lng": 18.2116,
+      "address": "Horní Bečva 214",
+      "city": "Horní Bečva",
+      "kraj": "Zlínský",
+      "zip": "756 57"
+    },
+    "contact": {
+      "phone": "+420 777 246 810",
+      "email": "med@beskydy-vcelstvi.cz",
+      "web": "https://beskydy-vcelstvi.cz",
+      "instagram": "vcelybeskydy"
+    },
+    "openingHours": {
+      "pá": { "open": "15:00", "close": "18:00" },
+      "so": { "open": "09:00", "close": "13:00" },
+      "ne": { "open": "10:00", "close": "12:00" }
+    },
+    "images": ["/images/placeholder-farm.jpg"],
+    "verified": false,
+    "createdAt": "2024-07-01T14:00:00Z"
+  }
+]
