@@ -17,7 +17,9 @@ import {
 import { useFarmStore } from '@/store/farmStore'
 import type { FarmMapMarker } from '@/types/farm'
 
-mapboxgl.accessToken = MAPBOX_TOKEN
+if (MAPBOX_TOKEN) {
+  mapboxgl.accessToken = MAPBOX_TOKEN
+}
 
 const SOURCE_ID = 'farms'
 const CLUSTER_LAYER_ID = 'clusters'
@@ -34,6 +36,19 @@ export function MapView({ markers }: MapViewProps) {
   const markersRef = useRef<Map<string, mapboxgl.Marker>>(new Map())
 
   const { selectedFarmId, hoveredFarmId, selectFarm, hoverFarm } = useFarmStore()
+
+  if (!MAPBOX_TOKEN) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-green-50">
+        <div className="text-center p-8 bg-white rounded-xl shadow-md max-w-md">
+          <p className="text-red-600 font-semibold text-lg mb-2">Mapa není dostupná</p>
+          <p className="text-gray-500 text-sm">
+            Chybí Mapbox API token. Přidejte <code className="bg-gray-100 px-1 rounded">NEXT_PUBLIC_MAPBOX_TOKEN</code> do prostředí Vercel.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   // Initialize map
   useEffect(() => {
