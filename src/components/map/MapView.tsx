@@ -137,6 +137,7 @@ export function MapView({ markers }: MapViewProps) {
     mapRef.current = map
 
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       const currentMarkers = markersRef.current
       currentMarkers.forEach((m) => m.remove())
       currentMarkers.clear()

@@ -5,9 +5,9 @@ import Link from 'next/link'
 import { Search, X, SlidersHorizontal, MapPin, Star, Clock, List, Map as MapIcon, CheckCircle } from 'lucide-react'
 import { MapViewWrapper } from '@/components/map/MapViewWrapper'
 import { useFarmStore, getFilteredFarms } from '@/store/farmStore'
-import { getAllFarms, getFarmMapMarkers, CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
+import { CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { cn } from '@/lib/utils'
-import type { FarmCategory } from '@/types/farm'
+import type { Farm, FarmCategory, FarmMapMarker } from '@/types/farm'
 
 const FILTER_CATEGORIES: FarmCategory[] = [
   'zelenina', 'ovoce', 'maso', 'mléko', 'vejce', 'med', 'byliny',
@@ -30,12 +30,14 @@ const CARD_GRADIENTS: Record<string, string> = {
   default: 'from-emerald-300 to-teal-500',
 }
 
-export function MapSearchPage() {
+interface MapSearchPageProps {
+  farms: Farm[]
+  markers: FarmMapMarker[]
+}
+
+export function MapSearchPage({ farms: allFarms, markers: allMarkers }: MapSearchPageProps) {
   const [mobileView, setMobileView] = useState<'map' | 'list'>('map')
   const [filtersOpen, setFiltersOpen] = useState(false)
-
-  const allFarms = useMemo(() => getAllFarms(), [])
-  const allMarkers = useMemo(() => getFarmMapMarkers(), [])
 
   const store = useFarmStore()
   const { filters, setSearchQuery, toggleCategory, setKraj, setOpenNow, clearFilters, selectFarm, hoverFarm, selectedFarmId, hoveredFarmId } = store

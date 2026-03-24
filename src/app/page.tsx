@@ -14,7 +14,7 @@ export const metadata = {
   title: 'Mapa Farem – Nakupujte přímo od farmářů z celé ČR',
 }
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <>
       <Navbar />

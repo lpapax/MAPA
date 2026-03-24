@@ -14,19 +14,25 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return getAllSlugs().map((slug) => ({ slug }))
+  const slugs = await getAllSlugs()
+  return slugs.map((slug) => ({ slug }))
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const farm = getFarmBySlug(params.slug)
+  const farm = await getFarmBySlug(params.slug)
   if (!farm) return {}
   return {
     title: `${farm.name} – Mapa Farem`,
     description: farm.description,
+    openGraph: {
+      title: farm.name,
+      description: farm.description,
+      type: 'website',
+      locale: 'cs_CZ',
+    },
   }
 }
 
-// Gradient per-farm for hero cover (based on first category)
 const CATEGORY_GRADIENT: Record<string, string> = {
   zelenina: 'from-emerald-500 via-teal-500 to-cyan-600',
   ovoce: 'from-rose-400 via-pink-500 to-red-400',
@@ -38,8 +44,8 @@ const CATEGORY_GRADIENT: Record<string, string> = {
   default: 'from-emerald-400 via-teal-500 to-green-600',
 }
 
-export default function FarmDetailPage({ params }: PageProps) {
-  const farm = getFarmBySlug(params.slug)
+export default async function FarmDetailPage({ params }: PageProps) {
+  const farm = await getFarmBySlug(params.slug)
   if (!farm) notFound()
 
   const isOpen = isFarmOpenNow(farm)
@@ -55,7 +61,6 @@ export default function FarmDetailPage({ params }: PageProps) {
           className={cn('relative h-[55vh] min-h-[360px] bg-gradient-to-br', heroGradient)}
           aria-label={`Titulní fotografie farmy ${farm.name}`}
         >
-          {/* Pattern overlay */}
           <div className="absolute inset-0 opacity-10" aria-hidden="true">
             <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
               <defs>
@@ -66,8 +71,6 @@ export default function FarmDetailPage({ params }: PageProps) {
               <rect width="100%" height="100%" fill="url(#dots)" />
             </svg>
           </div>
-
-          {/* Bottom gradient fade */}
           <div
             className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface to-transparent"
             aria-hidden="true"
@@ -77,7 +80,6 @@ export default function FarmDetailPage({ params }: PageProps) {
         {/* Farm header */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-10 mb-2">
           <div className="flex flex-col sm:flex-row sm:items-end gap-4">
-            {/* Avatar */}
             <div
               className={cn(
                 'w-20 h-20 rounded-2xl border-4 border-white shadow-lg flex items-center justify-center text-white font-heading font-bold text-2xl flex-shrink-0 bg-gradient-to-br',
@@ -89,7 +91,6 @@ export default function FarmDetailPage({ params }: PageProps) {
             </div>
 
             <div className="flex-1 pb-1">
-              {/* Breadcrumb */}
               <nav aria-label="Navigační cesta" className="flex items-center gap-1 text-xs text-gray-400 mb-1.5">
                 <Link href="/" className="hover:text-primary-600 transition-colors cursor-pointer">Domů</Link>
                 <ChevronRight className="w-3 h-3" aria-hidden="true" />
@@ -129,7 +130,6 @@ export default function FarmDetailPage({ params }: PageProps) {
                 {farm.location.city}, {farm.location.kraj}
               </div>
 
-              {/* Categories */}
               <div className="flex flex-wrap gap-1.5 mt-2">
                 {farm.categories.map((cat) => (
                   <span
@@ -144,7 +144,6 @@ export default function FarmDetailPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Tabs + content */}
         <FarmDetailClient farm={farm} />
       </main>
 
