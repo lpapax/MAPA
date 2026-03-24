@@ -235,6 +235,9 @@ export function MapView({ markers }: MapViewProps) {
             Chybí Mapbox API token. Přidejte{' '}
             <code className="bg-gray-100 px-1 rounded">NEXT_PUBLIC_MAPBOX_TOKEN</code> do prostředí Vercel.
           </p>
+          <p className="text-gray-400 text-xs mt-2">
+            DEBUG: token length = {(process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? '').length}
+          </p>
         </div>
       </div>
     )
