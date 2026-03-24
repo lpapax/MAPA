@@ -37,19 +37,6 @@ export function MapView({ markers }: MapViewProps) {
 
   const { selectedFarmId, hoveredFarmId, selectFarm, hoverFarm } = useFarmStore()
 
-  if (!MAPBOX_TOKEN) {
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-green-50">
-        <div className="text-center p-8 bg-white rounded-xl shadow-md max-w-md">
-          <p className="text-red-600 font-semibold text-lg mb-2">Mapa není dostupná</p>
-          <p className="text-gray-500 text-sm">
-            Chybí Mapbox API token. Přidejte <code className="bg-gray-100 px-1 rounded">NEXT_PUBLIC_MAPBOX_TOKEN</code> do prostředí Vercel.
-          </p>
-        </div>
-      </div>
-    )
-  }
-
   // Initialize map
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return
@@ -238,6 +225,20 @@ export function MapView({ markers }: MapViewProps) {
       })
     })
   }, [])
+
+  if (!MAPBOX_TOKEN) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-green-50">
+        <div className="text-center p-8 bg-white rounded-xl shadow-md max-w-md">
+          <p className="text-red-600 font-semibold text-lg mb-2">Mapa není dostupná</p>
+          <p className="text-gray-500 text-sm">
+            Chybí Mapbox API token. Přidejte{' '}
+            <code className="bg-gray-100 px-1 rounded">NEXT_PUBLIC_MAPBOX_TOKEN</code> do prostředí Vercel.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="relative w-full h-full">
