@@ -1,13 +1,16 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
-import { Search, X, SlidersHorizontal, MapPin, Star, Clock, List, Map as MapIcon, CheckCircle } from 'lucide-react'
+import { Search, X, SlidersHorizontal, MapPin, Star, Clock, List, Map as MapIcon, CheckCircle, Heart } from 'lucide-react'
 import { MapViewWrapper } from '@/components/map/MapViewWrapper'
 import { useFarmStore, getFilteredFarms } from '@/store/farmStore'
+import { useCompareStore, MAX_COMPARE_FARMS } from '@/store/compareStore'
+import { useFavoriteFarms } from '@/hooks/useFavoriteFarms'
 import { CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
+import { CompareBar } from '@/components/farms/CompareBar'
 import { cn } from '@/lib/utils'
-import type { Farm, FarmCategory, FarmMapMarker } from '@/types/farm'
+import type { Farm, FarmCategory, FarmMapMarker, KrajCode } from '@/types/farm'
 
 const FILTER_CATEGORIES: FarmCategory[] = [
   'zelenina', 'ovoce', 'maso', 'mléko', 'vejce', 'med', 'byliny',
@@ -33,14 +36,26 @@ const CARD_GRADIENTS: Record<string, string> = {
 interface MapSearchPageProps {
   farms: Farm[]
   markers: FarmMapMarker[]
+  initialKraj?: KrajCode | null
+  initialSearch?: string
 }
 
-export function MapSearchPage({ farms: allFarms, markers: allMarkers }: MapSearchPageProps) {
+export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKraj, initialSearch }: MapSearchPageProps) {
   const [mobileView, setMobileView] = useState<'map' | 'list'>('map')
   const [filtersOpen, setFiltersOpen] = useState(false)
 
   const store = useFarmStore()
+
+  // Apply URL query params on first mount only
+  useEffect(() => {
+    if (initialKraj) store.setKraj(initialKraj)
+    if (initialSearch) store.setSearchQuery(initialSearch)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const { filters, setSearchQuery, toggleCategory, setKraj, setOpenNow, clearFilters, selectFarm, hoverFarm, selectedFarmId, hoveredFarmId } = store
+
+  const { isInCompare, toggleCompare, compareIds } = useCompareStore()
+  const { isFavorite, toggleFavorite } = useFavoriteFarms()
 
   const filtered = useMemo(() => getFilteredFarms(allFarms, store), [allFarms, store])
   const hasActiveFilters = filters.categories.length > 0 || filters.kraj !== null || filters.openNow
@@ -192,16 +207,16 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers }: MapSearc
                 const isSelected = selectedFarmId === farm.id
                 const isHovered = hoveredFarmId === farm.id
                 const gradient = CARD_GRADIENTS[farm.categories[0]] ?? CARD_GRADIENTS.default
+                const favorited = isFavorite(farm.slug)
+                const comparing = isInCompare(farm.id)
+                const compareDisabled = !comparing && compareIds.length >= MAX_COMPARE_FARMS
                 return (
-                  <button
+                  <div
                     key={farm.id}
-                    onClick={() => selectFarm(farm.id)}
                     onMouseEnter={() => hoverFarm(farm.id)}
                     onMouseLeave={() => hoverFarm(null)}
-                    aria-label={`Vybrat farmu ${farm.name}`}
-                    aria-pressed={isSelected}
                     className={cn(
-                      'w-full text-left flex gap-3 p-3 rounded-xl border transition-all duration-200 cursor-pointer',
+                      'w-full flex gap-3 p-3 rounded-xl border transition-all duration-200',
                       isSelected
                         ? 'border-primary-500 bg-primary-50 shadow-glow'
                         : isHovered
@@ -210,10 +225,15 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers }: MapSearc
                     )}
                   >
                     {/* Cover thumb */}
-                    <div className={cn('w-16 h-16 rounded-xl flex-shrink-0 bg-gradient-to-br', gradient)} aria-hidden="true" />
+                    <div className={cn('w-14 h-14 rounded-xl flex-shrink-0 bg-gradient-to-br', gradient)} aria-hidden="true" />
 
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
+                    {/* Info — clickable area */}
+                    <button
+                      onClick={() => selectFarm(farm.id)}
+                      aria-label={`Vybrat farmu ${farm.name}`}
+                      aria-pressed={isSelected}
+                      className="flex-1 min-w-0 text-left cursor-pointer"
+                    >
                       <div className="flex items-start justify-between gap-1 mb-1">
                         <h3 className="font-heading font-semibold text-sm text-forest leading-tight truncate">
                           {farm.name}
@@ -238,8 +258,32 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers }: MapSearc
                           </span>
                         )}
                       </div>
+                    </button>
+
+                    {/* Action buttons */}
+                    <div className="flex flex-col items-center gap-1 flex-shrink-0">
+                      <button
+                        onClick={() => toggleFavorite({ slug: farm.slug, name: farm.name, categories: farm.categories, kraj: farm.location.kraj, savedAt: Date.now() })}
+                        aria-label={favorited ? 'Odebrat z oblíbených' : 'Přidat do oblíbených'}
+                        aria-pressed={favorited}
+                        className="p-1 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
+                      >
+                        <Heart className={cn('w-3.5 h-3.5 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-gray-300 hover:text-rose-400')} aria-hidden="true" />
+                      </button>
+                      <button
+                        onClick={() => { if (!compareDisabled) toggleCompare(farm.id) }}
+                        disabled={compareDisabled}
+                        aria-label={comparing ? 'Odebrat z porovnání' : 'Přidat do porovnání'}
+                        aria-pressed={comparing}
+                        className={cn(
+                          'text-[9px] px-1.5 py-0.5 rounded-full border transition-all cursor-pointer leading-tight',
+                          comparing ? 'bg-forest text-white border-forest' : compareDisabled ? 'opacity-30 border-gray-200 text-gray-400 cursor-not-allowed' : 'border-gray-200 text-gray-400 hover:border-forest hover:text-forest',
+                        )}
+                      >
+                        {comparing ? '✓' : '+'}
+                      </button>
                     </div>
-                  </button>
+                  </div>
                 )
               })
             )}
@@ -264,6 +308,8 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers }: MapSearc
           <MapViewWrapper markers={allMarkers} />
         </div>
       </div>
+
+      <CompareBar farms={allFarms} />
     </div>
   )
 }

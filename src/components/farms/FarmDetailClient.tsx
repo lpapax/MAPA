@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import { Send } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Send, ShoppingBasket, Check, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CATEGORY_LABELS } from '@/lib/farms'
 import type { Farm, FarmCategory } from '@/types/farm'
+import { useRecentFarms } from '@/hooks/useRecentFarms'
+import { useBedynka } from '@/hooks/useBedynka'
 
 const TABS = [
   { id: 'o-farme', label: 'O farmě' },
@@ -55,6 +57,15 @@ const MOCK_REVIEWS = [
 export function FarmDetailClient({ farm }: { farm: Farm }) {
   const [activeTab, setActiveTab] = useState<TabId>('o-farme')
   const [formState, setFormState] = useState({ name: '', email: '', message: '', sent: false })
+  const [reviewForm, setReviewForm] = useState({ name: '', city: '', rating: 5, text: '', sent: false })
+  const { addRecentFarm } = useRecentFarms()
+  const { isInBedynka, addItem } = useBedynka()
+
+  // Record this page view in the recently viewed list
+  useEffect(() => {
+    addRecentFarm(farm)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [farm.slug])
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -109,23 +120,42 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
             <div role="tabpanel" id="panel-produkty" aria-labelledby="tab-produkty">
               <h2 className="font-heading text-xl font-bold text-forest mb-4">Produkty</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {MOCK_PRODUCTS.map((product) => (
-                  <div key={product.id} className={cn('relative rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-card transition-shadow', !product.available && 'opacity-60')}>
-                    <div className={cn('h-24 bg-gradient-to-br', product.gradient)} aria-hidden="true" />
-                    <div className="p-4">
-                      <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-heading font-semibold text-forest text-sm leading-tight">{product.name}</h3>
-                        <div className="text-right flex-shrink-0">
-                          <span className="font-bold text-primary-600 text-base">{product.price} Kč</span>
-                          <span className="text-xs text-gray-400 block">/{product.unit}</span>
+                {MOCK_PRODUCTS.map((product) => {
+                  const inBedynka = isInBedynka(`${farm.slug}__${product.id}`)
+                  return (
+                    <div key={product.id} className={cn('relative rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-card transition-shadow', !product.available && 'opacity-60')}>
+                      <div className={cn('h-24 bg-gradient-to-br', product.gradient)} aria-hidden="true" />
+                      <div className="p-4">
+                        <div className="flex items-start justify-between gap-2">
+                          <h3 className="font-heading font-semibold text-forest text-sm leading-tight">{product.name}</h3>
+                          <div className="text-right flex-shrink-0">
+                            <span className="font-bold text-primary-600 text-base">{product.price} Kč</span>
+                            <span className="text-xs text-gray-400 block">/{product.unit}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between mt-2">
+                          <span className={cn('px-2 py-0.5 rounded-full text-[10px] font-medium', product.available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500')}>
+                            {product.available ? 'Dostupné' : 'Dočasně nedostupné'}
+                          </span>
+                          {product.available && (
+                            <button
+                              onClick={() => addItem({ productId: product.id, productName: product.name, price: product.price, unit: product.unit, farmSlug: farm.slug, farmName: farm.name })}
+                              disabled={inBedynka}
+                              aria-label={inBedynka ? 'Již v bedýnce' : `Přidat ${product.name} do bedýnky`}
+                              className={cn(
+                                'flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] font-medium border transition-all cursor-pointer',
+                                inBedynka ? 'bg-primary-50 border-primary-200 text-primary-600 cursor-default' : 'bg-white border-gray-200 text-gray-500 hover:border-primary-400 hover:text-primary-600',
+                              )}
+                            >
+                              {inBedynka ? <Check className="w-3 h-3" aria-hidden="true" /> : <ShoppingBasket className="w-3 h-3" aria-hidden="true" />}
+                              {inBedynka ? 'V bedýnce' : '+ Bedýnka'}
+                            </button>
+                          )}
                         </div>
                       </div>
-                      <span className={cn('inline-block mt-2 px-2 py-0.5 rounded-full text-[10px] font-medium', product.available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500')}>
-                        {product.available ? 'Dostupné' : 'Dočasně nedostupné'}
-                      </span>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           )}
@@ -209,6 +239,65 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                   </div>
                 ))}
               </div>
+
+              {/* Review form */}
+              <div className="mt-8 pt-8 border-t border-gray-100">
+                <h3 className="font-heading font-semibold text-forest mb-4">Napsat recenzi</h3>
+                {reviewForm.sent ? (
+                  <div className="flex items-center gap-3 p-4 rounded-2xl bg-primary-50 border border-primary-100 text-primary-700 text-sm font-medium">
+                    <Check className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                    Děkujeme za vaši recenzi!
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      const { name, city, rating, text } = reviewForm
+                      if (!name.trim() || !text.trim()) return
+                      // Save to localStorage as fallback
+                      const key = `mf_reviews_${farm.slug}`
+                      const existing = JSON.parse(localStorage.getItem(key) ?? '[]') as unknown[]
+                      localStorage.setItem(key, JSON.stringify([...existing, { name, city, rating, text, date: new Date().toISOString() }]))
+                      setReviewForm((s) => ({ ...s, sent: true }))
+                    }}
+                    className="space-y-4"
+                    aria-label="Formulář pro recenzi"
+                  >
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <FormField id="review-name" label="Vaše jméno" required>
+                        <input id="review-name" type="text" required placeholder="Jana N." value={reviewForm.name} onChange={(e) => setReviewForm((s) => ({ ...s, name: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
+                      </FormField>
+                      <FormField id="review-city" label="Město">
+                        <input id="review-city" type="text" placeholder="Praha" value={reviewForm.city} onChange={(e) => setReviewForm((s) => ({ ...s, city: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
+                      </FormField>
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-forest mb-1.5">Hodnocení</div>
+                      <div className="flex gap-1" role="group" aria-label="Hodnocení hvězdičkami">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setReviewForm((s) => ({ ...s, rating: star }))}
+                            aria-label={`${star} hvězd`}
+                            aria-pressed={reviewForm.rating >= star}
+                            className="cursor-pointer"
+                          >
+                            <Star className={cn('w-6 h-6 transition-colors', reviewForm.rating >= star ? 'fill-amber-400 text-amber-400' : 'text-gray-200 fill-gray-200')} aria-hidden="true" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <FormField id="review-text" label="Recenze" required>
+                      <textarea id="review-text" required rows={3} placeholder="Popište svou zkušenost s farmou…" value={reviewForm.text} onChange={(e) => setReviewForm((s) => ({ ...s, text: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
+                    </FormField>
+                    <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors cursor-pointer">
+                      <Send className="w-3.5 h-3.5" aria-hidden="true" />
+                      Odeslat recenzi
+                    </button>
+                  </form>
+                )}
+              </div>
             </div>
           )}
 
@@ -244,10 +333,10 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                 </form>
               )}
 
-              {/* Map placeholder */}
+              {/* Jak se k nám dostat */}
               <div className="mt-8">
-                <h3 className="font-heading font-semibold text-forest text-sm mb-3">Kde nás najdete</h3>
-                <div className="h-56 rounded-2xl bg-gradient-to-br from-primary-100 to-teal-100 border border-primary-200 flex items-center justify-center" role="img" aria-label={`Mapa polohy farmy ${farm.name}`}>
+                <h3 className="font-heading font-semibold text-forest text-sm mb-3">Jak se k nám dostat</h3>
+                <div className="h-48 rounded-2xl bg-gradient-to-br from-primary-100 to-teal-100 border border-primary-200 flex items-center justify-center mb-3" role="img" aria-label={`Mapa polohy farmy ${farm.name}`}>
                   <div className="text-center text-sm text-primary-600">
                     <div className="w-10 h-10 rounded-full bg-primary-600 flex items-center justify-center mx-auto mb-2">
                       <svg viewBox="0 0 24 24" className="w-5 h-5 text-white fill-white" aria-hidden="true">
@@ -258,6 +347,18 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                     <p className="text-xs text-primary-400 mt-0.5">{farm.location.city}, {farm.location.kraj}</p>
                   </div>
                 </div>
+                <a
+                  href={`https://maps.google.com/?q=${farm.location.lat},${farm.location.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors duration-200 shadow-sm"
+                  aria-label={`Navigovat k farmě ${farm.name} v Google Maps`}
+                >
+                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white" aria-hidden="true">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
+                  Navigovat v Google Maps
+                </a>
               </div>
             </div>
           )}

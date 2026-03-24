@@ -2,9 +2,11 @@
 
 import { useCallback } from 'react'
 import Link from 'next/link'
-import { MapPin, Phone, Globe, CheckCircle, Clock } from 'lucide-react'
+import { MapPin, Phone, Globe, CheckCircle, Clock, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
+import { useFavoriteFarms } from '@/hooks/useFavoriteFarms'
+import { useCompareStore, MAX_COMPARE_FARMS } from '@/store/compareStore'
 import type { Farm } from '@/types/farm'
 
 interface FarmCardProps {
@@ -20,6 +22,12 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
   const handleClick = useCallback(() => onSelect(farm.id), [farm.id, onSelect])
   const handleMouseEnter = useCallback(() => onHover(farm.id), [farm.id, onHover])
   const handleMouseLeave = useCallback(() => onHover(null), [onHover])
+
+  const { isFavorite, toggleFavorite } = useFavoriteFarms()
+  const { isInCompare, toggleCompare, compareIds } = useCompareStore()
+  const favorited = isFavorite(farm.slug)
+  const comparing = isInCompare(farm.id)
+  const compareDisabled = !comparing && compareIds.length >= MAX_COMPARE_FARMS
 
   return (
     <article
@@ -49,34 +57,48 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
               {farm.name}
             </h3>
             {farm.verified && (
-              <CheckCircle
-                className="w-3.5 h-3.5 text-primary flex-shrink-0"
-                aria-label="Ověřená farma"
-              />
+              <CheckCircle className="w-3.5 h-3.5 text-primary flex-shrink-0" aria-label="Ověřená farma" />
             )}
           </div>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <MapPin className="w-3 h-3 flex-shrink-0" aria-hidden="true" />
-            <span className="truncate">
-              {farm.location.city}, {farm.location.kraj}
-            </span>
+            <span className="truncate">{farm.location.city}, {farm.location.kraj}</span>
           </div>
         </div>
 
-        {/* Open status */}
-        {farm.openingHours && (
-          <div
-            className={cn(
-              'flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium flex-shrink-0',
-              isOpen
-                ? 'bg-green-100 text-green-700'
-                : 'bg-gray-100 text-gray-500',
-            )}
+        <div className="flex items-center gap-1 flex-shrink-0">
+          {/* Open status */}
+          {farm.openingHours && (
+            <div className={cn(
+              'flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium',
+              isOpen ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500',
+            )}>
+              <Clock className="w-2.5 h-2.5" aria-hidden="true" />
+              {isOpen ? 'Otevřeno' : 'Zavřeno'}
+            </div>
+          )}
+          {/* Favorite button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              toggleFavorite({
+                slug: farm.slug,
+                name: farm.name,
+                categories: farm.categories,
+                kraj: farm.location.kraj,
+                savedAt: Date.now(),
+              })
+            }}
+            aria-label={favorited ? 'Odebrat z oblíbených' : 'Přidat do oblíbených'}
+            aria-pressed={favorited}
+            className="p-1 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
           >
-            <Clock className="w-2.5 h-2.5" aria-hidden="true" />
-            {isOpen ? 'Otevřeno' : 'Zavřeno'}
-          </div>
-        )}
+            <Heart
+              className={cn('w-4 h-4 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-gray-300 hover:text-rose-400')}
+              aria-hidden="true"
+            />
+          </button>
+        </div>
       </div>
 
       {/* Description */}
@@ -87,10 +109,7 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
       {/* Categories */}
       <div className="flex flex-wrap gap-1 mb-3">
         {farm.categories.slice(0, 4).map((cat) => (
-          <span
-            key={cat}
-            className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-surface text-primary border border-border"
-          >
+          <span key={cat} className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-surface text-primary border border-border">
             {CATEGORY_LABELS[cat]}
           </span>
         ))}
@@ -105,41 +124,46 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           {farm.contact.phone && (
-            <a
-              href={`tel:${farm.contact.phone}`}
-              onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary transition-colors"
-              aria-label={`Telefon: ${farm.contact.phone}`}
-            >
+            <a href={`tel:${farm.contact.phone}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary transition-colors" aria-label={`Telefon: ${farm.contact.phone}`}>
               <Phone className="w-3 h-3" aria-hidden="true" />
               <span className="hidden sm:inline">{farm.contact.phone}</span>
             </a>
           )}
           {farm.contact.web && (
-            <a
-              href={farm.contact.web}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary transition-colors"
-              aria-label="Web farmy"
-            >
+            <a href={farm.contact.web} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary transition-colors" aria-label="Web farmy">
               <Globe className="w-3 h-3" aria-hidden="true" />
               <span className="hidden sm:inline">Web</span>
             </a>
           )}
         </div>
 
-        <Link
-          href={`/farmy/${farm.slug}`}
-          onClick={(e) => e.stopPropagation()}
-          className={cn(
-            'text-[11px] font-medium text-primary hover:text-primary-dark',
-            'underline-offset-2 hover:underline transition-colors',
-          )}
-        >
-          Detail →
-        </Link>
+        <div className="flex items-center gap-2">
+          {/* Compare toggle */}
+          <button
+            onClick={(e) => { e.stopPropagation(); if (!compareDisabled) toggleCompare(farm.id) }}
+            disabled={compareDisabled}
+            aria-label={comparing ? 'Odebrat z porovnání' : 'Přidat do porovnání'}
+            aria-pressed={comparing}
+            className={cn(
+              'text-[11px] px-2 py-0.5 rounded-full border transition-all cursor-pointer',
+              comparing
+                ? 'bg-forest text-white border-forest'
+                : compareDisabled
+                  ? 'opacity-30 border-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'border-gray-200 text-gray-400 hover:border-forest hover:text-forest',
+            )}
+          >
+            {comparing ? '✓ Porovnat' : 'Porovnat'}
+          </button>
+
+          <Link
+            href={`/farmy/${farm.slug}`}
+            onClick={(e) => e.stopPropagation()}
+            className={cn('text-[11px] font-medium text-primary hover:text-primary-dark', 'underline-offset-2 hover:underline transition-colors')}
+          >
+            Detail →
+          </Link>
+        </div>
       </div>
     </article>
   )

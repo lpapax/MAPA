@@ -4,6 +4,7 @@ import { CheckCircle, Clock, MapPin, ChevronRight } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getAllSlugs, getFarmBySlug, CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { FarmDetailClient } from '@/components/farms/FarmDetailClient'
+import { ShareFarmButton } from '@/components/ui/ShareFarmButton'
 import { Navbar } from '@/components/ui/Navbar'
 import { Footer } from '@/components/ui/Footer'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
@@ -103,6 +104,7 @@ export default async function FarmDetailPage({ params }: PageProps) {
                 <h1 className="font-heading text-2xl sm:text-3xl font-bold text-forest">
                   {farm.name}
                 </h1>
+                <ShareFarmButton name={farm.name} />
                 {farm.verified && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-50 border border-primary-200 text-primary-700 text-xs font-semibold">
                     <CheckCircle className="w-3.5 h-3.5" aria-hidden="true" />

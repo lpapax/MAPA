@@ -1,9 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { Menu, X, Plus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Menu, X, Plus, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
+
+interface SearchResult {
+  id: string
+  name: string
+  slug: string
+  city: string
+  kraj: string
+}
 
 const NAV_LINKS = [
   { href: '/', label: 'Farmy' },
@@ -15,12 +24,65 @@ const NAV_LINKS = [
 export function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+  const [searchLoading, setSearchLoading] = useState(false)
+  const searchRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Close search on outside click
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false)
+      }
+    }
+    if (searchOpen) document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [searchOpen])
+
+  // Auto-focus input when overlay opens + Escape to close
+  useEffect(() => {
+    if (searchOpen) {
+      setTimeout(() => inputRef.current?.focus(), 50)
+      const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setSearchOpen(false) }
+      document.addEventListener('keydown', handleKey)
+      return () => document.removeEventListener('keydown', handleKey)
+    } else {
+      setSearchQuery('')
+      setSearchResults([])
+    }
+  }, [searchOpen])
+
+  // Debounced search fetch
+  useEffect(() => {
+    if (!searchQuery.trim()) { setSearchResults([]); return }
+    const timer = setTimeout(async () => {
+      setSearchLoading(true)
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery.trim())}`)
+        const data = await res.json() as SearchResult[]
+        setSearchResults(Array.isArray(data) ? data : [])
+      } catch { setSearchResults([]) }
+      finally { setSearchLoading(false) }
+    }, 250)
+    return () => clearTimeout(timer)
+  }, [searchQuery])
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!searchQuery.trim()) return
+    setSearchOpen(false)
+    router.push(`/mapa?q=${encodeURIComponent(searchQuery.trim())}`)
+  }
 
   return (
     <>
@@ -57,6 +119,14 @@ export function Navbar() {
 
           {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setSearchOpen(true)}
+              aria-label="Hledat farmu"
+              className="flex items-center justify-center w-9 h-9 rounded-xl text-forest hover:bg-primary-50 transition-colors duration-200 cursor-pointer"
+            >
+              <Search className="w-4 h-4" aria-hidden="true" />
+            </button>
+
             <Link
               href="/pridat-farmu"
               className={cn(
@@ -108,6 +178,72 @@ export function Navbar() {
 
       {/* Spacer so content starts below the floating navbar */}
       <div className="h-20" aria-hidden="true" />
+
+      {/* Search overlay */}
+      {searchOpen && (
+        <div className="fixed inset-0 z-[60] bg-black/30 backdrop-blur-sm" aria-modal="true" role="dialog" aria-label="Vyhledávání farem">
+          <div className="flex justify-center pt-24 px-4">
+            <div ref={searchRef} className="w-full max-w-lg">
+              <form onSubmit={handleSearchSubmit} className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" aria-hidden="true" />
+                <input
+                  ref={inputRef}
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Hledat farmu nebo město…"
+                  aria-label="Vyhledávání farem"
+                  className="w-full pl-11 pr-12 py-4 rounded-2xl bg-white shadow-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 border border-gray-100"
+                />
+                <button type="button" onClick={() => setSearchOpen(false)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 cursor-pointer" aria-label="Zavřít hledání">
+                  <X className="w-4 h-4" />
+                </button>
+              </form>
+
+              {(searchResults.length > 0 || searchLoading) && (
+                <div className="mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                  {searchLoading ? (
+                    <div className="px-4 py-3 text-sm text-gray-400">Hledám…</div>
+                  ) : (
+                    searchResults.map((r) => (
+                      <Link
+                        key={r.id}
+                        href={`/farmy/${r.slug}`}
+                        onClick={() => setSearchOpen(false)}
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-primary-50 transition-colors border-b border-gray-50 last:border-0 cursor-pointer"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center text-xs font-bold text-primary-700 flex-shrink-0">
+                          {r.name.charAt(0)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium text-sm text-forest truncate">{r.name}</div>
+                          <div className="text-xs text-gray-400">{r.city} · {r.kraj}</div>
+                        </div>
+                      </Link>
+                    ))
+                  )}
+                  {!searchLoading && searchResults.length > 0 && (
+                    <button
+                      onClick={() => { setSearchOpen(false); router.push(`/mapa?q=${encodeURIComponent(searchQuery.trim())}`) }}
+                      className="w-full px-4 py-2.5 text-xs text-primary-600 font-medium hover:bg-primary-50 transition-colors cursor-pointer text-left"
+                    >
+                      Zobrazit všechny výsledky pro &bdquo;{searchQuery}&ldquo; →
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {!searchLoading && searchQuery.trim() && searchResults.length === 0 && (
+                <div className="mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 px-4 py-3 text-sm text-gray-400">
+                  Žádné výsledky pro &bdquo;{searchQuery}&ldquo;
+                </div>
+              )}
+
+              <p className="text-center text-white/60 text-xs mt-3">Stiskněte Enter pro zobrazení na mapě · Esc pro zavření</p>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

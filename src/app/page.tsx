@@ -3,6 +3,7 @@ import { Footer } from '@/components/ui/Footer'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
 import { HeroSection } from '@/components/home/HeroSection'
 import { CategoryFilter } from '@/components/home/CategoryFilter'
+import { RecentlyViewed } from '@/components/home/RecentlyViewed'
 import { FeaturedFarms } from '@/components/home/FeaturedFarms'
 import { HowItWorks } from '@/components/home/HowItWorks'
 import { SeasonalBanner } from '@/components/home/SeasonalBanner'
@@ -21,6 +22,7 @@ export default async function HomePage() {
       <main id="main-content">
         <HeroSection />
         <CategoryFilter />
+        <RecentlyViewed />
         <FeaturedFarms />
         <HowItWorks />
         <SeasonalBanner />

@@ -1,18 +1,39 @@
 'use client'
 
 import { useState } from 'react'
-import { Send, CheckCircle } from 'lucide-react'
+import { Send, CheckCircle, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function Newsletter() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [toast, setToast] = useState<{ type: 'error' | 'info'; message: string } | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email.trim()) return
-    // TODO: wire to API
-    setSubmitted(true)
+    setLoading(true)
+    setToast(null)
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      })
+      const data = await res.json() as { ok: boolean; message?: string }
+      if (!res.ok && res.status === 409) {
+        setToast({ type: 'info', message: 'Tento e-mail je již přihlášen.' })
+      } else if (!res.ok) {
+        setToast({ type: 'error', message: data.message ?? 'Něco se nepovedlo. Zkuste to znovu.' })
+      } else {
+        setSubmitted(true)
+      }
+    } catch {
+      setToast({ type: 'error', message: 'Připojení se nezdařilo. Zkuste to znovu.' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -77,17 +98,25 @@ export function Newsletter() {
             />
             <button
               type="submit"
+              disabled={loading}
               className={cn(
                 'flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl',
                 'bg-white text-forest font-semibold text-sm',
                 'hover:bg-primary-50 transition-colors duration-200 cursor-pointer',
                 'shadow-lg hover:shadow-xl flex-shrink-0',
+                loading && 'opacity-70 cursor-not-allowed',
               )}
             >
-              <Send className="w-4 h-4" aria-hidden="true" />
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> : <Send className="w-4 h-4" aria-hidden="true" />}
               Odebírat
             </button>
           </form>
+        )}
+
+        {toast && (
+          <p className={cn('text-sm mt-3 font-medium', toast.type === 'error' ? 'text-red-300' : 'text-white/80')}>
+            {toast.message}
+          </p>
         )}
 
         <p className="text-white/40 text-xs mt-4">
