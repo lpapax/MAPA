@@ -27,7 +27,7 @@ All server-side farm data access goes through four functions: `getAllFarms()`, `
 
 `src/lib/supabase.ts` exports `getSupabaseClient()` (new client each call) and `getSupabaseClientSingleton()` (for client-side use). Both return `null` when env vars are missing.
 
-`src/data/mockData.ts` holds static data used by pages that don't have a Supabase table yet: featured farms for the homepage, blog articles, seasonal calendar data, and kraj metadata.
+`src/data/mockData.ts` holds static data for pages that don't have a Supabase table yet: featured farms (`MockFarm[]`), blog articles (`BlogArticle[]`), seasonal calendar, and kraj metadata. Both `MockFarm` and `BlogArticle` have a `coverImage` field (Unsplash URL) used by `next/image` components — keep this in sync when extending those interfaces.
 
 ### Filter logic — keep in sync
 
@@ -54,7 +54,11 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 
 ### RSC boundary constraint
 
-`AnimatedSection` (`src/components/ui/AnimatedSection.tsx`) is a `'use client'` component. **Do not pass complex server-rendered JSX trees through it** — event handlers and client components cannot cross the RSC boundary via `children`. For content-heavy pages, render content inside a dedicated `'use client'` component or use plain `<section>` elements instead of `AnimatedSection`.
+`AnimatedSection` (`src/components/ui/AnimatedSection.tsx`) is a `'use client'` component that renders a `<div>` wrapper (not `<section>` — was changed to avoid polluting accessibility landmarks). **Do not pass complex server-rendered JSX trees through it** — event handlers and client components cannot cross the RSC boundary via `children`. For content-heavy pages, render content inside a dedicated `'use client'` component or use plain `<section>` elements instead of `AnimatedSection`.
+
+### Images
+
+`next/image` with `fill` is used throughout for farm covers, blog covers, and the hero background. Any parent of a `fill` image must have `position: relative` (and usually `overflow-hidden`). Allowed remote patterns in `next.config.mjs`: `*.supabase.co`, `**.mapafarem.cz`, and `images.unsplash.com` (for placeholder/design photos).
 
 ### Route structure
 
@@ -97,4 +101,23 @@ npx vercel env add NEXT_PUBLIC_MAPBOX_TOKEN production
 
 ### Design system
 
-Tailwind with custom tokens defined in `tailwind.config.ts`: `primary-*` (green scale), `forest` (dark green), `surface`, `border`, `muted-foreground`, `shadow-card`, `shadow-glow`, `glass`, `bg-newsletter`. Use these tokens rather than raw Tailwind colors for consistency. The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge).
+Typography: `font-sans` = Raleway, `font-heading` = Lora (serif). Imported from Google Fonts in `globals.css`. Body background is warm cream `#F4F1EC`.
+
+Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw colors:
+
+| Token | Value | Use for |
+|---|---|---|
+| `primary-*` | Emerald green scale | CTAs, active states, category badges |
+| `earth-*` | Warm amber scale | Stars, secondary accents, highlight badges |
+| `cta` / `cta-dark` | Cyan `#0891B2` | Info/CTA variant |
+| `forest` | `#064E3B` | Main headings, dark backgrounds |
+| `surface` | `#F4F1EC` | Section backgrounds (warm cream) |
+| `cream` | `#FDFCF9` | Card backgrounds, lightest surface |
+| `shadow-card` | subtle drop shadow | Default card |
+| `shadow-card-hover` | green-tinted hover | Card on hover |
+| `shadow-card-earth` | amber-tinted | Earth-accented cards |
+| `bg-hero-map` | radial gradient | Hero fallback background |
+| `bg-newsletter` | green-to-cyan gradient | Newsletter section |
+| `bg-warm-section` | cream gradient | Section dividers |
+
+The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge).
