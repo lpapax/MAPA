@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Star, MapPin, ArrowRight, Quote } from 'lucide-react'
+import { MapPin, ArrowRight } from 'lucide-react'
 import { FEATURED_FARMS, type MockFarm } from '@/data/mockData'
 import { CATEGORY_LABELS } from '@/lib/farms'
 import { cn } from '@/lib/utils'
@@ -81,11 +81,6 @@ function SpotlightCard({ farm }: { farm: MockFarm }) {
           className="object-cover group-hover:scale-105 transition-transform duration-700"
           sizes="(max-width: 640px) 100vw, 45vw"
         />
-        {/* Badge */}
-        <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-earth-400 text-earth-900 text-xs font-bold shadow-sm z-10">
-          <Star className="w-3.5 h-3.5 fill-earth-900" aria-hidden="true" />
-          Farmář týdne
-        </div>
         {/* Organic overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
       </div>
@@ -99,7 +94,7 @@ function SpotlightCard({ farm }: { farm: MockFarm }) {
                 'w-12 h-12 rounded-2xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm',
                 farm.farmerColor,
               )}
-              aria-label={`Avatar farmáře ${farm.farmerName}`}
+              aria-hidden="true"
             >
               {farm.farmerInitials}
             </div>
@@ -109,29 +104,13 @@ function SpotlightCard({ farm }: { farm: MockFarm }) {
               </div>
               <div className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
                 <MapPin className="w-3 h-3" aria-hidden="true" />
-                {farm.kraj} · {farm.distance}
+                {farm.kraj}
               </div>
             </div>
           </div>
-
-          {farm.quote && (
-            <blockquote className="relative pl-4 border-l-2 border-primary-200 mt-4">
-              <Quote
-                className="absolute -top-1 -left-1 w-4 h-4 text-primary-300"
-                aria-hidden="true"
-              />
-              <p className="text-sm text-gray-600 italic leading-relaxed line-clamp-3">
-                {farm.quote}
-              </p>
-              <cite className="not-italic text-xs text-gray-400 mt-1.5 block">
-                — {farm.farmerName}
-              </cite>
-            </blockquote>
-          )}
         </div>
 
-        <div className="flex items-center justify-between mt-5 pt-4 border-t border-gray-50">
-          <StarRating rating={farm.rating} count={farm.reviewCount} />
+        <div className="flex items-center justify-end mt-5 pt-4 border-t border-gray-50">
           <span
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 group-hover:gap-2.5 transition-all"
             aria-hidden="true"
@@ -163,10 +142,6 @@ function FarmCard({ farm }: { farm: MockFarm }) {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-        {/* Distance badge */}
-        <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-xs font-semibold text-gray-700 shadow-sm z-10">
-          {farm.distance}
-        </div>
       </div>
 
       {/* Body */}
@@ -177,7 +152,7 @@ function FarmCard({ farm }: { farm: MockFarm }) {
               'w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-xs flex-shrink-0 shadow-sm',
               farm.farmerColor,
             )}
-            aria-label={`Avatar farmáře ${farm.farmerName}`}
+            aria-hidden="true"
           >
             {farm.farmerInitials}
           </div>
@@ -205,8 +180,7 @@ function FarmCard({ farm }: { farm: MockFarm }) {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-50">
-          <StarRating rating={farm.rating} count={farm.reviewCount} />
+        <div className="flex items-center justify-end mt-auto pt-3 border-t border-gray-50">
           <span className="text-xs font-semibold text-primary-600 group-hover:text-primary-700 transition-colors inline-flex items-center gap-1">
             Zobrazit <ArrowRight className="w-3 h-3" aria-hidden="true" />
           </span>
@@ -216,26 +190,3 @@ function FarmCard({ farm }: { farm: MockFarm }) {
   )
 }
 
-// ── Stars ────────────────────────────────────
-
-function StarRating({ rating, count }: { rating: number; count: number }) {
-  return (
-    <div className="flex items-center gap-1.5">
-      <div className="flex" aria-label={`Hodnocení ${rating} z 5 hvězd`} role="img">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            className={cn(
-              'w-3.5 h-3.5',
-              i < Math.floor(rating) ? 'text-earth-400 fill-earth-400' : 'text-gray-200 fill-gray-200',
-            )}
-            aria-hidden="true"
-          />
-        ))}
-      </div>
-      <span className="text-xs text-gray-500 font-medium">
-        {rating.toFixed(1)} <span className="text-gray-300">({count})</span>
-      </span>
-    </div>
-  )
-}

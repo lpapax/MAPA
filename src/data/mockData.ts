@@ -13,13 +13,9 @@ export interface MockFarm {
   farmerColor: string        // Tailwind bg class for avatar
   coverGradient: string      // Tailwind gradient fallback
   coverImage: string         // Unsplash photo URL
-  distance: string
-  rating: number
-  reviewCount: number
   kraj: string
   categories: FarmCategory[]
   spotlight?: boolean
-  quote?: string
 }
 
 export const FEATURED_FARMS: MockFarm[] = [
@@ -32,9 +28,6 @@ export const FEATURED_FARMS: MockFarm[] = [
     farmerColor: 'bg-emerald-500',
     coverGradient: 'from-emerald-400 via-teal-500 to-cyan-600',
     coverImage: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&h=600&fit=crop&q=80',
-    distance: '3 km',
-    rating: 4.9,
-    reviewCount: 128,
     kraj: 'Jihočeský',
     categories: ['zelenina', 'ovoce', 'vejce'],
   },
@@ -42,32 +35,24 @@ export const FEATURED_FARMS: MockFarm[] = [
     id: 'f2',
     slug: 'farma-bila-hora',
     name: 'Farma Bílá hora',
-    farmerName: 'Marie Nováková',
-    farmerInitials: 'MN',
+    farmerName: 'Farma Bílá hora',
+    farmerInitials: 'BH',
     farmerColor: 'bg-amber-500',
     coverGradient: 'from-amber-300 via-orange-400 to-red-500',
     coverImage: 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=800&h=600&fit=crop&q=80',
-    distance: '12 km',
-    rating: 4.7,
-    reviewCount: 84,
     kraj: 'Středočeský',
     categories: ['maso', 'mléko'],
     spotlight: true,
-    quote:
-      'Naše krávy pasou na přirozených loukách bez přídavku hormonů. Věříme, že spokojené zvíře dává nejlepší mléko.',
   },
   {
     id: 'f3',
     slug: 'vceli-zahrada',
     name: 'Včelí zahrada',
-    farmerName: 'Pavel Krejčí',
-    farmerInitials: 'PK',
+    farmerName: 'Včelí zahrada',
+    farmerInitials: 'VZ',
     farmerColor: 'bg-yellow-500',
     coverGradient: 'from-yellow-300 via-amber-400 to-orange-500',
     coverImage: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800&h=600&fit=crop&q=80',
-    distance: '5 km',
-    rating: 5.0,
-    reviewCount: 61,
     kraj: 'Jihomoravský',
     categories: ['med', 'byliny'],
   },
@@ -75,14 +60,11 @@ export const FEATURED_FARMS: MockFarm[] = [
     id: 'f4',
     slug: 'rodinná-farma-kopecky',
     name: 'Rodinná farma Kopecký',
-    farmerName: 'Tomáš Kopecký',
-    farmerInitials: 'TK',
+    farmerName: 'Rodinná farma Kopecký',
+    farmerInitials: 'RK',
     farmerColor: 'bg-green-600',
     coverGradient: 'from-green-400 via-emerald-500 to-teal-600',
     coverImage: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=800&h=600&fit=crop&q=80',
-    distance: '8 km',
-    rating: 4.8,
-    reviewCount: 93,
     kraj: 'Vysočina',
     categories: ['zelenina', 'mléko', 'vejce'],
   },
@@ -90,14 +72,11 @@ export const FEATURED_FARMS: MockFarm[] = [
     id: 'f5',
     slug: 'ovocne-sady-novotny',
     name: 'Ovocné sady Novotný',
-    farmerName: 'Eva Novotná',
-    farmerInitials: 'EN',
+    farmerName: 'Ovocné sady Novotný',
+    farmerInitials: 'ON',
     farmerColor: 'bg-rose-500',
     coverGradient: 'from-rose-300 via-pink-400 to-red-400',
     coverImage: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=800&h=600&fit=crop&q=80',
-    distance: '22 km',
-    rating: 4.6,
-    reviewCount: 47,
     kraj: 'Plzeňský',
     categories: ['ovoce', 'víno'],
   },
@@ -121,36 +100,36 @@ export interface Testimonial {
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: 't1',
-    name: 'Jana Kováříková',
-    city: 'Praha',
+    name: 'Jana K.',
+    city: 'Praha 6',
     rating: 5,
     quote:
-      'Konečně vím, odkud pochází jídlo, které dávám svým dětem. Bedýnka ze Statku Dvořák přijde každý pátek a zelenina je naprosto čerstvá. Doporučuji každé rodině!',
+      'Nejdřív jsem byla skeptická, ale zkusila jsem první bedýnku a od té doby nezastavitelná. Zelenina chutná úplně jinak než z Albertu – a víte co, děti ji taky jí. To je pro mě největší důkaz.',
     initials: 'JK',
     color: 'bg-emerald-500',
-    since: 'zákazník od 2023',
+    since: 'zákaznice od jara 2023',
   },
   {
     id: 't2',
-    name: 'Petr Machala',
-    city: 'Brno',
+    name: 'Petr M.',
+    city: 'Brno-Líšeň',
     rating: 5,
     quote:
-      'Sehnat kvalitní lokální maso bylo vždy problém. Díky Mapě Farem jsem našel farmu 15 km od Brna a teď nakupuji přímo u farmáře. Chuť je nesrovnatelná s obchodem.',
+      'Bydlím na okraji Brna a myslel jsem, že farmu nenajdu blíž než hodinu jízdy. Přes Mapu Farem jsem našel jednu 12 km od nás. Teď tam chodím jednou za čtrnáct dní, farmář mi vždycky nechá něco stranou.',
     initials: 'PM',
     color: 'bg-amber-500',
-    since: 'zákazník od 2022',
+    since: 'zákazník od léta 2022',
   },
   {
     id: 't3',
-    name: 'Markéta Svobodová',
+    name: 'Markéta S.',
     city: 'Olomouc',
     rating: 5,
     quote:
-      'Miluju med z Včelí zahrady. Pan Krejčí mi vždy poradí, který druh je vhodný pro co. Takový osobní přístup v supermarketu nenajdete. Mapa Farem je super nápad!',
+      'Objednala jsem med a dostala taky vzkaz, že letos bylo sucho a lípa kvetla kratčeji, tak ho je míň. Tohle vám v žádném e-shopu nenapíšou. Mám ráda, že vím, s kým jednám.',
     initials: 'MS',
     color: 'bg-rose-500',
-    since: 'zákazník od 2024',
+    since: 'zákaznice od podzimu 2023',
   },
 ]
 
