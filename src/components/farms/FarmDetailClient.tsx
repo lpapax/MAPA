@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react'
 import { Send, ShoppingBasket, Check, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CATEGORY_LABELS } from '@/lib/farms'
-import type { Farm, FarmCategory } from '@/types/farm'
+import type { Farm } from '@/types/farm'
 import { useRecentFarms } from '@/hooks/useRecentFarms'
-import { useBedynka } from '@/hooks/useBedynka'
 
 const TABS = [
   { id: 'o-farme', label: 'O farmě' },
@@ -18,26 +17,6 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]['id']
 
-interface MockProduct {
-  id: string
-  name: string
-  price: string
-  unit: string
-  category: FarmCategory
-  gradient: string
-  available: boolean
-}
-
-// Mock product data — in production these come from the farm's data
-const MOCK_PRODUCTS: MockProduct[] = [
-  { id: 'p1', name: 'Čerstvé vejce (10 ks)', price: '65', unit: 'krt', category: 'vejce', gradient: 'from-amber-100 to-yellow-200', available: true },
-  { id: 'p2', name: 'Zahrádkářský salát', price: '28', unit: 'ks', category: 'zelenina', gradient: 'from-green-100 to-emerald-200', available: true },
-  { id: 'p3', name: 'Rajčata cherry (250g)', price: '45', unit: 'bal', category: 'zelenina', gradient: 'from-red-100 to-rose-200', available: true },
-  { id: 'p4', name: 'Lesní med (500g)', price: '180', unit: 'skl', category: 'med', gradient: 'from-amber-200 to-orange-200', available: false },
-  { id: 'p5', name: 'Bedýnka zeleniny', price: '290', unit: 'ks', category: 'zelenina', gradient: 'from-teal-100 to-green-200', available: true },
-  { id: 'p6', name: 'Okurky salátové (1kg)', price: '38', unit: 'kg', category: 'zelenina', gradient: 'from-lime-100 to-green-200', available: true },
-]
-
 const GALLERY_GRADIENTS = [
   'from-emerald-300 to-teal-400',
   'from-green-400 to-lime-400',
@@ -48,18 +27,12 @@ const GALLERY_GRADIENTS = [
   'from-green-300 to-emerald-500',
 ]
 
-const MOCK_REVIEWS = [
-  { id: 'r1', name: 'Lenka B.', city: 'Praha', rating: 5, date: 'Březen 2025', comment: 'Výborná zelenina, vždy čerstvá a plná chuti. Doporučuji bedýnku na celý týden!' },
-  { id: 'r2', name: 'Jakub H.', city: 'Brno', rating: 5, date: 'Únor 2025', comment: 'Pan farmář je vždy ochotný a poradí, co je zrovna v sezóně. Vejce jsou luxusní.' },
-  { id: 'r3', name: 'Petra S.', city: 'Ostrava', rating: 4, date: 'Leden 2025', comment: 'Skvělá farma, vše bylo čerstvé. Objednávka proběhla rychle a bez problémů.' },
-]
 
 export function FarmDetailClient({ farm }: { farm: Farm }) {
   const [activeTab, setActiveTab] = useState<TabId>('o-farme')
   const [formState, setFormState] = useState({ name: '', email: '', message: '', sent: false })
   const [reviewForm, setReviewForm] = useState({ name: '', city: '', rating: 5, text: '', sent: false })
   const { addRecentFarm } = useRecentFarms()
-  const { isInBedynka, addItem } = useBedynka()
 
   // Record this page view in the recently viewed list
   useEffect(() => {
@@ -119,45 +92,10 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
           {activeTab === 'produkty' && (
             <div role="tabpanel" id="panel-produkty" aria-labelledby="tab-produkty">
               <h2 className="font-heading text-xl font-bold text-forest mb-4">Produkty</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {MOCK_PRODUCTS.map((product) => {
-                  const inBedynka = isInBedynka(`${farm.slug}__${product.id}`)
-                  return (
-                    <div key={product.id} className={cn('relative rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-0.5', !product.available && 'opacity-60')}>
-                      <div className={cn('h-28 bg-gradient-to-br relative', product.gradient)} aria-hidden="true">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-                      </div>
-                      <div className="p-4">
-                        <div className="flex items-start justify-between gap-2 mb-3">
-                          <h3 className="font-heading font-semibold text-forest text-sm leading-tight">{product.name}</h3>
-                          <div className="text-right flex-shrink-0">
-                            <span className="font-bold text-earth-700 text-base">{product.price} Kč</span>
-                            <span className="text-xs text-gray-400 block">/{product.unit}</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className={cn('px-2.5 py-0.5 rounded-full text-[10px] font-semibold', product.available ? 'bg-primary-50 text-primary-700 border border-primary-100' : 'bg-gray-100 text-gray-400')}>
-                            {product.available ? 'Dostupné' : 'Nedostupné'}
-                          </span>
-                          {product.available && (
-                            <button
-                              onClick={() => addItem({ productId: product.id, productName: product.name, price: product.price, unit: product.unit, farmSlug: farm.slug, farmName: farm.name })}
-                              disabled={inBedynka}
-                              aria-label={inBedynka ? 'Již v bedýnce' : `Přidat ${product.name} do bedýnky`}
-                              className={cn(
-                                'flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] font-medium border transition-all cursor-pointer',
-                                inBedynka ? 'bg-primary-50 border-primary-200 text-primary-600 cursor-default' : 'bg-white border-gray-200 text-gray-500 hover:border-primary-400 hover:text-primary-600',
-                              )}
-                            >
-                              {inBedynka ? <Check className="w-3 h-3" aria-hidden="true" /> : <ShoppingBasket className="w-3 h-3" aria-hidden="true" />}
-                              {inBedynka ? 'V bedýnce' : '+ Bedýnka'}
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
+              <div className="flex flex-col items-center justify-center py-14 text-center text-gray-400">
+                <ShoppingBasket className="w-10 h-10 mb-3 text-gray-200" aria-hidden="true" />
+                <p className="text-sm font-medium text-gray-500 mb-1">Farmář zatím nepřidal produkty.</p>
+                <p className="text-xs">Kontaktujte farmáře přímo přes záložku Kontakt.</p>
               </div>
             </div>
           )}
@@ -188,58 +126,12 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
           {activeTab === 'recenze' && (
             <div role="tabpanel" id="panel-recenze" aria-labelledby="tab-recenze">
               <h2 className="font-heading text-xl font-bold text-forest mb-6">Recenze zákazníků</h2>
-              {/* Rating summary */}
-              <div className="flex items-center gap-5 p-5 rounded-2xl bg-primary-50 border border-primary-100 mb-6">
-                <div className="text-center">
-                  <div className="font-heading font-bold text-5xl text-forest">4.9</div>
-                  <div className="flex justify-center gap-0.5 my-1" aria-label="4.9 z 5 hvězd" role="img">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <svg key={i} className="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <div className="text-xs text-gray-500">128 recenzí</div>
-                </div>
-                <div className="flex-1 space-y-1.5">
-                  {[5, 4, 3, 2, 1].map((star) => {
-                    const pct = star === 5 ? 78 : star === 4 ? 15 : star === 3 ? 5 : star === 2 ? 1 : 1
-                    return (
-                      <div key={star} className="flex items-center gap-2 text-xs text-gray-500">
-                        <span className="w-3">{star}</span>
-                        <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
-                          <div className="h-full bg-amber-400 rounded-full" style={{ width: `${pct}%` }} />
-                        </div>
-                        <span className="w-8 text-right">{pct}%</span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-              <div className="space-y-4">
-                {MOCK_REVIEWS.map((review) => (
-                  <div key={review.id} className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-primary-100 flex items-center justify-center text-xs font-bold text-primary-700">
-                          {review.name.slice(0, 1)}
-                        </div>
-                        <div>
-                          <div className="font-semibold text-sm text-forest">{review.name}</div>
-                          <div className="text-xs text-gray-400">{review.city} · {review.date}</div>
-                        </div>
-                      </div>
-                      <div className="flex gap-0.5" aria-label={`${review.rating} hvězd`} role="img">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <svg key={i} className={cn('w-3.5 h-3.5', i < review.rating ? 'text-amber-400 fill-amber-400' : 'text-gray-200 fill-gray-200')} viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                          </svg>
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-600 leading-relaxed">{review.comment}</p>
-                  </div>
-                ))}
+              <div className="flex flex-col items-center justify-center py-10 text-center text-gray-400 mb-6">
+                <svg viewBox="0 0 24 24" className="w-10 h-10 mb-3 text-gray-200 fill-gray-200" aria-hidden="true">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <p className="text-sm font-medium text-gray-500 mb-1">Zatím žádné recenze.</p>
+                <p className="text-xs">Buďte první, kdo ohodnotí tuto farmu.</p>
               </div>
 
               {/* Review form */}

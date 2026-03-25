@@ -3,7 +3,6 @@ import Link from 'next/link'
 import {
   TrendingUp,
   Users,
-  Star,
   Shield,
   CheckCircle,
   BarChart2,
@@ -77,12 +76,13 @@ const PRICING = [
     priceNote: 'navždy',
     color: 'border-gray-200',
     highlight: false,
+    soon: false,
     features: [
-      'Profil farmy s popisem',
-      'Kontaktní formulář',
-      'Až 5 fotografií',
-      'Zobrazení na mapě',
-      'Kategorie produktů',
+      { label: 'Profil farmy s popisem', soon: false },
+      { label: 'Kontaktní formulář', soon: false },
+      { label: 'Až 5 fotografií', soon: false },
+      { label: 'Zobrazení na mapě', soon: false },
+      { label: 'Kategorie produktů', soon: false },
     ],
     cta: 'Začít zdarma',
     ctaHref: '/pridat-farmu',
@@ -94,16 +94,17 @@ const PRICING = [
     priceNote: '/ měsíc',
     color: 'border-primary-400 ring-2 ring-primary-200',
     highlight: true,
+    soon: true,
     features: [
-      'Vše ze základního plánu',
-      'Prioritní zobrazení ve výsledcích',
-      'Neomezený počet fotografií',
-      'Statistiky profilu',
-      'Odznáček „Ověřená farma"',
-      'E-mailová podpora',
+      { label: 'Vše ze základního plánu', soon: false },
+      { label: 'Prioritní zobrazení ve výsledcích', soon: true },
+      { label: 'Neomezený počet fotografií', soon: false },
+      { label: 'Statistiky profilu', soon: true },
+      { label: 'Odznáček „Ověřená farma"', soon: false },
+      { label: 'E-mailová podpora', soon: false },
     ],
-    cta: 'Vybrat Profesionál',
-    ctaHref: '/pridat-farmu',
+    cta: 'Mám zájem',
+    ctaHref: '/kontakt',
     ctaStyle: 'bg-primary-600 text-white hover:bg-primary-700',
   },
   {
@@ -112,13 +113,13 @@ const PRICING = [
     priceNote: '/ měsíc',
     color: 'border-earth-300',
     highlight: false,
+    soon: true,
     features: [
-      'Vše z Profesionálního plánu',
-      'Umístění v hero sekci domovské stránky',
-      'Dedikovaný account manager',
-      'Zmínka v newsletteru (12 000 odběratelů)',
-      'Exporty dat a reporty',
-      'Telefonická podpora',
+      { label: 'Vše z Profesionálního plánu', soon: false },
+      { label: 'Umístění v hero sekci domovské stránky', soon: true },
+      { label: 'Zmínka v newsletteru Mapa Farem', soon: false },
+      { label: 'Exporty dat a reporty', soon: true },
+      { label: 'Telefonická podpora', soon: false },
     ],
     cta: 'Kontaktovat nás',
     ctaHref: '/kontakt',
@@ -266,27 +267,6 @@ export default function ProFarmaryPage() {
           </div>
         </AnimatedSection>
 
-        {/* Testimonial */}
-        <AnimatedSection className="bg-white py-16">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="w-14 h-14 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold text-xl mx-auto mb-6">
-              MH
-            </div>
-            <blockquote className="font-heading text-xl sm:text-2xl text-forest leading-relaxed italic mb-6">
-              &ldquo;Před Mapou Farem jsem 70 % produkce prodával přes výkup za pár korun. Dnes mám
-              150 stálých zákazníků, kteří chodí přímo k nám na dvůr nebo si objednávají bedýnku.
-              Příjmy se zdvojnásobily při stejném objemu produkce.&rdquo;
-            </blockquote>
-            <p className="font-semibold text-forest text-sm">Martin Horáček</p>
-            <p className="text-gray-400 text-xs mt-0.5">Statek Horáček, Jihočeský kraj · farmář od 1994</p>
-            <div className="flex justify-center gap-1 mt-3" aria-label="Hodnocení 5 z 5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="w-4 h-4 text-earth-500 fill-earth-500" aria-hidden="true" />
-              ))}
-            </div>
-          </div>
-        </AnimatedSection>
-
         {/* Pricing */}
         <div id="pricing">
         <AnimatedSection className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -304,11 +284,18 @@ export default function ProFarmaryPage() {
                   plan.highlight ? 'shadow-card-hover' : ''
                 }`}
               >
-                {plan.highlight && (
-                  <span className="inline-block px-3 py-1 rounded-full bg-primary-600 text-white text-xs font-semibold mb-4 self-start">
-                    Nejoblíbenější
-                  </span>
-                )}
+                <div className="flex items-center gap-2 mb-4">
+                  {plan.highlight && (
+                    <span className="inline-block px-3 py-1 rounded-full bg-primary-600 text-white text-xs font-semibold">
+                      Nejoblíbenější
+                    </span>
+                  )}
+                  {plan.soon && (
+                    <span className="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">
+                      Připravujeme
+                    </span>
+                  )}
+                </div>
                 <h3 className="font-heading font-bold text-forest text-lg mb-1">{plan.name}</h3>
                 <div className="mb-5">
                   <span className="font-heading font-bold text-3xl text-forest">{plan.price}</span>
@@ -316,9 +303,14 @@ export default function ProFarmaryPage() {
                 </div>
                 <ul className="space-y-3 mb-8 flex-1">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm text-gray-600">
+                    <li key={feature.label} className="flex items-start gap-2 text-sm text-gray-600">
                       <CheckCircle className="w-4 h-4 text-primary-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                      {feature}
+                      <span>
+                        {feature.label}
+                        {feature.soon && (
+                          <span className="ml-1.5 text-[10px] font-semibold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full">brzy</span>
+                        )}
+                      </span>
                     </li>
                   ))}
                 </ul>
