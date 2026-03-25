@@ -11,7 +11,8 @@ export interface MockFarm {
   farmerName: string
   farmerInitials: string
   farmerColor: string        // Tailwind bg class for avatar
-  coverGradient: string      // Tailwind gradient for cover placeholder
+  coverGradient: string      // Tailwind gradient fallback
+  coverImage: string         // Unsplash photo URL
   distance: string
   rating: number
   reviewCount: number
@@ -30,6 +31,7 @@ export const FEATURED_FARMS: MockFarm[] = [
     farmerInitials: 'JD',
     farmerColor: 'bg-emerald-500',
     coverGradient: 'from-emerald-400 via-teal-500 to-cyan-600',
+    coverImage: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&h=600&fit=crop&q=80',
     distance: '3 km',
     rating: 4.9,
     reviewCount: 128,
@@ -44,6 +46,7 @@ export const FEATURED_FARMS: MockFarm[] = [
     farmerInitials: 'MN',
     farmerColor: 'bg-amber-500',
     coverGradient: 'from-amber-300 via-orange-400 to-red-500',
+    coverImage: 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=800&h=600&fit=crop&q=80',
     distance: '12 km',
     rating: 4.7,
     reviewCount: 84,
@@ -61,6 +64,7 @@ export const FEATURED_FARMS: MockFarm[] = [
     farmerInitials: 'PK',
     farmerColor: 'bg-yellow-500',
     coverGradient: 'from-yellow-300 via-amber-400 to-orange-500',
+    coverImage: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800&h=600&fit=crop&q=80',
     distance: '5 km',
     rating: 5.0,
     reviewCount: 61,
@@ -75,6 +79,7 @@ export const FEATURED_FARMS: MockFarm[] = [
     farmerInitials: 'TK',
     farmerColor: 'bg-green-600',
     coverGradient: 'from-green-400 via-emerald-500 to-teal-600',
+    coverImage: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=800&h=600&fit=crop&q=80',
     distance: '8 km',
     rating: 4.8,
     reviewCount: 93,
@@ -89,6 +94,7 @@ export const FEATURED_FARMS: MockFarm[] = [
     farmerInitials: 'EN',
     farmerColor: 'bg-rose-500',
     coverGradient: 'from-rose-300 via-pink-400 to-red-400',
+    coverImage: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=800&h=600&fit=crop&q=80',
     distance: '22 km',
     rating: 4.6,
     reviewCount: 47,
@@ -160,6 +166,7 @@ export interface BlogArticle {
   readTime: string
   excerpt: string
   coverGradient: string
+  coverImage: string
   slug: string
   author: string
   authorInitials: string
@@ -178,6 +185,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     excerpt:
       'Lokální potraviny nejsou jen trend. Přinášejí zdravotní výhody, podporují lokální ekonomiku a snižují uhlíkovou stopu.',
     coverGradient: 'from-emerald-400 to-teal-500',
+    coverImage: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&h=480&fit=crop&q=80',
     slug: 'proc-kupovat-lokalni-potraviny',
     author: 'Jana Horáčková',
     authorInitials: 'JH',
@@ -228,6 +236,7 @@ Lokální potraviny nejsou luxusem pro vyvolené. Jsou to každodenní volby, kt
     excerpt:
       'Jak vybrat správnou bedýnku, co v ní očekávat a jak zpracovat méně známou zeleninu. Vše, co potřebujete vědět.',
     coverGradient: 'from-green-400 to-emerald-600',
+    coverImage: 'https://images.unsplash.com/photo-1590682680695-43b964a3ae17?w=800&h=480&fit=crop&q=80',
     slug: 'bedynka-zeleniny-pruvodce',
     author: 'Tomáš Veselý',
     authorInitials: 'TV',
@@ -298,6 +307,7 @@ Na Mapě Farem najdete farmáře ve vašem okolí, kteří bedýnky nabízejí. 
     excerpt:
       'Co skutečně znamená označení BIO, jak ho ověřit a proč se vyplatí hledat certifikované produkty od lokálních farmářů.',
     coverGradient: 'from-lime-400 to-green-500',
+    coverImage: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=800&h=480&fit=crop&q=80',
     slug: 'jak-poznam-bio-certifikaci',
     author: 'Markéta Procházková',
     authorInitials: 'MP',

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ArrowRight, Map, Tractor, Search } from 'lucide-react'
@@ -30,14 +31,24 @@ export function HeroSection() {
       className="relative min-h-[92vh] flex items-center overflow-hidden"
       aria-labelledby="hero-heading"
     >
-      {/* Deep organic background */}
-      <div className="absolute inset-0 bg-hero-map" aria-hidden="true" />
+      {/* Real farm photo background */}
+      <div className="absolute inset-0" aria-hidden="true">
+        <Image
+          src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1920&h=1080&fit=crop&q=85"
+          alt=""
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+      </div>
+
+      {/* Dark overlay for text legibility */}
+      <div className="absolute inset-0 bg-gradient-to-r from-forest/85 via-forest/70 to-forest/40" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" aria-hidden="true" />
 
       {/* Topographic SVG overlay */}
       <TopoOverlay />
-
-      {/* Gradient overlay for legibility */}
-      <div className="absolute inset-0 bg-hero-overlay" aria-hidden="true" />
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-24">

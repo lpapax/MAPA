@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Clock, ArrowRight } from 'lucide-react'
 import { BLOG_ARTICLES } from '@/data/mockData'
 import { cn } from '@/lib/utils'
@@ -41,16 +42,17 @@ export function BlogPreview() {
                 aria-label={`Číst článek: ${article.title}`}
               >
                 {/* Cover */}
-                <div
-                  className={cn(
-                    'h-48 bg-gradient-to-br relative overflow-hidden',
-                    article.coverGradient,
-                  )}
-                  aria-hidden="true"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                <div className="h-48 relative overflow-hidden" aria-hidden="true">
+                  <Image
+                    src={article.coverImage}
+                    alt={article.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   {/* Reading time badge */}
-                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/28 backdrop-blur-sm text-white text-[10px] font-medium">
+                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-sm text-white text-[10px] font-medium z-10">
                     <Clock className="w-3 h-3" aria-hidden="true" />
                     {article.readTime}
                   </div>

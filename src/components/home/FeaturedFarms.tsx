@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Star, MapPin, ArrowRight, Quote } from 'lucide-react'
 import { FEATURED_FARMS, type MockFarm } from '@/data/mockData'
 import { CATEGORY_LABELS } from '@/lib/farms'
@@ -70,20 +71,23 @@ function SpotlightCard({ farm }: { farm: MockFarm }) {
     >
       {/* Cover */}
       <div
-        className={cn(
-          'relative sm:w-[45%] min-h-[200px] sm:min-h-0 flex-shrink-0',
-          'bg-gradient-to-br',
-          farm.coverGradient,
-        )}
+        className="relative sm:w-[45%] min-h-[200px] sm:min-h-0 flex-shrink-0 overflow-hidden"
         aria-hidden="true"
       >
+        <Image
+          src={farm.coverImage}
+          alt={farm.name}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-700"
+          sizes="(max-width: 640px) 100vw, 45vw"
+        />
         {/* Badge */}
-        <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-earth-400 text-earth-900 text-xs font-bold shadow-sm">
+        <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-earth-400 text-earth-900 text-xs font-bold shadow-sm z-10">
           <Star className="w-3.5 h-3.5 fill-earth-900" aria-hidden="true" />
           Farmář týdne
         </div>
         {/* Organic overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
       </div>
 
       {/* Content */}
@@ -150,16 +154,17 @@ function FarmCard({ farm }: { farm: MockFarm }) {
       aria-label={`Farma: ${farm.name}`}
     >
       {/* Cover */}
-      <div
-        className={cn(
-          'relative h-44 bg-gradient-to-br overflow-hidden',
-          farm.coverGradient,
-        )}
-        aria-hidden="true"
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-transparent" />
+      <div className="relative h-44 overflow-hidden" aria-hidden="true">
+        <Image
+          src={farm.coverImage}
+          alt={farm.name}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-700"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         {/* Distance badge */}
-        <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-xs font-semibold text-gray-700 shadow-sm">
+        <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-xs font-semibold text-gray-700 shadow-sm z-10">
           {farm.distance}
         </div>
       </div>
