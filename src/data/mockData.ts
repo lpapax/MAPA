@@ -177,6 +177,234 @@ export interface BlogArticle {
 
 export const BLOG_ARTICLES: BlogArticle[] = [
   {
+    id: 'b4',
+    title: 'Recepty se sezónní zeleninou: Co vařit v létě',
+    category: 'Recepty',
+    categoryColor: 'bg-rose-100 text-rose-700',
+    readTime: '6 min čtení',
+    excerpt:
+      'Léto přináší hojnost čerstvé zeleniny. Víme, jak ji proměnit v rychlé, výživné a chutné pokrmy bez hodin stráveného vaření.',
+    coverGradient: 'from-rose-400 to-orange-500',
+    coverImage: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&h=480&fit=crop&q=80',
+    slug: 'recepty-sezonni-zelenina',
+    author: 'Lucie Marková',
+    authorInitials: 'LM',
+    authorColor: 'bg-rose-500',
+    publishedAt: '2. dubna 2025',
+    content: `Léto je nejkrásnější čas pro vaření. Stánky farmářů se prohýbají pod tíhou čerstvé zeleniny a ovoce. Rajčata voní jako nikdy, kukuřice je sladká, cukety rostou tak rychle, že nestíháte zpracovávat. Tenhle průvodce vám ukáže, jak z letní úrody vytěžit maximum bez složitých receptů.
+
+## Zásady letního vaření
+
+Nejlepší letní recepty jsou ty nejjednodušší. Čerstvá, zralá zelenina nepotřebuje mnoho – stačí trocha olivového oleje, bylinky, sůl a teplo. Čím méně zpracování, tím více chutnají přirozené chutě.
+
+**Pravidlo číslo jedna:** Kupujte zeleninu vždy v den vaření nebo maximálně den před tím. Letní zelenina vydrží krátce – to je přirozené.
+
+**Pravidlo číslo dvě:** Neskladujte rajčata v lednici. Chlad ničí jejich aroma. Nechte je na lince při pokojové teplotě.
+
+**Pravidlo číslo tři:** Sůl používejte až na konci. Dříve přidaná sůl zeleninu odvodní a připravuje ji o šťávu.
+
+## Rychlé caprese (10 minut)
+
+Jednoduchá klasika, která přesto dokáže ohromit – ale jen s kvalitními rajčaty přímo od farmáře.
+
+**Ingredience:** 4 zralá rajčata, 200 g čerstvé mozzarelly, hrst bazalkových listů, 3 lžíce olivového oleje, mořská sůl, černý pepř.
+
+**Postup:** Nakrájejte rajčata a mozzarellu na plátky. Střídejte je na talíři. Prokládejte bazalkou. Zakápněte olivovým olejem, posypte solí a pepřem. Podávejte okamžitě s čerstvým chlebem.
+
+Klíč k úspěchu: rajčata musí být zralá, teplá a voňavá. Supermarketová rajčata tento recept zničí.
+
+## Pečená cuketa s bylinkami (20 minut)
+
+Cuketa je letní zelenina číslo jedna – roste rychle, je všestranná a v sezóně stojí jen pár korun.
+
+**Ingredience:** 2 velké cukety, 4 stroužky česneku, tymián a rozmarýn, olivový olej, parmazán na strouhání.
+
+**Postup:** Rozehřejte troubu na 200 °C. Nakrájejte cukety na půlcentimetrové plátky. Uspořádejte na plech, zakápněte olejem, nasypte nakrájený česnek a bylinky. Pečte 15 minut, dokud okraje nezezlátnou. Nastruhejte parmazán a podávejte jako přílohu nebo samotné s chlebem.
+
+## Studená gazpacho (15 minut + chlazení)
+
+Španělská polévka z čerstvých rajčat je ideální na horké dny – studená, osvěžující, bez vaření.
+
+**Ingredience:** 6 rajčat, 1 okurka, 1 červená paprika, 1 cibule, 2 stroužky česneku, 4 lžíce olivového oleje, 2 lžíce červeného octa, sůl, pepř, voda dle potřeby.
+
+**Postup:** Nakrájejte všechnu zeleninu. Rozmixujte dohladka. Přidejte olej, ocet, sůl, pepř. Upravte hustotu vodou. Chlaďte alespoň hodinu. Podávejte s kapkou olivového oleje a čerstvou bazalkou.
+
+Gazpacho vydrží v lednici 3 dny a s každým dnem je chutnější.
+
+## Grilovaná kukuřice s bylinkové máslo (15 minut)
+
+Čerstvá kukuřice přímo z farmy – ne ta z plechovky – je letní delikatesa sama o sobě.
+
+**Ingredience:** 4 klasy kukuřice, 80 g másla, petrželka, česnekový prášek, sůl.
+
+**Postup:** Smíchejte změklé máslo s petrželkou a česnековым práškem. Rozehřejte gril nebo grilovací pánev. Kukuřici grilujte 10–12 minut, otáčejte každé 2 minuty. Potřete bylinkovým máslem. Podávejte ihned.
+
+## Rajčatový salát s červenou cibulí
+
+Jednoduchý salát, který každý zná, ale málokdo dělá správně.
+
+**Ingredience:** 5 různobarevných rajčat, půlka červené cibule, hrst petrželky, olivový olej, červený vinný ocet, sůl.
+
+**Postup:** Nakrájejte rajčata na čtvrtky nebo osminky – nikdy na kolečka. Cibuli nakrájejte na tenké půlkroužky a namočte ji na 5 minut do studené vody (ztratí ostrost). Smíchejte, přidejte petrželku, zakápněte olejem a octem. Nechte 10 minut odležet při pokojové teplotě.
+
+## Rychlá ratatouille (35 minut)
+
+Francouzská klasika z letní zeleniny – cuketa, paprika, lilek, rajčata.
+
+**Ingredience:** 1 lilek, 2 cukety, 2 papriky, 4 rajčata, cibule, 3 stroužky česneku, tymián, olivový olej.
+
+**Postup:** Nakrájejte vše na kostky 2 cm. Na hluboké pánvi osmahněte cibuli a česnek. Přidejte papriku, po 3 minutách lilek, po dalších 3 minutách cuketu. Přidejte nakrájená rajčata a tymián. Vařte pod pokličkou 20 minut na mírném ohni. Dochuťte solí a pepřem. Skvělé s chlebem, těstovinami nebo jako příloha.
+
+## Kde sehnat nejlepší letní zeleninu?
+
+Navštivte farmářský trh nebo si na Mapě Farem najděte farmáře přímo ve vašem okolí. Přímý nákup od farmáře zajišťuje, že zelenina není dny stará z distribučního centra, ale opravdu čerstvá – sklizená nejlépe ráno v den prodeje.
+
+Letní vaření je radost. Nepotřebujete složité recepty ani drahé ingredience. Stačí dobrá zelenina, trocha olivového oleje a chuť experimentovat. Bon appétit!`,
+  },
+  {
+    id: 'b5',
+    title: 'Jak poznat kvalitní med? Průvodce pro zákazníky',
+    category: 'Průvodce',
+    categoryColor: 'bg-blue-100 text-blue-700',
+    readTime: '5 min čtení',
+    excerpt:
+      'Med z obchodu a med přímo od včelaře jsou dva rozdílné světy. Naučte se rozeznat skutečný med od průmyslového sirupu.',
+    coverGradient: 'from-amber-300 to-yellow-500',
+    coverImage: 'https://images.unsplash.com/photo-1471943311424-646960669fbc?w=800&h=480&fit=crop&q=80',
+    slug: 'jak-poznat-kvalitni-med',
+    author: 'Pavel Krejčí',
+    authorInitials: 'PK',
+    authorColor: 'bg-amber-500',
+    publishedAt: '18. března 2025',
+    content: `Med je jednou z nejčastěji falšovaných potravin na světě. Podle výzkumů EU je až třetina medu prodávaného v evropských supermarketech ředěna kukuřičným sirupem nebo pochází z Číny, přičemž je označena jako „původ: EU". Jak tedy poznat skutečný, kvalitní med?
+
+## Co je skutečný med?
+
+Pravý med je přírodní produkt, který včely vyrobí z nektaru rostlin nebo z medovice. Neměl by obsahovat žádné přidané cukry, konzervanty ani jiné přísady. Zní to jednoduše – ale v praxi je plný trh produkty, které tuto definici nesplňují.
+
+## Základní testy kvality
+
+### Test krystalizace
+
+Pravý med krystalizuje – to je přirozený proces, ne vada. Pokud je váš med po několika měsících stále tekutý, pravděpodobně byl zahřátý nad 40 °C (čímž ztratil většinu enzymatické aktivity) nebo byl ředěn. Jedinou výjimkou je akátový med, který krystalizuje velmi pomalu.
+
+Pokud máte zkrystalizovaný med a chcete ho zkapalnit, dejte sklenici do vodní lázně o teplotě max. 40 °C. Nikdy ne do mikrovlnné trouby – ta enzymy zničí.
+
+### Test vody
+
+Naberte lžíci medu a pomalu ji otočte. Pravý med by měl stékat pomalu a „provazovat" se – táhne za sebou tenký vláken. Falšovaný med stéká rychle a vodnatě jako sirup.
+
+Pokud máte pochyby, nechte kapku medu padnout na papír. Pravý med netvoří hned vlhký kroužek – absorbce je pomalá. Vodnatý med se vsákne okamžitě.
+
+### Test na palec
+
+Dejte kapku medu na palec. Pravý med se nebude hned rozlévat – drží tvar. Falšovaný med se rychle roztéká, protože obsahuje přebytečnou vodu.
+
+### Chutě a vůně
+
+Každý druh medu má svou charakteristickou vůni a chuť. Lipový med vonia delikátně po lipovém květu, pohankový med je tmavý a robustní, akátový med je světlý a jemně sladký. Průmyslový med po ničem specifickém nevoní – je to neutrální sladká hmota.
+
+## Druhy českého medu
+
+**Akátový med** – světle žlutý až průhledný, jemně sladký, pomalu krystalizuje. Jeden z nejoblíbenějších.
+
+**Lipový med** – světlý až žlutozelený, svěží vůně, delikátní chuť. Výborný na čaj.
+
+**Pohankový med** – tmavě hnědý, intenzivní aroma a chuť, bohatý na minerály a antioxidanty.
+
+**Smrkový medovicový med** – tmavý, hustý, méně sladký, bohatý na minerální látky. Vhodný pro diabetiky.
+
+**Řepkový med** – světle žlutý, velmi rychle krystalizuje na tuhý med. Jemná chuť.
+
+**Luční med** – směs nektaru z různých lučních květin. Závisí na lokalitě, má komplexní chuť.
+
+## Co hledat na etiketě
+
+Na etiketě kvalitního českého medu byste měli najít:
+- Jméno a adresu včelaře nebo výrobce
+- Zemi původu (v ČR musí být povinně uvedena)
+- Druh medu (akátový, lipový, luční…)
+- Hmotnost netto
+- Doporučenou dobu spotřeby (typicky 2 roky)
+
+Vyhněte se medům označeným pouze „Blend of EU and non-EU honey" – to jsou levné směsi, které nijak negarantují kvalitu.
+
+## Proč nakupovat med přímo od včelaře?
+
+Přímý nákup od včelaře je nejlepší zárukou kvality. Včelař vám řekne:
+- Kde jeho včely sbíraly nektar
+- Jak med zpracovával (teplota, filtrování)
+- Kdy byl med stočen
+- Jestli byl v sezoně dostatek nektaru
+
+Tento přímý kontakt nenahradí žádný certifikát. Navíc podpoříte lokální včelaře, kteří jsou klíčoví pro opylování krajiny.
+
+Na Mapě Farem najdete desítky lokálních včelařů z celé České republiky. Kontaktujte je přímo a domluvte se na odběru čerstvého medu – zaručeně pravého, zaručeně lokálního.
+
+## Jak med správně skladovat?
+
+Med skladujte při pokojové teplotě, daleko od tepla a přímého světla. Nepotřebuje lednici – má přirozené konzervační vlastnosti díky nízkému obsahu vody a kyselinám. Správně skladovaný med vydrží roky, egyptský med v hrobkách je starý tisíce let a stále poživatelný.`,
+  },
+  {
+    id: 'b6',
+    title: 'Přímý prodej z farmy: výhody pro obě strany',
+    category: 'Životní styl',
+    categoryColor: 'bg-emerald-100 text-emerald-700',
+    readTime: '4 min čtení',
+    excerpt:
+      'Přímý prodej zkracuje cestu od pole na váš stůl, přináší vyšší příjmy farmářům a čerstvější produkty zákazníkům. Proč na tom záleží?',
+    coverGradient: 'from-teal-400 to-emerald-600',
+    coverImage: 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=800&h=480&fit=crop&q=80',
+    slug: 'primy-prodej-z-farmy',
+    author: 'Jan Novák',
+    authorInitials: 'JN',
+    authorColor: 'bg-teal-500',
+    publishedAt: '25. února 2025',
+    content: `Přímý prodej – kdy zákazník kupuje potraviny přímo od producenta bez zprostředkovatelů – není v Česku nový jev. Farmářské trhy, prodej ze dvora a bedýnkové systémy existují desítky let. Ale proč na tom záleží víc než kdy dřív?
+
+## Problém s tradičním distribučním řetězcem
+
+Typická cesta potraviny od farmáře k zákazníkovi vypadá takto: farmář → výkupní středisko → distributor → velkoobchod → supermarket → zákazník. Každý mezičlánek si bere marži a diktuje podmínky. Výsledek?
+
+Farmář dostane za kilogram rajčat 4–6 Kč. Zákazník zaplatí 35–60 Kč za kilogram. Mezi polem a talířem zmizí 80–90 % hodnoty produktu.
+
+Distribuční mezičlánky navíc vyžadují dlouhou trvanlivost – zelenina se sbírá nezralá, aby přežila transport a skladování. To kompromituje chuť i nutriční hodnotu.
+
+## Co přímý prodej mění pro farmáře
+
+Přímý prodej radikálně mění ekonomiku malé farmy. Místo 4–6 Kč za kilo rajčat může farmář dostat 30–50 Kč. To je 5–10× více za stejný produkt se stejnou prací.
+
+**Stabilita příjmů.** Bedýnkové předplatné nebo pravidelní zákazníci dávají farmáři jistotu odbyt. Může plánovat setí, nákup, personál. Nemá strach, že mu distributor neodebere sklizeň.
+
+**Svoboda sortimentu.** Distribuční řetězce chtějí unifikované produkty – rajčata musí mít přesnou velikost a barvu. Přímý prodej umožňuje pěstovat staré odrůdy, různobarevné zeleniny a speciální produkty, o které je zájem.
+
+**Zpětná vazba.** Přímý kontakt se zákazníkem dává farmáři okamžitou zpětnou vazbu. Zákazník řekne, co mu chutná, co mu scházelo, co bylo jiné než předtím. Tohle distributor nikdy neřekne.
+
+**Vztahy.** Mnozí farmáři říkají, že přímý prodej je pro ně i o vztazích. Znají své zákazníky jménem. Vědí, co jejich rodiny jedí. Těší se na farmářský trh, kde vidí stálé tváře. To je satisfakce, kterou trh s distributory nenabídne.
+
+## Co přímý prodej mění pro zákazníky
+
+**Čerstvost.** Zelenina sklizená ráno a prodaná odpoledne – to je přímý prodej. Rozdíl v chuti oproti zelenině, která cestovala týden distribučním řetězcem, je výrazný.
+
+**Průhlednost.** Víte přesně, od koho kupujete, kde farma leží a jak farmář hospodaří. Můžete se kdykoliv přijet podívat. Tahle transparentnost v supermarketu neexistuje.
+
+**Rozmanitost.** Přímý prodej umožňuje farmářům nabízet produkty, které by se do supermarketu nikdy nedostaly – netradiční odrůdy, malá množství, sezonní specialty.
+
+**Nižší cena za kvalitu.** Přímý prodej bývá dražší než supermarket u komoditních produktů (mrkev, brambory). Ale u speciálních produktů – čerstvých vajec, sýrů, masa, medu – bývá cena srovnatelná nebo nižší, při dramaticky vyšší kvalitě.
+
+**Příběh jídla.** Když víte, že vaječce snesla slepice jménem Pepička, která se celé léto pásla na louce v jihočeském statku, jídlo chutná jinak. Příběh je součástí hodnoty.
+
+## Jak přímý prodej podpořit
+
+Nejjednodušší způsob: navštivte farmářský trh ve vašem okolí nebo si na Mapě Farem najděte farmáře přímo ve vašem regionu a kontaktujte ho. Nemusíte hned odebírat bedýnku každý týden – začněte jednorázovým nákupem.
+
+Každá koruna utracená přímo u farmáře jde na rozvoj farmy, ne do kapsy obchodního řetězce. A vy za to dostanete čerstvější, chutnější a průhlednější jídlo.
+
+## Mapa Farem jako nástroj přímého prodeje
+
+Mapa Farem je platforma, která přímý prodej usnadňuje. Místo zdlouhavého hledání farmáře přes Google nebo z doslechu si jednoduše otevřete mapu, vyhledáte farmáře ve svém okolí a kontaktujete ho přímo. Farmář dostane zákazníka, zákazník dostane čerstvé potraviny, peníze putují přímo k producentovi. Přesně tak to má fungovat.`,
+  },
+  {
     id: 'b1',
     title: 'Proč kupovat lokální potraviny? 7 důvodů, které vás přesvědčí',
     category: 'Životní styl',

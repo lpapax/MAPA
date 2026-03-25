@@ -2,15 +2,15 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Search, Map, Heart, User } from 'lucide-react'
+import { Home, Map, Plus, BookOpen, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
   { href: '/', label: 'Domů', icon: Home },
-  { href: '/hledat', label: 'Hledat', icon: Search },
   { href: '/mapa', label: 'Mapa', icon: Map },
+  { href: '/pridat-farmu', label: 'Přidat', icon: Plus },
+  { href: '/blog', label: 'Blog', icon: BookOpen },
   { href: '/oblibene', label: 'Oblíbené', icon: Heart },
-  { href: '/profil', label: 'Profil', icon: User },
 ]
 
 export function MobileBottomNav() {
