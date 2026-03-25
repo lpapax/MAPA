@@ -54,7 +54,7 @@ export function Newsletter() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 border border-white/25 text-white/80 text-xs font-medium mb-5">
           <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" aria-hidden="true" />
-          Newsleter zdarma
+          Newsletter zdarma
         </span>
 
         <h2

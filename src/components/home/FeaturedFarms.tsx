@@ -77,8 +77,9 @@ function SpotlightCard({ farm }: { farm: MockFarm }) {
         aria-hidden="true"
       >
         {/* Badge */}
-        <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-amber-400 text-amber-900 text-xs font-bold shadow-sm">
-          ⭐ Farmář týdne
+        <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-400 text-amber-900 text-xs font-bold shadow-sm">
+          <Star className="w-3.5 h-3.5 fill-amber-900" aria-hidden="true" />
+          Farmář týdne
         </div>
       </div>
 

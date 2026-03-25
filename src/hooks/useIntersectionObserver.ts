@@ -8,7 +8,7 @@ interface Options extends IntersectionObserverInit {
 
 export function useIntersectionObserver(options: Options = {}) {
   const { once = true, threshold = 0.12, rootMargin = '0px', ...rest } = options
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {

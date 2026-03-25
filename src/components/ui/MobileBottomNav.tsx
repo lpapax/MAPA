@@ -18,7 +18,7 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-100 shadow-[0_-4px_24px_rgba(0,0,0,0.06)]"
+      className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-100 shadow-[0_-4px_24px_rgba(0,0,0,0.06)] pb-[env(safe-area-inset-bottom)]"
       aria-label="Mobilní navigace"
     >
       <ul className="flex items-stretch h-16">
@@ -31,8 +31,8 @@ export function MobileBottomNav() {
                 aria-label={label}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'flex flex-col items-center justify-center w-full h-full gap-1 cursor-pointer',
-                  'transition-colors duration-200',
+                  'relative flex flex-col items-center justify-center w-full h-full gap-1 cursor-pointer',
+                  'transition-colors duration-200 active:scale-95',
                   isActive ? 'text-primary-600' : 'text-gray-400 hover:text-gray-600',
                 )}
               >

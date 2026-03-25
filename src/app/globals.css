@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -40,20 +40,20 @@
   body {
     background-color: #ECFDF5;
     color: #064E3B;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Raleway', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-family: 'Lora', Georgia, serif;
     line-height: 1.2;
   }
 
   /* Mapbox overrides */
   .mapboxgl-map {
-    font-family: 'Inter', system-ui, sans-serif !important;
+    font-family: 'Raleway', system-ui, sans-serif !important;
   }
   .mapboxgl-popup-content {
     border-radius: 16px;

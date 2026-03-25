@@ -39,7 +39,9 @@ export function CategoryFilter() {
 
   return (
     <div className="bg-white border-b border-gray-100 shadow-sm sticky top-[72px] z-30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Fade indicator — right edge (mobile) */}
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent z-10 sm:hidden" aria-hidden="true" />
         <div
           role="group"
           aria-label="Filtrovat podle kategorie"

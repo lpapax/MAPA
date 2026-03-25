@@ -35,7 +35,7 @@ export function AnimatedSection({
   }[direction]
 
   return (
-    <section
+    <div
       ref={ref}
       className={cn(
         'transition-all duration-700 ease-out',
@@ -45,6 +45,6 @@ export function AnimatedSection({
       )}
     >
       {children}
-    </section>
+    </div>
   )
 }

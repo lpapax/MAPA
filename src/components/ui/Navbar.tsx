@@ -99,7 +99,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0 cursor-pointer" aria-label="Mapa Farem – domovská stránka">
             <LeafLogo />
-            <span className="font-heading font-700 text-base text-forest leading-none">
+            <span className="font-heading font-bold text-base text-forest leading-none">
               Mapa <span className="text-primary-600">Farem</span>
             </span>
           </Link>
@@ -132,7 +132,7 @@ export function Navbar() {
               className={cn(
                 'hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl',
                 'bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold',
-                'transition-colors duration-200 cursor-pointer',
+                'transition-all duration-200 cursor-pointer active:scale-95',
                 'shadow-sm hover:shadow-md',
               )}
             >

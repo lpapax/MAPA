@@ -58,7 +58,7 @@ export function HeroSection() {
                 'inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl',
                 'bg-primary-600 hover:bg-primary-700 text-white font-semibold text-sm',
                 'transition-all duration-200 cursor-pointer shadow-lg hover:shadow-xl',
-                'hover:-translate-y-0.5',
+                'hover:-translate-y-0.5 active:scale-95 active:shadow-md',
               )}
             >
               <Map className="w-4 h-4" aria-hidden="true" />
@@ -72,7 +72,7 @@ export function HeroSection() {
                 'border-2 border-white/40 hover:border-white/70 text-white font-semibold text-sm',
                 'bg-white/10 hover:bg-white/15 backdrop-blur-sm',
                 'transition-all duration-200 cursor-pointer',
-                'hover:-translate-y-0.5',
+                'hover:-translate-y-0.5 active:scale-95',
               )}
             >
               <Tractor className="w-4 h-4" aria-hidden="true" />
