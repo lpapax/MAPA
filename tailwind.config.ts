@@ -14,7 +14,7 @@ const config: Config = {
         heading: ['Lora', 'Georgia', 'serif'],
       },
       colors: {
-        // Brand palette
+        // Brand palette — deep natural green
         primary: {
           DEFAULT: '#059669',
           50: '#ECFDF5',
@@ -28,6 +28,20 @@ const config: Config = {
           800: '#065F46',
           900: '#064E3B',
         },
+        // Earth / warm amber secondary
+        earth: {
+          DEFAULT: '#D97706',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',
+          600: '#D97706',
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
+        },
         cta: {
           DEFAULT: '#0891B2',
           dark: '#0E7490',
@@ -35,7 +49,9 @@ const config: Config = {
           50: '#ECFEFF',
           100: '#CFFAFE',
         },
-        surface: '#ECFDF5',
+        // Warm cream surfaces (replaces cool mint)
+        surface: '#F4F1EC',
+        cream: '#FDFCF9',
         forest: '#064E3B',
         // shadcn/ui CSS vars
         background: 'hsl(var(--background))',
@@ -75,24 +91,31 @@ const config: Config = {
         xl: '14px',
         '2xl': '20px',
         '3xl': '28px',
+        '4xl': '36px',
       },
       boxShadow: {
-        card: '0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.06)',
-        'card-hover': '0 4px 16px rgba(5,150,105,0.14), 0 8px 32px rgba(5,150,105,0.08)',
+        card: '0 1px 3px rgba(0,0,0,0.04), 0 4px 14px rgba(0,0,0,0.06)',
+        'card-hover': '0 6px 24px rgba(5,150,105,0.18), 0 12px 40px rgba(5,150,105,0.10)',
+        'card-earth': '0 4px 20px rgba(217,119,6,0.14), 0 8px 32px rgba(217,119,6,0.08)',
         glass: '0 8px 32px rgba(6,78,59,0.08), 0 1px 2px rgba(0,0,0,0.04)',
         navbar: '0 4px 24px rgba(6,78,59,0.10)',
         marker: '0 2px 8px rgba(0,0,0,0.22)',
         glow: '0 0 0 4px rgba(5,150,105,0.15)',
+        'glow-earth': '0 0 0 4px rgba(217,119,6,0.15)',
       },
       backgroundImage: {
         'hero-map':
-          'radial-gradient(ellipse at 20% 80%, #a7f3d0 0%, transparent 45%), radial-gradient(ellipse at 80% 20%, #6ee7b7 0%, transparent 45%), linear-gradient(160deg, #064e3b 0%, #059669 45%, #34d399 100%)',
+          'radial-gradient(ellipse at 12% 88%, #6ee7b7 0%, transparent 48%), radial-gradient(ellipse at 82% 12%, #34d399 0%, transparent 48%), linear-gradient(155deg, #022c22 0%, #064e3b 28%, #065f46 58%, #047857 100%)',
         'hero-overlay':
-          'linear-gradient(to right, rgba(6,78,59,0.82) 0%, rgba(6,78,59,0.50) 60%, rgba(6,78,59,0.10) 100%)',
-        'seasonal':
+          'linear-gradient(to right, rgba(2,44,34,0.90) 0%, rgba(6,78,59,0.68) 52%, rgba(6,78,59,0.12) 100%)',
+        seasonal:
           'linear-gradient(135deg, #064e3b 0%, #059669 40%, #d97706 80%, #f59e0b 100%)',
-        'newsletter':
+        newsletter:
           'linear-gradient(135deg, #047857 0%, #059669 50%, #0891b2 100%)',
+        'warm-section':
+          'linear-gradient(180deg, #fdfcf9 0%, #f4f1ec 100%)',
+        'earth-soft':
+          'linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #d1fae5 100%)',
       },
     },
   },

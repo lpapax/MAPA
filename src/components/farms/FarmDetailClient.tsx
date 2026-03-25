@@ -75,7 +75,7 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Tab nav */}
-      <div className="flex gap-1 border-b border-gray-100 mb-8 overflow-x-auto scrollbar-none" role="tablist" aria-label="Sekce farmy">
+      <div className="flex gap-1.5 mb-8 overflow-x-auto scrollbar-none pb-0.5" role="tablist" aria-label="Sekce farmy">
         {TABS.map((tab) => (
           <button
             key={tab.id}
@@ -85,10 +85,10 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
             aria-controls={`panel-${tab.id}`}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              'px-5 py-3 text-sm font-medium rounded-t-xl transition-colors duration-200 cursor-pointer whitespace-nowrap flex-shrink-0',
+              'px-5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap flex-shrink-0 active:scale-95',
               activeTab === tab.id
-                ? 'text-primary-600 border-b-2 border-primary-600 -mb-px bg-primary-50/60'
-                : 'text-gray-500 hover:text-forest hover:bg-gray-50',
+                ? 'text-primary-700 bg-primary-50 border border-primary-200 shadow-sm'
+                : 'text-gray-500 hover:text-forest hover:bg-surface border border-transparent',
             )}
           >
             {tab.label}
@@ -123,19 +123,21 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                 {MOCK_PRODUCTS.map((product) => {
                   const inBedynka = isInBedynka(`${farm.slug}__${product.id}`)
                   return (
-                    <div key={product.id} className={cn('relative rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-card transition-shadow', !product.available && 'opacity-60')}>
-                      <div className={cn('h-24 bg-gradient-to-br', product.gradient)} aria-hidden="true" />
+                    <div key={product.id} className={cn('relative rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-0.5', !product.available && 'opacity-60')}>
+                      <div className={cn('h-28 bg-gradient-to-br relative', product.gradient)} aria-hidden="true">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+                      </div>
                       <div className="p-4">
-                        <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-start justify-between gap-2 mb-3">
                           <h3 className="font-heading font-semibold text-forest text-sm leading-tight">{product.name}</h3>
                           <div className="text-right flex-shrink-0">
-                            <span className="font-bold text-primary-600 text-base">{product.price} Kč</span>
+                            <span className="font-bold text-earth-700 text-base">{product.price} Kč</span>
                             <span className="text-xs text-gray-400 block">/{product.unit}</span>
                           </div>
                         </div>
-                        <div className="flex items-center justify-between mt-2">
-                          <span className={cn('px-2 py-0.5 rounded-full text-[10px] font-medium', product.available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500')}>
-                            {product.available ? 'Dostupné' : 'Dočasně nedostupné'}
+                        <div className="flex items-center justify-between">
+                          <span className={cn('px-2.5 py-0.5 rounded-full text-[10px] font-semibold', product.available ? 'bg-primary-50 text-primary-700 border border-primary-100' : 'bg-gray-100 text-gray-400')}>
+                            {product.available ? 'Dostupné' : 'Nedostupné'}
                           </span>
                           {product.available && (
                             <button

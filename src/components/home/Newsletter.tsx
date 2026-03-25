@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Send, CheckCircle, Loader2 } from 'lucide-react'
+import { Send, CheckCircle, Loader2, Mail } from 'lucide-react'
 import { cn } from '@/lib/utils'
+
+const BENEFITS = ['Nové farmy v okolí', 'Sezónní tipy a recepty', 'Jednou za měsíc']
 
 export function Newsletter() {
   const [email, setEmail] = useState('')
@@ -41,21 +43,17 @@ export function Newsletter() {
       className="py-20 bg-newsletter relative overflow-hidden"
       aria-labelledby="newsletter-heading"
     >
-      {/* Decorative blobs */}
-      <div
-        className="absolute top-0 right-0 w-96 h-96 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/3"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-white/5 translate-y-1/2 -translate-x-1/3"
-        aria-hidden="true"
-      />
+      {/* Organic blob decorations */}
+      <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/3" aria-hidden="true" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-white/5 translate-y-1/2 -translate-x-1/3" aria-hidden="true" />
+      <div className="absolute top-1/2 right-1/4 w-48 h-48 rounded-full bg-white/[0.04] -translate-y-1/2" aria-hidden="true" />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 border border-white/25 text-white/80 text-xs font-medium mb-5">
-          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" aria-hidden="true" />
-          Newsletter zdarma
-        </span>
+
+        {/* Icon badge */}
+        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/15 border border-white/25 mb-6 mx-auto">
+          <Mail className="w-6 h-6 text-white" aria-hidden="true" />
+        </div>
 
         <h2
           id="newsletter-heading"
@@ -64,12 +62,25 @@ export function Newsletter() {
           Zůstaňte v obraze
         </h2>
 
-        <p className="text-white/70 text-lg mb-10 max-w-md mx-auto leading-relaxed">
-          Nové farmy, sezónní tipy a recepty přímo do vaší schránky. Jednou za měsíc, bez spamu.
+        <p className="text-white/65 text-lg mb-8 max-w-md mx-auto leading-relaxed">
+          Novinky ze světa českých farem přímo do vaší schránky.
         </p>
 
+        {/* Benefit pills */}
+        <div className="flex flex-wrap justify-center gap-2 mb-10" aria-label="Co dostanete">
+          {BENEFITS.map((b) => (
+            <span
+              key={b}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/12 border border-white/20 text-white/80 text-xs font-medium"
+            >
+              <CheckCircle className="w-3 h-3 text-primary-300" aria-hidden="true" />
+              {b}
+            </span>
+          ))}
+        </div>
+
         {submitted ? (
-          <div className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-white/20 border border-white/30 text-white font-medium">
+          <div className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-white/18 border border-white/28 text-white font-semibold">
             <CheckCircle className="w-5 h-5 text-primary-300" aria-hidden="true" />
             Výborně! Brzy vám napíšeme.
           </div>
@@ -90,9 +101,9 @@ export function Newsletter() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={cn(
-                'flex-1 px-5 py-3.5 rounded-xl bg-white/15 border border-white/30',
-                'text-white placeholder:text-white/50 text-sm',
-                'focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white/50',
+                'flex-1 px-5 py-3.5 rounded-xl bg-white/12 border border-white/28',
+                'text-white placeholder:text-white/45 text-sm',
+                'focus:outline-none focus:ring-2 focus:ring-white/35 focus:border-white/45',
                 'backdrop-blur-sm transition-all duration-200',
               )}
             />
@@ -102,28 +113,31 @@ export function Newsletter() {
               className={cn(
                 'flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl',
                 'bg-white text-forest font-semibold text-sm',
-                'hover:bg-primary-50 transition-colors duration-200 cursor-pointer',
+                'hover:bg-primary-50 transition-all duration-200 cursor-pointer active:scale-95',
                 'shadow-lg hover:shadow-xl flex-shrink-0',
                 loading && 'opacity-70 cursor-not-allowed',
               )}
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> : <Send className="w-4 h-4" aria-hidden="true" />}
+              {loading
+                ? <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                : <Send className="w-4 h-4" aria-hidden="true" />
+              }
               Odebírat
             </button>
           </form>
         )}
 
         {toast && (
-          <p className={cn('text-sm mt-3 font-medium', toast.type === 'error' ? 'text-red-300' : 'text-white/80')}>
+          <p className={cn('text-sm mt-4 font-medium', toast.type === 'error' ? 'text-red-300' : 'text-white/75')}>
             {toast.message}
           </p>
         )}
 
-        <p className="text-white/40 text-xs mt-4">
+        <p className="text-white/35 text-xs mt-5">
           Odesláním souhlasíte s{' '}
           <a
             href="/soukromi"
-            className="underline underline-offset-2 hover:text-white/70 transition-colors cursor-pointer"
+            className="underline underline-offset-2 hover:text-white/60 transition-colors cursor-pointer"
           >
             ochranou soukromí
           </a>

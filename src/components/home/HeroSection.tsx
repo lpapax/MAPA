@@ -1,7 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Map, Tractor } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { ArrowRight, Map, Tractor, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const STATS = [
@@ -11,12 +13,24 @@ const STATS = [
 ]
 
 export function HeroSection() {
+  const [query, setQuery] = useState('')
+  const router = useRouter()
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (query.trim()) {
+      router.push(`/mapa?q=${encodeURIComponent(query.trim())}`)
+    } else {
+      router.push('/mapa')
+    }
+  }
+
   return (
     <section
-      className="relative min-h-[90vh] flex items-center overflow-hidden"
+      className="relative min-h-[92vh] flex items-center overflow-hidden"
       aria-labelledby="hero-heading"
     >
-      {/* Map-like background */}
+      {/* Deep organic background */}
       <div className="absolute inset-0 bg-hero-map" aria-hidden="true" />
 
       {/* Topographic SVG overlay */}
@@ -26,10 +40,11 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-hero-overlay" aria-hidden="true" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
-        <div className="max-w-2xl">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-24">
+        <div className="max-w-3xl">
+
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 border border-white/25 text-white/90 text-xs font-medium mb-6 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-white/80 text-xs font-semibold mb-8 backdrop-blur-sm tracking-wide uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-primary-300 animate-pulse" aria-hidden="true" />
             247 farem aktuálně online
           </div>
@@ -37,63 +52,93 @@ export function HeroSection() {
           {/* Heading */}
           <h1
             id="hero-heading"
-            className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-5"
+            className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.05] mb-6"
           >
             Nakupujte přímo
             <br />
-            <span className="text-primary-300">od farmářů</span>
+            <span className="text-primary-300 italic">od farmářů</span>
             <br />
             z celé ČR
           </h1>
 
-          <p className="text-lg text-white/80 mb-8 leading-relaxed max-w-lg">
-            Propojujeme vás s místními farmáři. Čerstvé, lokální, poctivé.
+          <p className="text-lg sm:text-xl text-white/70 mb-10 leading-relaxed max-w-xl">
+            Propojujeme vás s místními farmáři. Čerstvé, lokální, poctivé — bez prostředníků.
           </p>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-12">
-            <Link
-              href="/mapa"
+          {/* Hero search bar */}
+          <form
+            onSubmit={handleSearch}
+            className="flex gap-2 mb-6 max-w-lg"
+            aria-label="Vyhledat farmu"
+          >
+            <div className="relative flex-1">
+              <Search
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50 pointer-events-none"
+                aria-hidden="true"
+              />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Hledat farmu nebo produkt…"
+                aria-label="Hledat farmu"
+                className={cn(
+                  'w-full pl-11 pr-4 py-3.5 rounded-xl text-sm',
+                  'bg-white/12 border border-white/25 text-white placeholder:text-white/45',
+                  'backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-400/50 focus:border-white/40',
+                  'transition-all duration-200',
+                )}
+              />
+            </div>
+            <button
+              type="submit"
               className={cn(
-                'inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl',
-                'bg-primary-600 hover:bg-primary-700 text-white font-semibold text-sm',
-                'transition-all duration-200 cursor-pointer shadow-lg hover:shadow-xl',
-                'hover:-translate-y-0.5 active:scale-95 active:shadow-md',
+                'flex items-center gap-2 px-5 py-3.5 rounded-xl',
+                'bg-primary-500 hover:bg-primary-400 text-white font-semibold text-sm',
+                'transition-all duration-200 cursor-pointer shadow-lg',
+                'active:scale-95 flex-shrink-0',
               )}
             >
               <Map className="w-4 h-4" aria-hidden="true" />
-              Najít farmu
-              <ArrowRight className="w-4 h-4 ml-0.5" aria-hidden="true" />
+              Hledat
+            </button>
+          </form>
+
+          {/* Secondary CTAs */}
+          <div className="flex flex-wrap items-center gap-3 mb-14">
+            <Link
+              href="/mapa"
+              className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors duration-200 cursor-pointer group"
+            >
+              Zobrazit mapu farem
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
             </Link>
+            <span className="text-white/25 text-sm">·</span>
             <Link
               href="/pridat-farmu"
-              className={cn(
-                'inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl',
-                'border-2 border-white/40 hover:border-white/70 text-white font-semibold text-sm',
-                'bg-white/10 hover:bg-white/15 backdrop-blur-sm',
-                'transition-all duration-200 cursor-pointer',
-                'hover:-translate-y-0.5 active:scale-95',
-              )}
+              className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors duration-200 cursor-pointer group"
             >
-              <Tractor className="w-4 h-4" aria-hidden="true" />
-              Jsem farmář
+              <Tractor className="w-3.5 h-3.5" aria-hidden="true" />
+              Přidat svoji farmu
             </Link>
           </div>
 
           {/* Stats */}
-          <div className="inline-flex items-center gap-0 glass rounded-2xl overflow-hidden">
+          <div className="inline-flex items-stretch gap-0 rounded-2xl overflow-hidden border border-white/18 backdrop-blur-md bg-black/20">
             {STATS.map((stat, i) => (
               <div
                 key={stat.label}
                 className={cn(
-                  'px-5 py-3 text-center',
-                  i < STATS.length - 1 && 'border-r border-white/20',
+                  'px-6 py-4 text-center',
+                  i < STATS.length - 1 && 'border-r border-white/18',
                 )}
               >
-                <div className="font-heading font-bold text-xl text-white leading-tight">
+                <div className="font-heading font-bold text-2xl text-white leading-tight">
                   {stat.value}
                 </div>
-                <div className="text-xs text-white/65 mt-0.5">{stat.label}</div>
+                <div className="text-[11px] text-white/55 mt-0.5 font-medium tracking-widest uppercase">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </div>
@@ -101,11 +146,24 @@ export function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5">
-        <div className="w-5 h-8 rounded-full border-2 border-white/40 flex items-start justify-center pt-1.5">
-          <div className="w-1 h-2 bg-white/60 rounded-full animate-bounce" aria-hidden="true" />
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2" aria-hidden="true">
+        <div className="w-5 h-8 rounded-full border-2 border-white/30 flex items-start justify-center pt-1.5">
+          <div className="w-1 h-2 bg-white/50 rounded-full animate-bounce" />
         </div>
-        <span className="text-white/50 text-[10px] tracking-widest uppercase">Scroll</span>
+        <span className="text-white/40 text-[10px] tracking-widest uppercase font-medium">Scroll</span>
+      </div>
+
+      {/* Organic wave divider — transitions to body bg */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none" aria-hidden="true">
+        <svg
+          viewBox="0 0 1440 90"
+          preserveAspectRatio="none"
+          className="w-full h-16 sm:h-20 lg:h-24"
+          fill="#F4F1EC"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M0,90 C180,30 360,65 540,45 C720,25 900,70 1080,50 C1260,30 1380,60 1440,45 L1440,90 Z" />
+        </svg>
       </div>
     </section>
   )
@@ -114,17 +172,17 @@ export function HeroSection() {
 function TopoOverlay() {
   return (
     <svg
-      className="absolute inset-0 w-full h-full opacity-10"
+      className="absolute inset-0 w-full h-full opacity-[0.07]"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       preserveAspectRatio="xMidYMid slice"
     >
       <defs>
         <pattern id="topo" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
-          <circle cx="60" cy="60" r="55" fill="none" stroke="white" strokeWidth="0.8" />
-          <circle cx="60" cy="60" r="40" fill="none" stroke="white" strokeWidth="0.8" />
-          <circle cx="60" cy="60" r="25" fill="none" stroke="white" strokeWidth="0.8" />
-          <circle cx="60" cy="60" r="10" fill="none" stroke="white" strokeWidth="0.8" />
+          <circle cx="60" cy="60" r="55" fill="none" stroke="white" strokeWidth="0.7" />
+          <circle cx="60" cy="60" r="40" fill="none" stroke="white" strokeWidth="0.7" />
+          <circle cx="60" cy="60" r="25" fill="none" stroke="white" strokeWidth="0.7" />
+          <circle cx="60" cy="60" r="10" fill="none" stroke="white" strokeWidth="0.7" />
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#topo)" />

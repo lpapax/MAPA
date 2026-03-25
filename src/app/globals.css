@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Raleway:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 152 100% 97%;     /* #ECFDF5 surface */
+    --background: 38 25% 96%;       /* #F4F1EC warm cream */
     --foreground: 161 79% 17%;      /* #064E3B forest */
     --card: 0 0% 100%;
     --card-foreground: 161 79% 17%;
@@ -14,16 +14,16 @@
     --popover-foreground: 161 79% 17%;
     --primary: 161 94% 30%;         /* #059669 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 152 60% 92%;
+    --secondary: 38 40% 93%;        /* warm cream secondary */
     --secondary-foreground: 161 79% 17%;
-    --muted: 152 40% 94%;
-    --muted-foreground: 161 40% 38%;
+    --muted: 38 20% 92%;
+    --muted-foreground: 161 30% 40%;
     --accent: 191 91% 37%;          /* #0891B2 cta */
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 152 40% 88%;
-    --input: 152 40% 88%;
+    --border: 38 20% 86%;
+    --input: 38 20% 86%;
     --ring: 161 94% 30%;
     --radius: 0.75rem;
   }
@@ -38,17 +38,22 @@
   }
 
   body {
-    background-color: #ECFDF5;
+    background-color: #F4F1EC;
     color: #064E3B;
     font-family: 'Raleway', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Lora', Georgia, serif;
     line-height: 1.2;
+  }
+
+  ::selection {
+    background-color: #A7F3D0;
+    color: #064E3B;
   }
 
   /* Mapbox overrides */
@@ -70,24 +75,41 @@
 }
 
 @layer utilities {
-  /* Glass morphism helpers */
+  /* Glass morphism */
   .glass {
-    background: rgba(255, 255, 255, 0.80);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.50);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.52);
   }
   .glass-strong {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.60);
+    border: 1px solid rgba(255, 255, 255, 0.62);
   }
   .glass-dark {
-    background: rgba(6, 78, 59, 0.70);
+    background: rgba(6, 78, 59, 0.72);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.16);
+  }
+  .glass-warm {
+    background: rgba(244, 241, 236, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(217, 119, 6, 0.14);
+  }
+
+  /* Subtle grain texture overlay */
+  .grain-texture::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
   }
 
   /* Scrollbar */
@@ -95,11 +117,11 @@
   .scrollbar-none::-webkit-scrollbar { display: none; }
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: #a7f3d0 transparent;
+    scrollbar-color: #d1fae5 transparent;
   }
   .scrollbar-thin::-webkit-scrollbar { width: 4px; height: 4px; }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: #a7f3d0;
+    background: #d1fae5;
     border-radius: 2px;
   }
 

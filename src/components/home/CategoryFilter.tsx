@@ -38,10 +38,13 @@ export function CategoryFilter() {
   const [active, setActive] = useState('all')
 
   return (
-    <div className="bg-white border-b border-gray-100 shadow-sm sticky top-[72px] z-30">
+    <div className="bg-cream border-b border-gray-100 shadow-sm sticky top-[72px] z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        {/* Fade indicator — right edge (mobile) */}
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent z-10 sm:hidden" aria-hidden="true" />
+        {/* Fade — left edge */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-cream to-transparent z-10 sm:hidden" aria-hidden="true" />
+        {/* Fade — right edge */}
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-cream to-transparent z-10 sm:hidden" aria-hidden="true" />
+
         <div
           role="group"
           aria-label="Filtrovat podle kategorie"
@@ -55,11 +58,11 @@ export function CategoryFilter() {
                 onClick={() => setActive(id)}
                 aria-pressed={isActive}
                 className={cn(
-                  'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium flex-shrink-0',
+                  'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold flex-shrink-0',
                   'border transition-all duration-200 cursor-pointer whitespace-nowrap',
                   isActive
                     ? 'bg-primary-600 border-primary-600 text-white shadow-sm'
-                    : 'bg-white border-gray-200 text-gray-600 hover:border-primary-400 hover:text-primary-600',
+                    : 'bg-white border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50/50',
                 )}
               >
                 <Icon

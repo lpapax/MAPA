@@ -9,10 +9,12 @@ const STEPS = [
     title: 'Najdi farmu',
     description:
       'Vyhledejte farmy ve svém okolí na interaktivní mapě. Filtrujte podle produktu, vzdálenosti nebo kraje.',
-    color: 'text-primary-600',
-    bg: 'bg-primary-50',
-    border: 'border-primary-200',
-    numberColor: 'text-primary-200',
+    iconColor: 'text-primary-600',
+    iconBg: 'bg-primary-50',
+    iconBorder: 'border-primary-200',
+    numColor: 'text-primary-100',
+    cardBg: 'bg-white',
+    accent: 'bg-primary-500',
   },
   {
     number: '02',
@@ -20,10 +22,12 @@ const STEPS = [
     title: 'Kontaktuj farmáře',
     description:
       'Spojte se přímo s farmářem přes telefon, e-mail nebo formulář. Bez prostředníků, bez skrytých poplatků.',
-    color: 'text-cta-DEFAULT',
-    bg: 'bg-cta-50',
-    border: 'border-cta-100',
-    numberColor: 'text-cyan-200',
+    iconColor: 'text-cta-DEFAULT',
+    iconBg: 'bg-cta-50',
+    iconBorder: 'border-cta-100',
+    numColor: 'text-cyan-100',
+    cardBg: 'bg-white',
+    accent: 'bg-cta-DEFAULT',
   },
   {
     number: '03',
@@ -31,10 +35,12 @@ const STEPS = [
     title: 'Vyzvedni si zboží',
     description:
       'Domluvte osobní vyzvednutí přímo na farmě nebo doručení domů. Čerstvé produkty od lokálních farmářů.',
-    color: 'text-amber-600',
-    bg: 'bg-amber-50',
-    border: 'border-amber-200',
-    numberColor: 'text-amber-200',
+    iconColor: 'text-earth-600',
+    iconBg: 'bg-earth-50',
+    iconBorder: 'border-earth-200',
+    numColor: 'text-earth-100',
+    cardBg: 'bg-white',
+    accent: 'bg-earth-500',
   },
 ]
 
@@ -59,11 +65,13 @@ export function HowItWorks() {
         </AnimatedSection>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 relative">
-          {/* Connector lines (desktop only) */}
+          {/* Connector line (desktop) */}
           <div
-            className="hidden md:block absolute top-12 left-[33%] right-[33%] h-px border-t-2 border-dashed border-gray-200"
+            className="hidden md:flex absolute top-14 left-[calc(33%+2rem)] right-[calc(33%+2rem)] items-center"
             aria-hidden="true"
-          />
+          >
+            <div className="flex-1 border-t-2 border-dashed border-gray-200" />
+          </div>
 
           {STEPS.map((step, i) => {
             const Icon = step.icon
@@ -72,16 +80,19 @@ export function HowItWorks() {
                 key={step.number}
                 delay={(i * 200) as 0 | 200 | 400}
                 className={cn(
-                  'relative flex flex-col items-center text-center p-7 rounded-3xl border',
-                  step.bg,
-                  step.border,
+                  'relative flex flex-col items-center text-center p-7 rounded-3xl border border-gray-100',
+                  'shadow-card hover:shadow-card-hover transition-shadow duration-300',
+                  step.cardBg,
                 )}
               >
+                {/* Accent bar at top */}
+                <div className={cn('absolute top-0 left-8 right-8 h-1 rounded-b-full', step.accent)} aria-hidden="true" />
+
                 {/* Step number */}
                 <span
                   className={cn(
-                    'font-heading font-bold text-6xl leading-none mb-4 select-none',
-                    step.numberColor,
+                    'font-heading font-bold text-7xl leading-none mb-3 select-none',
+                    step.numColor,
                   )}
                   aria-hidden="true"
                 >
@@ -91,12 +102,13 @@ export function HowItWorks() {
                 {/* Icon circle */}
                 <div
                   className={cn(
-                    'w-14 h-14 rounded-2xl flex items-center justify-center bg-white shadow-sm mb-5',
-                    step.border,
+                    'w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm mb-5',
+                    step.iconBg,
+                    step.iconBorder,
                     'border',
                   )}
                 >
-                  <Icon className={cn('w-6 h-6', step.color)} aria-hidden="true" />
+                  <Icon className={cn('w-6 h-6', step.iconColor)} aria-hidden="true" />
                 </div>
 
                 <h3 className="font-heading font-bold text-lg text-forest mb-2">{step.title}</h3>

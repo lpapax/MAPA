@@ -8,10 +8,11 @@ export function BlogPreview() {
   return (
     <section className="py-16 lg:py-24 bg-white" aria-labelledby="blog-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Header */}
         <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
           <div>
-            <span className="inline-block text-xs font-semibold text-primary-600 uppercase tracking-widest mb-3">
+            <span className="inline-block text-xs font-semibold text-earth-700 uppercase tracking-widest mb-3">
               Blog
             </span>
             <h2
@@ -23,10 +24,10 @@ export function BlogPreview() {
           </div>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors cursor-pointer flex-shrink-0"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors cursor-pointer flex-shrink-0 group"
           >
             Všechny články
-            <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
           </Link>
         </AnimatedSection>
 
@@ -36,26 +37,27 @@ export function BlogPreview() {
             <AnimatedSection key={article.id} delay={(i * 100) as 0 | 100 | 200}>
               <Link
                 href={`/blog/${article.slug}`}
-                className="group flex flex-col rounded-2xl overflow-hidden bg-surface border border-primary-50 hover:shadow-card-hover transition-all duration-300 cursor-pointer hover:-translate-y-1"
+                className="group flex flex-col rounded-2xl overflow-hidden bg-surface border border-earth-50 hover:shadow-card-hover transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:scale-[1.01]"
                 aria-label={`Číst článek: ${article.title}`}
               >
                 {/* Cover */}
                 <div
                   className={cn(
-                    'h-44 bg-gradient-to-br relative overflow-hidden',
+                    'h-48 bg-gradient-to-br relative overflow-hidden',
                     article.coverGradient,
                   )}
                   aria-hidden="true"
                 >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                   {/* Reading time badge */}
-                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/30 backdrop-blur-sm text-white text-[10px] font-medium">
+                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/28 backdrop-blur-sm text-white text-[10px] font-medium">
                     <Clock className="w-3 h-3" aria-hidden="true" />
                     {article.readTime}
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-5 flex flex-col flex-1">
+                <div className="p-5 flex flex-col flex-1 bg-white">
                   {/* Category */}
                   <span
                     className={cn(
@@ -74,7 +76,7 @@ export function BlogPreview() {
                     {article.excerpt}
                   </p>
 
-                  <span className="text-xs font-semibold text-primary-600 group-hover:gap-2 inline-flex items-center gap-1 transition-all">
+                  <span className="text-xs font-semibold text-primary-600 inline-flex items-center gap-1.5 group-hover:gap-2 transition-all">
                     Číst více <ArrowRight className="w-3 h-3" aria-hidden="true" />
                   </span>
                 </div>
