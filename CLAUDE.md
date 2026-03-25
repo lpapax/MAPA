@@ -29,6 +29,10 @@ All server-side farm data access goes through four functions: `getAllFarms()`, `
 
 `src/data/mockData.ts` holds static data for pages that don't have a Supabase table yet: featured farms (`MockFarm[]`), blog articles (`BlogArticle[]`), seasonal calendar, and kraj metadata. Both `MockFarm` and `BlogArticle` have a `coverImage` field (Unsplash URL) used by `next/image` components — keep this in sync when extending those interfaces.
 
+`MockFarm` intentionally has **no** `rating`, `reviewCount`, `distance`, or `quote` fields — these were removed to avoid fake social proof. Do not add them back until there is real data to populate them.
+
+`FEATURED_FARMS` and `src/data/farms.json` are placeholder farms intended to be replaced with real farms populated via Google Cloud APIs. Treat them as seed/demo data only.
+
 ### Filter logic — keep in sync
 
 Filter logic is **duplicated** in two places and must be kept in sync when adding new filter fields:
@@ -75,7 +79,14 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 | `/porovnat` | Dynamic | Accepts `?ids=` (comma-separated), fetches matching farms server-side |
 | `/sezona` | Static | `SeasonalCalendarClient` with mockData calendar |
 | `/o-projektu` | Static | Static content |
+| `/pro-farmary` | Static | Farmer landing page with pricing. `PRICING` array has `soon: boolean` on plan and individual features — `soon: true` renders a "brzy" badge. Paid tier CTAs go to `/kontakt`, not `/pridat-farmu`. |
 | `/pridat-farmu` | Static shell | 5-step `AddFarmForm` client component with localStorage draft save |
+| `/kontakt` | Static | `ContactForm` saves to `localStorage` key `mf_contact_messages` (no backend yet) |
+| `/pomoc` | Static | `HelpAccordion` with search input |
+| `/podminky` | Static | Terms of service |
+| `/soukromi` | Static | Privacy policy (GDPR) |
+| `/cookies` | Static | Cookie policy |
+| `/certifikace` | Static | Bio certification guide |
 | `/api/search` | Dynamic | GET `?q=` — searches farm name/city/description, returns max 5 results |
 | `/api/newsletter` | Dynamic | POST `{ email }` — inserts into Supabase `subscribers` table, falls back to no-op |
 
@@ -121,3 +132,13 @@ Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw 
 | `bg-warm-section` | cream gradient | Section dividers |
 
 The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge).
+
+### Global UI components
+
+`src/components/ui/Toast.tsx` — `ToastProvider` + `useToast()` hook. `ToastProvider` is wrapped around the body in `src/app/layout.tsx`. Call `useToast().show(message, type)` from any client component; `type` is `'success' | 'error' | 'info'`.
+
+`src/app/not-found.tsx`, `src/app/error.tsx`, `src/app/loading.tsx` — custom 404, error boundary, and skeleton loader.
+
+### Farm detail placeholder tabs
+
+`FarmDetailClient` (`src/components/farms/FarmDetailClient.tsx`) has a **Products** tab and a **Reviews** tab that both show empty states — there is no Supabase table for products or reviews yet. Do not add fake data to these tabs; replace the empty states when the real tables exist.
