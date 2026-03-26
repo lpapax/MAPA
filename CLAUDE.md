@@ -45,10 +45,11 @@ Two Zustand stores (no persistence — in-memory only):
 - `src/store/farmStore.ts` — `selectedFarmId`, `hoveredFarmId`, and `filters` (`FarmFilters`). The map and sidebar both read from this store to stay in sync.
 - `src/store/compareStore.ts` — `compareIds[]` (max 3 farms). `CompareBar` reads it and links to `/porovnat?ids=...`.
 
-Three localStorage hooks (SSR-safe: hydrate via `useEffect` after mount):
+Four localStorage hooks (SSR-safe: hydrate via `useEffect` after mount):
 - `src/hooks/useFavoriteFarms.ts` — key `mf_favorites`
-- `src/hooks/useBedynka.ts` — key `mf_bedynka`, item ids are `farmSlug__productId`
+- `src/hooks/useBedynka.ts` — key `mf_bedynka`, item ids are `farmSlug__productId`; `totalItems` is exposed for the nav badge
 - `src/hooks/useRecentFarms.ts` — key `mf_recent_farms`, max 6 entries, written on every farm detail page visit
+- Reviews are stored directly (not via a hook) under key `mf_reviews_${farm.slug}` inside `FarmDetailClient`
 
 ### Map rendering
 
@@ -75,12 +76,12 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 | `/blog/[slug]` | SSG | Article content rendered client-side in `ArticleContent` |
 | `/kraje` | Static | 14 region cards → `/mapa?kraj=...` |
 | `/oblibene` | Static shell | Content from `useFavoriteFarms` localStorage hook |
-| `/bedynka` | Static shell | Content from `useBedynka` localStorage hook |
+| `/bedynka` | Static shell | Content from `useBedynka` localStorage hook. In `MobileBottomNav` with item-count badge from `totalItems`. |
 | `/porovnat` | Dynamic | Accepts `?ids=` (comma-separated), fetches matching farms server-side |
 | `/sezona` | Static | `SeasonalCalendarClient` with mockData calendar |
 | `/o-projektu` | Static | Static content |
 | `/pro-farmary` | Static | Farmer landing page with pricing. `PRICING` array has `soon: boolean` on plan and individual features — `soon: true` renders a "brzy" badge. Paid tier CTAs go to `/kontakt`, not `/pridat-farmu`. |
-| `/pridat-farmu` | Static shell | 5-step `AddFarmForm` client component with localStorage draft save |
+| `/pridat-farmu` | Static shell | 5-step `AddFarmForm` client component with localStorage draft save. Not in the mobile bottom nav (replaced by `/bedynka`). |
 | `/kontakt` | Static | `ContactForm` saves to `localStorage` key `mf_contact_messages` (no backend yet) |
 | `/pomoc` | Static | `HelpAccordion` with search input |
 | `/podminky` | Static | Terms of service |
@@ -133,12 +134,20 @@ Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw 
 
 The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge).
 
+**Icons:** use Lucide React SVGs only — no emoji characters as decorative icons anywhere in JSX. The `emoji` field on `KrajData` in `KRAJ_LIST` exists in the data type but is intentionally **not rendered** — the kraje page uses a `MapPin` icon instead.
+
 ### Global UI components
 
 `src/components/ui/Toast.tsx` — `ToastProvider` + `useToast()` hook. `ToastProvider` is wrapped around the body in `src/app/layout.tsx`. Call `useToast().show(message, type)` from any client component; `type` is `'success' | 'error' | 'info'`.
 
 `src/app/not-found.tsx`, `src/app/error.tsx`, `src/app/loading.tsx` — custom 404, error boundary, and skeleton loader.
 
-### Farm detail placeholder tabs
+### Farm detail tabs
 
-`FarmDetailClient` (`src/components/farms/FarmDetailClient.tsx`) has a **Products** tab and a **Reviews** tab that both show empty states — there is no Supabase table for products or reviews yet. Do not add fake data to these tabs; replace the empty states when the real tables exist.
+`FarmDetailClient` (`src/components/farms/FarmDetailClient.tsx`) has five tabs: O farmě, Produkty, Galerie, Recenze, Kontakt.
+
+- **Produkty** — shows one card per farm category with a "Do bedýnky" / "V bedýnce" toggle backed by `useBedynka`. No Supabase products table yet; prices/availability are intentionally omitted.
+- **Recenze** — reads from localStorage key `mf_reviews_${farm.slug}` (array of `StoredReview`), writes back on submission. No Supabase reviews table yet. Do not seed fake reviews.
+- **Galerie** — renders CSS-masonry gradient placeholders. Replace with real images when available.
+
+`FarmDetailPage` (`src/app/farmy/[slug]/page.tsx`) renders a `<script type="application/ld+json">` LocalBusiness JSON-LD block and a `FavoriteButton` (heart toggle, `src/components/farms/FavoriteButton.tsx`) alongside `ShareFarmButton` in the header.
