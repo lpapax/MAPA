@@ -80,6 +80,30 @@ export const FEATURED_FARMS: MockFarm[] = [
     kraj: 'Plzeňský',
     categories: ['ovoce', 'víno'],
   },
+  {
+    id: 'f6',
+    slug: 'vinny-sklep-moravsky-podzim',
+    name: 'Vinný sklep Moravský podzim',
+    farmerName: 'Vinný sklep Moravský podzim',
+    farmerInitials: 'VM',
+    farmerColor: 'bg-purple-600',
+    coverGradient: 'from-purple-500 via-violet-600 to-indigo-600',
+    coverImage: 'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=800&h=600&fit=crop&q=80',
+    kraj: 'Jihomoravský',
+    categories: ['víno'],
+  },
+  {
+    id: 'f7',
+    slug: 'bylinkova-zahrada-sumava',
+    name: 'Bylinková zahrada Šumava',
+    farmerName: 'Bylinková zahrada Šumava',
+    farmerInitials: 'BŠ',
+    farmerColor: 'bg-lime-600',
+    coverGradient: 'from-lime-400 via-green-500 to-teal-600',
+    coverImage: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800&h=600&fit=crop&q=80',
+    kraj: 'Plzeňský',
+    categories: ['byliny', 'med'],
+  },
 ]
 
 // ──────────────────────────────────────────────

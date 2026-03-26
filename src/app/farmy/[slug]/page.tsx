@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import { getAllSlugs, getFarmBySlug, CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { FarmDetailClient } from '@/components/farms/FarmDetailClient'
 import { ShareFarmButton } from '@/components/ui/ShareFarmButton'
+import { FavoriteButton } from '@/components/farms/FavoriteButton'
 import { Navbar } from '@/components/ui/Navbar'
 import { Footer } from '@/components/ui/Footer'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
@@ -52,8 +53,34 @@ export default async function FarmDetailPage({ params }: PageProps) {
   const isOpen = isFarmOpenNow(farm)
   const heroGradient = CATEGORY_GRADIENT[farm.categories[0]] ?? CATEGORY_GRADIENT.default
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: farm.name,
+    description: farm.description,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: farm.location.address,
+      addressLocality: farm.location.city,
+      postalCode: farm.location.zip,
+      addressCountry: 'CZ',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: farm.location.lat,
+      longitude: farm.location.lng,
+    },
+    ...(farm.contact.phone && { telephone: farm.contact.phone }),
+    ...(farm.contact.email && { email: farm.contact.email }),
+    ...(farm.contact.web && { url: farm.contact.web }),
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
 
       <main>
@@ -105,6 +132,15 @@ export default async function FarmDetailPage({ params }: PageProps) {
                   {farm.name}
                 </h1>
                 <ShareFarmButton name={farm.name} />
+                <FavoriteButton
+                  entry={{
+                    slug: farm.slug,
+                    name: farm.name,
+                    categories: farm.categories,
+                    kraj: farm.location.kraj,
+                    savedAt: 0,
+                  }}
+                />
                 {farm.verified && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-50 border border-primary-200 text-primary-700 text-xs font-semibold">
                     <CheckCircle className="w-3.5 h-3.5" aria-hidden="true" />

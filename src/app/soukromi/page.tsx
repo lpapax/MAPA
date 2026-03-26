@@ -66,8 +66,7 @@ export default function SoukromiPage() {
                 <p className="mb-3">Správcem vašich osobních údajů je:</p>
                 <div className="bg-primary-50 rounded-xl p-4 text-sm">
                   <p><strong className="text-forest">Mapa Farem</strong></p>
-                  <p>Náměstí Republiky 1, 110 00 Praha 1</p>
-                  <p>IČO: 12345678</p>
+                  <p>Praha, Česká republika</p>
                   <p>E-mail: <a href="mailto:info@mapafarem.cz" className="text-primary-600 hover:underline cursor-pointer">info@mapafarem.cz</a></p>
                 </div>
               </section>
@@ -168,7 +167,7 @@ export default function SoukromiPage() {
                 <p>
                   V případě dotazů k ochraně osobních údajů nás kontaktujte na{' '}
                   <a href="mailto:info@mapafarem.cz" className="text-primary-600 hover:underline cursor-pointer">info@mapafarem.cz</a>{' '}
-                  nebo na adrese Náměstí Republiky 1, 110 00 Praha 1.
+                  nebo písemně na adrese Praha, Česká republika.
                 </p>
               </section>
 

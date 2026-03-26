@@ -1,8 +1,19 @@
+'use client'
+
 import { Sprout } from 'lucide-react'
-import { SEASONAL_PRODUCTS } from '@/data/mockData'
 import Link from 'next/link'
+import { SEASONAL_CALENDAR, MONTH_NAMES } from '@/data/mockData'
+
+function getCurrentSeasonalProducts(): { name: string }[] {
+  const month = new Date().getMonth() + 1 // 1-12
+  return SEASONAL_CALENDAR.filter((item) => item.months.includes(month))
+}
 
 export function SeasonalBanner() {
+  const month = new Date().getMonth() // 0-11
+  const monthName = MONTH_NAMES[month]
+  const products = getCurrentSeasonalProducts()
+
   return (
     <section
       className="py-14 bg-seasonal overflow-hidden relative"
@@ -32,10 +43,10 @@ export function SeasonalBanner() {
             </div>
             <div>
               <p className="text-white/60 text-[10px] uppercase tracking-widest font-semibold">
-                Jarní sezóna
+                {monthName}
               </p>
               <h2 id="seasonal-heading" className="font-heading font-bold text-white text-base">
-                Právě teď v sezóně:
+                Co je nyní v sezóně:
               </h2>
             </div>
           </div>
@@ -46,15 +57,17 @@ export function SeasonalBanner() {
             role="list"
             aria-label="Sezónní produkty"
           >
-            {SEASONAL_PRODUCTS.map((product) => (
+            {products.length > 0 ? products.map((product) => (
               <span
-                key={product}
+                key={product.name}
                 role="listitem"
                 className="flex-shrink-0 px-4 py-1.5 rounded-full bg-white/18 border border-white/25 text-white text-sm font-medium backdrop-blur-sm whitespace-nowrap hover:bg-white/28 transition-colors cursor-default"
               >
-                {product}
+                {product.name}
               </span>
-            ))}
+            )) : (
+              <span className="text-white/60 text-sm">Zimní zelenina, kořenová zelenina, zelí</span>
+            )}
           </div>
 
           {/* CTA */}

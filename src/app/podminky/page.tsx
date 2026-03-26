@@ -69,7 +69,7 @@ export default function PodminkyPage() {
                   Tyto podmínky užití (dále jen &bdquo;Podmínky&ldquo;) upravují práva a povinnosti mezi provozovatelem platformy Mapa Farem (dále jen &bdquo;Provozovatel&ldquo;) a uživateli platformy dostupné na adrese mapafarem.cz (dále jen &bdquo;Platforma&ldquo;).
                 </p>
                 <p className="mb-3">
-                  Provozovatelem Platformy je fyzická osoba podnikající pod jménem Mapa Farem, se sídlem Náměstí Republiky 1, 110 00 Praha 1, IČO: 12345678 (dále jen &bdquo;Provozovatel&ldquo;).
+                  Provozovatelem Platformy je Mapa Farem, se sídlem Praha, Česká republika (dále jen &bdquo;Provozovatel&ldquo;).
                 </p>
                 <p>
                   Používáním Platformy uživatel vyjadřuje souhlas s těmito Podmínkami. Pokud s Podmínkami nesouhlasíte, Platformu nepoužívejte.

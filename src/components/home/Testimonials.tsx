@@ -27,7 +27,7 @@ export function Testimonials() {
               ))}
             </div>
             <span className="font-heading font-bold text-forest text-sm">
-              98% spokojených zákazníků
+              Hodnoceno zákazníky
             </span>
           </div>
         </AnimatedSection>

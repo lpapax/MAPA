@@ -88,5 +88,153 @@
     "images": ["/images/placeholder-farm.jpg"],
     "verified": false,
     "createdAt": "2024-07-01T14:00:00Z"
+  },
+  {
+    "id": "farm-004",
+    "slug": "pekarstvi-u-svajcarku",
+    "name": "Pekařství U Švajcarků",
+    "description": "Rodinné pekařství ve čtvrté generaci. Pečeme kváskový chléb, žitné bochníky a tradiční moravské koláče z mouky od místního mlynáře. Bez konzervantů, bez zlepšovadel — jen mouka, voda, sůl a čas.",
+    "categories": ["chléb"],
+    "location": {
+      "lat": 49.1951,
+      "lng": 16.6068,
+      "address": "Masarykova 23",
+      "city": "Brno-Žabovřesky",
+      "kraj": "Jihomoravský",
+      "zip": "616 00"
+    },
+    "contact": {
+      "phone": "+420 543 234 567",
+      "email": "info@pekarstvibmo.cz",
+      "instagram": "pekarstvi_svajcarku",
+      "facebook": "PekarsviSvajcarku"
+    },
+    "openingHours": {
+      "po": { "open": "06:00", "close": "12:00" },
+      "út": { "open": "06:00", "close": "12:00" },
+      "st": { "open": "06:00", "close": "12:00" },
+      "čt": { "open": "06:00", "close": "12:00" },
+      "pá": { "open": "06:00", "close": "12:00" },
+      "so": { "open": "07:00", "close": "10:00" }
+    },
+    "images": ["/images/placeholder-farm.jpg"],
+    "verified": false,
+    "createdAt": "2024-09-10T07:00:00Z"
+  },
+  {
+    "id": "farm-005",
+    "slug": "mlokarna-zlata-louka",
+    "name": "Mlékárna Zlatá Louka",
+    "description": "Zpracováváme mléko od vlastního stáda 40 krav pasoucích se na pastvinách Vysočiny. Vyrábíme čerstvý sýr, eidamský blok, tvaroh a jogurty. Prodej přímo z mlékárny nebo rozvoz bedýnek každé úterý a pátek.",
+    "categories": ["mléko", "sýry"],
+    "location": {
+      "lat": 49.7320,
+      "lng": 15.5953,
+      "address": "Zlatá Louka 8",
+      "city": "Chotěboř",
+      "kraj": "Vysočina",
+      "zip": "583 01"
+    },
+    "contact": {
+      "phone": "+420 569 456 789",
+      "email": "mlekarna@zlata-louka.cz",
+      "web": "https://mlekarna-zlata-louka.cz",
+      "instagram": "mlekarna_zlata_louka"
+    },
+    "openingHours": {
+      "út": { "open": "08:00", "close": "17:00" },
+      "čt": { "open": "08:00", "close": "17:00" },
+      "pá": { "open": "08:00", "close": "16:00" },
+      "so": { "open": "08:00", "close": "11:00" }
+    },
+    "images": ["/images/placeholder-farm.jpg"],
+    "verified": true,
+    "createdAt": "2024-08-05T09:00:00Z"
+  },
+  {
+    "id": "farm-006",
+    "slug": "vinny-sklep-moravsky-podzim",
+    "name": "Vinný sklep Moravský podzim",
+    "description": "Rodinné vinařství na jižní Moravě s tradicí přes 100 let. Pěstujeme Welschriesling, Müller Thurgau, Frankovku a Zweigeltrebe. Vína lahvujeme ručně v tradičním sklepě ve Velkých Bílovicích. Ochutnávky po předchozí domluvě.",
+    "categories": ["víno"],
+    "location": {
+      "lat": 48.8543,
+      "lng": 17.0235,
+      "address": "Sklepní ulice 14",
+      "city": "Velké Bílovice",
+      "kraj": "Jihomoravský",
+      "zip": "691 02"
+    },
+    "contact": {
+      "phone": "+420 608 789 012",
+      "email": "vino@moravsky-podzim.cz",
+      "web": "https://moravsky-podzim.cz",
+      "facebook": "VinnySklepMoravukyPodzim"
+    },
+    "openingHours": {
+      "st": { "open": "14:00", "close": "18:00" },
+      "pá": { "open": "14:00", "close": "18:00" },
+      "so": { "open": "10:00", "close": "17:00" },
+      "ne": { "open": "11:00", "close": "16:00" }
+    },
+    "images": ["/images/placeholder-farm.jpg"],
+    "verified": true,
+    "createdAt": "2024-06-12T11:00:00Z"
+  },
+  {
+    "id": "farm-007",
+    "slug": "ovci-farma-pod-orlickymi-horami",
+    "name": "Ovčí farma Pod Orlickými horami",
+    "description": "Chováme stádo 120 ovcí plemene šumavská ovce a merino. Nabízíme jehněčí maso, ovčí sýry a cottage, ovčí vlnu na zpracování. Farma je otevřena pro návštěvy, vítáme rodiny s dětmi — ovce jsou přátelské.",
+    "categories": ["maso", "sýry"],
+    "location": {
+      "lat": 50.1867,
+      "lng": 16.5042,
+      "address": "Pastvinská 7",
+      "city": "Rokytnice v Orlických horách",
+      "kraj": "Královéhradecký",
+      "zip": "517 61"
+    },
+    "contact": {
+      "phone": "+420 491 567 890",
+      "email": "farma@ovce-orlicke.cz",
+      "instagram": "ovce_orlicke_hory"
+    },
+    "openingHours": {
+      "so": { "open": "09:00", "close": "14:00" },
+      "ne": { "open": "10:00", "close": "13:00" }
+    },
+    "images": ["/images/placeholder-farm.jpg"],
+    "verified": false,
+    "createdAt": "2024-10-03T10:00:00Z"
+  },
+  {
+    "id": "farm-008",
+    "slug": "bylinkova-zahrada-sumava",
+    "name": "Bylinková zahrada Šumava",
+    "description": "Pěstujeme více než 60 druhů léčivých a aromatických bylin na okraji Šumavského národního parku. Suché byliny, čajové směsi, tinktury a lipový med z vlastního chovu včel. Prodej online i osobním odběrem.",
+    "categories": ["byliny", "med"],
+    "location": {
+      "lat": 49.1783,
+      "lng": 13.4623,
+      "address": "Modravská 3",
+      "city": "Kvilda",
+      "kraj": "Plzeňský",
+      "zip": "385 92"
+    },
+    "contact": {
+      "phone": "+420 380 123 456",
+      "email": "byliny@zahrada-sumava.cz",
+      "web": "https://zahrada-sumava.cz",
+      "instagram": "bylinkova_zahrada_sumava"
+    },
+    "openingHours": {
+      "út": { "open": "09:00", "close": "17:00" },
+      "čt": { "open": "09:00", "close": "17:00" },
+      "so": { "open": "09:00", "close": "14:00" }
+    },
+    "images": ["/images/placeholder-farm.jpg"],
+    "verified": false,
+    "createdAt": "2024-11-20T08:00:00Z"
   }
 ]

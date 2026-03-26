@@ -1,11 +1,20 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Send, ShoppingBasket, Check, Star } from 'lucide-react'
+import { Send, ShoppingBasket, Check, Star, User, MapPin, ExternalLink, ShoppingCart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CATEGORY_LABELS } from '@/lib/farms'
 import type { Farm } from '@/types/farm'
 import { useRecentFarms } from '@/hooks/useRecentFarms'
+import { useBedynka } from '@/hooks/useBedynka'
+
+interface StoredReview {
+  name: string
+  city: string
+  rating: number
+  text: string
+  date: string
+}
 
 const TABS = [
   { id: 'o-farme', label: 'O farmě' },
@@ -32,12 +41,23 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
   const [activeTab, setActiveTab] = useState<TabId>('o-farme')
   const [formState, setFormState] = useState({ name: '', email: '', message: '', sent: false })
   const [reviewForm, setReviewForm] = useState({ name: '', city: '', rating: 5, text: '', sent: false })
+  const [reviews, setReviews] = useState<StoredReview[]>([])
   const { addRecentFarm } = useRecentFarms()
+  const { addItem, isInBedynka } = useBedynka()
 
   // Record this page view in the recently viewed list
   useEffect(() => {
     addRecentFarm(farm)
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [farm.slug])
+
+  // Load reviews from localStorage
+  useEffect(() => {
+    try {
+      const key = `mf_reviews_${farm.slug}`
+      const stored = JSON.parse(localStorage.getItem(key) ?? '[]') as StoredReview[]
+      if (Array.isArray(stored)) setReviews(stored)
+    } catch { /* ignore storage errors */ }
   }, [farm.slug])
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -77,7 +97,7 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
             <div role="tabpanel" id="panel-o-farme" aria-labelledby="tab-o-farme">
               <h2 className="font-heading text-xl font-bold text-forest mb-4">O farmě</h2>
               <p className="text-gray-600 leading-relaxed mb-6">{farm.description}</p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
                 {farm.categories.map((cat) => (
                   <div key={cat} className="flex items-center gap-2 p-3 rounded-xl bg-primary-50 border border-primary-100">
                     <div className="w-2 h-2 rounded-full bg-primary-400 flex-shrink-0" aria-hidden="true" />
@@ -85,17 +105,68 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                   </div>
                 ))}
               </div>
+              <div className="flex items-center gap-2 p-4 rounded-xl bg-surface border border-gray-100">
+                <MapPin className="w-4 h-4 text-primary-600 flex-shrink-0" aria-hidden="true" />
+                <span className="text-sm text-gray-600 flex-1">{farm.location.address}, {farm.location.city}</span>
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${farm.location.lat},${farm.location.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-xs font-semibold transition-colors flex-shrink-0"
+                  aria-label={`Naplánovat cestu k farmě ${farm.name}`}
+                >
+                  <ExternalLink className="w-3 h-3" aria-hidden="true" />
+                  Naplánovat cestu
+                </a>
+              </div>
             </div>
           )}
 
           {/* Produkty */}
           {activeTab === 'produkty' && (
             <div role="tabpanel" id="panel-produkty" aria-labelledby="tab-produkty">
-              <h2 className="font-heading text-xl font-bold text-forest mb-4">Produkty</h2>
-              <div className="flex flex-col items-center justify-center py-14 text-center text-gray-400">
-                <ShoppingBasket className="w-10 h-10 mb-3 text-gray-200" aria-hidden="true" />
-                <p className="text-sm font-medium text-gray-500 mb-1">Farmář zatím nepřidal produkty.</p>
-                <p className="text-xs">Kontaktujte farmáře přímo přes záložku Kontakt.</p>
+              <h2 className="font-heading text-xl font-bold text-forest mb-2">Produkty</h2>
+              <p className="text-xs text-gray-400 mb-6">Přesné ceny a dostupnost zjistíte přímo u farmáře. Přidejte si zájem do bedýnky.</p>
+              <div className="space-y-6">
+                {farm.categories.map((cat) => {
+                  const itemId = `${farm.slug}__${cat}`
+                  const added = isInBedynka(itemId)
+                  return (
+                    <div key={cat} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                            <ShoppingBasket className="w-5 h-5 text-primary-600" />
+                          </div>
+                          <div>
+                            <h3 className="font-heading font-semibold text-forest text-sm">{CATEGORY_LABELS[cat]}</h3>
+                            <p className="text-xs text-gray-400 mt-0.5">Dostupnost a cenu upřesní farmář</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => {
+                            if (!added) {
+                              addItem({ farmSlug: farm.slug, farmName: farm.name, productId: cat, productName: CATEGORY_LABELS[cat], price: '', unit: '' })
+                            }
+                          }}
+                          aria-label={added ? `${CATEGORY_LABELS[cat]} přidáno do bedýnky` : `Přidat ${CATEGORY_LABELS[cat]} do bedýnky`}
+                          className={cn(
+                            'flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all flex-shrink-0',
+                            added
+                              ? 'bg-primary-50 text-primary-700 border border-primary-200 cursor-default'
+                              : 'bg-primary-600 hover:bg-primary-700 text-white cursor-pointer',
+                          )}
+                        >
+                          {added ? (
+                            <><Check className="w-3.5 h-3.5" aria-hidden="true" />V bedýnce</>
+                          ) : (
+                            <><ShoppingCart className="w-3.5 h-3.5" aria-hidden="true" />Do bedýnky</>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           )}
@@ -126,21 +197,50 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
           {activeTab === 'recenze' && (
             <div role="tabpanel" id="panel-recenze" aria-labelledby="tab-recenze">
               <h2 className="font-heading text-xl font-bold text-forest mb-6">Recenze zákazníků</h2>
-              <div className="flex flex-col items-center justify-center py-10 text-center text-gray-400 mb-6">
-                <svg viewBox="0 0 24 24" className="w-10 h-10 mb-3 text-gray-200 fill-gray-200" aria-hidden="true">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                </svg>
-                <p className="text-sm font-medium text-gray-500 mb-1">Zatím žádné recenze.</p>
-                <p className="text-xs">Buďte první, kdo ohodnotí tuto farmu.</p>
-              </div>
+
+              {/* Existing reviews */}
+              {reviews.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-10 text-center text-gray-400 mb-6">
+                  <svg viewBox="0 0 24 24" className="w-10 h-10 mb-3 text-gray-200 fill-gray-200" aria-hidden="true">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                  <p className="text-sm font-medium text-gray-500 mb-1">Zatím žádné recenze.</p>
+                  <p className="text-xs">Buďte první, kdo ohodnotí tuto farmu.</p>
+                </div>
+              ) : (
+                <div className="space-y-4 mb-8">
+                  {reviews.map((review, i) => (
+                    <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xs flex-shrink-0">
+                          <User className="w-4 h-4" aria-hidden="true" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-heading font-semibold text-forest text-sm">{review.name}</span>
+                            {review.city && <span className="text-xs text-gray-400">· {review.city}</span>}
+                            <span className="text-xs text-gray-300">· {new Date(review.date).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                          </div>
+                          <div className="flex gap-0.5 my-1.5" aria-label={`${review.rating} z 5 hvězd`}>
+                            {Array.from({ length: 5 }).map((_, idx) => (
+                              <Star key={idx} className={cn('w-3.5 h-3.5', idx < review.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-200 fill-gray-200')} aria-hidden="true" />
+                            ))}
+                          </div>
+                          <p className="text-sm text-gray-600 leading-relaxed">{review.text}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Review form */}
-              <div className="mt-8 pt-8 border-t border-gray-100">
+              <div className={cn('pt-6 border-t border-gray-100', reviews.length > 0 && 'mt-4')}>
                 <h3 className="font-heading font-semibold text-forest mb-4">Napsat recenzi</h3>
                 {reviewForm.sent ? (
                   <div className="flex items-center gap-3 p-4 rounded-2xl bg-primary-50 border border-primary-100 text-primary-700 text-sm font-medium">
                     <Check className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
-                    Děkujeme za vaši recenzi!
+                    Děkujeme za vaši recenzi! Bude zobrazena okamžitě.
                   </div>
                 ) : (
                   <form
@@ -148,10 +248,11 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                       e.preventDefault()
                       const { name, city, rating, text } = reviewForm
                       if (!name.trim() || !text.trim()) return
-                      // Save to localStorage as fallback
+                      const newReview: StoredReview = { name, city, rating, text, date: new Date().toISOString() }
                       const key = `mf_reviews_${farm.slug}`
-                      const existing = JSON.parse(localStorage.getItem(key) ?? '[]') as unknown[]
-                      localStorage.setItem(key, JSON.stringify([...existing, { name, city, rating, text, date: new Date().toISOString() }]))
+                      const updated = [...reviews, newReview]
+                      try { localStorage.setItem(key, JSON.stringify(updated)) } catch { /* ignore */ }
+                      setReviews(updated)
                       setReviewForm((s) => ({ ...s, sent: true }))
                     }}
                     className="space-y-4"
@@ -183,7 +284,7 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                       </div>
                     </div>
                     <FormField id="review-text" label="Recenze" required>
-                      <textarea id="review-text" required rows={3} placeholder="Popište svou zkušenost s farmou…" value={reviewForm.text} onChange={(e) => setReviewForm((s) => ({ ...s, text: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
+                      <textarea id="review-text" required minLength={20} rows={3} placeholder="Popište svou zkušenost s farmou…" value={reviewForm.text} onChange={(e) => setReviewForm((s) => ({ ...s, text: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
                     </FormField>
                     <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors cursor-pointer">
                       <Send className="w-3.5 h-3.5" aria-hidden="true" />

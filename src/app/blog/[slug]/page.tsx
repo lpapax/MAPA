@@ -128,7 +128,7 @@ export default function BlogArticlePage({ params }: PageProps) {
               <div className="bg-gradient-to-br from-primary-50 to-teal-50 rounded-2xl border border-primary-100 p-5 mt-6">
                 <h3 className="font-heading font-bold text-forest text-sm mb-2">Najděte farmu ve svém okolí</h3>
                 <p className="text-xs text-gray-500 mb-4 leading-relaxed">
-                  Přes 247 ověřených farem z celé České republiky.
+                  Stovky ověřených farem z celé České republiky.
                 </p>
                 <Link
                   href="/mapa"

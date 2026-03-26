@@ -16,7 +16,7 @@ export function FavoritesClient() {
         </div>
         <h2 className="font-heading font-bold text-forest text-xl mb-2">Zatím žádné oblíbené</h2>
         <p className="text-gray-400 text-sm mb-6 max-w-xs leading-relaxed">
-          Klikněte na ❤️ na kartičce farmy a uložte si ji sem k rychlému přístupu.
+          Klikněte na srdíčko u detailu farmy a uložte si ji sem k rychlému přístupu.
         </p>
         <Link
           href="/mapa"

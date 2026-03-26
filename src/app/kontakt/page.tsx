@@ -33,7 +33,7 @@ const CONTACT_INFO = [
   {
     icon: MapPin,
     label: 'Adresa',
-    value: 'Náměstí Republiky 1, 110 00 Praha 1',
+    value: 'Praha, Česká republika',
     href: null,
   },
   {

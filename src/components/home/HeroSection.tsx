@@ -8,9 +8,9 @@ import { ArrowRight, Map, Tractor, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const STATS = [
-  { value: '247', label: 'farem' },
+  { value: 'Stovky', label: 'farem' },
   { value: '14', label: 'krajů' },
-  { value: '1 200', label: 'produktů' },
+  { value: 'Tisíce', label: 'produktů' },
 ]
 
 export function HeroSection() {
@@ -57,7 +57,7 @@ export function HeroSection() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-white/80 text-xs font-semibold mb-8 backdrop-blur-sm tracking-wide uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-primary-300 animate-pulse" aria-hidden="true" />
-            247 farem aktuálně online
+            Farmy z celé České republiky
           </div>
 
           {/* Heading */}

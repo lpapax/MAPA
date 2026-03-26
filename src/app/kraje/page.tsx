@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { MapPin } from 'lucide-react'
 import { Navbar } from '@/components/ui/Navbar'
 import { Footer } from '@/components/ui/Footer'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
@@ -62,10 +63,8 @@ export default async function KrajePage() {
                     )}
                   >
                     {/* Cover gradient */}
-                    <div className={cn('h-20 bg-gradient-to-br', kraj.gradient)} aria-hidden="true">
-                      <div className="h-full flex items-center justify-center text-4xl">
-                        {kraj.emoji}
-                      </div>
+                    <div className={cn('h-20 bg-gradient-to-br flex items-center justify-center', kraj.gradient)} aria-hidden="true">
+                      <MapPin className="w-8 h-8 text-white/80" />
                     </div>
                     {/* Info */}
                     <div className="p-4">
@@ -92,8 +91,8 @@ export default async function KrajePage() {
           <div className="mt-10 grid grid-cols-3 gap-4">
             {[
               { label: 'Krajů', value: '14' },
-              { label: 'Ověřených farem', value: String(farms.length || 247) },
-              { label: 'Druhů produktů', value: '1 200+' },
+              { label: 'Ověřených farem', value: farms.length > 0 ? String(farms.length) : 'Stovky' },
+              { label: 'Druhů produktů', value: 'Tisíce' },
             ].map((stat) => (
               <div key={stat.label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center">
                 <div className="font-heading font-bold text-2xl text-forest mb-1">{stat.value}</div>
