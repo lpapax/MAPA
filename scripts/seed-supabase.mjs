@@ -34,10 +34,7 @@ const supabase = createClient(url, key, {
   auth: { persistSession: false },
 })
 
-const importedPath = resolve(__dirname, 'output/farms-imported.json')
-const existingPath = resolve(ROOT, 'src/data/farms.json')
-
-const source = existsSync(importedPath) ? importedPath : existingPath
+const source = resolve(ROOT, 'src/data/farms.json')
 console.log(`Reading farms from: ${source}`)
 
 const farms = JSON.parse(readFileSync(source, 'utf-8'))
