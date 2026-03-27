@@ -39,4 +39,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# farm import output (review before committing)
+scripts/output/
+
 .vercel

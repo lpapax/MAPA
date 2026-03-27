@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "import-farms": "node --env-file=.env.local scripts/import-farms-google.mjs",
+    "merge-farms": "node scripts/merge-farms.mjs"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.3",
@@ -32,6 +34,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
     "eslint-config-prettier": "^10.1.8",
