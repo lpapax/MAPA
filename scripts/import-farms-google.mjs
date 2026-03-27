@@ -35,22 +35,50 @@ if (!API_KEY) {
   process.exit(1)
 }
 
-// 14 Czech kraje — center + search radius in meters
+// Czech regions split into sub-centers — all radii ≤ 50000m (Google's limit)
 const REGIONS = [
-  { name: 'Praha',              lat: 50.0755, lng: 14.4378, radius: 25000 },
-  { name: 'Středočeský',        lat: 49.9500, lng: 14.8000, radius: 85000 },
-  { name: 'Jihočeský',          lat: 49.1000, lng: 14.5000, radius: 85000 },
-  { name: 'Plzeňský',           lat: 49.7000, lng: 13.4000, radius: 75000 },
-  { name: 'Karlovarský',        lat: 50.2300, lng: 12.8700, radius: 50000 },
-  { name: 'Ústecký',            lat: 50.6200, lng: 13.9000, radius: 65000 },
-  { name: 'Liberecký',          lat: 50.7700, lng: 15.0500, radius: 45000 },
-  { name: 'Královéhradecký',    lat: 50.3500, lng: 15.8300, radius: 60000 },
-  { name: 'Pardubický',         lat: 49.9500, lng: 15.8000, radius: 60000 },
-  { name: 'Vysočina',           lat: 49.4500, lng: 15.5900, radius: 75000 },
-  { name: 'Jihomoravský',       lat: 49.0000, lng: 16.6000, radius: 75000 },
-  { name: 'Olomoucký',          lat: 49.5900, lng: 17.2500, radius: 60000 },
-  { name: 'Zlínský',            lat: 49.2300, lng: 17.6700, radius: 55000 },
-  { name: 'Moravskoslezský',    lat: 49.8000, lng: 18.2500, radius: 65000 },
+  { name: 'Praha',           lat: 50.0755, lng: 14.4378, radius: 25000 },
+  // Středočeský — large, 4 centers
+  { name: 'Středočeský',     lat: 50.2000, lng: 14.0000, radius: 48000 },
+  { name: 'Středočeský',     lat: 49.9000, lng: 14.9000, radius: 48000 },
+  { name: 'Středočeský',     lat: 50.1000, lng: 15.6000, radius: 45000 },
+  { name: 'Středočeský',     lat: 49.6000, lng: 14.2000, radius: 45000 },
+  // Jihočeský — large, 3 centers
+  { name: 'Jihočeský',       lat: 49.4000, lng: 14.0000, radius: 48000 },
+  { name: 'Jihočeský',       lat: 49.0000, lng: 14.6000, radius: 48000 },
+  { name: 'Jihočeský',       lat: 48.8000, lng: 14.1000, radius: 45000 },
+  // Plzeňský — 2 centers
+  { name: 'Plzeňský',        lat: 49.9000, lng: 13.0000, radius: 48000 },
+  { name: 'Plzeňský',        lat: 49.4000, lng: 13.6000, radius: 48000 },
+  // Karlovarský — fits
+  { name: 'Karlovarský',     lat: 50.2300, lng: 12.8700, radius: 48000 },
+  // Ústecký — 2 centers
+  { name: 'Ústecký',         lat: 50.6500, lng: 13.5000, radius: 48000 },
+  { name: 'Ústecký',         lat: 50.5000, lng: 14.3000, radius: 45000 },
+  // Liberecký — fits
+  { name: 'Liberecký',       lat: 50.7700, lng: 15.0500, radius: 45000 },
+  // Královéhradecký — 2 centers
+  { name: 'Královéhradecký', lat: 50.4000, lng: 15.5000, radius: 48000 },
+  { name: 'Královéhradecký', lat: 50.3000, lng: 16.3000, radius: 45000 },
+  // Pardubický — 2 centers
+  { name: 'Pardubický',      lat: 50.0000, lng: 15.6000, radius: 48000 },
+  { name: 'Pardubický',      lat: 49.8000, lng: 16.4000, radius: 45000 },
+  // Vysočina — 2 centers
+  { name: 'Vysočina',        lat: 49.6000, lng: 15.2000, radius: 48000 },
+  { name: 'Vysočina',        lat: 49.3000, lng: 16.0000, radius: 48000 },
+  // Jihomoravský — 3 centers
+  { name: 'Jihomoravský',    lat: 49.2000, lng: 16.3000, radius: 45000 },
+  { name: 'Jihomoravský',    lat: 48.9000, lng: 16.7000, radius: 45000 },
+  { name: 'Jihomoravský',    lat: 48.7000, lng: 17.1000, radius: 45000 },
+  // Olomoucký — 2 centers
+  { name: 'Olomoucký',       lat: 49.7000, lng: 17.0000, radius: 48000 },
+  { name: 'Olomoucký',       lat: 49.5000, lng: 17.6000, radius: 45000 },
+  // Zlínský — 2 centers
+  { name: 'Zlínský',         lat: 49.3000, lng: 17.5000, radius: 45000 },
+  { name: 'Zlínský',         lat: 49.1000, lng: 18.0000, radius: 45000 },
+  // Moravskoslezský — 2 centers
+  { name: 'Moravskoslezský', lat: 49.9000, lng: 17.9000, radius: 48000 },
+  { name: 'Moravskoslezský', lat: 49.7000, lng: 18.6000, radius: 45000 },
 ]
 
 // 15 farm-type queries — run for each region
@@ -86,7 +114,8 @@ const FIELD_MASK = [
   'nextPageToken',
 ].join(',')
 
-const RATE_LIMIT_MS = 250 // between API calls
+const RATE_LIMIT_MS = 400 // between API calls
+const RETRY_DELAY_MS = 3000 // wait before retrying on rate limit
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -309,7 +338,18 @@ async function main() {
       do {
         try {
           await sleep(RATE_LIMIT_MS)
-          const result = await textSearch(query, region, pageToken)
+          let result
+          try {
+            result = await textSearch(query, region, pageToken)
+          } catch (retryErr) {
+            // One retry after a pause for transient rate-limit errors
+            if (retryErr.message.includes('expired') || retryErr.message.includes('429')) {
+              await sleep(RETRY_DELAY_MS)
+              result = await textSearch(query, region, pageToken)
+            } else {
+              throw retryErr
+            }
+          }
           const places = result.places || []
           pageToken = result.nextPageToken
           page++
