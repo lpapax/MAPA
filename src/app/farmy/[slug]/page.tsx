@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { CheckCircle, Clock, MapPin, ChevronRight } from 'lucide-react'
 import type { Metadata } from 'next'
-import { getAllSlugs, getFarmBySlug, CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
+import { getFarmBySlug, CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { FarmDetailClient } from '@/components/farms/FarmDetailClient'
 import { ShareFarmButton } from '@/components/ui/ShareFarmButton'
 import { FavoriteButton } from '@/components/farms/FavoriteButton'
@@ -15,9 +15,11 @@ interface PageProps {
   params: { slug: string }
 }
 
+// Generate on demand — too many farms to pre-build at compile time
+export const dynamicParams = true
+
 export async function generateStaticParams() {
-  const slugs = await getAllSlugs()
-  return slugs.map((slug) => ({ slug }))
+  return []
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
