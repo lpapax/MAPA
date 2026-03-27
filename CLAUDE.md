@@ -12,6 +12,18 @@ npm run lint     # ESLint check only
 
 No test suite is configured. The build (`npm run build`) is the primary correctness check — it runs TypeScript type-checking and ESLint as part of Next.js compilation. Always run it after making changes.
 
+### Data import scripts
+
+```bash
+npm run import-farms   # Fetch Czech farms from Google Places API → scripts/output/
+npm run merge-farms    # Merge scripts/output/farms-imported.json into src/data/farms.json
+npm run seed-supabase  # Batch-insert src/data/farms.json into Supabase (service role key required)
+```
+
+`import-farms` requires `GOOGLE_PLACES_API_KEY` in `.env.local`. It runs 30 region centers × 15 farm-type queries, saves progress after each query, and resumes from `scripts/output/farms-imported.json` on re-run. Output goes to `scripts/output/` (gitignored).
+
+`seed-supabase` requires `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`. Inserts in batches of 100 using upsert on `slug`.
+
 To force a Vercel redeploy without code changes:
 ```bash
 git commit --allow-empty -m "chore: redeploy" && git push
@@ -23,7 +35,11 @@ git commit --allow-empty -m "chore: redeploy" && git push
 
 ### Data layer (`src/lib/farms.ts`)
 
-All server-side farm data access goes through four functions: `getAllFarms()`, `getFarmBySlug()`, `getAllSlugs()`, `getFarmMapMarkers()`. Each tries Supabase first and silently falls back to `src/data/farms.json` when env vars are absent. The JSON file is the seed/fallback — the app is fully functional without Supabase.
+All server-side farm data access goes through four functions: `getAllFarms()`, `getFarmBySlug()`, `getAllSlugs()`, `getFarmMapMarkers()`. Each tries Supabase first and silently falls back to `src/data/farms.json` when env vars are absent.
+
+`getAllFarms()` paginates Supabase in chunks of 1000 rows to handle the full dataset (currently ~3,960 farms). Do not replace this with a single `.select('*')` call — Supabase defaults to a 1000-row limit.
+
+`src/data/farms.json` contains ~3,960 real Czech farms imported from Google Places API (filtered to the Czech Republic bounding box: lat 48.55–51.06, lng 12.09–18.86). This is the fallback when Supabase is unavailable — it is not placeholder data.
 
 `src/lib/supabase.ts` exports `getSupabaseClient()` (new client each call) and `getSupabaseClientSingleton()` (for client-side use). Both return `null` when env vars are missing.
 
@@ -31,7 +47,13 @@ All server-side farm data access goes through four functions: `getAllFarms()`, `
 
 `MockFarm` intentionally has **no** `rating`, `reviewCount`, `distance`, or `quote` fields — these were removed to avoid fake social proof. Do not add them back until there is real data to populate them.
 
-`FEATURED_FARMS` and `src/data/farms.json` are placeholder farms intended to be replaced with real farms populated via Google Cloud APIs. Treat them as seed/demo data only.
+### Supabase schema
+
+Two tables:
+- `farms` — all farm data. RLS: public read, service_role write. Indexed on `slug`, `kraj`, and `categories` (GIN).
+- `subscribers` — newsletter emails. RLS: public insert, service_role read.
+
+Migrations are in `supabase/migrations/`. Run them in the Supabase SQL Editor in order.
 
 ### Filter logic — keep in sync
 
@@ -71,7 +93,7 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 |---|---|---|
 | `/` | Static | Homepage sections from mockData + Supabase |
 | `/mapa` | Dynamic (ISR 5 min) | Split panel: `MapSearchPage` client component + Mapbox. Accepts `?kraj=` and `?q=` query params |
-| `/farmy/[slug]` | SSG | Generated from all slugs at build time |
+| `/farmy/[slug]` | Dynamic (on-demand) | `dynamicParams = true`, `generateStaticParams` returns `[]` — pages built on first visit and cached. Cannot be SSG with ~3,960 farms. |
 | `/blog` | Static | Article grid from mockData |
 | `/blog/[slug]` | SSG | Article content rendered client-side in `ArticleContent` |
 | `/kraje` | Static | 14 region cards → `/mapa?kraj=...` |
@@ -97,9 +119,11 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 |---|---|
 | `NEXT_PUBLIC_MAPBOX_TOKEN` | Mapbox GL — inlined at build time |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key (public) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role — only for seeding scripts, never exposed to browser |
+| `GOOGLE_PLACES_API_KEY` | Google Places API (New) — only for `import-farms` script |
 
-All three are optional — the app falls back gracefully when missing.
+The first three are set in Vercel production. The last two are local-only (`.env.local`).
 
 ### Vercel deployment
 
