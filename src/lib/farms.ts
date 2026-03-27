@@ -46,7 +46,7 @@ export async function getAllFarms(): Promise<Farm[]> {
     return seedFarms
   }
 
-  const allRows = []
+  const allRows: FarmRow[] = []
   const pageSize = 1000
   let from = 0
 
