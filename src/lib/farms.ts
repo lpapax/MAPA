@@ -46,17 +46,28 @@ export async function getAllFarms(): Promise<Farm[]> {
     return seedFarms
   }
 
-  const { data, error } = await supabase
-    .from('farms')
-    .select('*')
-    .order('created_at', { ascending: false })
+  const allRows = []
+  const pageSize = 1000
+  let from = 0
 
-  if (error) {
-    console.error('[farms] Supabase error, falling back to seed:', error.message)
-    return seedFarms
+  while (true) {
+    const { data, error } = await supabase
+      .from('farms')
+      .select('*')
+      .order('name', { ascending: true })
+      .range(from, from + pageSize - 1)
+
+    if (error) {
+      console.error('[farms] Supabase error, falling back to seed:', error.message)
+      return seedFarms
+    }
+
+    allRows.push(...(data ?? []))
+    if (!data || data.length < pageSize) break
+    from += pageSize
   }
 
-  return (data ?? []).map(rowToFarm)
+  return allRows.map(rowToFarm)
 }
 
 /**
