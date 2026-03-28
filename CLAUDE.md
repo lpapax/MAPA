@@ -18,11 +18,17 @@ No test suite is configured. The build (`npm run build`) is the primary correctn
 npm run import-farms   # Fetch Czech farms from Google Places API → scripts/output/
 npm run merge-farms    # Merge scripts/output/farms-imported.json into src/data/farms.json
 npm run seed-supabase  # Batch-insert src/data/farms.json into Supabase (service role key required)
+npm run enrich-photos  # Scrape og:image from farm websites → updates farms-imported.json
+npm run update-photos  # Push enriched photos/descriptions from farms-imported.json to Supabase
 ```
 
 `import-farms` requires `GOOGLE_PLACES_API_KEY` in `.env.local`. It runs 30 region centers × 15 farm-type queries, saves progress after each query, and resumes from `scripts/output/farms-imported.json` on re-run. Output goes to `scripts/output/` (gitignored).
 
 `seed-supabase` requires `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`. Inserts in batches of 100 using upsert on `slug`.
+
+`enrich-photos` scrapes og:image and meta description from farm websites (20 concurrent, 6s timeout). Skips farms that already have real photos. Saves progress every 50 farms. Also outputs `scripts/output/enrich-photos.sql` for manual Supabase updates.
+
+`update-photos` requires `SUPABASE_SERVICE_ROLE_KEY`. Updates `images` and `description` fields in batches of 50 for all farms in `farms-imported.json` that have real photos.
 
 To force a Vercel redeploy without code changes:
 ```bash
@@ -39,9 +45,9 @@ All server-side farm data access goes through these functions: `getAllFarms()`, 
 
 `getHomepageFarms(limit = 6)` prefers verified farms, falls back to alphabetical order, and on the JSON fallback picks one farm per kraj for geographic variety.
 
-`getAllFarms()` paginates Supabase in chunks of 1000 rows to handle the full dataset (currently ~3,960 farms). Do not replace this with a single `.select('*')` call — Supabase defaults to a 1000-row limit.
+`getAllFarms()` paginates Supabase in chunks of 1000 rows to handle the full dataset (currently ~4,009 farms). Do not replace this with a single `.select('*')` call — Supabase defaults to a 1000-row limit.
 
-`src/data/farms.json` contains ~3,960 real Czech farms imported from Google Places API (filtered to the Czech Republic bounding box: lat 48.55–51.06, lng 12.09–18.86). This is the fallback when Supabase is unavailable — it is not placeholder data.
+`src/data/farms.json` contains ~4,009 real Czech farms imported from Google Places API (filtered to the Czech Republic bounding box: lat 48.55–51.06, lng 12.09–18.86). This is the fallback when Supabase is unavailable — it is not placeholder data. Farm photos (`images[]`) in this JSON may be stale — Supabase is the authoritative source for photos.
 
 `src/lib/supabase.ts` exports three functions, all returning `null` when env vars are missing:
 - `getSupabaseClient()` — new typed client per call (server components)
@@ -58,7 +64,7 @@ Seven tables across five migration files (`supabase/migrations/`):
 
 | Table | RLS | Notes |
 |---|---|---|
-| `farms` | public read, service_role write | `slug`, `kraj`, `categories` (GIN) indexes. Has `view_count INTEGER DEFAULT 0`. |
+| `farms` | public read, service_role write | `slug`, `kraj`, `categories` (GIN) indexes. Has `view_count INTEGER DEFAULT 0`. `images TEXT[]` stores og:image URLs scraped from farm websites. |
 | `subscribers` | public insert, service_role read | Newsletter emails |
 | `user_profiles` | owner only | Created automatically on `auth.users` insert via trigger. `display_name TEXT`. |
 | `user_favorites` | owner only | `(user_id, farm_slug)` unique. Stores `farm_name`, `categories[]`, `kraj`. |
@@ -104,9 +110,23 @@ Auth flow: magic link only (`signInWithOtp`). Callback lands at `/auth/callback`
 
 ### Map rendering
 
-`MapView` (`src/components/map/MapView.tsx`) is always loaded via `dynamic(..., { ssr: false })` inside `MapViewWrapper` — never import it directly. It owns the Mapbox GL instance, renders cluster circles as native GL layers, and mounts individual `FarmMarker` components via `createRoot` into map DOM elements.
+`MapView` (`src/components/map/MapView.tsx`) is always loaded via `dynamic(..., { ssr: false })` inside `MapViewWrapper` — never import it directly.
+
+**All 4,009 farms are rendered as a single native Mapbox GL `circle` layer** — not as DOM markers. This is critical for performance. The architecture:
+- GeoJSON source uses `promoteId: 'id'` so that `setFeatureState` works by farm ID string
+- Cluster circles: standard GL `circle` layer filtered by `has point_count`
+- Individual farm dots: a `circle` layer with paint expressions driven by `feature-state`:
+  - `selected` state → larger radius (13px), dark forest color, 3px stroke
+  - `hovered` state → medium radius (11px), primary green, 2px stroke
+- `selectedFarmId`/`hoveredFarmId` changes call `map.setFeatureState({ source, id }, { selected/hovered: true/false })` — only the previous and new IDs are touched, not all farms
+- Hover shows a small Mapbox Popup (`farm-popup` class) with the farm name
+- Click fires `selectFarm(id)` which updates the Zustand store and triggers flyTo
 
 The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — changing it in Vercel requires a fresh build (clear cache + new commit).
+
+### Map sidebar pagination
+
+`MapSearchPage` (`src/components/mapa/MapSearchPage.tsx`) renders only the first `PAGE_SIZE = 50` filtered farms in the sidebar. A "Načíst další (X zbývá)" button appends the next 50. Page resets to 1 whenever filters change. Height is `h-[calc(100vh-64px)]` (navbar is `h-16 = 64px` — keep in sync if navbar height changes).
 
 ### RSC boundary constraint
 
@@ -118,11 +138,13 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 
 `src/lib/motionVariants.ts` — shared framer-motion spring presets (`SPRING_GENTLE`, `SPRING_BOUNCY`, `SPRING_STIFF`) and variant presets (`fadeUp`, `fadeIn`, `scaleIn`, `staggerContainer`, `staggerContainerFast`, `tabSlide`). Import from here rather than redefining locally.
 
-`MapSearchPage.tsx` uses framer-motion for animated filter panel collapse (spring height), staggered farm card entrance (first 15 only, `ANIMATE_THRESHOLD = 15`), and animated result count. Only first 15 cards get entrance animations to avoid performance issues with ~3,960 farms.
+`MapSearchPage.tsx` uses framer-motion for animated filter panel collapse (spring height), staggered farm card entrance (first 15 only, `ANIMATE_THRESHOLD = 15`), and animated result count. Only first 15 cards get entrance animations to avoid performance issues with ~4,009 farms.
 
 ### Images
 
-`next/image` with `fill` is used throughout for farm covers, blog covers, and the hero background. Any parent of a `fill` image must have `position: relative` (and usually `overflow-hidden`). Allowed remote patterns in `next.config.mjs`: `*.supabase.co`, `**.mapafarem.cz`, and `images.unsplash.com` (for placeholder/design photos).
+`next/image` with `fill` is used for blog covers and the homepage hero. Any parent of a `fill` image must have `position: relative` (and usually `overflow-hidden`). Allowed remote patterns in `next.config.mjs`: `*.supabase.co`, `**.mapafarem.cz`, and `images.unsplash.com`.
+
+**Farm photos** (`farm.images[]`) are stored as raw external URLs (og:image scraped from farm websites) and displayed with plain `<img>` tags — not `next/image` — because the domains are arbitrary and cannot all be whitelisted. About 610 farms in Supabase have real photo URLs; the rest have an empty array. Always check `url.startsWith('http') && !url.includes('placeholder')` before rendering.
 
 ### Route structure
 
@@ -130,7 +152,7 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 |---|---|---|
 | `/` | Static | Homepage sections from mockData + Supabase |
 | `/mapa` | Dynamic (ISR 5 min) | Split panel: `MapSearchPage` client component + Mapbox. Accepts `?kraj=` and `?q=` query params |
-| `/farmy/[slug]` | Dynamic (on-demand) | `dynamicParams = true`, `generateStaticParams` returns `[]` — pages built on first visit and cached. Cannot be SSG with ~3,960 farms. |
+| `/farmy/[slug]` | Dynamic (on-demand) | `dynamicParams = true`, `generateStaticParams` returns `[]` — pages built on first visit and cached. Cannot be SSG with ~4,009 farms. |
 | `/blog` | Static | Article grid from mockData |
 | `/blog/[slug]` | SSG | Article content rendered client-side in `ArticleContent` |
 | `/kraje` | Static | 14 region cards → `/mapa?kraj=...` |
@@ -182,25 +204,22 @@ npx vercel env add NEXT_PUBLIC_MAPBOX_TOKEN production
 
 ### Design system
 
-Typography: `font-sans` = Inter, `font-heading` = Fraunces (variable serif). Imported from Google Fonts in `globals.css`. Body background is warm off-white `#fafaf8`.
+Typography: `font-sans` = DM Sans, `font-heading` = Playfair Display. Both loaded via `next/font/google` in `src/app/layout.tsx` with `latin-ext` subset (required for Czech characters). The CSS variables `--font-body` and `--font-heading` are set on the `<html>` element. Body background is warm parchment `#faf7f0`.
 
 Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw colors:
 
 | Token | Value | Use for |
 |---|---|---|
-| `primary-*` | Emerald green scale | CTAs, active states, category badges |
+| `primary-*` | Muted green scale (`#4a8c3f` at 500) | CTAs, active states, category badges |
 | `earth-*` | Warm amber scale | Stars, secondary accents, highlight badges |
 | `cta` / `cta-dark` | Cyan `#0891B2` | Info/CTA variant |
 | `forest` | `#1a4214` | Main headings, dark backgrounds |
-| `surface` | `#fafaf8` | Section backgrounds (warm off-white) |
+| `surface` | `#faf7f0` | Section backgrounds (warm parchment) |
 | `cream` | `#ffffff` | Card backgrounds, lightest surface |
-| `neutral-*` | warm neutral scale | Use instead of raw `gray-*` classes |
+| `neutral-*` | Warm neutral scale | Use instead of raw `gray-*` classes |
 | `shadow-card` | subtle drop shadow | Default card |
 | `shadow-card-hover` | green-tinted hover | Card on hover |
 | `shadow-card-earth` | amber-tinted | Earth-accented cards |
-| `bg-hero-map` | radial gradient | Hero fallback background |
-| `bg-newsletter` | green-to-cyan gradient | Newsletter section |
-| `bg-warm-section` | cream gradient | Section dividers |
 
 The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge).
 
@@ -218,6 +237,6 @@ The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-m
 
 - **Produkty** — shows one card per farm category with a "Do bedýnky" / "V bedýnce" toggle backed by `useBedynka`. No Supabase products table yet; prices/availability are intentionally omitted.
 - **Recenze** — reads from localStorage key `mf_reviews_${farm.slug}` (array of `StoredReview`). When user is authenticated, `useReviews` also reads/writes the Supabase `reviews` table and merges both sources. Do not seed fake reviews.
-- **Galerie** — renders CSS-masonry gradient placeholders. Replace with real images when available.
+- **Galerie** — shows real images from `farm.images[]` when URLs are valid (`startsWith('http')`, not placeholder). Falls back to CSS gradient placeholders.
 
-`FarmDetailPage` (`src/app/farmy/[slug]/page.tsx`) renders a `<script type="application/ld+json">` LocalBusiness JSON-LD block and a `FavoriteButton` (heart toggle, `src/components/farms/FavoriteButton.tsx`) alongside `ShareFarmButton` in the header.
+`FarmDetailPage` (`src/app/farmy/[slug]/page.tsx`) renders a `<script type="application/ld+json">` LocalBusiness JSON-LD block. The hero section uses a real farm photo (`farm.images[0]`) as a background `<img>` when available, falling back to a category-colour gradient. `FavoriteButton` and `ShareFarmButton` are in the header alongside the farm name.
