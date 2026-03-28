@@ -4,6 +4,8 @@ import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
 import { HeroSection } from '@/components/home/HeroSection'
 import { CategoryFilter } from '@/components/home/CategoryFilter'
 import { RecentlyViewed } from '@/components/home/RecentlyViewed'
+import { KineticTextSection } from '@/components/home/KineticTextSection'
+import { HorizontalCategoriesSection } from '@/components/home/HorizontalCategoriesSection'
 import { HomeFeaturedFarms } from '@/components/home/HomeFeaturedFarms'
 import { HowItWorks } from '@/components/home/HowItWorks'
 import { SeasonalBanner } from '@/components/home/SeasonalBanner'
@@ -23,6 +25,8 @@ export default async function HomePage() {
         <HeroSection />
         <CategoryFilter />
         <RecentlyViewed />
+        <KineticTextSection />
+        <HorizontalCategoriesSection />
         <HomeFeaturedFarms />
         <HowItWorks />
         <SeasonalBanner />
