@@ -117,6 +117,15 @@ const config: Config = {
         'earth-soft':
           'linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #d1fae5 100%)',
       },
+      keyframes: {
+        'topo-pattern': {
+          '0%': { backgroundPosition: '0 0' },
+          '100%': { backgroundPosition: '120px 120px' },
+        }
+      },
+      animation: {
+        'topo-pattern': 'topo-pattern 20s linear infinite',
+      }
     },
   },
   plugins: [require('tailwindcss-animate')],

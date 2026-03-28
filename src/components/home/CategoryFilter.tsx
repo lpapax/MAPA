@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import {
   LayoutGrid,
   Flame,
@@ -38,7 +39,12 @@ export function CategoryFilter() {
   const [active, setActive] = useState('all')
 
   return (
-    <div className="bg-cream border-b border-gray-100 shadow-sm sticky top-[72px] z-30">
+    <motion.div
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, delay: 1.2 }}
+      className="bg-cream border-b border-gray-100 shadow-sm sticky top-[72px] z-30"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Fade — left edge */}
         <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-cream to-transparent z-10 sm:hidden" aria-hidden="true" />
@@ -53,28 +59,38 @@ export function CategoryFilter() {
           {CATEGORIES.map(({ id, label, icon: Icon }) => {
             const isActive = active === id
             return (
-              <button
-                key={id}
-                onClick={() => setActive(id)}
-                aria-pressed={isActive}
-                className={cn(
-                  'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold flex-shrink-0',
-                  'border transition-all duration-200 cursor-pointer whitespace-nowrap',
-                  isActive
-                    ? 'bg-primary-600 border-primary-600 text-white shadow-sm'
-                    : 'bg-white border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50/50',
+              <motion.div key={id} layout className="relative">
+                <motion.button
+                  onClick={() => setActive(id)}
+                  aria-pressed={isActive}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold flex-shrink-0',
+                    'border transition-colors duration-200 cursor-pointer whitespace-nowrap z-10',
+                    isActive
+                      ? 'text-white'
+                      : 'bg-white border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50/50',
+                  )}
+                >
+                  <Icon
+                    className={cn('w-4 h-4', isActive ? 'text-white' : 'text-gray-400 transition-colors')}
+                    aria-hidden="true"
+                  />
+                  {label}
+                </motion.button>
+                {isActive && (
+                  <motion.div
+                    layoutId="active-category"
+                    className="absolute inset-0 bg-primary-600 rounded-full shadow-sm"
+                    style={{ zIndex: 0 }}
+                  />
                 )}
-              >
-                <Icon
-                  className={cn('w-4 h-4', isActive ? 'text-white' : 'text-gray-400')}
-                  aria-hidden="true"
-                />
-                {label}
-              </button>
+              </motion.div>
             )
           })}
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

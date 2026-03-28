@@ -35,6 +35,9 @@ yarn-error.log*
 .agent/
 .claude/
 
+# supabase
+supabase/.temp/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

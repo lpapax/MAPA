@@ -3,18 +3,54 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { ArrowRight, Map, Tractor, Search } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { useState, useEffect } from 'react'
+import { use3dEffect } from '@/hooks/use3dEffect'
 
 const STATS = [
   { value: '3 960+', label: 'farem' },
   { value: '14', label: 'krajů' },
 ]
 
+function StatCard({ stat, isLast }: { stat: { value: string, label: string }, isLast: boolean }) {
+  const { transform, onMouseMove, onMouseEnter, onMouseLeave, transition } = use3dEffect()
+
+  return (
+    <div
+      onMouseMove={onMouseMove}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      style={{ transform, transition }}
+      className={cn(
+        'px-6 py-4 text-center',
+        !isLast && 'border-r border-white/18',
+      )}
+    >
+      <div className="font-heading font-bold text-2xl text-white leading-tight">
+        {stat.value}
+      </div>
+      <div className="text-[11px] text-white/55 mt-0.5 font-medium tracking-widest uppercase">
+        {stat.label}
+      </div>
+    </div>
+  )
+}
+
 export function HeroSection() {
   const [query, setQuery] = useState('')
   const router = useRouter()
+  const [scrollY, setScrollY] = useState(0)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+    const handleScroll = () => {
+      setScrollY(window.scrollY)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -39,6 +75,7 @@ export function HeroSection() {
           priority
           className="object-cover object-center"
           sizes="100vw"
+          style={{ transform: `translate3d(0, ${scrollY * 0.2}px, 0)` }}
         />
       </div>
 
@@ -62,7 +99,10 @@ export function HeroSection() {
           {/* Heading */}
           <h1
             id="hero-heading"
-            className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.05] mb-6"
+            className={cn(
+              "font-heading text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.05] mb-6",
+              isMounted && "animate-in fade-in slide-in-from-top-8 duration-1000 fill-mode-both"
+            )}
           >
             Nakupujte přímo
             <br />
@@ -71,14 +111,20 @@ export function HeroSection() {
             z celé ČR
           </h1>
 
-          <p className="text-lg sm:text-xl text-white/70 mb-10 leading-relaxed max-w-xl">
+          <p className={cn(
+            "text-lg sm:text-xl text-white/70 mb-10 leading-relaxed max-w-xl",
+            isMounted && "animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both delay-300"
+          )}>
             Propojujeme vás s místními farmáři. Čerstvé, lokální, poctivé — bez prostředníků.
           </p>
 
           {/* Hero search bar */}
           <form
             onSubmit={handleSearch}
-            className="flex gap-2 mb-6 max-w-lg"
+            className={cn(
+              "flex gap-2 mb-6 max-w-lg",
+              isMounted && "animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both delay-500"
+            )}
             aria-label="Vyhledat farmu"
           >
             <div className="relative flex-1">
@@ -115,7 +161,10 @@ export function HeroSection() {
           </form>
 
           {/* Secondary CTAs */}
-          <div className="flex flex-wrap items-center gap-3 mb-14">
+          <div className={cn(
+            "flex flex-wrap items-center gap-3 mb-14",
+            isMounted && "animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both delay-700"
+          )}>
             <Link
               href="/mapa"
               className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors duration-200 cursor-pointer group"
@@ -134,22 +183,12 @@ export function HeroSection() {
           </div>
 
           {/* Stats */}
-          <div className="inline-flex items-stretch gap-0 rounded-2xl overflow-hidden border border-white/18 backdrop-blur-md bg-black/20">
+          <div className={cn(
+            "inline-flex items-stretch gap-0 rounded-2xl overflow-hidden border border-white/18 backdrop-blur-md bg-black/20",
+            isMounted && "animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both delay-900"
+          )}>
             {STATS.map((stat, i) => (
-              <div
-                key={stat.label}
-                className={cn(
-                  'px-6 py-4 text-center',
-                  i < STATS.length - 1 && 'border-r border-white/18',
-                )}
-              >
-                <div className="font-heading font-bold text-2xl text-white leading-tight">
-                  {stat.value}
-                </div>
-                <div className="text-[11px] text-white/55 mt-0.5 font-medium tracking-widest uppercase">
-                  {stat.label}
-                </div>
-              </div>
+              <StatCard key={stat.label} stat={stat} isLast={i === STATS.length - 1} />
             ))}
           </div>
         </div>
@@ -182,13 +221,13 @@ export function HeroSection() {
 function TopoOverlay() {
   return (
     <svg
-      className="absolute inset-0 w-full h-full opacity-[0.07]"
+      className="absolute inset-0 w-full h-full opacity-[0.07] animate-topo-pattern"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       preserveAspectRatio="xMidYMid slice"
     >
       <defs>
-        <pattern id="topo" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+        <pattern id="topo" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse" style={{ backgroundPosition: '0 0' }}>
           <circle cx="60" cy="60" r="55" fill="none" stroke="white" strokeWidth="0.7" />
           <circle cx="60" cy="60" r="40" fill="none" stroke="white" strokeWidth="0.7" />
           <circle cx="60" cy="60" r="25" fill="none" stroke="white" strokeWidth="0.7" />
