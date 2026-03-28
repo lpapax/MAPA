@@ -3,8 +3,6 @@
 import { useEffect, useRef, useCallback } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { createRoot } from 'react-dom/client'
-import { FarmMarker } from './FarmMarker'
 import { MapControls } from './MapControls'
 import {
   MAPBOX_TOKEN,
@@ -35,11 +33,13 @@ interface MapViewProps {
 export function MapView({ markers }: MapViewProps) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
-  const markersRef = useRef<Map<string, mapboxgl.Marker>>(new Map())
+  const selectedIdRef = useRef<string | null>(null)
+  const hoveredIdRef = useRef<string | null>(null)
+  const popupRef = useRef<mapboxgl.Popup | null>(null)
 
-  const { selectedFarmId, hoveredFarmId, selectFarm, hoverFarm } = useFarmStore()
+  const { selectedFarmId, selectFarm, hoverFarm } = useFarmStore()
 
-  // Initialize map
+  // Initialize map once
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return
 
@@ -55,17 +55,26 @@ export function MapView({ markers }: MapViewProps) {
 
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-left')
 
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      offset: 14,
+      className: 'farm-popup',
+    })
+    popupRef.current = popup
+
     map.on('load', () => {
-      // Add GeoJSON source with clustering
+      // GeoJSON source with clustering — promoteId lets setFeatureState use the 'id' property
       map.addSource(SOURCE_ID, {
         type: 'geojson',
         data: farmToGeoJSON(markers),
         cluster: true,
         clusterMaxZoom: 12,
         clusterRadius: 50,
+        promoteId: 'id',
       })
 
-      // Cluster circle layer
+      // Cluster circles
       map.addLayer({
         id: CLUSTER_LAYER_ID,
         type: 'circle',
@@ -73,13 +82,8 @@ export function MapView({ markers }: MapViewProps) {
         filter: ['has', 'point_count'],
         paint: {
           'circle-color': [
-            'step',
-            ['get', 'point_count'],
-            '#22C55E',
-            10,
-            '#15803D',
-            50,
-            '#14532D',
+            'step', ['get', 'point_count'],
+            '#4a8c3f', 10, '#2d6b23', 50, '#1a4214',
           ],
           'circle-radius': ['step', ['get', 'point_count'], 20, 10, 28, 50, 36],
           'circle-stroke-width': 3,
@@ -99,27 +103,39 @@ export function MapView({ markers }: MapViewProps) {
           'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
           'text-size': 13,
         },
-        paint: {
-          'text-color': '#ffffff',
-        },
+        paint: { 'text-color': '#ffffff' },
       })
 
-      // Invisible unclustered points (actual markers rendered via DOM)
+      // Individual farm dots — native GL circles, state-driven styling
       map.addLayer({
         id: UNCLUSTERED_LAYER_ID,
         type: 'circle',
         source: SOURCE_ID,
         filter: ['!', ['has', 'point_count']],
         paint: {
-          'circle-radius': 0,
-          'circle-opacity': 0,
+          'circle-radius': [
+            'case',
+            ['boolean', ['feature-state', 'selected'], false], 13,
+            ['boolean', ['feature-state', 'hovered'], false], 11,
+            8,
+          ],
+          'circle-color': [
+            'case',
+            ['boolean', ['feature-state', 'selected'], false], '#064E3B',
+            '#4a8c3f',
+          ],
+          'circle-stroke-width': [
+            'case',
+            ['boolean', ['feature-state', 'selected'], false], 3,
+            ['boolean', ['feature-state', 'hovered'], false], 2,
+            1.5,
+          ],
+          'circle-stroke-color': '#ffffff',
+          'circle-opacity': 1,
         },
       })
 
-      // Add DOM markers for unclustered farms
-      addDOMMarkers(map)
-
-      // Cluster click → zoom in
+      // Cluster click → expand
       map.on('click', CLUSTER_LAYER_ID, (e) => {
         const features = map.queryRenderedFeatures(e.point, { layers: [CLUSTER_LAYER_ID] })
         if (!features[0]) return
@@ -132,49 +148,77 @@ export function MapView({ markers }: MapViewProps) {
         })
       })
 
-      map.on('mouseenter', CLUSTER_LAYER_ID, () => {
+      // Farm click → select
+      map.on('click', UNCLUSTERED_LAYER_ID, (e) => {
+        const feature = e.features?.[0]
+        if (!feature) return
+        const id = feature.properties?.id as string | undefined
+        if (id) selectFarm(id)
+      })
+
+      // Farm hover → highlight + popup
+      map.on('mousemove', UNCLUSTERED_LAYER_ID, (e) => {
+        const feature = e.features?.[0]
+        if (!feature?.geometry) return
+
+        const id = feature.properties?.id as string | undefined
+        const name = feature.properties?.name as string | undefined
+        if (!id) return
+
+        if (hoveredIdRef.current && hoveredIdRef.current !== id) {
+          map.setFeatureState({ source: SOURCE_ID, id: hoveredIdRef.current }, { hovered: false })
+        }
+        hoveredIdRef.current = id
+        map.setFeatureState({ source: SOURCE_ID, id }, { hovered: true })
+        hoverFarm(id)
         map.getCanvas().style.cursor = 'pointer'
+
+        if (name) {
+          const coords = (feature.geometry as GeoJSON.Point).coordinates as [number, number]
+          popup
+            .setLngLat(coords)
+            .setHTML(`<div class="farm-popup-inner">${name}</div>`)
+            .addTo(map)
+        }
       })
-      map.on('mouseleave', CLUSTER_LAYER_ID, () => {
+
+      map.on('mouseleave', UNCLUSTERED_LAYER_ID, () => {
+        if (hoveredIdRef.current) {
+          map.setFeatureState({ source: SOURCE_ID, id: hoveredIdRef.current }, { hovered: false })
+          hoveredIdRef.current = null
+        }
+        hoverFarm(null)
         map.getCanvas().style.cursor = ''
+        popup.remove()
       })
+
+      map.on('mouseenter', CLUSTER_LAYER_ID, () => { map.getCanvas().style.cursor = 'pointer' })
+      map.on('mouseleave', CLUSTER_LAYER_ID, () => { map.getCanvas().style.cursor = '' })
     })
 
     mapRef.current = map
 
     return () => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      const currentMarkers = markersRef.current
-      currentMarkers.forEach((m) => m.remove())
-      currentMarkers.clear()
+      popup.remove()
       map.remove()
       mapRef.current = null
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Re-render markers when selection/hover changes
+  // Sync selected farm → feature state
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- markersRef is a stable mutable map, not a React-managed node ref
-    const currentMarkers = markersRef.current
-    currentMarkers.forEach((marker, id) => {
-      const el = marker.getElement()
-      const farm = markers.find((m) => m.id === id)
-      if (!farm) return
-      const root = (el as HTMLElement & { _reactRoot?: ReturnType<typeof createRoot> })._reactRoot
-      if (!root) return
-      root.render(
-        <FarmMarker
-          {...farm}
-          isSelected={selectedFarmId === id}
-          isHovered={hoveredFarmId === id}
-          onClick={selectFarm}
-          onMouseEnter={hoverFarm}
-          onMouseLeave={() => hoverFarm(null)}
-        />,
-      )
-    })
-  }, [selectedFarmId, hoveredFarmId, markers, selectFarm, hoverFarm])
+    const map = mapRef.current
+    if (!map || !map.getSource(SOURCE_ID)) return
+
+    if (selectedIdRef.current) {
+      map.setFeatureState({ source: SOURCE_ID, id: selectedIdRef.current }, { selected: false })
+    }
+    selectedIdRef.current = selectedFarmId
+    if (selectedFarmId) {
+      map.setFeatureState({ source: SOURCE_ID, id: selectedFarmId }, { selected: true })
+    }
+  }, [selectedFarmId])
 
   // Fly to selected farm
   useEffect(() => {
@@ -188,35 +232,6 @@ export function MapView({ markers }: MapViewProps) {
       essential: true,
     })
   }, [selectedFarmId, markers])
-
-  const addDOMMarkers = useCallback(
-    (map: mapboxgl.Map) => {
-      markers.forEach((farm) => {
-        const el = document.createElement('div') as HTMLElement & {
-          _reactRoot?: ReturnType<typeof createRoot>
-        }
-        const root = createRoot(el)
-        el._reactRoot = root
-        root.render(
-          <FarmMarker
-            {...farm}
-            isSelected={false}
-            isHovered={false}
-            onClick={selectFarm}
-            onMouseEnter={hoverFarm}
-            onMouseLeave={() => hoverFarm(null)}
-          />,
-        )
-
-        const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
-          .setLngLat([farm.lng, farm.lat])
-          .addTo(map)
-
-        markersRef.current.set(farm.id, marker)
-      })
-    },
-    [markers, selectFarm, hoverFarm],
-  )
 
   const handleZoomIn = useCallback(() => mapRef.current?.zoomIn(), [])
   const handleZoomOut = useCallback(() => mapRef.current?.zoomOut(), [])

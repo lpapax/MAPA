@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Search, X, SlidersHorizontal, MapPin, Star, Clock, List, Map as MapIcon, CheckCircle, Heart, Bookmark } from 'lucide-react'
 import { MapViewWrapper } from '@/components/map/MapViewWrapper'
@@ -76,8 +76,16 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
   const filtered = useMemo(() => getFilteredFarms(allFarms, store), [allFarms, store])
   const hasActiveFilters = filters.categories.length > 0 || filters.kraj !== null || filters.openNow
 
+  const PAGE_SIZE = 50
+  const [page, setPage] = useState(1)
+  // Reset page when filters change
+  useEffect(() => { setPage(1) }, [filtered])
+  const visibleFarms = useMemo(() => filtered.slice(0, page * PAGE_SIZE), [filtered, page])
+  const hasMore = visibleFarms.length < filtered.length
+  const loadMore = useCallback(() => setPage((p) => p + 1), [])
+
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)]">
+    <div className="flex flex-col h-[calc(100vh-64px)]">
       {/* Top search bar */}
       <div className="flex-none bg-white border-b border-neutral-100 shadow-sm px-4 py-3 z-20">
         <div className="max-w-7xl mx-auto flex items-center gap-3">
@@ -238,7 +246,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                 <p className="text-xs text-neutral-400">Zkuste upravit filtry nebo vyhledávání</p>
               </div>
             ) : (
-              filtered.map((farm) => {
+              visibleFarms.map((farm) => {
                 const isOpen = isFarmOpenNow(farm)
                 const isSelected = selectedFarmId === farm.id
                 const isHovered = hoveredFarmId === farm.id
@@ -324,6 +332,18 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
               })
             )}
           </div>
+
+          {/* Load more */}
+          {hasMore && (
+            <div className="flex-shrink-0 px-3 pb-3">
+              <button
+                onClick={loadMore}
+                className="w-full py-2 rounded-lg border border-neutral-200 text-xs font-medium text-neutral-600 hover:border-primary-400 hover:text-primary-600 transition-colors cursor-pointer"
+              >
+                Načíst další ({filtered.length - visibleFarms.length} zbývá)
+              </button>
+            </div>
+          )}
 
           {/* Detail link for selected farm */}
           {selectedFarmId && (() => {
