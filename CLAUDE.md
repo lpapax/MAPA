@@ -35,18 +35,13 @@ git commit --allow-empty -m "chore: redeploy" && git push
 
 ### Data layer (`src/lib/farms.ts`)
 
-All server-side farm data access goes through these functions: `getAllFarms()`, `getFarmBySlug()`, `getAllSlugs()`, `getFarmMapMarkers()`, `getHomepageFarms(limit)`. Each tries Supabase first and silently falls back to `src/data/farms.json` when env vars are absent.
-
-`getHomepageFarms(limit = 6)` prefers verified farms, falls back to alphabetical order, and on the JSON fallback picks one farm per kraj for geographic variety.
+All server-side farm data access goes through four functions: `getAllFarms()`, `getFarmBySlug()`, `getAllSlugs()`, `getFarmMapMarkers()`. Each tries Supabase first and silently falls back to `src/data/farms.json` when env vars are absent.
 
 `getAllFarms()` paginates Supabase in chunks of 1000 rows to handle the full dataset (currently ~3,960 farms). Do not replace this with a single `.select('*')` call — Supabase defaults to a 1000-row limit.
 
 `src/data/farms.json` contains ~3,960 real Czech farms imported from Google Places API (filtered to the Czech Republic bounding box: lat 48.55–51.06, lng 12.09–18.86). This is the fallback when Supabase is unavailable — it is not placeholder data.
 
-`src/lib/supabase.ts` exports three functions, all returning `null` when env vars are missing:
-- `getSupabaseClient()` — new typed client per call (server components)
-- `getSupabaseClientSingleton()` — cached typed client (client components, auth)
-- `getSupabaseRaw()` — same singleton but typed as `createClient<any>`. **Use this** when writing to tables not yet in the `Database` type (`user_profiles`, `user_favorites`, `reviews`, `saved_searches`, `farm_claims`). Requires `// eslint-disable-next-line @typescript-eslint/no-explicit-any` and `as any` casts on `.upsert()`/`.insert()` calls.
+`src/lib/supabase.ts` exports `getSupabaseClient()` (new client each call) and `getSupabaseClientSingleton()` (for client-side use). Both return `null` when env vars are missing.
 
 `src/data/mockData.ts` holds static data for pages that don't have a Supabase table yet: featured farms (`MockFarm[]`), blog articles (`BlogArticle[]`), seasonal calendar, and kraj metadata. Both `MockFarm` and `BlogArticle` have a `coverImage` field (Unsplash URL) used by `next/image` components — keep this in sync when extending those interfaces.
 
@@ -54,21 +49,11 @@ All server-side farm data access goes through these functions: `getAllFarms()`, 
 
 ### Supabase schema
 
-Seven tables across five migration files (`supabase/migrations/`):
+Two tables:
+- `farms` — all farm data. RLS: public read, service_role write. Indexed on `slug`, `kraj`, and `categories` (GIN).
+- `subscribers` — newsletter emails. RLS: public insert, service_role read.
 
-| Table | RLS | Notes |
-|---|---|---|
-| `farms` | public read, service_role write | `slug`, `kraj`, `categories` (GIN) indexes. Has `view_count INTEGER DEFAULT 0`. |
-| `subscribers` | public insert, service_role read | Newsletter emails |
-| `user_profiles` | owner only | Created automatically on `auth.users` insert via trigger. `display_name TEXT`. |
-| `user_favorites` | owner only | `(user_id, farm_slug)` unique. Stores `farm_name`, `categories[]`, `kraj`. |
-| `reviews` | public read, auth write | `farm_slug`, `rating SMALLINT (1–5)`, `display_name`, `city`, `text`. |
-| `saved_searches` | owner only | `filters JSONB` — cast via `as unknown as FarmFilters` when reading. |
-| `farm_claims` | owner only | Status: `pending | approved | rejected`. |
-
-**Running migrations:** The Supabase direct DB connection (`db.PROJECT.supabase.co:5432`) is IPv6-only and unreachable from most local machines. Run migrations manually via the **Supabase SQL Editor**: `https://supabase.com/dashboard/project/eqrmwkyzllkpkuqhwswk/sql`. Apply files in numeric order.
-
-An RPC function `increment_farm_view(farm_slug TEXT)` exists (migration 005) — called by `POST /api/farms/[slug]/view` to atomically increment `view_count`.
+Migrations are in `supabase/migrations/`. Run them in the Supabase SQL Editor in order.
 
 ### Filter logic — keep in sync
 
@@ -86,21 +71,7 @@ Four localStorage hooks (SSR-safe: hydrate via `useEffect` after mount):
 - `src/hooks/useFavoriteFarms.ts` — key `mf_favorites`
 - `src/hooks/useBedynka.ts` — key `mf_bedynka`, item ids are `farmSlug__productId`; `totalItems` is exposed for the nav badge
 - `src/hooks/useRecentFarms.ts` — key `mf_recent_farms`, max 6 entries, written on every farm detail page visit
-- Reviews are stored directly (not via a hook) under key `mf_reviews_${farm.slug}` inside `FarmDetailClient` (localStorage fallback; also synced to Supabase `reviews` table when user is logged in via `useReviews`)
-
-Supabase-backed hooks (require auth):
-- `src/hooks/useProfile.ts` — reads/writes `user_profiles` via `getSupabaseRaw()`
-- `src/hooks/useReviews.ts` — reads/writes `reviews` table; merges with localStorage reviews
-- `src/hooks/useSavedSearches.ts` — reads/writes `saved_searches`; casts `filters JSONB` as `unknown as FarmFilters`
-- `src/lib/syncFavorites.ts` — merges `mf_favorites` localStorage into `user_favorites` table on login
-
-### Auth
-
-`src/contexts/AuthContext.tsx` — `AuthProvider` wraps the app (in `layout.tsx`). Exports `useAuth()` hook with `{ session, user, loading, signInWithMagicLink, signOut, deleteAccount }`.
-
-Auth flow: magic link only (`signInWithOtp`). Callback lands at `/auth/callback` (route handler in `src/app/auth/callback/route.ts`) which exchanges the code and redirects to `/profil`. Delete account calls `DELETE /api/auth/delete-account` with `Authorization: Bearer <token>` — the route uses `SUPABASE_SERVICE_ROLE_KEY` to delete from `auth.users`.
-
-`src/hooks/useAuth.ts` re-exports `useAuth` from `AuthContext` for convenience.
+- Reviews are stored directly (not via a hook) under key `mf_reviews_${farm.slug}` inside `FarmDetailClient`
 
 ### Map rendering
 
@@ -139,16 +110,8 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 | `/soukromi` | Static | Privacy policy (GDPR) |
 | `/cookies` | Static | Cookie policy |
 | `/certifikace` | Static | Bio certification guide |
-| `/prihlasit` | Static shell | Magic link login form — calls `signInWithMagicLink` from `AuthContext` |
-| `/auth/callback` | Dynamic | Route handler: exchanges Supabase auth code, redirects to `/profil` |
-| `/profil` | Static shell | `ProfilClient` — shows display name edit, favorites list, saved searches; requires auth |
-| `/profil/recenze` | Static shell | `MyReviewsClient` — lists user's submitted reviews; requires auth |
-| `/profil/historie` | Static shell | `HistorieClient` — recently viewed farms from `mf_recent_farms` localStorage |
-| `/pro-farmary/narokovat` | Static shell | Farm claim form; requires auth; writes to `farm_claims` table |
 | `/api/search` | Dynamic | GET `?q=` — searches farm name/city/description, returns max 5 results |
 | `/api/newsletter` | Dynamic | POST `{ email }` — inserts into Supabase `subscribers` table, falls back to no-op |
-| `/api/farms/[slug]/view` | Dynamic | POST — calls `increment_farm_view` RPC to increment `view_count` |
-| `/api/auth/delete-account` | Dynamic | DELETE with `Authorization: Bearer <token>` — deletes auth user via service role |
 
 ### Key environment variables
 
@@ -208,7 +171,7 @@ The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-m
 `FarmDetailClient` (`src/components/farms/FarmDetailClient.tsx`) has five tabs: O farmě, Produkty, Galerie, Recenze, Kontakt.
 
 - **Produkty** — shows one card per farm category with a "Do bedýnky" / "V bedýnce" toggle backed by `useBedynka`. No Supabase products table yet; prices/availability are intentionally omitted.
-- **Recenze** — reads from localStorage key `mf_reviews_${farm.slug}` (array of `StoredReview`). When user is authenticated, `useReviews` also reads/writes the Supabase `reviews` table and merges both sources. Do not seed fake reviews.
+- **Recenze** — reads from localStorage key `mf_reviews_${farm.slug}` (array of `StoredReview`), writes back on submission. No Supabase reviews table yet. Do not seed fake reviews.
 - **Galerie** — renders CSS-masonry gradient placeholders. Replace with real images when available.
 
 `FarmDetailPage` (`src/app/farmy/[slug]/page.tsx`) renders a `<script type="application/ld+json">` LocalBusiness JSON-LD block and a `FavoriteButton` (heart toggle, `src/components/farms/FavoriteButton.tsx`) alongside `ShareFarmButton` in the header.

@@ -2,11 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
-import {
-  Search, X, SlidersHorizontal, MapPin, Star, Clock,
-  List, Map as MapIcon, CheckCircle, Heart, Bookmark,
-} from 'lucide-react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { Search, X, SlidersHorizontal, MapPin, Star, Clock, List, Map as MapIcon, CheckCircle, Heart, Bookmark } from 'lucide-react'
 import { MapViewWrapper } from '@/components/map/MapViewWrapper'
 import { useFarmStore, getFilteredFarms } from '@/store/farmStore'
 import { useCompareStore, MAX_COMPARE_FARMS } from '@/store/compareStore'
@@ -17,10 +13,7 @@ import { useSavedSearches } from '@/hooks/useSavedSearches'
 import { CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { CompareBar } from '@/components/farms/CompareBar'
 import { cn } from '@/lib/utils'
-import { SPRING_GENTLE, SPRING_STIFF } from '@/lib/motionVariants'
 import type { Farm, FarmCategory, FarmMapMarker, KrajCode } from '@/types/farm'
-
-const ANIMATE_THRESHOLD = 15
 
 const FILTER_CATEGORIES: FarmCategory[] = [
   'zelenina', 'ovoce', 'maso', 'mléko', 'vejce', 'med', 'byliny',
@@ -50,49 +43,29 @@ interface MapSearchPageProps {
   initialSearch?: string
 }
 
-export function MapSearchPage({
-  farms: allFarms,
-  markers: allMarkers,
-  initialKraj,
-  initialSearch,
-}: MapSearchPageProps) {
+export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKraj, initialSearch }: MapSearchPageProps) {
   const { prefs } = useUserPrefs()
   const [mobileView, setMobileView] = useState<'map' | 'list'>(prefs.defaultView)
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [hasMounted, setHasMounted] = useState(false)
-  const reducedMotion = useReducedMotion()
 
   const store = useFarmStore()
 
+  // Apply URL params and user preferences on first mount
   useEffect(() => {
-    setHasMounted(true)
-  }, [])
-
-  useEffect(() => {
+    // URL params take precedence over saved preferences
     if (initialKraj) {
       store.setKraj(initialKraj)
     } else if (prefs.kraj) {
       store.setKraj(prefs.kraj)
     }
     if (initialSearch) store.setSearchQuery(initialSearch)
+    // Apply preferred categories only when no URL override
     if (!initialKraj && prefs.categories.length > 0) {
       prefs.categories.forEach((cat) => store.toggleCategory(cat))
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const {
-    filters,
-    setSearchQuery,
-    toggleCategory,
-    setKraj,
-    setOpenNow,
-    clearFilters,
-    selectFarm,
-    hoverFarm,
-    selectedFarmId,
-    hoveredFarmId,
-  } = store
+  const { filters, setSearchQuery, toggleCategory, setKraj, setOpenNow, clearFilters, selectFarm, hoverFarm, selectedFarmId, hoveredFarmId } = store
 
   const { isInCompare, toggleCompare, compareIds } = useCompareStore()
   const { isFavorite, toggleFavorite } = useFavoriteFarms()
@@ -101,25 +74,15 @@ export function MapSearchPage({
   const [savingSearch, setSavingSearch] = useState(false)
 
   const filtered = useMemo(() => getFilteredFarms(allFarms, store), [allFarms, store])
-  const hasActiveFilters =
-    filters.categories.length > 0 || filters.kraj !== null || filters.openNow
-
-  const filterPanelVariants = {
-    hidden: { height: 0, opacity: 0 },
-    visible: { height: 'auto', opacity: 1 },
-  }
+  const hasActiveFilters = filters.categories.length > 0 || filters.kraj !== null || filters.openNow
 
   return (
     <div className="flex flex-col h-[calc(100vh-80px)]">
-      {/* ─── Top search bar ─────────────────────────────────────── */}
+      {/* Top search bar */}
       <div className="flex-none bg-white border-b border-gray-100 shadow-sm px-4 py-3 z-20">
         <div className="max-w-7xl mx-auto flex items-center gap-3">
-          {/* Search input */}
           <div className="relative flex-1 max-w-md">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
-              aria-hidden="true"
-            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" aria-hidden="true" />
             <input
               type="search"
               placeholder="Hledat farmu nebo město…"
@@ -128,26 +91,14 @@ export function MapSearchPage({
               aria-label="Vyhledávání farem"
               className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-surface"
             />
-            <AnimatePresence>
-              {filters.searchQuery && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.6 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.6 }}
-                  transition={SPRING_STIFF}
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
-                  aria-label="Smazat hledání"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </motion.button>
-              )}
-            </AnimatePresence>
+            {filters.searchQuery && (
+              <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer transition-colors" aria-label="Smazat hledání">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
 
-          {/* Filters toggle */}
-          <motion.button
-            whileTap={reducedMotion ? {} : { scale: 0.96 }}
+          <button
             onClick={() => setFiltersOpen((v) => !v)}
             aria-expanded={filtersOpen}
             aria-label="Zobrazit/skrýt filtry"
@@ -160,23 +111,14 @@ export function MapSearchPage({
           >
             <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
             Filtry
-            <AnimatePresence>
-              {hasActiveFilters && (
-                <motion.span
-                  key="filter-count"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  exit={{ scale: 0 }}
-                  transition={SPRING_BOUNCY}
-                  className="w-4 h-4 rounded-full bg-white text-primary-600 text-[10px] font-bold flex items-center justify-center"
-                >
-                  {filters.categories.length + (filters.kraj ? 1 : 0) + (filters.openNow ? 1 : 0)}
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </motion.button>
+            {hasActiveFilters && (
+              <span className="w-4 h-4 rounded-full bg-white text-primary-600 text-[10px] font-bold flex items-center justify-center">
+                {filters.categories.length + (filters.kraj ? 1 : 0) + (filters.openNow ? 1 : 0)}
+              </span>
+            )}
+          </button>
 
-          {/* Save search */}
+          {/* Save search (logged-in users only, only when filters active) */}
           {user && hasActiveFilters && (
             <button
               onClick={async () => {
@@ -196,126 +138,74 @@ export function MapSearchPage({
             </button>
           )}
 
-          {/* Mobile view toggle */}
+          {/* Mobile toggle */}
           <div className="flex md:hidden rounded-xl overflow-hidden border border-gray-200">
-            <button
-              onClick={() => setMobileView('list')}
-              aria-pressed={mobileView === 'list'}
-              className={cn(
-                'flex items-center gap-1.5 px-3 py-2 text-xs font-medium cursor-pointer transition-colors',
-                mobileView === 'list' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600',
-              )}
-            >
+            <button onClick={() => setMobileView('list')} aria-pressed={mobileView === 'list'} className={cn('flex items-center gap-1.5 px-3 py-2 text-xs font-medium cursor-pointer transition-colors', mobileView === 'list' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600')}>
               <List className="w-3.5 h-3.5" aria-hidden="true" /> Seznam
             </button>
-            <button
-              onClick={() => setMobileView('map')}
-              aria-pressed={mobileView === 'map'}
-              className={cn(
-                'flex items-center gap-1.5 px-3 py-2 text-xs font-medium cursor-pointer transition-colors',
-                mobileView === 'map' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600',
-              )}
-            >
+            <button onClick={() => setMobileView('map')} aria-pressed={mobileView === 'map'} className={cn('flex items-center gap-1.5 px-3 py-2 text-xs font-medium cursor-pointer transition-colors', mobileView === 'map' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600')}>
               <MapIcon className="w-3.5 h-3.5" aria-hidden="true" /> Mapa
             </button>
           </div>
         </div>
 
-        {/* ─── Filters panel (animated) ─── */}
-        <AnimatePresence initial={false}>
-          {filtersOpen && (
-            <motion.div
-              key="filter-panel"
-              variants={filterPanelVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              transition={SPRING_GENTLE}
-              style={{ overflow: 'hidden' }}
-            >
-              <div className="max-w-7xl mx-auto mt-3 pt-3 border-t border-gray-100">
-                <div className="flex flex-wrap gap-4">
-                  {/* Categories */}
-                  <div>
-                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                      Produkty
-                    </div>
-                    <div className="flex flex-wrap gap-1.5" role="group" aria-label="Kategorie">
-                      {FILTER_CATEGORIES.map((cat) => (
-                        <motion.button
-                          key={cat}
-                          whileTap={reducedMotion ? {} : { scale: 0.93 }}
-                          onClick={() => toggleCategory(cat)}
-                          aria-pressed={filters.categories.includes(cat)}
-                          className={cn(
-                            'px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer',
-                            filters.categories.includes(cat)
-                              ? 'bg-primary-600 border-primary-600 text-white shadow-sm'
-                              : 'bg-white border-gray-200 text-gray-600 hover:border-primary-400 hover:text-primary-600',
-                          )}
-                        >
-                          {CATEGORY_LABELS[cat]}
-                        </motion.button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Kraj */}
-                  <div>
-                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                      Kraj
-                    </div>
-                    <select
-                      value={filters.kraj ?? ''}
-                      onChange={(e) => setKraj((e.target.value as typeof filters.kraj) || null)}
-                      aria-label="Vybrat kraj"
-                      className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-400 cursor-pointer"
-                    >
-                      <option value="">Všechny kraje</option>
-                      {KRAJ_OPTIONS.map((k) => (
-                        <option key={k} value={k}>{k}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Open now */}
-                  <div>
-                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                      Dostupnost
-                    </div>
-                    <motion.button
-                      whileTap={reducedMotion ? {} : { scale: 0.93 }}
-                      onClick={() => setOpenNow(!filters.openNow)}
-                      aria-pressed={filters.openNow}
-                      className={cn(
-                        'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
-                        filters.openNow
-                          ? 'bg-green-50 border-green-400 text-green-700'
-                          : 'bg-white border-gray-200 text-gray-600 hover:border-green-400',
-                      )}
-                    >
-                      <Clock className="w-3.5 h-3.5" aria-hidden="true" /> Nyní otevřeno
-                    </motion.button>
-                  </div>
-
-                  {hasActiveFilters && (
-                    <button
-                      onClick={clearFilters}
-                      className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer self-end pb-1"
-                    >
-                      <X className="w-3 h-3" /> Zrušit filtry
+        {/* Filters panel */}
+        {filtersOpen && (
+          <div className="max-w-7xl mx-auto mt-3 pt-3 border-t border-gray-100">
+            <div className="flex flex-wrap gap-4">
+              {/* Categories */}
+              <div>
+                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Produkty</div>
+                <div className="flex flex-wrap gap-1.5" role="group" aria-label="Kategorie">
+                  {FILTER_CATEGORIES.map((cat) => (
+                    <button key={cat} onClick={() => toggleCategory(cat)} aria-pressed={filters.categories.includes(cat)}
+                      className={cn('px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer',
+                        filters.categories.includes(cat) ? 'bg-primary-600 border-primary-600 text-white' : 'bg-white border-gray-200 text-gray-600 hover:border-primary-400 hover:text-primary-600',
+                      )}>
+                      {CATEGORY_LABELS[cat]}
                     </button>
-                  )}
+                  ))}
                 </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+
+              {/* Kraj */}
+              <div>
+                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Kraj</div>
+                <select
+                  value={filters.kraj ?? ''}
+                  onChange={(e) => setKraj(e.target.value as typeof filters.kraj || null)}
+                  aria-label="Vybrat kraj"
+                  className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-400 cursor-pointer"
+                >
+                  <option value="">Všechny kraje</option>
+                  {KRAJ_OPTIONS.map((k) => <option key={k} value={k}>{k}</option>)}
+                </select>
+              </div>
+
+              {/* Open now */}
+              <div>
+                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Dostupnost</div>
+                <button onClick={() => setOpenNow(!filters.openNow)} aria-pressed={filters.openNow}
+                  className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                    filters.openNow ? 'bg-green-50 border-green-400 text-green-700' : 'bg-white border-gray-200 text-gray-600 hover:border-green-400',
+                  )}>
+                  <Clock className="w-3.5 h-3.5" aria-hidden="true" /> Nyní otevřeno
+                </button>
+              </div>
+
+              {hasActiveFilters && (
+                <button onClick={clearFilters} className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer self-end pb-1">
+                  <X className="w-3 h-3" /> Zrušit filtry
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* ─── Main split layout ──────────────────────────────────── */}
+      {/* Main split layout */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar */}
+        {/* Sidebar — 40% on desktop */}
         <aside
           className={cn(
             'flex-none overflow-hidden flex-col border-r border-gray-100 bg-white',
@@ -326,21 +216,12 @@ export function MapSearchPage({
         >
           {/* Result count */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-50 flex-shrink-0">
-            <motion.span
-              key={filtered.length}
-              initial={reducedMotion ? false : { opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={SPRING_STIFF}
-              className="text-sm font-semibold text-forest"
-            >
+            <span className="text-sm font-semibold text-forest">
               {filtered.length}{' '}
               {filtered.length === 1 ? 'farma' : filtered.length < 5 ? 'farmy' : 'farem'}
-            </motion.span>
+            </span>
             {hasActiveFilters && (
-              <button
-                onClick={clearFilters}
-                className="text-xs text-primary-600 hover:text-primary-700 font-medium cursor-pointer transition-colors"
-              >
+              <button onClick={clearFilters} className="text-xs text-primary-600 hover:text-primary-700 font-medium cursor-pointer transition-colors">
                 Zrušit filtry
               </button>
             )}
@@ -349,20 +230,15 @@ export function MapSearchPage({
           {/* Farm list */}
           <div className="flex-1 overflow-y-auto scrollbar-thin px-3 py-3 space-y-2.5">
             {filtered.length === 0 ? (
-              <motion.div
-                initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={SPRING_GENTLE}
-                className="flex flex-col items-center py-16 text-center"
-              >
+              <div className="flex flex-col items-center py-16 text-center">
                 <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center mb-3">
                   <Search className="w-5 h-5 text-gray-300" aria-hidden="true" />
                 </div>
                 <p className="text-sm font-medium text-gray-500 mb-1">Žádné výsledky</p>
                 <p className="text-xs text-gray-400">Zkuste upravit filtry nebo vyhledávání</p>
-              </motion.div>
+              </div>
             ) : (
-              filtered.map((farm, index) => {
+              filtered.map((farm) => {
                 const isOpen = isFarmOpenNow(farm)
                 const isSelected = selectedFarmId === farm.id
                 const isHovered = hoveredFarmId === farm.id
@@ -370,20 +246,9 @@ export function MapSearchPage({
                 const favorited = isFavorite(farm.slug)
                 const comparing = isInCompare(farm.id)
                 const compareDisabled = !comparing && compareIds.length >= MAX_COMPARE_FARMS
-
-                // Animate only first ANIMATE_THRESHOLD cards on initial mount
-                const shouldAnimate = !hasMounted && !reducedMotion && index < ANIMATE_THRESHOLD
-
                 return (
-                  <motion.div
+                  <div
                     key={farm.id}
-                    initial={shouldAnimate ? { opacity: 0, y: 14 } : false}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={
-                      shouldAnimate
-                        ? { ...SPRING_GENTLE, delay: index * 0.04 }
-                        : { duration: 0 }
-                    }
                     onMouseEnter={() => hoverFarm(farm.id)}
                     onMouseLeave={() => hoverFarm(null)}
                     className={cn(
@@ -396,12 +261,9 @@ export function MapSearchPage({
                     )}
                   >
                     {/* Cover thumb */}
-                    <div
-                      className={cn('w-14 h-14 rounded-xl flex-shrink-0 bg-gradient-to-br', gradient)}
-                      aria-hidden="true"
-                    />
+                    <div className={cn('w-14 h-14 rounded-xl flex-shrink-0 bg-gradient-to-br', gradient)} aria-hidden="true" />
 
-                    {/* Info */}
+                    {/* Info — clickable area */}
                     <button
                       onClick={() => selectFarm(farm.id)}
                       aria-label={`Vybrat farmu ${farm.name}`}
@@ -412,12 +274,7 @@ export function MapSearchPage({
                         <h3 className="font-heading font-semibold text-sm text-forest leading-tight truncate">
                           {farm.name}
                         </h3>
-                        {farm.verified && (
-                          <CheckCircle
-                            className="w-3.5 h-3.5 text-primary-500 flex-shrink-0 mt-0.5"
-                            aria-label="Ověřeno"
-                          />
-                        )}
+                        {farm.verified && <CheckCircle className="w-3.5 h-3.5 text-primary-500 flex-shrink-0 mt-0.5" aria-label="Ověřeno" />}
                       </div>
                       <div className="flex items-center gap-1 text-xs text-gray-400 mb-1.5">
                         <MapPin className="w-3 h-3" aria-hidden="true" />
@@ -426,21 +283,13 @@ export function MapSearchPage({
                       <div className="flex items-center justify-between">
                         <div className="flex flex-wrap gap-1">
                           {farm.categories.slice(0, 2).map((cat) => (
-                            <span
-                              key={cat}
-                              className="px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-primary-50 text-primary-600 border border-primary-100"
-                            >
+                            <span key={cat} className="px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-primary-50 text-primary-600 border border-primary-100">
                               {CATEGORY_LABELS[cat]}
                             </span>
                           ))}
                         </div>
                         {farm.openingHours && (
-                          <span
-                            className={cn(
-                              'text-[10px] font-medium px-1.5 py-0.5 rounded-full',
-                              isOpen ? 'text-green-700 bg-green-50' : 'text-gray-400 bg-gray-50',
-                            )}
-                          >
+                          <span className={cn('text-[10px] font-medium px-1.5 py-0.5 rounded-full', isOpen ? 'text-green-700 bg-green-50' : 'text-gray-400 bg-gray-50')}>
                             {isOpen ? 'Otevřeno' : 'Zavřeno'}
                           </span>
                         )}
@@ -449,86 +298,49 @@ export function MapSearchPage({
 
                     {/* Action buttons */}
                     <div className="flex flex-col items-center gap-1 flex-shrink-0">
-                      <motion.button
-                        whileTap={reducedMotion ? {} : { scale: 0.8 }}
-                        onClick={() =>
-                          toggleFavorite({
-                            slug: farm.slug,
-                            name: farm.name,
-                            categories: farm.categories,
-                            kraj: farm.location.kraj,
-                            savedAt: Date.now(),
-                          })
-                        }
+                      <button
+                        onClick={() => toggleFavorite({ slug: farm.slug, name: farm.name, categories: farm.categories, kraj: farm.location.kraj, savedAt: Date.now() })}
                         aria-label={favorited ? 'Odebrat z oblíbených' : 'Přidat do oblíbených'}
                         aria-pressed={favorited}
                         className="p-1 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
                       >
-                        <Heart
-                          className={cn(
-                            'w-3.5 h-3.5 transition-colors',
-                            favorited
-                              ? 'fill-rose-500 text-rose-500'
-                              : 'text-gray-300 hover:text-rose-400',
-                          )}
-                          aria-hidden="true"
-                        />
-                      </motion.button>
+                        <Heart className={cn('w-3.5 h-3.5 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-gray-300 hover:text-rose-400')} aria-hidden="true" />
+                      </button>
                       <button
-                        onClick={() => {
-                          if (!compareDisabled) toggleCompare(farm.id)
-                        }}
+                        onClick={() => { if (!compareDisabled) toggleCompare(farm.id) }}
                         disabled={compareDisabled}
                         aria-label={comparing ? 'Odebrat z porovnání' : 'Přidat do porovnání'}
                         aria-pressed={comparing}
                         className={cn(
                           'text-[9px] px-1.5 py-0.5 rounded-full border transition-all cursor-pointer leading-tight',
-                          comparing
-                            ? 'bg-forest text-white border-forest'
-                            : compareDisabled
-                              ? 'opacity-30 border-gray-200 text-gray-400 cursor-not-allowed'
-                              : 'border-gray-200 text-gray-400 hover:border-forest hover:text-forest',
+                          comparing ? 'bg-forest text-white border-forest' : compareDisabled ? 'opacity-30 border-gray-200 text-gray-400 cursor-not-allowed' : 'border-gray-200 text-gray-400 hover:border-forest hover:text-forest',
                         )}
                       >
                         {comparing ? '✓' : '+'}
                       </button>
                     </div>
-                  </motion.div>
+                  </div>
                 )
               })
             )}
           </div>
 
           {/* Detail link for selected farm */}
-          {selectedFarmId &&
-            (() => {
-              const farm = allFarms.find((f) => f.id === selectedFarmId)
-              return farm ? (
-                <motion.div
-                  initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={SPRING_GENTLE}
-                  className="flex-shrink-0 p-3 border-t border-gray-100 bg-white"
-                >
-                  <Link
-                    href={`/farmy/${farm.slug}`}
-                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors cursor-pointer"
-                  >
-                    Zobrazit detail farmy
-                    <Star className="w-4 h-4" aria-hidden="true" />
-                  </Link>
-                </motion.div>
-              ) : null
-            })()}
+          {selectedFarmId && (() => {
+            const farm = allFarms.find((f) => f.id === selectedFarmId)
+            return farm ? (
+              <div className="flex-shrink-0 p-3 border-t border-gray-100 bg-white">
+                <Link href={`/farmy/${farm.slug}`} className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors cursor-pointer">
+                  Zobrazit detail farmy
+                  <Star className="w-4 h-4" aria-hidden="true" />
+                </Link>
+              </div>
+            ) : null
+          })()}
         </aside>
 
-        {/* Map */}
-        <div
-          className={cn(
-            'flex-1 overflow-hidden',
-            mobileView === 'map' ? 'flex' : 'hidden md:flex',
-          )}
-        >
+        {/* Map — 60% on desktop */}
+        <div className={cn('flex-1 overflow-hidden', mobileView === 'map' ? 'flex' : 'hidden md:flex')}>
           <MapViewWrapper markers={allMarkers} />
         </div>
       </div>
@@ -537,6 +349,3 @@ export function MapSearchPage({
     </div>
   )
 }
-
-// needed for the animated filter-count badge reference above
-const SPRING_BOUNCY = { type: 'spring', stiffness: 300, damping: 20 } as const
