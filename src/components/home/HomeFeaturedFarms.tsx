@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { MapPin, ArrowRight, CheckCircle } from 'lucide-react'
 import { getHomepageFarms, CATEGORY_LABELS } from '@/lib/farms'
-import { AnimatedSection } from '@/components/ui/AnimatedSection'
 import { cn } from '@/lib/utils'
 import type { Farm } from '@/types/farm'
 
@@ -15,11 +14,12 @@ export async function HomeFeaturedFarms() {
     <section className="py-16 lg:py-24 bg-surface" aria-labelledby="featured-farms-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
           <div>
-            <span className="inline-block text-xs font-semibold text-earth-700 uppercase tracking-widest mb-3">
+            <p className="text-earth-700 text-xs font-semibold uppercase tracking-[0.14em] mb-2">
               Farmy v adresáři
-            </span>
+            </p>
             <h2
               id="featured-farms-heading"
               className="font-heading text-3xl lg:text-4xl font-bold text-forest"
@@ -32,21 +32,17 @@ export async function HomeFeaturedFarms() {
             className="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors cursor-pointer flex-shrink-0 group"
           >
             Zobrazit všechny farmy
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
           </Link>
-        </AnimatedSection>
+        </div>
 
+        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {/* Spotlight — spans 2 cols on lg */}
-          <AnimatedSection className="sm:col-span-2 lg:col-span-2" direction="left">
+          <div className="sm:col-span-2 lg:col-span-2">
             <SpotlightCard farm={spotlight} />
-          </AnimatedSection>
-
-          {/* Regular cards */}
-          {rest.slice(0, 4).map((farm, i) => (
-            <AnimatedSection key={farm.id} delay={((i % 3) * 100) as 0 | 100 | 200}>
-              <FarmCard farm={farm} />
-            </AnimatedSection>
+          </div>
+          {rest.slice(0, 4).map((farm) => (
+            <FarmCard key={farm.id} farm={farm} />
           ))}
         </div>
       </div>
@@ -55,72 +51,68 @@ export async function HomeFeaturedFarms() {
 }
 
 const CATEGORY_GRADIENT: Record<string, string> = {
-  zelenina: 'from-emerald-400 via-teal-500 to-cyan-600',
-  ovoce: 'from-rose-300 via-pink-400 to-red-400',
-  maso: 'from-amber-400 via-orange-500 to-red-500',
-  mléko: 'from-sky-300 via-blue-400 to-indigo-400',
-  vejce: 'from-yellow-300 via-amber-400 to-orange-400',
-  med: 'from-amber-300 via-yellow-400 to-orange-300',
-  byliny: 'from-lime-400 via-green-500 to-emerald-600',
-  víno: 'from-purple-400 via-violet-500 to-indigo-500',
-  default: 'from-emerald-400 via-teal-500 to-green-600',
+  zelenina: 'from-emerald-600 to-teal-700',
+  ovoce:    'from-rose-500 to-pink-700',
+  maso:     'from-amber-600 to-orange-800',
+  mléko:    'from-sky-500 to-blue-700',
+  vejce:    'from-yellow-500 to-amber-700',
+  med:      'from-amber-400 to-yellow-600',
+  byliny:   'from-lime-500 to-green-700',
+  víno:     'from-purple-600 to-violet-800',
+  default:  'from-primary-600 to-forest',
 }
 
 function farmGradient(farm: Farm) {
   return CATEGORY_GRADIENT[farm.categories[0]] ?? CATEGORY_GRADIENT.default
 }
 
+// ── Spotlight card ────────────────────────────────────────
+
 function SpotlightCard({ farm }: { farm: Farm }) {
   const gradient = farmGradient(farm)
   return (
     <Link
       href={`/farmy/${farm.slug}`}
-      className="group relative flex flex-col sm:flex-row rounded-xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer min-h-[280px] hover:scale-[1.01]"
+      className="group flex flex-col sm:flex-row rounded-xl overflow-hidden bg-white border border-neutral-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 cursor-pointer min-h-[260px]"
       aria-label={`Farma: ${farm.name}`}
     >
-      {/* Cover gradient */}
+      {/* Color cover */}
       <div
-        className={cn('relative sm:w-[45%] min-h-[200px] sm:min-h-0 flex-shrink-0 bg-gradient-to-br', gradient)}
+        className={cn('relative sm:w-[42%] min-h-[180px] sm:min-h-0 flex-shrink-0 bg-gradient-to-br', gradient)}
         aria-hidden="true"
       >
-        <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="sp-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                <circle cx="2" cy="2" r="1.5" fill="white" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#sp-dots)" />
-          </svg>
+        {/* Subtle dot pattern */}
+        <svg className="absolute inset-0 w-full h-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="sp-dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1.5" fill="white" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#sp-dots)" />
+        </svg>
+        {/* Initial badge */}
+        <div className="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center text-white font-bold text-xl font-heading">
+          {farm.name.charAt(0)}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
       </div>
 
       {/* Content */}
       <div className="flex flex-col justify-between p-6 flex-1">
         <div>
-          <div className="flex items-center gap-3 mb-3">
-            <div
-              className={cn('w-12 h-12 rounded-2xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm bg-gradient-to-br', gradient)}
-              aria-hidden="true"
-            >
-              {farm.name.charAt(0)}
-            </div>
-            <div>
-              <div className="font-heading font-bold text-forest text-base leading-tight flex items-center gap-1.5">
-                {farm.name}
-                {farm.verified && (
-                  <CheckCircle className="w-4 h-4 text-primary-500 flex-shrink-0" aria-label="Ověřená farma" />
-                )}
-              </div>
-              <div className="text-xs text-neutral-500 flex items-center gap-1 mt-0.5">
-                <MapPin className="w-3 h-3" aria-hidden="true" />
-                {farm.location.city}, {farm.location.kraj}
-              </div>
-            </div>
+          <div className="flex items-start justify-between gap-2 mb-1">
+            <h3 className="font-heading font-bold text-forest text-lg leading-tight">
+              {farm.name}
+              {farm.verified && (
+                <CheckCircle className="inline-block ml-1.5 w-4 h-4 text-primary-500 relative -top-0.5" aria-label="Ověřená farma" />
+              )}
+            </h3>
+          </div>
+          <div className="flex items-center gap-1 text-xs text-neutral-500 mb-3">
+            <MapPin className="w-3 h-3 flex-shrink-0" aria-hidden="true" />
+            {farm.location.city}, {farm.location.kraj}
           </div>
           {farm.description && (
-            <p className="text-sm text-neutral-500 leading-relaxed line-clamp-2 mt-2">{farm.description}</p>
+            <p className="text-sm text-neutral-500 leading-relaxed line-clamp-2">{farm.description}</p>
           )}
           <div className="flex flex-wrap gap-1.5 mt-3">
             {farm.categories.slice(0, 4).map((cat) => (
@@ -133,63 +125,58 @@ function SpotlightCard({ farm }: { farm: Farm }) {
             ))}
           </div>
         </div>
-        <div className="flex items-center justify-end mt-5 pt-4 border-t border-neutral-100">
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 group-hover:gap-2.5 transition-all" aria-hidden="true">
-            Zobrazit farmu <ArrowRight className="w-3 h-3" />
-          </span>
+
+        <div className="flex items-center justify-between mt-5 pt-4 border-t border-neutral-100">
+          <span className="text-xs text-neutral-400">Zobrazit profil</span>
+          <ArrowRight className="w-4 h-4 text-primary-500 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
         </div>
       </div>
     </Link>
   )
 }
 
+// ── Regular card ──────────────────────────────────────────
+
 function FarmCard({ farm }: { farm: Farm }) {
   const gradient = farmGradient(farm)
   return (
     <Link
       href={`/farmy/${farm.slug}`}
-      className="group flex flex-col rounded-xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:scale-[1.01]"
+      className="group flex flex-col rounded-xl overflow-hidden bg-white border border-neutral-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
       aria-label={`Farma: ${farm.name}`}
     >
-      {/* Cover gradient */}
-      <div className={cn('relative h-44 bg-gradient-to-br overflow-hidden', gradient)} aria-hidden="true">
-        <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id={`dots-${farm.id}`} x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                <circle cx="2" cy="2" r="1.5" fill="white" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill={`url(#dots-${farm.id})`} />
-          </svg>
+      {/* Cover */}
+      <div className={cn('relative h-36 bg-gradient-to-br overflow-hidden flex-shrink-0', gradient)} aria-hidden="true">
+        <svg className="absolute inset-0 w-full h-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id={`dots-${farm.id}`} x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1.5" fill="white" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill={`url(#dots-${farm.id})`} />
+        </svg>
+        {/* Initial */}
+        <div className="absolute bottom-3 left-3 w-9 h-9 rounded-lg bg-white/20 border border-white/30 flex items-center justify-center text-white font-bold text-sm font-heading">
+          {farm.name.charAt(0)}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        {farm.verified && (
+          <div className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-white/90 flex items-center justify-center">
+            <CheckCircle className="w-3.5 h-3.5 text-primary-600" aria-label="Ověřená farma" />
+          </div>
+        )}
       </div>
 
       {/* Body */}
       <div className="p-4 flex flex-col flex-1">
-        <div className="flex items-start gap-2.5 mb-3">
-          <div
-            className={cn('w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-xs flex-shrink-0 shadow-sm bg-gradient-to-br', gradient)}
-            aria-hidden="true"
-          >
-            {farm.name.charAt(0)}
-          </div>
-          <div className="min-w-0">
-            <h3 className="font-heading font-bold text-sm text-forest leading-tight truncate flex items-center gap-1">
-              {farm.name}
-              {farm.verified && (
-                <CheckCircle className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" aria-label="Ověřená farma" />
-              )}
-            </h3>
-            <div className="flex items-center gap-1 text-xs text-neutral-400 mt-0.5">
-              <MapPin className="w-3 h-3 flex-shrink-0" aria-hidden="true" />
-              <span className="truncate">{farm.location.city}, {farm.location.kraj}</span>
-            </div>
-          </div>
+        <h3 className="font-heading font-bold text-sm text-forest leading-snug mb-1 truncate">
+          {farm.name}
+        </h3>
+        <div className="flex items-center gap-1 text-xs text-neutral-400 mb-3">
+          <MapPin className="w-3 h-3 flex-shrink-0" aria-hidden="true" />
+          <span className="truncate">{farm.location.city}, {farm.location.kraj}</span>
         </div>
 
-        <div className="flex flex-wrap gap-1.5 mb-3">
+        <div className="flex flex-wrap gap-1">
           {farm.categories.slice(0, 3).map((cat) => (
             <span
               key={cat}
@@ -200,8 +187,8 @@ function FarmCard({ farm }: { farm: Farm }) {
           ))}
         </div>
 
-        <div className="flex items-center justify-end mt-auto pt-3 border-t border-neutral-100">
-          <span className="text-xs font-semibold text-primary-600 group-hover:text-primary-700 transition-colors inline-flex items-center gap-1">
+        <div className="flex items-center justify-end mt-auto pt-3 border-t border-neutral-100 mt-4">
+          <span className="text-xs font-semibold text-primary-600 inline-flex items-center gap-1 group-hover:gap-1.5 transition-all">
             Zobrazit <ArrowRight className="w-3 h-3" aria-hidden="true" />
           </span>
         </div>

@@ -4,12 +4,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { ArrowRight, Map, Tractor, Search } from 'lucide-react'
+import { Search, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const STATS = [
-  { value: '3 960+', label: 'farem' },
-  { value: '14', label: 'krajů' },
+const TRUST_ITEMS = [
+  '3 960+ farem',
+  '14 krajů',
+  'Přímý kontakt',
+  'Bez poplatků',
 ]
 
 export function HeroSection() {
@@ -18,19 +20,15 @@ export function HeroSection() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    if (query.trim()) {
-      router.push(`/mapa?q=${encodeURIComponent(query.trim())}`)
-    } else {
-      router.push('/mapa')
-    }
+    router.push(query.trim() ? `/mapa?q=${encodeURIComponent(query.trim())}` : '/mapa')
   }
 
   return (
     <section
-      className="relative min-h-[92vh] flex items-center overflow-hidden"
+      className="relative min-h-[88vh] flex items-center overflow-hidden"
       aria-labelledby="hero-heading"
     >
-      {/* Real farm photo background */}
+      {/* Background photo */}
       <div className="absolute inset-0" aria-hidden="true">
         <Image
           src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1920&h=1080&fit=crop&q=85"
@@ -42,48 +40,45 @@ export function HeroSection() {
         />
       </div>
 
-      {/* Dark overlay for text legibility */}
-      <div className="absolute inset-0 bg-gradient-to-r from-forest/85 via-forest/70 to-forest/40" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" aria-hidden="true" />
-
-      {/* Topographic SVG overlay */}
-      <TopoOverlay />
+      {/* Overlay — dark on left, fades right */}
+      <div
+        className="absolute inset-0 bg-gradient-to-r from-[#0d1e09]/90 via-[#1a4214]/65 to-[#1a4214]/15"
+        aria-hidden="true"
+      />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-24">
-        <div className="max-w-3xl">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
+        <div className="max-w-2xl">
 
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-white/80 text-xs font-semibold mb-8 backdrop-blur-sm tracking-wide uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary-300 animate-pulse" aria-hidden="true" />
-            Farmy z celé České republiky
-          </div>
+          {/* Eyebrow */}
+          <p className="text-primary-300 text-sm font-semibold uppercase tracking-[0.18em] mb-6">
+            Farmářský adresář · Česká republika
+          </p>
 
           {/* Heading */}
           <h1
             id="hero-heading"
-            className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.05] mb-6"
+            className="font-heading font-bold text-white leading-[1.05] mb-6"
+            style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
           >
             Nakupujte přímo
             <br />
-            <span className="text-primary-300 italic">od farmářů</span>
-            <br />
-            z celé ČR
+            <em className="not-italic text-primary-300">od farmářů</em>
           </h1>
 
-          <p className="text-lg sm:text-xl text-white/70 mb-10 leading-relaxed max-w-xl">
-            Propojujeme vás s místními farmáři. Čerstvé, lokální, poctivé — bez prostředníků.
+          <p className="text-white/70 text-lg mb-10 leading-relaxed max-w-lg">
+            Propojujeme vás s místními farmáři. Čerstvé, lokální, poctivé&nbsp;— bez&nbsp;prostředníků.
           </p>
 
-          {/* Hero search bar */}
+          {/* Search form */}
           <form
             onSubmit={handleSearch}
-            className="flex gap-2 mb-6 max-w-lg"
+            className="flex gap-2 mb-8 max-w-md"
             aria-label="Vyhledat farmu"
           >
             <div className="relative flex-1">
               <Search
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50 pointer-events-none"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none"
                 aria-hidden="true"
               />
               <input
@@ -93,109 +88,60 @@ export function HeroSection() {
                 placeholder="Hledat farmu nebo produkt…"
                 aria-label="Hledat farmu"
                 className={cn(
-                  'w-full pl-11 pr-4 py-3.5 rounded-xl text-sm',
-                  'bg-white/12 border border-white/25 text-white placeholder:text-white/45',
-                  'backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-400/50 focus:border-white/40',
-                  'transition-all duration-200',
+                  'w-full pl-10 pr-4 py-3 rounded-lg text-sm',
+                  'bg-white text-neutral-900 placeholder:text-neutral-400',
+                  'border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-primary-400',
+                  'transition-all duration-150',
                 )}
               />
             </div>
             <button
               type="submit"
               className={cn(
-                'flex items-center gap-2 px-5 py-3.5 rounded-xl',
-                'bg-primary-500 hover:bg-primary-400 text-white font-semibold text-sm',
-                'transition-all duration-200 cursor-pointer shadow-lg',
-                'active:scale-95 flex-shrink-0',
+                'flex items-center gap-2 px-5 py-3 rounded-lg',
+                'bg-primary-500 hover:bg-primary-600 text-white font-semibold text-sm',
+                'transition-colors duration-150 cursor-pointer flex-shrink-0',
               )}
             >
-              <Map className="w-4 h-4" aria-hidden="true" />
               Hledat
             </button>
           </form>
 
-          {/* Secondary CTAs */}
-          <div className="flex flex-wrap items-center gap-3 mb-14">
-            <Link
-              href="/mapa"
-              className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors duration-200 cursor-pointer group"
-            >
-              Zobrazit mapu farem
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
-            </Link>
-            <span className="text-white/25 text-sm">·</span>
-            <Link
-              href="/pridat-farmu"
-              className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors duration-200 cursor-pointer group"
-            >
-              <Tractor className="w-3.5 h-3.5" aria-hidden="true" />
-              Přidat svoji farmu
-            </Link>
-          </div>
-
-          {/* Stats */}
-          <div className="inline-flex items-stretch gap-0 rounded-2xl overflow-hidden border border-white/18 backdrop-blur-md bg-black/20">
-            {STATS.map((stat, i) => (
-              <div
-                key={stat.label}
-                className={cn(
-                  'px-6 py-4 text-center',
-                  i < STATS.length - 1 && 'border-r border-white/18',
-                )}
-              >
-                <div className="font-heading font-bold text-2xl text-white leading-tight">
-                  {stat.value}
-                </div>
-                <div className="text-[11px] text-white/55 mt-0.5 font-medium tracking-widest uppercase">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Map CTA */}
+          <Link
+            href="/mapa"
+            className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-medium transition-colors duration-150 group"
+          >
+            Zobrazit interaktivní mapu farem
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+          </Link>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2" aria-hidden="true">
-        <div className="w-5 h-8 rounded-full border-2 border-white/30 flex items-start justify-center pt-1.5">
-          <div className="w-1 h-2 bg-white/50 rounded-full animate-bounce" />
+      {/* Trust bar at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 bg-black/30 backdrop-blur-sm border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-6 overflow-x-auto scrollbar-none">
+          {TRUST_ITEMS.map((item, i) => (
+            <div key={item} className="flex items-center gap-4 flex-shrink-0">
+              {i > 0 && <span className="w-px h-4 bg-white/20" aria-hidden="true" />}
+              <span className="text-white/65 text-sm font-medium whitespace-nowrap">{item}</span>
+            </div>
+          ))}
         </div>
-        <span className="text-white/40 text-[10px] tracking-widest uppercase font-medium">Scroll</span>
       </div>
 
-      {/* Organic wave divider — transitions to body bg */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none" aria-hidden="true">
+      {/* Wave divider */}
+      <div className="absolute bottom-[52px] left-0 right-0 z-10 pointer-events-none" aria-hidden="true">
         <svg
-          viewBox="0 0 1440 90"
+          viewBox="0 0 1440 60"
           preserveAspectRatio="none"
-          className="w-full h-16 sm:h-20 lg:h-24"
-          fill="#F4F1EC"
+          className="w-full h-10 sm:h-14"
+          fill="#faf7f0"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path d="M0,90 C180,30 360,65 540,45 C720,25 900,70 1080,50 C1260,30 1380,60 1440,45 L1440,90 Z" />
+          <path d="M0,60 C240,20 480,55 720,35 C960,15 1200,50 1440,30 L1440,60 Z" />
         </svg>
       </div>
     </section>
-  )
-}
-
-function TopoOverlay() {
-  return (
-    <svg
-      className="absolute inset-0 w-full h-full opacity-[0.07]"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      preserveAspectRatio="xMidYMid slice"
-    >
-      <defs>
-        <pattern id="topo" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
-          <circle cx="60" cy="60" r="55" fill="none" stroke="white" strokeWidth="0.7" />
-          <circle cx="60" cy="60" r="40" fill="none" stroke="white" strokeWidth="0.7" />
-          <circle cx="60" cy="60" r="25" fill="none" stroke="white" strokeWidth="0.7" />
-          <circle cx="60" cy="60" r="10" fill="none" stroke="white" strokeWidth="0.7" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#topo)" />
-    </svg>
   )
 }

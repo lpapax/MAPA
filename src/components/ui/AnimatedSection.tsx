@@ -11,36 +11,30 @@ interface AnimatedSectionProps {
 }
 
 const delayClass: Record<number, string> = {
-  0: 'delay-0',
-  100: 'delay-100',
-  200: 'delay-200',
-  300: 'delay-300',
-  400: 'delay-400',
-  500: 'delay-500',
+  0:   '',
+  100: 'delay-75',
+  200: 'delay-100',
+  300: 'delay-150',
+  400: 'delay-200',
+  500: 'delay-300',
 }
 
 export function AnimatedSection({
   children,
   className,
   delay = 0,
-  direction = 'up',
+  direction: _direction = 'up',
 }: AnimatedSectionProps) {
   const { ref, isVisible } = useIntersectionObserver()
 
-  const hiddenClass = {
-    up: 'opacity-0 translate-y-8',
-    left: 'opacity-0 -translate-x-8',
-    right: 'opacity-0 translate-x-8',
-    none: 'opacity-0',
-  }[direction]
-
+  // Subtle fade-up only — no dramatic slide-ins
   return (
     <div
       ref={ref}
       className={cn(
-        'transition-all duration-700 ease-out',
+        'transition-opacity duration-500 ease-out',
         delayClass[delay],
-        isVisible ? 'opacity-100 translate-x-0 translate-y-0' : hiddenClass,
+        isVisible ? 'opacity-100' : 'opacity-0',
         className,
       )}
     >
