@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Menu, X, Plus, Search } from 'lucide-react'
+import { Menu, X, Plus, Search, UserCircle2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface SearchResult {
@@ -126,6 +126,14 @@ export function Navbar() {
             >
               <Search className="w-4 h-4" aria-hidden="true" />
             </button>
+
+            <Link
+              href="/profil"
+              aria-label="Můj profil"
+              className="flex items-center justify-center w-9 h-9 rounded-xl text-forest hover:bg-primary-50 transition-colors duration-200 cursor-pointer"
+            >
+              <UserCircle2 className="w-4 h-4" aria-hidden="true" />
+            </Link>
 
             <Link
               href="/pridat-farmu"

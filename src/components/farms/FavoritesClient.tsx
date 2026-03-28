@@ -1,9 +1,36 @@
 'use client'
 
 import Link from 'next/link'
-import { Heart, MapPin, ArrowRight } from 'lucide-react'
+import { Heart, MapPin, ArrowRight, Share2, Download } from 'lucide-react'
 import { useFavoriteFarms } from '@/hooks/useFavoriteFarms'
 import { CATEGORY_LABELS } from '@/lib/farms'
+
+function exportFavoritesCSV(favorites: ReturnType<typeof useFavoriteFarms>['favorites']) {
+  const rows = [
+    ['Název', 'Kraj', 'Kategorie', 'Odkaz'].join(','),
+    ...favorites.map((f) =>
+      [
+        `"${f.name}"`,
+        `"${f.kraj}"`,
+        `"${f.categories.map((c) => CATEGORY_LABELS[c]).join('; ')}"`,
+        `"https://mapafarem.cz/farmy/${f.slug}"`,
+      ].join(','),
+    ),
+  ]
+  const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'oblibene-farmy.csv'
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+function copyShareLink(favorites: ReturnType<typeof useFavoriteFarms>['favorites']) {
+  const slugs = favorites.map((f) => f.slug).join(',')
+  const url = `${window.location.origin}/porovnat?ids=${encodeURIComponent(slugs)}`
+  navigator.clipboard?.writeText(url).catch(() => { /* ignore */ })
+}
 
 export function FavoritesClient() {
   const { favorites, clearFavorites } = useFavoriteFarms()
@@ -31,16 +58,34 @@ export function FavoritesClient() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <span className="text-sm text-gray-400">
           {favorites.length} {favorites.length === 1 ? 'farma' : favorites.length < 5 ? 'farmy' : 'farem'}
         </span>
-        <button
-          onClick={clearFavorites}
-          className="text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-        >
-          Smazat vše
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => copyShareLink(favorites)}
+            className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-primary-600 transition-colors cursor-pointer"
+            title="Zkopírovat odkaz"
+          >
+            <Share2 className="w-3.5 h-3.5" aria-hidden="true" />
+            Sdílet
+          </button>
+          <button
+            onClick={() => exportFavoritesCSV(favorites)}
+            className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-primary-600 transition-colors cursor-pointer"
+            title="Stáhnout CSV"
+          >
+            <Download className="w-3.5 h-3.5" aria-hidden="true" />
+            Export
+          </button>
+          <button
+            onClick={clearFavorites}
+            className="text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+          >
+            Smazat vše
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

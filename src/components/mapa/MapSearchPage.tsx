@@ -7,6 +7,7 @@ import { MapViewWrapper } from '@/components/map/MapViewWrapper'
 import { useFarmStore, getFilteredFarms } from '@/store/farmStore'
 import { useCompareStore, MAX_COMPARE_FARMS } from '@/store/compareStore'
 import { useFavoriteFarms } from '@/hooks/useFavoriteFarms'
+import { useUserPrefs } from '@/hooks/useUserPrefs'
 import { CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { CompareBar } from '@/components/farms/CompareBar'
 import { cn } from '@/lib/utils'
@@ -41,15 +42,25 @@ interface MapSearchPageProps {
 }
 
 export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKraj, initialSearch }: MapSearchPageProps) {
-  const [mobileView, setMobileView] = useState<'map' | 'list'>('map')
+  const { prefs } = useUserPrefs()
+  const [mobileView, setMobileView] = useState<'map' | 'list'>(prefs.defaultView)
   const [filtersOpen, setFiltersOpen] = useState(false)
 
   const store = useFarmStore()
 
-  // Apply URL query params on first mount only
+  // Apply URL params and user preferences on first mount
   useEffect(() => {
-    if (initialKraj) store.setKraj(initialKraj)
+    // URL params take precedence over saved preferences
+    if (initialKraj) {
+      store.setKraj(initialKraj)
+    } else if (prefs.kraj) {
+      store.setKraj(prefs.kraj)
+    }
     if (initialSearch) store.setSearchQuery(initialSearch)
+    // Apply preferred categories only when no URL override
+    if (!initialKraj && prefs.categories.length > 0) {
+      prefs.categories.forEach((cat) => store.toggleCategory(cat))
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const { filters, setSearchQuery, toggleCategory, setKraj, setOpenNow, clearFilters, selectFarm, hoverFarm, selectedFarmId, hoveredFarmId } = store

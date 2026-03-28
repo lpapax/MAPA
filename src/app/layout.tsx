@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { ToastProvider } from '@/components/ui/Toast'
+import { ThemeProvider } from '@/components/ui/ThemeProvider'
 
 export const metadata: Metadata = {
   title: {
@@ -40,9 +41,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Přejít na obsah
         </a>
-        <ToastProvider>
-          <div id="main-content">{children}</div>
-        </ToastProvider>
+        <ThemeProvider>
+          <ToastProvider>
+            <div id="main-content">{children}</div>
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
