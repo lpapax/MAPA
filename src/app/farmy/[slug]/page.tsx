@@ -87,25 +87,43 @@ export default async function FarmDetailPage({ params }: PageProps) {
 
       <main>
         {/* Hero */}
-        <section
-          className={cn('relative h-[55vh] min-h-[360px] bg-gradient-to-br', heroGradient)}
-          aria-label={`Titulní fotografie farmy ${farm.name}`}
-        >
-          <div className="absolute inset-0 opacity-10" aria-hidden="true">
-            <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="2" cy="2" r="1.5" fill="white" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#dots)" />
-            </svg>
-          </div>
-          <div
-            className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface to-transparent"
-            aria-hidden="true"
-          />
-        </section>
+        {(() => {
+          const heroPhoto = farm.images?.[0] && !farm.images[0].includes('placeholder') ? farm.images[0] : null
+          return (
+            <section
+              className={cn('relative h-[55vh] min-h-[360px] bg-gradient-to-br overflow-hidden', heroGradient)}
+              aria-label={`Titulní fotografie farmy ${farm.name}`}
+            >
+              {heroPhoto ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={heroPhoto}
+                  alt={farm.name}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="eager"
+                />
+              ) : (
+                <div className="absolute inset-0 opacity-10" aria-hidden="true">
+                  <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <circle cx="2" cy="2" r="1.5" fill="white" />
+                      </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#dots)" />
+                  </svg>
+                </div>
+              )}
+              {heroPhoto && (
+                <div className="absolute inset-0 bg-black/30" aria-hidden="true" />
+              )}
+              <div
+                className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface to-transparent"
+                aria-hidden="true"
+              />
+            </section>
+          )
+        })()}
 
         {/* Farm header */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-10 mb-2">

@@ -162,21 +162,44 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
           {activeTab === 'galerie' && (
             <div role="tabpanel" id="panel-galerie" aria-labelledby="tab-galerie">
               <h2 className="font-heading text-xl font-bold text-forest mb-4">Fotogalerie</h2>
-              {/* CSS columns masonry */}
-              <div className="columns-2 sm:columns-3 gap-3 space-y-3">
-                {GALLERY_GRADIENTS.map((gradient, i) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      'w-full rounded-xl overflow-hidden bg-gradient-to-br break-inside-avoid',
-                      gradient,
-                      i % 3 === 0 ? 'h-48' : i % 3 === 1 ? 'h-32' : 'h-40',
-                    )}
-                    role="img"
-                    aria-label={`Foto z farmy ${farm.name} ${i + 1}`}
-                  />
-                ))}
-              </div>
+              {(() => {
+                const realPhotos = (farm.images ?? []).filter(
+                  (url) => url && !url.includes('placeholder') && url.startsWith('http'),
+                )
+                if (realPhotos.length > 0) {
+                  return (
+                    <div className="columns-2 sm:columns-3 gap-3 space-y-3">
+                      {realPhotos.map((url, i) => (
+                        <div key={i} className="break-inside-avoid rounded-xl overflow-hidden bg-neutral-100">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={url}
+                            alt={`${farm.name} – foto ${i + 1}`}
+                            className="w-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )
+                }
+                return (
+                  <div className="columns-2 sm:columns-3 gap-3 space-y-3">
+                    {GALLERY_GRADIENTS.map((gradient, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          'w-full rounded-xl overflow-hidden bg-gradient-to-br break-inside-avoid',
+                          gradient,
+                          i % 3 === 0 ? 'h-48' : i % 3 === 1 ? 'h-32' : 'h-40',
+                        )}
+                        role="img"
+                        aria-label={`Foto z farmy ${farm.name} ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                )
+              })()}
             </div>
           )}
 

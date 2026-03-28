@@ -97586,5 +97586,1228 @@
     "images": [],
     "verified": false,
     "createdAt": "2026-03-27T13:59:59.970Z"
+  },
+  {
+    "id": "5f7d4046-e70c-469d-b70c-cb200784984d",
+    "slug": "eko-produkt-s-r-o",
+    "name": "Eko - Produkt, s.r.o.",
+    "description": "Eko - Produkt, s.r.o. nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.739219,
+      "lng": 18.906372599999997,
+      "address": "967 01 Kremnické Bane",
+      "city": "Kremnické Bane",
+      "kraj": "Praha",
+      "zip": "967 01"
+    },
+    "contact": {
+      "phone": "0905 607 090",
+      "web": "http://ekoprodukt.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:43:40.817Z"
+  },
+  {
+    "id": "c8755b03-7da8-4f03-812e-3b5daced6641",
+    "slug": "kavicka-na-klasku-pekaren-s-kaviarnou",
+    "name": "Kávička na klásku - pekáreň s kaviarňou",
+    "description": "Kávička na klásku - pekáreň s kaviarňou nabízí přímý prodej pečiva z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "chléb"
+    ],
+    "location": {
+      "lat": 48.1945468,
+      "lng": 17.051776999999998,
+      "address": "Malokarpatské námestie 7",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "841 03"
+    },
+    "contact": {
+      "phone": "0907 548 191",
+      "web": "http://kavickanaklasku.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:56:53.378Z"
+  },
+  {
+    "id": "7d343d45-7325-44e8-96f4-65dd13f7e955",
+    "slug": "jakubovske-rybniky-rybia-farma",
+    "name": "Jakubovské rybníky - rybia farma",
+    "description": "Jakubovské rybníky - rybia farma nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.409931,
+      "lng": 16.9695231,
+      "address": "Jakubovské rybníky",
+      "city": "Plavecký Štvrtok",
+      "kraj": "Jihomoravský",
+      "zip": "900 68"
+    },
+    "contact": {
+      "phone": "0949 266 357",
+      "web": "http://jakubovskerybniky.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:56:57.856Z"
+  },
+  {
+    "id": "039dfd3a-6e8f-4a6e-b2e0-a6c8211ba077",
+    "slug": "rybarstvi-hodonin-s-r-o-sadky-ve-ke-levare",
+    "name": "Rybářství Hodonín s.r.o. - Sádky Veľké Leváre",
+    "description": "Rybářství Hodonín s.r.o. - Sádky Veľké Leváre nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.5037003,
+      "lng": 17.0276386,
+      "address": "Veľké Leváre 1111",
+      "city": "Veľké Leváre",
+      "kraj": "Jihomoravský",
+      "zip": "908 73"
+    },
+    "contact": {
+      "phone": "0904 987 213",
+      "web": "https://www.rybarstvi-hodonin.cz"
+    },
+    "openingHours": null,
+    "images": [
+      "https://www.rybarstvi-hodonin.cz/wp-content/uploads/2025/04/Screenshot-2025-04-14-at-12-45-31-Datove-schranky-Odeslane-zpravy.png"
+    ],
+    "verified": false,
+    "createdAt": "2026-03-27T13:56:57.857Z"
+  },
+  {
+    "id": "444a01c6-5ea4-4938-ae01-131dcaf4988e",
+    "slug": "farma-pri-rybniku",
+    "name": "Farma pri Rybníku",
+    "description": "Farma pri Rybníku nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.3983539,
+      "lng": 17.3571056,
+      "address": "Hlavná",
+      "city": "Častá",
+      "kraj": "Jihomoravský",
+      "zip": "900 89"
+    },
+    "contact": {
+      "phone": "0910 127 207"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:04.944Z"
+  },
+  {
+    "id": "00b4ecf8-e1a5-499e-b16d-57084f6c6141",
+    "slug": "farma-nad-luckami",
+    "name": "Farma nad Lúčkami",
+    "description": "Farma nad Lúčkami nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.3219023,
+      "lng": 17.279597199999998,
+      "address": "Pezinská 186",
+      "city": "Vinosady",
+      "kraj": "Jihomoravský",
+      "zip": "902 01"
+    },
+    "contact": {
+      "phone": "0910 132 711"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:05.587Z"
+  },
+  {
+    "id": "8bb9cb32-aed7-4bc6-99b9-6052472d41ec",
+    "slug": "t-duracka-ovocna-sk-lka-predaj-ovocnych-stromov",
+    "name": "T.Duračka – Ovocná škôlka, predaj ovocných stromov",
+    "description": "T.Duračka – Ovocná škôlka, predaj ovocných stromov nabízí přímý prodej ovoce z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ovoce"
+    ],
+    "location": {
+      "lat": 48.543096399999996,
+      "lng": 17.7333963,
+      "address": "Veselé 289",
+      "city": "Veselé",
+      "kraj": "Jihomoravský",
+      "zip": "922 08"
+    },
+    "contact": {
+      "phone": "0905 985 037",
+      "web": "http://duracka.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:08.801Z"
+  },
+  {
+    "id": "10ce5bbd-8795-45d5-ae11-ffc93d505fb7",
+    "slug": "slovensky-vceli-med-vcelarenie-rodina-kaplanova",
+    "name": "Slovenský Včelí Med - Včelárenie rodina Kaplánová",
+    "description": "Aj vy máte radi Slovenský včelí medík priamo od včiel od domáceho včelára, ktorý je nielen chutný, ale aj zdravý! Tak neváhajte dozvedieť sa o ňom.",
+    "categories": [
+      "med"
+    ],
+    "location": {
+      "lat": 48.270181099999995,
+      "lng": 17.470324599999998,
+      "address": "Agátová 144",
+      "city": "Čataj",
+      "kraj": "Jihomoravský",
+      "zip": "900 83"
+    },
+    "contact": {
+      "phone": "0949 657 020",
+      "web": "https://www.mojvcelar.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:10.813Z"
+  },
+  {
+    "id": "3638d656-308d-45dc-93a5-fef3e1c3f441",
+    "slug": "javorkova-zuzana-medrob",
+    "name": "Javorková Zuzana MEDROB",
+    "description": "Javorková Zuzana MEDROB nabízí přímý prodej medu z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "med"
+    ],
+    "location": {
+      "lat": 48.270294799999995,
+      "lng": 17.303249,
+      "address": "Hlavná 99/175",
+      "city": "Viničné",
+      "kraj": "Jihomoravský",
+      "zip": "900 23"
+    },
+    "contact": {
+      "phone": "0908 797 194",
+      "web": "http://www.medrob.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:10.813Z"
+  },
+  {
+    "id": "db185f4b-102c-46c7-844a-785be240ed58",
+    "slug": "vcelovina",
+    "name": "Včelovina",
+    "description": "Výroba originálnej medoviny a včeloviny, predaj tradičnej medoviny a včeloviny.",
+    "categories": [
+      "med"
+    ],
+    "location": {
+      "lat": 48.5103155,
+      "lng": 17.4370489,
+      "address": "Továrenská 980/10",
+      "city": "Smolenice",
+      "kraj": "Jihomoravský",
+      "zip": "919 04"
+    },
+    "contact": {
+      "phone": "0949 305 315",
+      "web": "https://www.vcelovina.sk"
+    },
+    "openingHours": null,
+    "images": [
+      "https://www.vcelovina.sk/wp-content/uploads/2020/06/ogg-vcelovina.jpg"
+    ],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:10.813Z"
+  },
+  {
+    "id": "18c76e52-7a83-4d9d-b429-7f1815646aab",
+    "slug": "vcelia-farma-med-knizat",
+    "name": "VČELIA FARMA Med Knížat",
+    "description": "VČELIA FARMA Med Knížat nabízí přímý prodej medu z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "med"
+    ],
+    "location": {
+      "lat": 48.4400652,
+      "lng": 18.0278682,
+      "address": "Hruboňovo",
+      "city": "Hruboňovo",
+      "kraj": "Jihomoravský",
+      "zip": "951 25"
+    },
+    "contact": {
+      "phone": "0944 191 306",
+      "web": "http://www.medknizat.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:11.467Z"
+  },
+  {
+    "id": "75cee8a2-6a53-40c1-8c37-1cb48b191936",
+    "slug": "rudolf-predajna-vcelchov",
+    "name": "Rudolf Predajňa - Včelchov",
+    "description": "Rudolf Predajňa - Včelchov nabízí přímý prodej medu z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "med"
+    ],
+    "location": {
+      "lat": 48.279510300000005,
+      "lng": 17.030317699999998,
+      "address": "Malacká 13A",
+      "city": "Stupava",
+      "kraj": "Jihomoravský",
+      "zip": "900 31"
+    },
+    "contact": {
+      "phone": "0903 407 324",
+      "web": "http://www.vcelchov.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:11.467Z"
+  },
+  {
+    "id": "0740929c-6442-4f5e-baf8-da7062defa51",
+    "slug": "beekeeping-dusan-dedinsky",
+    "name": "Beekeeping Dušan Dedinský",
+    "description": "Beekeeping Dušan Dedinský nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.2213085,
+      "lng": 16.9697438,
+      "address": "Mlynská 6704",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "841 07"
+    },
+    "contact": {
+      "phone": "0903 412 241",
+      "web": "https://vcelarstvo.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:11.467Z"
+  },
+  {
+    "id": "51f83868-6933-4e62-94ef-48d87d3c7ef8",
+    "slug": "domaci-med-vceli-pe-od-vcelara-vcelarstvo-mija-nitra",
+    "name": "Domáci med, včelí peľ od včelára | Včelárstvo Mija -Nitra",
+    "description": "Pravý domáci med sa nedá posúdiť len podľa farby a tekutosti. Zistite, čo pri mede skutočne rozhoduje: pôvod, šarža, spracovanie a overenie kvality.",
+    "categories": [
+      "med"
+    ],
+    "location": {
+      "lat": 48.4021962,
+      "lng": 17.985169199999998,
+      "address": "Čab 307",
+      "city": "Čab",
+      "kraj": "Jihomoravský",
+      "zip": "951 24"
+    },
+    "contact": {
+      "phone": "0907 717 644",
+      "web": "http://vcelarstvomija.sk"
+    },
+    "openingHours": null,
+    "images": [
+      "https://www.vcelarstvomija.sk/images/produkt-med.webp"
+    ],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:11.467Z"
+  },
+  {
+    "id": "cd24eedf-ddd7-4035-a38d-07839e5acb72",
+    "slug": "bakery-takac-and-son",
+    "name": "Bakery Takac And Son",
+    "description": "Pek�re� Tak�� a syn s.r.o., Homepage",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.3742266,
+      "lng": 17.6032355,
+      "address": "Koniarekova 3",
+      "city": "Trnava",
+      "kraj": "Jihomoravský",
+      "zip": "917 01"
+    },
+    "contact": {
+      "phone": "033/550 43 68",
+      "web": "http://www.takacasyn.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:14.415Z"
+  },
+  {
+    "id": "de332f5e-74a5-4a4b-a530-1a9f06dcbe3c",
+    "slug": "pekaren-a-potraviny-kvasok-kugluf-spol-s-r-o",
+    "name": "Pekáreň a potraviny Kvások Kugluf spol. s r.o.",
+    "description": "Pekáreň a potraviny Kvások Kugluf spol. s r.o. nabízí přímý prodej pečiva z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "chléb"
+    ],
+    "location": {
+      "lat": 48.126647399999996,
+      "lng": 17.1240816,
+      "address": "Mlynarovičova 28",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "851 03"
+    },
+    "contact": {
+      "phone": "02/624 122 60",
+      "web": "http://www.pekarenkvasok.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:14.415Z"
+  },
+  {
+    "id": "50a01334-9dc0-47b1-a3e3-5ff212bb6bf9",
+    "slug": "pekaren-vrzukac",
+    "name": "Pekáreň Vrzukáč",
+    "description": "Pekáreň Vrzukáč nabízí přímý prodej pečiva z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "chléb"
+    ],
+    "location": {
+      "lat": 48.3799748,
+      "lng": 17.584509100000002,
+      "address": "Štefánikova 15",
+      "city": "Trnava",
+      "kraj": "Jihomoravský",
+      "zip": "917 01"
+    },
+    "contact": {
+      "phone": "0910 545 289",
+      "web": "http://www.vrzukac.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.012Z"
+  },
+  {
+    "id": "a306bb57-72bc-4468-bd71-40bcd57764fd",
+    "slug": "chlieb-nas-trnava",
+    "name": "Chlieb Náš Trnava",
+    "description": "Chlieb Náš Trnava nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.3783793,
+      "lng": 17.5853636,
+      "address": "Štefánikova 93/3",
+      "city": "Trnava",
+      "kraj": "Jihomoravský",
+      "zip": "917 01"
+    },
+    "contact": {
+      "web": "http://trnka.sk/chlieb-nas"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.012Z"
+  },
+  {
+    "id": "8581905d-6ace-4060-a5fa-b9fc59397a96",
+    "slug": "cuker-bakehouse",
+    "name": "CUKER Bakehouse",
+    "description": "Cukrárska a pekárska výroba s výberovou kávou.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.375522499999995,
+      "lng": 17.5846746,
+      "address": "Vajanského 13",
+      "city": "Trnava",
+      "kraj": "Jihomoravský",
+      "zip": "917 01"
+    },
+    "contact": {
+      "phone": "0951 957 524",
+      "web": "https://cuker.sk"
+    },
+    "openingHours": null,
+    "images": [
+      "https://i0.wp.com/cuker.sk/wp-content/uploads/2025/05/cuker_10.2.png"
+    ],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.012Z"
+  },
+  {
+    "id": "10befd2b-9c30-4ed7-abe6-335e27715e8f",
+    "slug": "kvaskovo-remeselna-pekaren",
+    "name": "Kváskovo Remeselná Pekáreň",
+    "description": "1,731 Followers, 33 Following, 34 Posts - See Instagram photos and videos from Kv&#xe1;skovo - remeseln&#xe1; pek&#xe1;re&#x148; (&#064;kvaskovo_remeselna_pekaren)",
+    "categories": [
+      "chléb"
+    ],
+    "location": {
+      "lat": 48.12557470000001,
+      "lng": 17.211513999999998,
+      "address": "Vetvárska 11",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "821 06"
+    },
+    "contact": {
+      "phone": "0917 567 066",
+      "web": "https://www.instagram.com/kvaskovo_remeselna_pekaren"
+    },
+    "openingHours": null,
+    "images": [
+      "https://scontent.cdninstagram.com/v/t51.2885-19/487998998_1561094764577481_1220219158262757116_n.jpg?stp=dst-jpg_s100x100_tt6&amp;_nc_cat=103&amp;ccb=7-5&amp;_nc_sid=bf7eb4&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDA0LkMzIn0%3D&amp;_nc_ohc=B_ZiU6d1FQoQ7kNvwHSmT2G&amp;_nc_oc=AdrZrRC7-DMVVSKoW1vq5A9QZX3yCfO8Pyypw67XfuUurAA-Vt4k1OhGLU4jkMJ-Vv8&amp;_nc_zt=24&amp;_nc_ht=scontent.cdninstagram.com&amp;_nc_ss=7a30f&amp;oh=00_Afy6Cp-WET6jpY2n86ttvM1ryiQ8O0drhPj1N-QBaselOw&amp;oe=69CDC923"
+    ],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.012Z"
+  },
+  {
+    "id": "47c4d85f-fd41-4693-b962-35469a05ea87",
+    "slug": "pekaren-klas",
+    "name": "Pekáreň Klas",
+    "description": "Pekáreň Klas nabízí přímý prodej pečiva z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "chléb"
+    ],
+    "location": {
+      "lat": 48.1190007,
+      "lng": 17.1148032,
+      "address": "Osuského",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "851 03"
+    },
+    "contact": {},
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.013Z"
+  },
+  {
+    "id": "7dfb841e-4878-438a-a825-5ea1ae35eb58",
+    "slug": "pekaren-u-kra-a",
+    "name": "Pekáreň u Kráľa",
+    "description": "Pekáreň u Kráľa nabízí přímý prodej pečiva z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "chléb"
+    ],
+    "location": {
+      "lat": 48.197310099999996,
+      "lng": 17.3090945,
+      "address": "Trnavská 3055",
+      "city": "Bernolákovo",
+      "kraj": "Jihomoravský",
+      "zip": "900 27"
+    },
+    "contact": {
+      "phone": "0918 074 772"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.013Z"
+  },
+  {
+    "id": "3c9769c8-c8bf-4059-9258-793ec09e9ea2",
+    "slug": "chlieb-a-laska-zwirn",
+    "name": "Chlieb a Láska - Zwirn",
+    "description": "Chlieb a Láska - Zwirn nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.1487736,
+      "lng": 17.1338018,
+      "address": "Košická 35",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "821 09"
+    },
+    "contact": {
+      "phone": "0905 807 748",
+      "web": "http://www.chliebalaska.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.703Z"
+  },
+  {
+    "id": "4490aaeb-4984-490f-88a9-8e0166a258c0",
+    "slug": "dobra-bakery-bistro",
+    "name": "Dobrá Bakery & Bistro",
+    "description": "Dobrá Bakery & Bistro nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.378828000000006,
+      "lng": 17.572908299999998,
+      "address": "Štúrova 25",
+      "city": "Trnava",
+      "kraj": "Jihomoravský",
+      "zip": "917 01"
+    },
+    "contact": {
+      "phone": "0917 403 796",
+      "web": "http://www.dobrapekaren.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.703Z"
+  },
+  {
+    "id": "9ab20d58-0427-4d9d-bc28-3846511dfcff",
+    "slug": "pekaren-na-kolibe",
+    "name": "Pekáreň na Kolibe",
+    "description": "Pekáreň na Kolibe nabízí přímý prodej pečiva z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "chléb"
+    ],
+    "location": {
+      "lat": 48.168569999999995,
+      "lng": 17.1076391,
+      "address": "Jeséniova 19",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "831 01"
+    },
+    "contact": {
+      "phone": "0910 995 331",
+      "web": "http://www.pekarennakolibe.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.703Z"
+  },
+  {
+    "id": "6a207962-4ac6-4ec2-9ca5-d0615b3d1abd",
+    "slug": "pekaren-u-florianka",
+    "name": "PEKÁREŇ U Floriánka",
+    "description": "PEKÁREŇ U Floriánka nabízí přímý prodej pečiva z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "chléb"
+    ],
+    "location": {
+      "lat": 48.241470299999996,
+      "lng": 17.041070899999998,
+      "address": "Československých tankistov 149",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "841 06"
+    },
+    "contact": {
+      "phone": "02/659 561 55",
+      "web": "http://www.uflorianka.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.703Z"
+  },
+  {
+    "id": "ddb7d19e-2b31-4784-97e4-65b3f3bdac43",
+    "slug": "katarina-kosme-ova-kvaskovy-razny-chlieb",
+    "name": "Katarína Kosmeľová - Kváskový ražný chlieb",
+    "description": "Katarína Kosmeľová - Kváskový ražný chlieb nabízí přímý prodej pečiva z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "chléb"
+    ],
+    "location": {
+      "lat": 49.404633999999994,
+      "lng": 19.470755,
+      "address": "Slnečná 164",
+      "city": "Námestovo",
+      "kraj": "Jihomoravský",
+      "zip": "029 01"
+    },
+    "contact": {
+      "phone": "0911 323 347",
+      "web": "https://kvaskovechleby.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.703Z"
+  },
+  {
+    "id": "50f85ddd-5c64-4323-9271-a20eabe7906f",
+    "slug": "caesarian-baker",
+    "name": "Caesarian baker",
+    "description": "Caesarian baker nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.1511637,
+      "lng": 17.0494091,
+      "address": "Matejkova 3272/15",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "841 05"
+    },
+    "contact": {
+      "phone": "0902 463 811",
+      "web": "https://cisarovpekar.sk/prevadzka/prevadzka-matejkova"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:15.703Z"
+  },
+  {
+    "id": "52e5a5b7-dc03-4577-959b-881261ce1cde",
+    "slug": "predaj-zivych-ryb-zelenec",
+    "name": "Predaj živých rýb Zeleneč",
+    "description": "Predaj živých rýb Zeleneč nabízí přímý prodej zeleniny z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "zelenina"
+    ],
+    "location": {
+      "lat": 48.3239615,
+      "lng": 17.603563299999998,
+      "address": "Unnamed Road",
+      "city": "Zeleneč",
+      "kraj": "Jihomoravský",
+      "zip": "919 21"
+    },
+    "contact": {
+      "phone": "0905 265 257",
+      "web": "https://www.facebook.com/rybyzelenecmarekbachraty"
+    },
+    "openingHours": null,
+    "images": [
+      "https://scontent.ftpe5-1.fna.fbcdn.net/v/t39.30808-1/318199469_809087460169325_4533443543970943709_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx570x459&amp;ctp=s570x459&amp;_nc_cat=104&amp;ccb=1-7&amp;_nc_sid=3ab345&amp;_nc_ohc=5nh_0Z9XT6UQ7kNvwGc-7pl&amp;_nc_oc=AdoH0K6YhTmWjbXnHNd9m25QzfMzf7C1trMAjGUGDVMr71mrmsO7Vhra5g7SxUDiZpc&amp;_nc_zt=24&amp;_nc_ht=scontent.ftpe5-1.fna&amp;_nc_gid=T1m5z6ocy-bx0mXAV5DqbA&amp;_nc_ss=7a30f&amp;oh=00_AfzBW6tnkiNxoqo2ylDLyIq0UXMuiiNknRJAkiWWYx53kQ&amp;oe=69CDC8A3"
+    ],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:17.530Z"
+  },
+  {
+    "id": "6743ab70-bc30-4264-9ea5-634f22fed9ae",
+    "slug": "predaj-zivych-ryb",
+    "name": "Predaj živých rýb",
+    "description": "Predaj živých rýb nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.3663731,
+      "lng": 17.545660299999998,
+      "address": "Kamenný mlyn 5789/1",
+      "city": "Trnava",
+      "kraj": "Jihomoravský",
+      "zip": "917 01"
+    },
+    "contact": {
+      "phone": "0917 620 540",
+      "web": "http://www.ziveryby.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:17.530Z"
+  },
+  {
+    "id": "ef1beca2-b519-4549-8508-4497b2c6c45d",
+    "slug": "rybarstvo-stupava",
+    "name": "Rybárstvo Stupava",
+    "description": "Rybárstvo Stupava nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.2775001,
+      "lng": 17.0430708,
+      "address": "Park 398/2",
+      "city": "Stupava",
+      "kraj": "Jihomoravský",
+      "zip": "900 31"
+    },
+    "contact": {
+      "phone": "0948 575 666",
+      "web": "http://www.cerstveryby.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:17.530Z"
+  },
+  {
+    "id": "f999a52d-77d0-4ea3-99f2-107fff0a6b15",
+    "slug": "stupava-fishery-vaicenbacher",
+    "name": "Stupava fishery - Vaicenbacher",
+    "description": "Stupava fishery - Vaicenbacher nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.2780859,
+      "lng": 17.0505335,
+      "address": "Park 20",
+      "city": "Stupava",
+      "kraj": "Jihomoravský",
+      "zip": "900 31"
+    },
+    "contact": {
+      "phone": "0915 766 600",
+      "web": "http://www.stupavskerybarstvo.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:18.183Z"
+  },
+  {
+    "id": "2a233974-2dc1-47c4-8723-3c1e95ffbd2f",
+    "slug": "zive-ryby-majernikova-honzova",
+    "name": "Živé ryby Majerníková-Honzová",
+    "description": "Živé ryby Majerníková-Honzová nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.423356,
+      "lng": 17.8106091,
+      "address": "Nitrianska 48",
+      "city": "Hlohovec",
+      "kraj": "Jihomoravský",
+      "zip": "920 01"
+    },
+    "contact": {
+      "phone": "0914 175 432"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:18.184Z"
+  },
+  {
+    "id": "39ad54aa-20f1-4eeb-aff8-78d1d8478456",
+    "slug": "rybaren-parina",
+    "name": "Rybáreň Parina",
+    "description": "Rybáreň Parina nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.4542606,
+      "lng": 17.3574469,
+      "address": "Horné Orešany 738",
+      "city": "Horné Orešany",
+      "kraj": "Jihomoravský",
+      "zip": "919 03"
+    },
+    "contact": {
+      "web": "https://www.lesy.sk/lesy/verejnost/vyznamne-lesnicke-miesta/zoznam/rybaren-parina-2.html"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:18.184Z"
+  },
+  {
+    "id": "74cb9f6f-d940-4ce7-8a10-7e97b3870f74",
+    "slug": "sukromny-rybnik",
+    "name": "Sukromny Rybnik",
+    "description": "Sukromny Rybnik nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.2962694,
+      "lng": 17.037226,
+      "address": "900 31 Stupava",
+      "city": "Stupava",
+      "kraj": "Jihomoravský",
+      "zip": "900 31"
+    },
+    "contact": {},
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:18.184Z"
+  },
+  {
+    "id": "cf1fc31c-d299-4996-8066-7bb848c3119b",
+    "slug": "chovryb-s-r-o-chov-a-prodej-ryb-krasnany",
+    "name": "CHOVRYB, s.r.o. - Chov a prodej ryb Krasňany",
+    "description": "CHOVRYB, s.r.o. - Chov a prodej ryb Krasňany nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 49.210774,
+      "lng": 18.889236,
+      "address": "Krasnianske rybníky",
+      "city": "Krasňany",
+      "kraj": "Jihomoravský",
+      "zip": "010 13"
+    },
+    "contact": {
+      "phone": "0908 430 968",
+      "web": "http://www.chovryb.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:18.827Z"
+  },
+  {
+    "id": "7fcb1c7d-8241-444b-8637-00aefd24b258",
+    "slug": "zive-ryby-mileticka-agrofarma",
+    "name": "Živé ryby Miletička Agrofarma",
+    "description": "Živé ryby Miletička Agrofarma nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.154246,
+      "lng": 17.1364217,
+      "address": "Miletičova-pasáž",
+      "city": "Bratislava II",
+      "kraj": "Jihomoravský",
+      "zip": "821 08"
+    },
+    "contact": {
+      "phone": "0911 907 676",
+      "web": "http://www.ziveryby.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:18.827Z"
+  },
+  {
+    "id": "a1dbfa71-0edc-424a-a581-bd08949839e5",
+    "slug": "levicke-rybniky-s-r-o",
+    "name": "Levické rybníky s.r.o.",
+    "description": "Levické rybníky s.r.o. nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.2011135,
+      "lng": 18.607266799999998,
+      "address": "Mochovská 40",
+      "city": "Levice",
+      "kraj": "Jihomoravský",
+      "zip": "934 01"
+    },
+    "contact": {
+      "phone": "0950 630 969",
+      "web": "https://www.facebook.com/profile.php?id=100064097738054"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:18.827Z"
+  },
+  {
+    "id": "4f6b3ce4-ba5d-40bb-a7f4-3fc89abb7d8f",
+    "slug": "zive-ryby-pod-gymesom-jelenec",
+    "name": "Živé ryby pod Gýmešom Jelenec",
+    "description": "Živé ryby pod Gýmešom Jelenec nabízí přímý prodej ryb z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ryby"
+    ],
+    "location": {
+      "lat": 48.399211799999996,
+      "lng": 18.2087646,
+      "address": "Remitáž 708",
+      "city": "Jelenec",
+      "kraj": "Jihomoravský",
+      "zip": "951 73"
+    },
+    "contact": {
+      "phone": "0944 484 031"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:18.827Z"
+  },
+  {
+    "id": "6c922854-688f-4f29-8375-02c9dce569be",
+    "slug": "ovocny-sad-lab",
+    "name": "OVOCNÝ SAD - Láb",
+    "description": "OVOCNÝ SAD - Láb nabízí přímý prodej ovoce z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ovoce"
+    ],
+    "location": {
+      "lat": 48.3696407,
+      "lng": 16.9472301,
+      "address": "900 67 Láb",
+      "city": "Láb",
+      "kraj": "Jihomoravský",
+      "zip": "900 67"
+    },
+    "contact": {
+      "phone": "0903 319 766",
+      "web": "http://ovocnysad.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:20.962Z"
+  },
+  {
+    "id": "eecf0500-5ecf-4c3e-b124-fc4ce9ee5830",
+    "slug": "m-so-udeniny-rodan-rh-sro",
+    "name": "Mäso-Údeniny RODAN-RH sro.",
+    "description": "Mäso-Údeniny RODAN-RH sro. nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.278619000000006,
+      "lng": 17.0281184,
+      "address": "Ferdiša Kostku 12",
+      "city": "Stupava",
+      "kraj": "Jihomoravský",
+      "zip": "900 31"
+    },
+    "contact": {
+      "phone": "0914 504 040",
+      "web": "http://www.maso-udeniny.sk/kontakt.htm"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:24.840Z"
+  },
+  {
+    "id": "0bea75fe-6c5c-4d1a-96c3-53f06a42bf3a",
+    "slug": "farma-kuchyna",
+    "name": "Farma Kuchyňa",
+    "description": "Farma Kuchyňa nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.408403299999996,
+      "lng": 17.145139,
+      "address": "Kuchyňa 561",
+      "city": "Kuchyňa",
+      "kraj": "Jihomoravský",
+      "zip": "900 52"
+    },
+    "contact": {
+      "phone": "0908 142 001",
+      "web": "http://farmakuchyna.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:24.841Z"
+  },
+  {
+    "id": "ca1e4bdf-2aac-4986-9d92-60fd5b543770",
+    "slug": "farm-house-farmarsky-obchod-m-so-a-m-sove-vyrobky",
+    "name": "Farm House – farmársky obchod, mäso a mäsové výrobky",
+    "description": "Farm House – farmársky obchod, mäso a mäsové výrobky nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.167570999999995,
+      "lng": 17.1528557,
+      "address": "Rožňavská 1A",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "831 04"
+    },
+    "contact": {
+      "phone": "0908 601 200"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:24.841Z"
+  },
+  {
+    "id": "b66fddd8-fb2c-40a4-b638-e2a57283d1c7",
+    "slug": "biofarma-priroda-salas-stupava",
+    "name": "Biofarma Príroda Salaš Stupava",
+    "description": "Biofarma Príroda Salaš Stupava nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.3054318,
+      "lng": 17.0434836,
+      "address": "Dúbrava - Botanická záhrada Stupava",
+      "city": "Stupava",
+      "kraj": "Jihomoravský",
+      "zip": "900 31"
+    },
+    "contact": {
+      "phone": "0918 280 546",
+      "web": "https://biofarma.sk/o-nas"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:24.842Z"
+  },
+  {
+    "id": "188a6237-33d8-4304-8ce5-5b1e3f84c5e0",
+    "slug": "farm-house-oc-vajnoria-farmarsky-obchod-m-so-a-m-sove-vyrobky",
+    "name": "Farm House - OC Vajnoria, farmársky obchod, mäso a mäsové výrobky",
+    "description": "Farm House - OC Vajnoria, farmársky obchod, mäso a mäsové výrobky nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.1997395,
+      "lng": 17.1968811,
+      "address": "Pri starom letisku 3",
+      "city": "NC",
+      "kraj": "Jihomoravský",
+      "zip": "831 07"
+    },
+    "contact": {
+      "phone": "0951 112 012",
+      "web": "http://www.farmhouse.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:24.842Z"
+  },
+  {
+    "id": "b9ad6da3-b3a8-4c31-b95e-e58cc06c35ae",
+    "slug": "farmarynk-stupava",
+    "name": "FarmaRynk Stupava",
+    "description": "FarmaRynk Stupava nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.2741381,
+      "lng": 17.0318801,
+      "address": "Hlavná 28",
+      "city": "Stupava",
+      "kraj": "Jihomoravský",
+      "zip": "900 31"
+    },
+    "contact": {
+      "phone": "0917 545 555",
+      "web": "http://www.farmarynk.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:24.842Z"
+  },
+  {
+    "id": "ae38f71d-f50a-429d-9416-99c71942fda0",
+    "slug": "bylinkaren-bratislava",
+    "name": "Bylinkáreň Bratislava",
+    "description": "V našej bylinkárni nájdete všetko potrebné na liečenie zdravotných problémov silou prírody. Liečivé bylinky, tinktúry, oleje, masti a krémy na všetky boľačky.",
+    "categories": [
+      "byliny"
+    ],
+    "location": {
+      "lat": 48.1697081,
+      "lng": 17.1730838,
+      "address": "Na križovatkách 78",
+      "city": "Bratislava",
+      "kraj": "Jihomoravský",
+      "zip": "821 04"
+    },
+    "contact": {
+      "phone": "0905 400 730",
+      "web": "https://www.bylinkyeshop.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:57:26.146Z"
+  },
+  {
+    "id": "ca3c7285-176a-4959-b2df-807784fa0727",
+    "slug": "koreninova-a-lieciva-zahrada",
+    "name": "Koreninová a liečivá záhrada",
+    "description": "Koreninová a liečivá záhrada nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.1700932,
+      "lng": 18.1563174,
+      "address": "Na Sihoti 19",
+      "city": "Veľký Kýr",
+      "kraj": "Zlínský",
+      "zip": "941 07"
+    },
+    "contact": {
+      "phone": "0908 086 925",
+      "web": "https://www.koreninovazahrada.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:59:09.286Z"
+  },
+  {
+    "id": "a0130659-9455-4d46-a3c0-6eeaa1e277d2",
+    "slug": "bio-farm-s-r-o",
+    "name": "BIO-FARM s.r.o.",
+    "description": "BIO-FARM s.r.o. nabízí přímý prodej produktů z vlastní produkce. Nakupte čerstvé od farmáře bez prostředníků.",
+    "categories": [
+      "ostatní"
+    ],
+    "location": {
+      "lat": 48.995949499999995,
+      "lng": 20.3657568,
+      "address": "Priečna",
+      "city": "Spišský Štiavnik",
+      "kraj": "Moravskoslezský",
+      "zip": "059 14"
+    },
+    "contact": {
+      "phone": "052/778 57 21",
+      "web": "http://www.biofarm.sk"
+    },
+    "openingHours": null,
+    "images": [],
+    "verified": false,
+    "createdAt": "2026-03-27T13:59:39.817Z"
   }
 ]
