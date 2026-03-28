@@ -74,7 +74,7 @@ export function BlogPreview() {
                     {article.title}
                   </h3>
 
-                  <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-4 flex-1">
+                  <p className="text-xs text-neutral-500 leading-relaxed line-clamp-2 mb-4 flex-1">
                     {article.excerpt}
                   </p>
 

@@ -62,7 +62,7 @@ export function MyReviewsClient() {
           <Star className="w-8 h-8 text-earth-300" aria-hidden="true" />
         </div>
         <h2 className="font-heading font-bold text-forest text-xl mb-2">Žádné recenze</h2>
-        <p className="text-gray-400 text-sm mb-6 max-w-xs leading-relaxed">
+        <p className="text-neutral-400 text-sm mb-6 max-w-xs leading-relaxed">
           Navštivte farmu a zanechte recenzi na záložce Recenze v detailu farmy.
         </p>
         <Link
@@ -79,14 +79,14 @@ export function MyReviewsClient() {
     <div className="space-y-4">
       <Link
         href="/profil"
-        className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-forest transition-colors mb-2"
+        className="inline-flex items-center gap-1.5 text-sm text-neutral-400 hover:text-forest transition-colors mb-2"
       >
         <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
         Zpět na profil
       </Link>
 
       {reviews.map(({ farmSlug, farmName, review }, idx) => (
-        <div key={`${farmSlug}-${idx}`} className="bg-white rounded-2xl border border-gray-100 shadow-card p-5">
+        <div key={`${farmSlug}-${idx}`} className="bg-white rounded-2xl border border-neutral-100 shadow-card p-5">
           <div className="flex items-start justify-between gap-3 mb-3">
             <div>
               <Link
@@ -95,20 +95,20 @@ export function MyReviewsClient() {
               >
                 {farmName}
               </Link>
-              <p className="text-xs text-gray-400 mt-0.5">{review.date}</p>
+              <p className="text-xs text-neutral-400 mt-0.5">{review.date}</p>
             </div>
             <div className="flex gap-0.5">
               {[1, 2, 3, 4, 5].map((s) => (
                 <Star
                   key={s}
-                  className={s <= review.rating ? 'w-4 h-4 text-earth-400 fill-earth-400' : 'w-4 h-4 text-gray-200'}
+                  className={s <= review.rating ? 'w-4 h-4 text-earth-400 fill-earth-400' : 'w-4 h-4 text-neutral-200'}
                   aria-hidden="true"
                 />
               ))}
             </div>
           </div>
-          {review.text && <p className="text-sm text-gray-600 leading-relaxed">{review.text}</p>}
-          <p className="text-xs text-gray-400 mt-2">{review.name}{review.city ? `, ${review.city}` : ''}</p>
+          {review.text && <p className="text-sm text-neutral-600 leading-relaxed">{review.text}</p>}
+          <p className="text-xs text-neutral-400 mt-2">{review.name}{review.city ? `, ${review.city}` : ''}</p>
         </div>
       ))}
     </div>

@@ -55,7 +55,7 @@ export function Testimonials() {
                     key={idx}
                     className={cn(
                       'w-4 h-4',
-                      idx < t.rating ? 'text-earth-400 fill-earth-400' : 'text-gray-200 fill-gray-200',
+                      idx < t.rating ? 'text-earth-400 fill-earth-400' : 'text-neutral-200 fill-neutral-200',
                     )}
                     aria-hidden="true"
                   />
@@ -64,13 +64,13 @@ export function Testimonials() {
 
               {/* Quote */}
               <blockquote className="flex-1 mb-6">
-                <p className="text-sm text-gray-600 leading-relaxed italic">
+                <p className="text-sm text-neutral-600 leading-relaxed italic">
                   &ldquo;{t.quote}&rdquo;
                 </p>
               </blockquote>
 
               {/* Author */}
-              <div className="flex items-center gap-3 pt-5 border-t border-gray-50">
+              <div className="flex items-center gap-3 pt-5 border-t border-neutral-50">
                 <div
                   className={cn(
                     'w-10 h-10 rounded-2xl flex items-center justify-center text-white font-bold text-xs flex-shrink-0 shadow-sm',
@@ -82,7 +82,7 @@ export function Testimonials() {
                 </div>
                 <div>
                   <div className="font-heading font-semibold text-forest text-sm">{t.name}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">
+                  <div className="text-xs text-neutral-400 mt-0.5">
                     {t.city} · {t.since}
                   </div>
                 </div>

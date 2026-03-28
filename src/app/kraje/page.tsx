@@ -58,7 +58,7 @@ export default async function KrajePage() {
                 >
                   <div
                     className={cn(
-                      'relative rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm',
+                      'relative rounded-2xl overflow-hidden bg-white border border-neutral-100 shadow-sm',
                       'hover:shadow-card transition-all duration-200 hover:-translate-y-0.5',
                     )}
                   >
@@ -71,7 +71,7 @@ export default async function KrajePage() {
                       <h2 className="font-heading font-bold text-forest text-sm mb-0.5 group-hover:text-primary-600 transition-colors">
                         {kraj.name}
                       </h2>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-neutral-400">
                         {count} {count === 1 ? 'farma' : count < 5 ? 'farmy' : 'farem'}
                       </p>
                     </div>
@@ -94,9 +94,9 @@ export default async function KrajePage() {
               { label: 'Ověřených farem', value: farms.length > 0 ? String(farms.length) : 'Stovky' },
               { label: 'Druhů produktů', value: 'Tisíce' },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 text-center">
+              <div key={stat.label} className="bg-white rounded-2xl border border-neutral-100 shadow-sm p-5 text-center">
                 <div className="font-heading font-bold text-2xl text-forest mb-1">{stat.value}</div>
-                <div className="text-xs text-gray-400">{stat.label}</div>
+                <div className="text-xs text-neutral-400">{stat.label}</div>
               </div>
             ))}
           </div>

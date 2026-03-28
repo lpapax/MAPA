@@ -27,7 +27,7 @@ export function HistorieClient() {
           <History className="w-8 h-8 text-primary-300" aria-hidden="true" />
         </div>
         <h2 className="font-heading font-bold text-forest text-xl mb-2">Žádná historie</h2>
-        <p className="text-gray-400 text-sm mb-6 max-w-xs leading-relaxed">
+        <p className="text-neutral-400 text-sm mb-6 max-w-xs leading-relaxed">
           Otevřete detail farmy a uvidíte ji zde.
         </p>
         <Link
@@ -45,14 +45,14 @@ export function HistorieClient() {
       <div className="flex items-center justify-between">
         <Link
           href="/profil"
-          className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-forest transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-neutral-400 hover:text-forest transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
           Zpět na profil
         </Link>
         <button
           onClick={clearRecent}
-          className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-red-500 transition-colors cursor-pointer"
         >
           <Trash2 className="w-3 h-3" aria-hidden="true" />
           Smazat historii
@@ -63,14 +63,14 @@ export function HistorieClient() {
         <Link
           key={farm.slug}
           href={`/farmy/${farm.slug}`}
-          className="flex items-start gap-4 bg-white rounded-2xl border border-gray-100 shadow-card p-4 hover:shadow-card-hover transition-all group"
+          className="flex items-start gap-4 bg-white rounded-2xl border border-neutral-100 shadow-card p-4 hover:shadow-card-hover transition-all group"
         >
           <div className="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0 font-heading font-bold text-primary-700 text-base group-hover:bg-primary-100 transition-colors">
             {farm.name.charAt(0)}
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-heading font-semibold text-forest text-sm truncate">{farm.name}</p>
-            <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
+            <div className="flex items-center gap-1 text-xs text-neutral-400 mt-0.5">
               <MapPin className="w-3 h-3" aria-hidden="true" />
               {farm.kraj}
             </div>
@@ -86,7 +86,7 @@ export function HistorieClient() {
             </div>
           </div>
           <div className="text-right flex-shrink-0">
-            <span className="text-[10px] text-gray-400">{formatRelativeTime(farm.visitedAt)}</span>
+            <span className="text-[10px] text-neutral-400">{formatRelativeTime(farm.visitedAt)}</span>
           </div>
         </Link>
       ))}

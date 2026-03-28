@@ -17,7 +17,7 @@ export default function NarokujeFarmuPage() {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8 text-center">
             <h1 className="font-heading text-3xl font-bold text-forest mb-2">Správa vaší farmy</h1>
-            <p className="text-gray-500 text-sm">
+            <p className="text-neutral-500 text-sm">
               Ověřte se jako provozovatel a získejte přístup ke správě informací.
             </p>
           </div>

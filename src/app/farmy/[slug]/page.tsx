@@ -121,7 +121,7 @@ export default async function FarmDetailPage({ params }: PageProps) {
             </div>
 
             <div className="flex-1 pb-1">
-              <nav aria-label="Navigační cesta" className="flex items-center gap-1 text-xs text-gray-400 mb-1.5">
+              <nav aria-label="Navigační cesta" className="flex items-center gap-1 text-xs text-neutral-400 mb-1.5">
                 <Link href="/" className="hover:text-primary-600 transition-colors cursor-pointer">Domů</Link>
                 <ChevronRight className="w-3 h-3" aria-hidden="true" />
                 <Link href="/mapa" className="hover:text-primary-600 transition-colors cursor-pointer">Farmy</Link>
@@ -150,7 +150,7 @@ export default async function FarmDetailPage({ params }: PageProps) {
                   </span>
                 )}
                 {(farm.viewCount ?? 0) > 0 && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-50 border border-gray-200 text-gray-500 text-xs">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-neutral-50 border border-neutral-200 text-neutral-500 text-xs">
                     <Eye className="w-3.5 h-3.5" aria-hidden="true" />
                     {farm.viewCount?.toLocaleString('cs-CZ')} zobrazení
                   </span>
@@ -161,7 +161,7 @@ export default async function FarmDetailPage({ params }: PageProps) {
                       'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold',
                       isOpen
                         ? 'bg-green-50 border border-green-200 text-green-700'
-                        : 'bg-gray-50 border border-gray-200 text-gray-500',
+                        : 'bg-neutral-50 border border-neutral-200 text-neutral-500',
                     )}
                     aria-live="polite"
                   >
@@ -171,7 +171,7 @@ export default async function FarmDetailPage({ params }: PageProps) {
                 )}
               </div>
 
-              <div className="flex items-center gap-1.5 text-sm text-gray-500 mt-1">
+              <div className="flex items-center gap-1.5 text-sm text-neutral-500 mt-1">
                 <MapPin className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
                 {farm.location.city}, {farm.location.kraj}
               </div>

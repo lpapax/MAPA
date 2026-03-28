@@ -25,7 +25,7 @@ export default function GlobalError({ error, reset }: ErrorProps) {
         <h1 className="font-heading text-2xl font-bold text-forest mb-3">
           Něco se pokazilo
         </h1>
-        <p className="text-gray-500 text-sm leading-relaxed mb-8 max-w-sm mx-auto">
+        <p className="text-neutral-500 text-sm leading-relaxed mb-8 max-w-sm mx-auto">
           Na serveru nastala neočekávaná chyba. Zkuste stránku načíst znovu nebo se vraťte domů.
           Pokud problém přetrvává, kontaktujte nás na{' '}
           <a href="mailto:info@mapafarem.cz" className="text-primary-600 hover:underline">
@@ -44,7 +44,7 @@ export default function GlobalError({ error, reset }: ErrorProps) {
           </button>
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-forest font-semibold text-sm transition-colors duration-200 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-forest font-semibold text-sm transition-colors duration-200 cursor-pointer"
           >
             <Home className="w-4 h-4" aria-hidden="true" />
             Domovská stránka

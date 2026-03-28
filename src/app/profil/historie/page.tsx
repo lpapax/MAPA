@@ -17,7 +17,7 @@ export default function ProfilHistoriePage() {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <h1 className="font-heading text-3xl font-bold text-forest mb-2">Historie návštěv</h1>
-            <p className="text-gray-500 text-sm">Naposledy zobrazené farmy.</p>
+            <p className="text-neutral-500 text-sm">Naposledy zobrazené farmy.</p>
           </div>
           <HistorieClient />
         </div>

@@ -182,7 +182,7 @@ npx vercel env add NEXT_PUBLIC_MAPBOX_TOKEN production
 
 ### Design system
 
-Typography: `font-sans` = Raleway, `font-heading` = Lora (serif). Imported from Google Fonts in `globals.css`. Body background is warm cream `#F4F1EC`.
+Typography: `font-sans` = Inter, `font-heading` = Fraunces (variable serif). Imported from Google Fonts in `globals.css`. Body background is warm off-white `#fafaf8`.
 
 Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw colors:
 
@@ -191,9 +191,10 @@ Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw 
 | `primary-*` | Emerald green scale | CTAs, active states, category badges |
 | `earth-*` | Warm amber scale | Stars, secondary accents, highlight badges |
 | `cta` / `cta-dark` | Cyan `#0891B2` | Info/CTA variant |
-| `forest` | `#064E3B` | Main headings, dark backgrounds |
-| `surface` | `#F4F1EC` | Section backgrounds (warm cream) |
-| `cream` | `#FDFCF9` | Card backgrounds, lightest surface |
+| `forest` | `#1a4214` | Main headings, dark backgrounds |
+| `surface` | `#fafaf8` | Section backgrounds (warm off-white) |
+| `cream` | `#ffffff` | Card backgrounds, lightest surface |
+| `neutral-*` | warm neutral scale | Use instead of raw `gray-*` classes |
 | `shadow-card` | subtle drop shadow | Default card |
 | `shadow-card-hover` | green-tinted hover | Card on hover |
 | `shadow-card-earth` | amber-tinted | Earth-accented cards |

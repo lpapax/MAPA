@@ -34,7 +34,7 @@ export default function SoukromiPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="mb-10">
             <h1 className="font-heading text-4xl font-bold text-forest mb-3">Ochrana soukromí</h1>
-            <p className="text-gray-500 text-sm">
+            <p className="text-neutral-500 text-sm">
               Platné od <strong>1. 1. 2025</strong> · Zpracování osobních údajů dle GDPR
             </p>
           </div>
@@ -42,13 +42,13 @@ export default function SoukromiPage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
             {/* TOC sidebar */}
             <aside className="lg:col-span-1">
-              <div className="sticky top-24 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <div className="sticky top-24 bg-white rounded-2xl border border-neutral-100 shadow-sm p-5">
                 <h2 className="font-heading font-bold text-forest text-sm mb-4">Obsah</h2>
                 <nav aria-label="Obsah dokumentu">
                   <ul className="space-y-2">
                     {TOC.map((item) => (
                       <li key={item.id}>
-                        <a href={`#${item.id}`} className="text-xs text-gray-500 hover:text-primary-600 transition-colors cursor-pointer leading-snug block">
+                        <a href={`#${item.id}`} className="text-xs text-neutral-500 hover:text-primary-600 transition-colors cursor-pointer leading-snug block">
                           {item.title}
                         </a>
                       </li>
@@ -59,7 +59,7 @@ export default function SoukromiPage() {
             </aside>
 
             {/* Content */}
-            <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-10 text-sm text-gray-600 leading-relaxed">
+            <div className="lg:col-span-3 bg-white rounded-2xl border border-neutral-100 shadow-sm p-8 space-y-10 text-sm text-neutral-600 leading-relaxed">
 
               <section id="spravce">
                 <h2 className="font-heading text-xl font-bold text-forest mb-4">1. Správce osobních údajů</h2>
@@ -102,9 +102,9 @@ export default function SoukromiPage() {
                         ['Bezpečnost a ochrana Platformy', 'Oprávněný zájem (čl. 6 odst. 1 písm. f) GDPR)'],
                         ['Statistiky a zlepšování Platformy', 'Oprávněný zájem (čl. 6 odst. 1 písm. f) GDPR)'],
                       ].map(([ucel, zaklad]) => (
-                        <tr key={ucel} className="hover:bg-gray-50">
-                          <td className="p-3 text-gray-600">{ucel}</td>
-                          <td className="p-3 text-gray-500">{zaklad}</td>
+                        <tr key={ucel} className="hover:bg-neutral-50">
+                          <td className="p-3 text-neutral-600">{ucel}</td>
+                          <td className="p-3 text-neutral-500">{zaklad}</td>
                         </tr>
                       ))}
                     </tbody>

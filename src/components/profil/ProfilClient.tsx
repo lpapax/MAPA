@@ -46,8 +46,8 @@ export function ProfilClient() {
       <SavedSearchesSection />
 
       {/* Quick links */}
-      <section className="bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-50">
+      <section className="bg-white rounded-2xl border border-neutral-100 shadow-card overflow-hidden">
+        <div className="px-5 py-4 border-b border-neutral-50">
           <h2 className="font-heading font-semibold text-forest text-base">Moje data</h2>
         </div>
         <div className="divide-y divide-gray-50">
@@ -61,10 +61,10 @@ export function ProfilClient() {
               </div>
               <div>
                 <p className="text-sm font-medium text-forest">Moje recenze</p>
-                <p className="text-xs text-gray-400">Recenze, které jste napsali</p>
+                <p className="text-xs text-neutral-400">Recenze, které jste napsali</p>
               </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" aria-hidden="true" />
+            <ChevronRight className="w-4 h-4 text-neutral-300 group-hover:text-neutral-500 transition-colors" aria-hidden="true" />
           </Link>
           <Link
             href="/profil/historie"
@@ -76,10 +76,10 @@ export function ProfilClient() {
               </div>
               <div>
                 <p className="text-sm font-medium text-forest">Historie návštěv</p>
-                <p className="text-xs text-gray-400">Naposledy zobrazené farmy</p>
+                <p className="text-xs text-neutral-400">Naposledy zobrazené farmy</p>
               </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" aria-hidden="true" />
+            <ChevronRight className="w-4 h-4 text-neutral-300 group-hover:text-neutral-500 transition-colors" aria-hidden="true" />
           </Link>
           <Link
             href="/oblibene"
@@ -93,16 +93,16 @@ export function ProfilClient() {
               </div>
               <div>
                 <p className="text-sm font-medium text-forest">Oblíbené farmy</p>
-                <p className="text-xs text-gray-400">Uložené farmy pro rychlý přístup</p>
+                <p className="text-xs text-neutral-400">Uložené farmy pro rychlý přístup</p>
               </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" aria-hidden="true" />
+            <ChevronRight className="w-4 h-4 text-neutral-300 group-hover:text-neutral-500 transition-colors" aria-hidden="true" />
           </Link>
         </div>
       </section>
 
       {/* Appearance */}
-      <section className="bg-white rounded-2xl border border-gray-100 shadow-card p-5 space-y-5">
+      <section className="bg-white rounded-2xl border border-neutral-100 shadow-card p-5 space-y-5">
         <h2 className="font-heading font-semibold text-forest text-base">Vzhled</h2>
 
         {/* Dark mode */}
@@ -114,7 +114,7 @@ export function ProfilClient() {
             }
             <div>
               <p className="text-sm font-medium text-forest">Tmavý režim</p>
-              <p className="text-xs text-gray-400">Tmavé pozadí šetří oči v noci</p>
+              <p className="text-xs text-neutral-400">Tmavé pozadí šetří oči v noci</p>
             </div>
           </div>
           <button
@@ -124,7 +124,7 @@ export function ProfilClient() {
             onClick={() => update({ darkMode: !prefs.darkMode })}
             className={cn(
               'relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 cursor-pointer',
-              prefs.darkMode ? 'bg-primary-600' : 'bg-gray-200',
+              prefs.darkMode ? 'bg-primary-600' : 'bg-neutral-200',
             )}
           >
             <span
@@ -146,7 +146,7 @@ export function ProfilClient() {
                 'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all cursor-pointer',
                 prefs.defaultView === 'map'
                   ? 'bg-primary-50 border-primary-300 text-primary-700'
-                  : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300',
+                  : 'bg-white border-neutral-200 text-neutral-500 hover:border-neutral-300',
               )}
             >
               <Map className="w-4 h-4" aria-hidden="true" />
@@ -158,7 +158,7 @@ export function ProfilClient() {
                 'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all cursor-pointer',
                 prefs.defaultView === 'list'
                   ? 'bg-primary-50 border-primary-300 text-primary-700'
-                  : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300',
+                  : 'bg-white border-neutral-200 text-neutral-500 hover:border-neutral-300',
               )}
             >
               <List className="w-4 h-4" aria-hidden="true" />
@@ -177,7 +177,7 @@ export function ProfilClient() {
                 'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all cursor-pointer',
                 prefs.cardSize === 'full'
                   ? 'bg-primary-50 border-primary-300 text-primary-700'
-                  : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300',
+                  : 'bg-white border-neutral-200 text-neutral-500 hover:border-neutral-300',
               )}
             >
               <LayoutGrid className="w-4 h-4" aria-hidden="true" />
@@ -189,7 +189,7 @@ export function ProfilClient() {
                 'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all cursor-pointer',
                 prefs.cardSize === 'compact'
                   ? 'bg-primary-50 border-primary-300 text-primary-700'
-                  : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300',
+                  : 'bg-white border-neutral-200 text-neutral-500 hover:border-neutral-300',
               )}
             >
               <AlignJustify className="w-4 h-4" aria-hidden="true" />
@@ -200,7 +200,7 @@ export function ProfilClient() {
       </section>
 
       {/* Map preferences */}
-      <section className="bg-white rounded-2xl border border-gray-100 shadow-card p-5 space-y-5">
+      <section className="bg-white rounded-2xl border border-neutral-100 shadow-card p-5 space-y-5">
         <h2 className="font-heading font-semibold text-forest text-base">Preference na mapě</h2>
 
         {/* Preferred kraj */}
@@ -212,14 +212,14 @@ export function ProfilClient() {
             id="pref-kraj"
             value={prefs.kraj ?? ''}
             onChange={(e) => update({ kraj: (e.target.value as KrajCode) || null })}
-            className="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm bg-white text-forest focus:outline-none focus:ring-2 focus:ring-primary-400 cursor-pointer"
+            className="w-full px-3 py-2 rounded-xl border border-neutral-200 text-sm bg-white text-forest focus:outline-none focus:ring-2 focus:ring-primary-400 cursor-pointer"
           >
             <option value="">Celá ČR</option>
             {KRAJ_OPTIONS.map((k) => (
               <option key={k} value={k}>{k}</option>
             ))}
           </select>
-          <p className="text-xs text-gray-400 mt-1">Mapa se automaticky zaměří na váš kraj</p>
+          <p className="text-xs text-neutral-400 mt-1">Mapa se automaticky zaměří na váš kraj</p>
         </div>
 
         {/* Search radius */}
@@ -240,7 +240,7 @@ export function ProfilClient() {
             onChange={(e) => update({ searchRadius: Number(e.target.value) })}
             className="w-full accent-primary-600 cursor-pointer"
           />
-          <div className="flex justify-between text-xs text-gray-400 mt-0.5">
+          <div className="flex justify-between text-xs text-neutral-400 mt-0.5">
             <span>5 km</span>
             <span>100 km</span>
           </div>
@@ -249,7 +249,7 @@ export function ProfilClient() {
         {/* Preferred categories */}
         <div>
           <p className="text-sm font-medium text-forest mb-2">Oblíbené kategorie</p>
-          <p className="text-xs text-gray-400 mb-3">Tyto kategorie budou předvybrány při otevření mapy</p>
+          <p className="text-xs text-neutral-400 mb-3">Tyto kategorie budou předvybrány při otevření mapy</p>
           <div className="flex flex-wrap gap-2">
             {UNIQUE_CATEGORIES.map((cat) => (
               <button
@@ -259,7 +259,7 @@ export function ProfilClient() {
                   'px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer',
                   prefs.categories.includes(cat)
                     ? 'bg-primary-600 border-primary-600 text-white'
-                    : 'bg-white border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700',
+                    : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-300 hover:text-primary-700',
                 )}
               >
                 {CATEGORY_LABELS[cat]}
@@ -270,10 +270,10 @@ export function ProfilClient() {
       </section>
 
       {/* Bedynka frequency */}
-      <section className="bg-white rounded-2xl border border-gray-100 shadow-card p-5">
+      <section className="bg-white rounded-2xl border border-neutral-100 shadow-card p-5">
         <h2 className="font-heading font-semibold text-forest text-base mb-4">Bedýnka</h2>
         <p className="text-sm font-medium text-forest mb-2">Frekvence připomínek</p>
-        <p className="text-xs text-gray-400 mb-3">Jak často vám připomínat, abyste si vyřídili bedýnku</p>
+        <p className="text-xs text-neutral-400 mb-3">Jak často vám připomínat, abyste si vyřídili bedýnku</p>
         <div className="flex flex-wrap gap-2">
           {BEDYNKA_OPTIONS.map((opt) => (
             <button
@@ -283,7 +283,7 @@ export function ProfilClient() {
                 'px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer',
                 prefs.bedynkaFrequency === opt.value
                   ? 'bg-primary-600 border-primary-600 text-white'
-                  : 'bg-white border-gray-200 text-gray-600 hover:border-primary-300 hover:text-primary-700',
+                  : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-300 hover:text-primary-700',
               )}
             >
               {opt.label}
@@ -304,7 +304,7 @@ export function ProfilClient() {
       <div className="flex justify-end pb-4">
         <button
           onClick={reset}
-          className="text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer underline underline-offset-2"
+          className="text-xs text-neutral-400 hover:text-red-500 transition-colors cursor-pointer underline underline-offset-2"
         >
           Obnovit výchozí nastavení
         </button>

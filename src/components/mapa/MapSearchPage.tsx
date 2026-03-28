@@ -79,20 +79,20 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
   return (
     <div className="flex flex-col h-[calc(100vh-80px)]">
       {/* Top search bar */}
-      <div className="flex-none bg-white border-b border-gray-100 shadow-sm px-4 py-3 z-20">
+      <div className="flex-none bg-white border-b border-neutral-100 shadow-sm px-4 py-3 z-20">
         <div className="max-w-7xl mx-auto flex items-center gap-3">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" aria-hidden="true" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" aria-hidden="true" />
             <input
               type="search"
               placeholder="Hledat farmu nebo město…"
               value={filters.searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Vyhledávání farem"
-              className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-surface"
+              className="w-full pl-9 pr-3 py-2 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-surface"
             />
             {filters.searchQuery && (
-              <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer transition-colors" aria-label="Smazat hledání">
+              <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 cursor-pointer transition-colors" aria-label="Smazat hledání">
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
@@ -106,7 +106,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
               'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-colors duration-200 cursor-pointer',
               filtersOpen || hasActiveFilters
                 ? 'bg-primary-600 border-primary-600 text-white'
-                : 'bg-white border-gray-200 text-gray-600 hover:border-primary-400 hover:text-primary-600',
+                : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400 hover:text-primary-600',
             )}
           >
             <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
@@ -132,18 +132,18 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
               disabled={savingSearch}
               aria-label="Uložit aktuální hledání"
               title="Uložit hledání"
-              className="hidden sm:flex items-center justify-center w-9 h-9 rounded-xl border border-gray-200 text-gray-500 hover:border-primary-400 hover:text-primary-600 transition-colors cursor-pointer disabled:opacity-50"
+              className="hidden sm:flex items-center justify-center w-9 h-9 rounded-xl border border-neutral-200 text-neutral-500 hover:border-primary-400 hover:text-primary-600 transition-colors cursor-pointer disabled:opacity-50"
             >
               <Bookmark className="w-4 h-4" aria-hidden="true" />
             </button>
           )}
 
           {/* Mobile toggle */}
-          <div className="flex md:hidden rounded-xl overflow-hidden border border-gray-200">
-            <button onClick={() => setMobileView('list')} aria-pressed={mobileView === 'list'} className={cn('flex items-center gap-1.5 px-3 py-2 text-xs font-medium cursor-pointer transition-colors', mobileView === 'list' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600')}>
+          <div className="flex md:hidden rounded-xl overflow-hidden border border-neutral-200">
+            <button onClick={() => setMobileView('list')} aria-pressed={mobileView === 'list'} className={cn('flex items-center gap-1.5 px-3 py-2 text-xs font-medium cursor-pointer transition-colors', mobileView === 'list' ? 'bg-primary-600 text-white' : 'bg-white text-neutral-600')}>
               <List className="w-3.5 h-3.5" aria-hidden="true" /> Seznam
             </button>
-            <button onClick={() => setMobileView('map')} aria-pressed={mobileView === 'map'} className={cn('flex items-center gap-1.5 px-3 py-2 text-xs font-medium cursor-pointer transition-colors', mobileView === 'map' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600')}>
+            <button onClick={() => setMobileView('map')} aria-pressed={mobileView === 'map'} className={cn('flex items-center gap-1.5 px-3 py-2 text-xs font-medium cursor-pointer transition-colors', mobileView === 'map' ? 'bg-primary-600 text-white' : 'bg-white text-neutral-600')}>
               <MapIcon className="w-3.5 h-3.5" aria-hidden="true" /> Mapa
             </button>
           </div>
@@ -151,16 +151,16 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
 
         {/* Filters panel */}
         {filtersOpen && (
-          <div className="max-w-7xl mx-auto mt-3 pt-3 border-t border-gray-100">
+          <div className="max-w-7xl mx-auto mt-3 pt-3 border-t border-neutral-100">
             <div className="flex flex-wrap gap-4">
               {/* Categories */}
               <div>
-                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Produkty</div>
+                <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Produkty</div>
                 <div className="flex flex-wrap gap-1.5" role="group" aria-label="Kategorie">
                   {FILTER_CATEGORIES.map((cat) => (
                     <button key={cat} onClick={() => toggleCategory(cat)} aria-pressed={filters.categories.includes(cat)}
                       className={cn('px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer',
-                        filters.categories.includes(cat) ? 'bg-primary-600 border-primary-600 text-white' : 'bg-white border-gray-200 text-gray-600 hover:border-primary-400 hover:text-primary-600',
+                        filters.categories.includes(cat) ? 'bg-primary-600 border-primary-600 text-white' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400 hover:text-primary-600',
                       )}>
                       {CATEGORY_LABELS[cat]}
                     </button>
@@ -170,12 +170,12 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
 
               {/* Kraj */}
               <div>
-                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Kraj</div>
+                <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Kraj</div>
                 <select
                   value={filters.kraj ?? ''}
                   onChange={(e) => setKraj(e.target.value as typeof filters.kraj || null)}
                   aria-label="Vybrat kraj"
-                  className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-400 cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl border border-neutral-200 text-xs text-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary-400 cursor-pointer"
                 >
                   <option value="">Všechny kraje</option>
                   {KRAJ_OPTIONS.map((k) => <option key={k} value={k}>{k}</option>)}
@@ -184,17 +184,17 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
 
               {/* Open now */}
               <div>
-                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Dostupnost</div>
+                <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Dostupnost</div>
                 <button onClick={() => setOpenNow(!filters.openNow)} aria-pressed={filters.openNow}
                   className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
-                    filters.openNow ? 'bg-green-50 border-green-400 text-green-700' : 'bg-white border-gray-200 text-gray-600 hover:border-green-400',
+                    filters.openNow ? 'bg-green-50 border-green-400 text-green-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-green-400',
                   )}>
                   <Clock className="w-3.5 h-3.5" aria-hidden="true" /> Nyní otevřeno
                 </button>
               </div>
 
               {hasActiveFilters && (
-                <button onClick={clearFilters} className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer self-end pb-1">
+                <button onClick={clearFilters} className="flex items-center gap-1 text-xs text-neutral-400 hover:text-red-500 transition-colors cursor-pointer self-end pb-1">
                   <X className="w-3 h-3" /> Zrušit filtry
                 </button>
               )}
@@ -208,14 +208,14 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
         {/* Sidebar — 40% on desktop */}
         <aside
           className={cn(
-            'flex-none overflow-hidden flex-col border-r border-gray-100 bg-white',
+            'flex-none overflow-hidden flex-col border-r border-neutral-100 bg-white',
             'md:flex md:w-[400px] lg:w-[440px]',
             mobileView === 'list' ? 'flex w-full' : 'hidden',
           )}
           aria-label="Seznam farem"
         >
           {/* Result count */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-50 flex-shrink-0">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-50 flex-shrink-0">
             <span className="text-sm font-semibold text-forest">
               {filtered.length}{' '}
               {filtered.length === 1 ? 'farma' : filtered.length < 5 ? 'farmy' : 'farem'}
@@ -231,11 +231,11 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
           <div className="flex-1 overflow-y-auto scrollbar-thin px-3 py-3 space-y-2.5">
             {filtered.length === 0 ? (
               <div className="flex flex-col items-center py-16 text-center">
-                <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center mb-3">
-                  <Search className="w-5 h-5 text-gray-300" aria-hidden="true" />
+                <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center mb-3">
+                  <Search className="w-5 h-5 text-neutral-300" aria-hidden="true" />
                 </div>
-                <p className="text-sm font-medium text-gray-500 mb-1">Žádné výsledky</p>
-                <p className="text-xs text-gray-400">Zkuste upravit filtry nebo vyhledávání</p>
+                <p className="text-sm font-medium text-neutral-500 mb-1">Žádné výsledky</p>
+                <p className="text-xs text-neutral-400">Zkuste upravit filtry nebo vyhledávání</p>
               </div>
             ) : (
               filtered.map((farm) => {
@@ -257,7 +257,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                         ? 'border-primary-500 bg-primary-50 shadow-glow'
                         : isHovered
                           ? 'border-primary-300 bg-primary-50/50 shadow-sm'
-                          : 'border-gray-100 bg-white hover:border-primary-200 hover:shadow-sm',
+                          : 'border-neutral-100 bg-white hover:border-primary-200 hover:shadow-sm',
                     )}
                   >
                     {/* Cover thumb */}
@@ -276,7 +276,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                         </h3>
                         {farm.verified && <CheckCircle className="w-3.5 h-3.5 text-primary-500 flex-shrink-0 mt-0.5" aria-label="Ověřeno" />}
                       </div>
-                      <div className="flex items-center gap-1 text-xs text-gray-400 mb-1.5">
+                      <div className="flex items-center gap-1 text-xs text-neutral-400 mb-1.5">
                         <MapPin className="w-3 h-3" aria-hidden="true" />
                         {farm.location.city} · {farm.location.kraj}
                       </div>
@@ -289,7 +289,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                           ))}
                         </div>
                         {farm.openingHours && (
-                          <span className={cn('text-[10px] font-medium px-1.5 py-0.5 rounded-full', isOpen ? 'text-green-700 bg-green-50' : 'text-gray-400 bg-gray-50')}>
+                          <span className={cn('text-[10px] font-medium px-1.5 py-0.5 rounded-full', isOpen ? 'text-green-700 bg-green-50' : 'text-neutral-400 bg-neutral-50')}>
                             {isOpen ? 'Otevřeno' : 'Zavřeno'}
                           </span>
                         )}
@@ -304,7 +304,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                         aria-pressed={favorited}
                         className="p-1 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
                       >
-                        <Heart className={cn('w-3.5 h-3.5 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-gray-300 hover:text-rose-400')} aria-hidden="true" />
+                        <Heart className={cn('w-3.5 h-3.5 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-neutral-300 hover:text-rose-400')} aria-hidden="true" />
                       </button>
                       <button
                         onClick={() => { if (!compareDisabled) toggleCompare(farm.id) }}
@@ -313,7 +313,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                         aria-pressed={comparing}
                         className={cn(
                           'text-[9px] px-1.5 py-0.5 rounded-full border transition-all cursor-pointer leading-tight',
-                          comparing ? 'bg-forest text-white border-forest' : compareDisabled ? 'opacity-30 border-gray-200 text-gray-400 cursor-not-allowed' : 'border-gray-200 text-gray-400 hover:border-forest hover:text-forest',
+                          comparing ? 'bg-forest text-white border-forest' : compareDisabled ? 'opacity-30 border-neutral-200 text-neutral-400 cursor-not-allowed' : 'border-neutral-200 text-neutral-400 hover:border-forest hover:text-forest',
                         )}
                       >
                         {comparing ? '✓' : '+'}
@@ -329,7 +329,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
           {selectedFarmId && (() => {
             const farm = allFarms.find((f) => f.id === selectedFarmId)
             return farm ? (
-              <div className="flex-shrink-0 p-3 border-t border-gray-100 bg-white">
+              <div className="flex-shrink-0 p-3 border-t border-neutral-100 bg-white">
                 <Link href={`/farmy/${farm.slug}`} className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors cursor-pointer">
                   Zobrazit detail farmy
                   <Star className="w-4 h-4" aria-hidden="true" />

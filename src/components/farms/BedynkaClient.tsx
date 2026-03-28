@@ -39,7 +39,7 @@ export function BedynkaClient() {
           <ShoppingBasket className="w-8 h-8 text-primary-300" aria-hidden="true" />
         </div>
         <h2 className="font-heading font-bold text-forest text-xl mb-2">Bedýnka je prázdná</h2>
-        <p className="text-gray-400 text-sm mb-6 max-w-xs leading-relaxed">
+        <p className="text-neutral-400 text-sm mb-6 max-w-xs leading-relaxed">
           Přidejte produkty tlačítkem &bdquo;+ Přidat do bedýnky&ldquo; na stránce farmy.
         </p>
         <Link
@@ -56,21 +56,21 @@ export function BedynkaClient() {
     <div>
       {/* Actions */}
       <div className="flex items-center justify-between mb-6">
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-neutral-500">
           {totalItems} {totalItems === 1 ? 'položka' : totalItems < 5 ? 'položky' : 'položek'}
           {' '}ze {Object.keys(byFarm).length} {Object.keys(byFarm).length === 1 ? 'farmy' : 'farem'}
         </span>
         <div className="flex gap-2">
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-xs text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-200 text-xs text-neutral-600 hover:bg-neutral-50 transition-colors cursor-pointer"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
             {copied ? 'Zkopírováno' : 'Kopírovat'}
           </button>
           <button
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-xs text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-200 text-xs text-neutral-600 hover:bg-neutral-50 transition-colors cursor-pointer"
           >
             <Printer className="w-3.5 h-3.5" />
             Tisk
@@ -88,7 +88,7 @@ export function BedynkaClient() {
       {/* Items grouped by farm */}
       <div className="space-y-6">
         {Object.entries(byFarm).map(([farmSlug, farmItems]) => (
-          <div key={farmSlug} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div key={farmSlug} className="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
             {/* Farm header */}
             <div className="flex items-center justify-between px-5 py-3 bg-primary-50 border-b border-primary-100">
               <h2 className="font-heading font-bold text-forest text-sm">{farmItems[0].farmName}</h2>
@@ -106,14 +106,14 @@ export function BedynkaClient() {
                 <div key={item.id} className="flex items-center justify-between px-5 py-3 gap-3">
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-sm text-forest truncate">{item.productName}</p>
-                    <p className="text-xs text-gray-400">{item.price} Kč/{item.unit}</p>
+                    <p className="text-xs text-neutral-400">{item.price} Kč/{item.unit}</p>
                   </div>
                   {/* Quantity */}
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       disabled={item.quantity <= 1}
-                      className="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 disabled:opacity-30 transition-colors cursor-pointer"
+                      className="w-6 h-6 rounded-lg bg-neutral-100 flex items-center justify-center text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors cursor-pointer"
                       aria-label="Snížit množství"
                     >
                       <Minus className="w-3 h-3" />
@@ -121,7 +121,7 @@ export function BedynkaClient() {
                     <span className="text-sm font-medium text-forest w-5 text-center">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
+                      className="w-6 h-6 rounded-lg bg-neutral-100 flex items-center justify-center text-neutral-600 hover:bg-neutral-200 transition-colors cursor-pointer"
                       aria-label="Zvýšit množství"
                     >
                       <Plus className="w-3 h-3" />
@@ -133,7 +133,7 @@ export function BedynkaClient() {
                   </span>
                   <button
                     onClick={() => removeItem(item.id)}
-                    className="text-gray-300 hover:text-red-400 transition-colors cursor-pointer flex-shrink-0"
+                    className="text-neutral-300 hover:text-red-400 transition-colors cursor-pointer flex-shrink-0"
                     aria-label={`Odstranit ${item.productName}`}
                   >
                     <Trash2 className="w-4 h-4" />

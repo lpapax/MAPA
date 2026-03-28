@@ -235,11 +235,11 @@ export function MapView({ markers }: MapViewProps) {
       <div className="w-full h-full flex items-center justify-center bg-green-50">
         <div className="text-center p-8 bg-white rounded-xl shadow-md max-w-md">
           <p className="text-red-600 font-semibold text-lg mb-2">Mapa není dostupná</p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-neutral-500 text-sm">
             Chybí Mapbox API token. Přidejte{' '}
-            <code className="bg-gray-100 px-1 rounded">NEXT_PUBLIC_MAPBOX_TOKEN</code> do prostředí Vercel.
+            <code className="bg-neutral-100 px-1 rounded">NEXT_PUBLIC_MAPBOX_TOKEN</code> do prostředí Vercel.
           </p>
-          <p className="text-gray-400 text-xs mt-2">
+          <p className="text-neutral-400 text-xs mt-2">
             DEBUG: token length = {(process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? '').length}
           </p>
         </div>

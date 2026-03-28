@@ -26,7 +26,7 @@ export function ArticleContent({ content }: ArticleContentProps) {
         }
         if (line.startsWith('- ')) {
           return (
-            <li key={idx} className="text-gray-600 text-sm leading-relaxed ml-4 list-disc">
+            <li key={idx} className="text-neutral-600 text-sm leading-relaxed ml-4 list-disc">
               {line.slice(2)}
             </li>
           )
@@ -37,7 +37,7 @@ export function ArticleContent({ content }: ArticleContentProps) {
         // Inline bold
         const parts = line.split(/(\*\*[^*]+\*\*)/)
         return (
-          <p key={idx} className="text-gray-600 text-sm leading-relaxed">
+          <p key={idx} className="text-neutral-600 text-sm leading-relaxed">
             {parts.map((part, i) =>
               part.startsWith('**') && part.endsWith('**') ? (
                 <strong key={i} className="font-semibold text-forest">

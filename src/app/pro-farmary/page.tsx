@@ -67,7 +67,7 @@ const PRICING = [
     name: 'Základní',
     price: 'Zdarma',
     priceNote: 'navždy',
-    color: 'border-gray-200',
+    color: 'border-neutral-200',
     highlight: false,
     soon: false,
     features: [
@@ -185,7 +185,7 @@ export default function ProFarmaryPage() {
             <h2 className="font-heading text-3xl font-bold text-forest mb-3">
               Problémy, které řeší Mapa Farem
             </h2>
-            <p className="text-gray-500 text-sm max-w-xl mx-auto">
+            <p className="text-neutral-500 text-sm max-w-xl mx-auto">
               Znáte to. Pěstujete skvělé produkty, ale dostat je ke správným zákazníkům je boj.
             </p>
           </div>
@@ -199,7 +199,7 @@ export default function ProFarmaryPage() {
                   <span className="text-red-500 font-bold text-lg" aria-hidden="true">✕</span>
                 </div>
                 <h3 className="font-heading font-bold text-forest text-sm mb-2">{point.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{point.description}</p>
+                <p className="text-neutral-500 text-sm leading-relaxed">{point.description}</p>
               </div>
             ))}
           </div>
@@ -212,7 +212,7 @@ export default function ProFarmaryPage() {
               <h2 className="font-heading text-3xl font-bold text-forest mb-3">
                 Co Mapa Farem přinese vám
               </h2>
-              <p className="text-gray-500 text-sm max-w-xl mx-auto">
+              <p className="text-neutral-500 text-sm max-w-xl mx-auto">
                 Přidejte svou farmu do adresáře a dostaňte se k zákazníkům, kteří hledají lokální produkty ve vašem regionu.
               </p>
             </div>
@@ -231,7 +231,7 @@ export default function ProFarmaryPage() {
                       <h3 className="font-heading font-bold text-forest text-sm mb-1.5">
                         {benefit.title}
                       </h3>
-                      <p className="text-gray-500 text-sm leading-relaxed">{benefit.description}</p>
+                      <p className="text-neutral-500 text-sm leading-relaxed">{benefit.description}</p>
                     </div>
                   </div>
                 )
@@ -244,7 +244,7 @@ export default function ProFarmaryPage() {
         <AnimatedSection className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl font-bold text-forest mb-3">Jak začít</h2>
-            <p className="text-gray-500 text-sm">Tři jednoduché kroky k prvnímu zákazníkovi.</p>
+            <p className="text-neutral-500 text-sm">Tři jednoduché kroky k prvnímu zákazníkovi.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             <div className="hidden md:block absolute top-8 left-1/4 right-1/4 h-0.5 bg-primary-100" aria-hidden="true" />
@@ -254,7 +254,7 @@ export default function ProFarmaryPage() {
                   {step.num}
                 </div>
                 <h3 className="font-heading font-bold text-forest text-sm mb-2">{step.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{step.description}</p>
+                <p className="text-neutral-500 text-sm leading-relaxed">{step.description}</p>
               </div>
             ))}
           </div>
@@ -265,7 +265,7 @@ export default function ProFarmaryPage() {
         <AnimatedSection className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl font-bold text-forest mb-3">Ceník</h2>
-            <p className="text-gray-500 text-sm max-w-xl mx-auto">
+            <p className="text-neutral-500 text-sm max-w-xl mx-auto">
               Základní registrace je zcela zdarma. Prémiové plány odemykají větší viditelnost a pokročilé funkce.
             </p>
           </div>
@@ -292,11 +292,11 @@ export default function ProFarmaryPage() {
                 <h3 className="font-heading font-bold text-forest text-lg mb-1">{plan.name}</h3>
                 <div className="mb-5">
                   <span className="font-heading font-bold text-3xl text-forest">{plan.price}</span>
-                  <span className="text-gray-400 text-sm ml-1">{plan.priceNote}</span>
+                  <span className="text-neutral-400 text-sm ml-1">{plan.priceNote}</span>
                 </div>
                 <ul className="space-y-3 mb-8 flex-1">
                   {plan.features.map((feature) => (
-                    <li key={feature.label} className="flex items-start gap-2 text-sm text-gray-600">
+                    <li key={feature.label} className="flex items-start gap-2 text-sm text-neutral-600">
                       <CheckCircle className="w-4 h-4 text-primary-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
                       <span>
                         {feature.label}

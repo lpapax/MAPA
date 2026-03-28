@@ -79,12 +79,12 @@ export default function KontaktPage() {
               <h2 className="font-heading text-xl font-bold text-forest mb-6">Kontaktní údaje</h2>
 
               {CONTACT_INFO.map(({ icon: Icon, label, value, href }) => (
-                <div key={label} className="flex items-start gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                <div key={label} className="flex items-start gap-4 bg-white rounded-2xl border border-neutral-100 shadow-sm p-5">
                   <div className="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0">
                     <Icon className="w-4 h-4 text-primary-600" aria-hidden="true" />
                   </div>
                   <div>
-                    <div className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5">{label}</div>
+                    <div className="text-[10px] text-neutral-400 uppercase tracking-wider mb-0.5">{label}</div>
                     {href ? (
                       <a href={href} className="text-sm text-forest font-medium hover:text-primary-600 transition-colors cursor-pointer">
                         {value}

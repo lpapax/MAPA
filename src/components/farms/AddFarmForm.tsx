@@ -118,7 +118,7 @@ function FormField({
 }
 
 const inputCls =
-  'w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-white'
+  'w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-white'
 
 export function AddFarmForm() {
   const [step, setStep] = useState(1)
@@ -182,7 +182,7 @@ export function AddFarmForm() {
           <Check className="w-10 h-10 text-primary-600" aria-hidden="true" />
         </div>
         <h2 className="font-heading text-2xl font-bold text-forest mb-3">Žádost přijata!</h2>
-        <p className="text-gray-500 text-sm max-w-sm leading-relaxed">
+        <p className="text-neutral-500 text-sm max-w-sm leading-relaxed">
           Vaši farmu jsme zaevidovali. Náš tým ji během 3–5 pracovních dnů ověří a aktivuje.
           Potvrzení zašleme na <strong>{data.email || 'váš e-mail'}</strong>.
         </p>
@@ -210,7 +210,7 @@ export function AddFarmForm() {
                     ? 'bg-primary-600 border-primary-600 text-white'
                     : step === s.id
                       ? 'bg-white border-primary-600 text-primary-600'
-                      : 'bg-white border-gray-200 text-gray-300',
+                      : 'bg-white border-neutral-200 text-neutral-300',
                 )}
                 aria-current={step === s.id ? 'step' : undefined}
               >
@@ -219,7 +219,7 @@ export function AddFarmForm() {
               <span
                 className={cn(
                   'text-[10px] mt-1 hidden sm:block text-center',
-                  step === s.id ? 'text-primary-600 font-semibold' : 'text-gray-400',
+                  step === s.id ? 'text-primary-600 font-semibold' : 'text-neutral-400',
                 )}
               >
                 {s.label}
@@ -227,7 +227,7 @@ export function AddFarmForm() {
             </div>
           ))}
         </div>
-        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+        <div className="h-1.5 bg-neutral-100 rounded-full overflow-hidden">
           <div
             className="h-full bg-primary-600 rounded-full transition-all duration-500"
             style={{ width: `${((step - 1) / (STEPS.length - 1)) * 100}%` }}
@@ -240,7 +240,7 @@ export function AddFarmForm() {
       </div>
 
       {/* Step content */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-card p-6 sm:p-8">
+      <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-6 sm:p-8">
         {/* Step 1: Basic info */}
         {step === 1 && (
           <div className="space-y-5">
@@ -279,7 +279,7 @@ export function AddFarmForm() {
                       'flex items-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-medium cursor-pointer transition-all',
                       data.categories.includes(cat.value)
                         ? 'bg-primary-50 border-primary-300 text-primary-700'
-                        : 'bg-white border-gray-200 text-gray-600 hover:border-primary-200',
+                        : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-200',
                     )}
                   >
                     <input
@@ -291,7 +291,7 @@ export function AddFarmForm() {
                     <span
                       className={cn(
                         'w-4 h-4 rounded-md border-2 flex items-center justify-center flex-shrink-0',
-                        data.categories.includes(cat.value) ? 'bg-primary-600 border-primary-600' : 'border-gray-300',
+                        data.categories.includes(cat.value) ? 'bg-primary-600 border-primary-600' : 'border-neutral-300',
                       )}
                       aria-hidden="true"
                     >
@@ -433,7 +433,7 @@ export function AddFarmForm() {
               {DAYS.map((day) => {
                 const h = data.hours[day.key]
                 return (
-                  <div key={day.key} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+                  <div key={day.key} className="flex items-center gap-3 py-2 border-b border-neutral-50 last:border-0">
                     <label className="flex items-center gap-2 w-28 flex-shrink-0 cursor-pointer">
                       <input
                         type="checkbox"
@@ -441,7 +441,7 @@ export function AddFarmForm() {
                         onChange={(e) => updateHour(day.key, 'open', e.target.checked)}
                         className="w-4 h-4 rounded accent-primary-600"
                       />
-                      <span className={cn('text-sm font-medium', h.open ? 'text-forest' : 'text-gray-300')}>
+                      <span className={cn('text-sm font-medium', h.open ? 'text-forest' : 'text-neutral-300')}>
                         {day.label}
                       </span>
                     </label>
@@ -451,20 +451,20 @@ export function AddFarmForm() {
                           type="time"
                           value={h.from}
                           onChange={(e) => updateHour(day.key, 'from', e.target.value)}
-                          className="px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                          className="px-3 py-1.5 rounded-lg border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                           aria-label={`${day.label} otevření`}
                         />
-                        <span className="text-gray-400 text-sm">–</span>
+                        <span className="text-neutral-400 text-sm">–</span>
                         <input
                           type="time"
                           value={h.to}
                           onChange={(e) => updateHour(day.key, 'to', e.target.value)}
-                          className="px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
+                          className="px-3 py-1.5 rounded-lg border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400"
                           aria-label={`${day.label} zavření`}
                         />
                       </div>
                     ) : (
-                      <span className="text-gray-300 text-sm italic">Zavřeno</span>
+                      <span className="text-neutral-300 text-sm italic">Zavřeno</span>
                     )}
                   </div>
                 )
@@ -516,11 +516,11 @@ export function AddFarmForm() {
         )}
 
         {/* Navigation */}
-        <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-100">
+        <div className="flex items-center justify-between mt-8 pt-6 border-t border-neutral-100">
           {step > 1 ? (
             <button
               onClick={prev}
-              className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl border border-neutral-200 text-sm font-medium text-neutral-600 hover:bg-neutral-50 transition-colors cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" aria-hidden="true" />
               Zpět
@@ -554,8 +554,8 @@ export function AddFarmForm() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-gray-100 overflow-hidden">
-      <div className="bg-gray-50 px-4 py-2 text-xs font-semibold text-forest uppercase tracking-wider">
+    <div className="rounded-xl border border-neutral-100 overflow-hidden">
+      <div className="bg-neutral-50 px-4 py-2 text-xs font-semibold text-forest uppercase tracking-wider">
         {title}
       </div>
       <div className="divide-y divide-gray-50">{children}</div>
@@ -566,7 +566,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-4 px-4 py-2.5">
-      <span className="text-gray-400 w-24 flex-shrink-0">{label}</span>
+      <span className="text-neutral-400 w-24 flex-shrink-0">{label}</span>
       <span className="text-forest font-medium flex-1 break-all">{value || '—'}</span>
     </div>
   )

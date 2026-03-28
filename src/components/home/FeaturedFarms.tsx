@@ -102,7 +102,7 @@ function SpotlightCard({ farm }: { farm: MockFarm }) {
               <div className="font-heading font-bold text-forest text-base leading-tight">
                 {farm.name}
               </div>
-              <div className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
+              <div className="text-xs text-neutral-500 flex items-center gap-1 mt-0.5">
                 <MapPin className="w-3 h-3" aria-hidden="true" />
                 {farm.kraj}
               </div>
@@ -110,7 +110,7 @@ function SpotlightCard({ farm }: { farm: MockFarm }) {
           </div>
         </div>
 
-        <div className="flex items-center justify-end mt-5 pt-4 border-t border-gray-50">
+        <div className="flex items-center justify-end mt-5 pt-4 border-t border-neutral-50">
           <span
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 group-hover:gap-2.5 transition-all"
             aria-hidden="true"
@@ -160,7 +160,7 @@ function FarmCard({ farm }: { farm: MockFarm }) {
             <h3 className="font-heading font-bold text-sm text-forest leading-tight truncate">
               {farm.name}
             </h3>
-            <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
+            <div className="flex items-center gap-1 text-xs text-neutral-400 mt-0.5">
               <MapPin className="w-3 h-3 flex-shrink-0" aria-hidden="true" />
               <span className="truncate">{farm.kraj}</span>
             </div>
@@ -180,7 +180,7 @@ function FarmCard({ farm }: { farm: MockFarm }) {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end mt-auto pt-3 border-t border-gray-50">
+        <div className="flex items-center justify-end mt-auto pt-3 border-t border-neutral-50">
           <span className="text-xs font-semibold text-primary-600 group-hover:text-primary-700 transition-colors inline-flex items-center gap-1">
             Zobrazit <ArrowRight className="w-3 h-3" aria-hidden="true" />
           </span>

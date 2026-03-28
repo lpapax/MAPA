@@ -17,12 +17,12 @@ export function FarmClaimForm() {
 
   if (!user) {
     return (
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-card p-8 text-center max-w-md mx-auto">
+      <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-8 text-center max-w-md mx-auto">
         <div className="w-14 h-14 rounded-2xl bg-primary-50 flex items-center justify-center mx-auto mb-5">
           <UserCircle2 className="w-7 h-7 text-primary-600" aria-hidden="true" />
         </div>
         <h2 className="font-heading font-bold text-forest text-xl mb-2">Přihlašte se</h2>
-        <p className="text-gray-500 text-sm mb-6 leading-relaxed">
+        <p className="text-neutral-500 text-sm mb-6 leading-relaxed">
           Ke správě farmy musíte být přihlášeni. Přihlášení trvá jen chvíli — žádné heslo není třeba.
         </p>
         <Link
@@ -37,12 +37,12 @@ export function FarmClaimForm() {
 
   if (sent) {
     return (
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-card p-8 text-center max-w-md mx-auto">
+      <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-8 text-center max-w-md mx-auto">
         <div className="w-14 h-14 rounded-2xl bg-primary-50 flex items-center justify-center mx-auto mb-5">
           <CheckCircle2 className="w-7 h-7 text-primary-600" aria-hidden="true" />
         </div>
         <h2 className="font-heading font-bold text-forest text-xl mb-2">Žádost odeslána</h2>
-        <p className="text-gray-500 text-sm leading-relaxed">
+        <p className="text-neutral-500 text-sm leading-relaxed">
           Vaši žádost o správu farmy jsme přijali. Ozveme se vám na e-mail{' '}
           <strong>{user.email}</strong> do 48 hodin.
         </p>
@@ -83,7 +83,7 @@ export function FarmClaimForm() {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-card p-6 max-w-md mx-auto">
+    <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-6 max-w-md mx-auto">
       <div className="flex items-start gap-3 mb-6 p-4 rounded-xl bg-earth-50 border border-earth-100">
         <AlertCircle className="w-4 h-4 text-earth-600 flex-shrink-0 mt-0.5" aria-hidden="true" />
         <p className="text-xs text-earth-700 leading-relaxed">
@@ -103,9 +103,9 @@ export function FarmClaimForm() {
             placeholder="napr. farma-u-lesa"
             value={farmSlug}
             onChange={(e) => setFarmSlug(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
+            className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
           />
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-neutral-400 mt-1">
             Najdete jej v URL: mapafarem.cz/farmy/<strong>zde-je-slug</strong>
           </p>
         </div>
@@ -120,7 +120,7 @@ export function FarmClaimForm() {
             placeholder="Jsem provozovatel farmy Jana Nováková, IČO 12345678…"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
+            className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
           />
         </div>
 

@@ -69,7 +69,7 @@ export function ContactForm() {
           <CheckCircle className="w-8 h-8 text-primary-600" aria-hidden="true" />
         </div>
         <h3 className="font-heading font-bold text-forest text-xl mb-2">Zpráva odeslána!</h3>
-        <p className="text-gray-500 text-sm leading-relaxed">
+        <p className="text-neutral-500 text-sm leading-relaxed">
           Děkujeme za vaši zprávu. Odpovíme na váš e-mail do 24 hodin v pracovní dny.
         </p>
         <button
@@ -83,7 +83,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-100 shadow-card p-6 space-y-5" noValidate>
+    <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-neutral-100 shadow-card p-6 space-y-5" noValidate>
       {/* Name */}
       <div>
         <label htmlFor="contact-name" className="block text-xs font-semibold text-forest mb-1.5 uppercase tracking-wide">
@@ -97,7 +97,7 @@ export function ContactForm() {
           placeholder="Jana Nováková"
           autoComplete="name"
           className={`w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 ${
-            errors.name ? 'border-red-300 bg-red-50' : 'border-gray-200 focus:border-primary-400'
+            errors.name ? 'border-red-300 bg-red-50' : 'border-neutral-200 focus:border-primary-400'
           }`}
           aria-describedby={errors.name ? 'contact-name-error' : undefined}
         />
@@ -117,7 +117,7 @@ export function ContactForm() {
           placeholder="jana@example.cz"
           autoComplete="email"
           className={`w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 ${
-            errors.email ? 'border-red-300 bg-red-50' : 'border-gray-200 focus:border-primary-400'
+            errors.email ? 'border-red-300 bg-red-50' : 'border-neutral-200 focus:border-primary-400'
           }`}
           aria-describedby={errors.email ? 'contact-email-error' : undefined}
         />
@@ -134,7 +134,7 @@ export function ContactForm() {
           value={form.subject}
           onChange={(e) => update('subject', e.target.value)}
           className={`w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 bg-white cursor-pointer ${
-            errors.subject ? 'border-red-300 bg-red-50' : 'border-gray-200 focus:border-primary-400'
+            errors.subject ? 'border-red-300 bg-red-50' : 'border-neutral-200 focus:border-primary-400'
           }`}
           aria-describedby={errors.subject ? 'contact-subject-error' : undefined}
         >
@@ -158,7 +158,7 @@ export function ContactForm() {
           placeholder="Napište nám, jak vám můžeme pomoci…"
           rows={5}
           className={`w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 resize-none ${
-            errors.message ? 'border-red-300 bg-red-50' : 'border-gray-200 focus:border-primary-400'
+            errors.message ? 'border-red-300 bg-red-50' : 'border-neutral-200 focus:border-primary-400'
           }`}
           aria-describedby={errors.message ? 'contact-message-error' : undefined}
         />

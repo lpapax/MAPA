@@ -96,7 +96,7 @@ const COMPARISON = [
 function CompareCell({ value }: { value: boolean | null }) {
   if (value === true) return <CheckCircle className="w-4 h-4 text-primary-500 mx-auto" aria-label="Ano" />
   if (value === false) return <XCircle className="w-4 h-4 text-red-400 mx-auto" aria-label="Ne" />
-  return <span className="text-gray-300 text-xs mx-auto block text-center" aria-label="Závisí na farmáři">~</span>
+  return <span className="text-neutral-300 text-xs mx-auto block text-center" aria-label="Závisí na farmáři">~</span>
 }
 
 export default function CertifikacePage() {
@@ -126,12 +126,12 @@ export default function CertifikacePage() {
             <h2 className="font-heading text-2xl font-bold text-forest mb-4">
               Co je ekologické zemědělství?
             </h2>
-            <p className="text-gray-600 text-sm leading-relaxed mb-4">
+            <p className="text-neutral-600 text-sm leading-relaxed mb-4">
               Ekologické (bio) zemědělství je způsob hospodaření, který pracuje v souladu s přírodou.
               Zakazuje syntetické pesticidy, herbicidy a minerální hnojiva. Podporuje biodiverzitu,
               zdraví půdy a přirozené koloběhy živin.
             </p>
-            <p className="text-gray-600 text-sm leading-relaxed mb-4">
+            <p className="text-neutral-600 text-sm leading-relaxed mb-4">
               Na bio produktech musíte najít dva povinné prvky: <strong className="text-forest">logo EU pro bio</strong>{' '}
               (zelený list ze hvězdičkových teček) a <strong className="text-forest">kód certifikačního orgánu</strong>{' '}
               ve formátu CZ-BIO-XXX. Bez těchto značek nejde o certifikované bio.
@@ -151,14 +151,14 @@ export default function CertifikacePage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {CERT_BODIES.map((body) => (
-              <div key={body.name} className="bg-white rounded-2xl border border-gray-100 shadow-card p-6 flex flex-col">
+              <div key={body.name} className="bg-white rounded-2xl border border-neutral-100 shadow-card p-6 flex flex-col">
                 <div className="w-12 h-12 rounded-xl bg-primary-600 flex items-center justify-center text-white font-heading font-bold text-sm mb-4 flex-shrink-0">
                   {body.name.slice(0, 2)}
                 </div>
                 <h3 className="font-heading font-bold text-forest text-base mb-1">{body.name}</h3>
-                <p className="text-xs text-gray-400 mb-3">{body.fullName}</p>
-                <p className="text-sm text-gray-500 leading-relaxed mb-4 flex-1">{body.description}</p>
-                <div className="space-y-1.5 text-xs text-gray-400 mb-4">
+                <p className="text-xs text-neutral-400 mb-3">{body.fullName}</p>
+                <p className="text-sm text-neutral-500 leading-relaxed mb-4 flex-1">{body.description}</p>
+                <div className="space-y-1.5 text-xs text-neutral-400 mb-4">
                   <div><span className="font-medium text-forest">Kód:</span> {body.code}</div>
                   <div><span className="font-medium text-forest">Certifikovaných farem:</span> {body.farms}</div>
                 </div>
@@ -181,11 +181,11 @@ export default function CertifikacePage() {
           <h2 className="font-heading text-2xl font-bold text-forest text-center mb-10">
             BIO vs. Lokální vs. Konvenční
           </h2>
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden">
+          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-neutral-100">
                     <th className="text-left px-6 py-4 font-heading font-semibold text-forest">Vlastnost</th>
                     <th className="text-center px-6 py-4 font-heading font-semibold text-primary-700">
                       <span className="block">BIO</span>
@@ -195,16 +195,16 @@ export default function CertifikacePage() {
                       <span className="block">Lokální</span>
                       <span className="text-xs font-normal text-amber-500">bez certifikace</span>
                     </th>
-                    <th className="text-center px-6 py-4 font-heading font-semibold text-gray-500">
+                    <th className="text-center px-6 py-4 font-heading font-semibold text-neutral-500">
                       <span className="block">Konvenční</span>
-                      <span className="text-xs font-normal text-gray-400">průmyslové</span>
+                      <span className="text-xs font-normal text-neutral-400">průmyslové</span>
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
                   {COMPARISON.map((row) => (
-                    <tr key={row.feature} className="hover:bg-gray-50">
-                      <td className="px-6 py-3.5 text-gray-600 text-sm">{row.feature}</td>
+                    <tr key={row.feature} className="hover:bg-neutral-50">
+                      <td className="px-6 py-3.5 text-neutral-600 text-sm">{row.feature}</td>
                       <td className="px-6 py-3.5"><CompareCell value={row.bio} /></td>
                       <td className="px-6 py-3.5"><CompareCell value={row.local} /></td>
                       <td className="px-6 py-3.5"><CompareCell value={row.conventional} /></td>
@@ -213,7 +213,7 @@ export default function CertifikacePage() {
                 </tbody>
               </table>
             </div>
-            <div className="px-6 py-3 bg-gray-50 border-t border-gray-100 text-xs text-gray-400">
+            <div className="px-6 py-3 bg-neutral-50 border-t border-neutral-100 text-xs text-neutral-400">
               ~ závisí na konkrétním farmáři nebo produktu
             </div>
           </div>
@@ -248,7 +248,7 @@ export default function CertifikacePage() {
                     {item.step}
                   </div>
                   <h3 className="font-heading font-bold text-forest text-sm mb-2">{item.title}</h3>
-                  <p className="text-gray-500 text-xs leading-relaxed">{item.desc}</p>
+                  <p className="text-neutral-500 text-xs leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>

@@ -38,7 +38,7 @@ export default function AuthCallbackPage() {
       <main className="min-h-screen bg-surface flex items-center justify-center px-4">
         <div className="text-center max-w-sm">
           <p className="text-red-600 font-semibold mb-3">Přihlášení se nezdařilo</p>
-          <p className="text-gray-500 text-sm mb-6">{error}</p>
+          <p className="text-neutral-500 text-sm mb-6">{error}</p>
           <a href="/prihlasit" className="text-primary-600 hover:text-primary-700 text-sm font-medium underline">
             Zkusit znovu
           </a>
@@ -51,7 +51,7 @@ export default function AuthCallbackPage() {
     <main className="min-h-screen bg-surface flex items-center justify-center">
       <div className="flex flex-col items-center gap-3">
         <Loader2 className="w-8 h-8 text-primary-600 animate-spin" aria-hidden="true" />
-        <p className="text-sm text-gray-500">Přihlašuji…</p>
+        <p className="text-sm text-neutral-500">Přihlašuji…</p>
       </div>
     </main>
   )

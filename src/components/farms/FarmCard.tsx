@@ -71,7 +71,7 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
           {farm.openingHours && (
             <div className={cn(
               'flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium',
-              isOpen ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500',
+              isOpen ? 'bg-primary-50 text-primary-700' : 'bg-neutral-100 text-neutral-500',
             )}>
               <Clock className="w-2.5 h-2.5" aria-hidden="true" />
               {isOpen ? 'Otevřeno' : 'Zavřeno'}
@@ -94,7 +94,7 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
             className="p-1 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
           >
             <Heart
-              className={cn('w-4 h-4 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-gray-300 hover:text-rose-400')}
+              className={cn('w-4 h-4 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-neutral-300 hover:text-rose-400')}
               aria-hidden="true"
             />
           </button>
@@ -149,8 +149,8 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
               comparing
                 ? 'bg-forest text-white border-forest'
                 : compareDisabled
-                  ? 'opacity-30 border-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'border-gray-200 text-gray-400 hover:border-forest hover:text-forest',
+                  ? 'opacity-30 border-neutral-200 text-neutral-400 cursor-not-allowed'
+                  : 'border-neutral-200 text-neutral-400 hover:border-forest hover:text-forest',
             )}
           >
             {comparing ? '✓ Porovnat' : 'Porovnat'}

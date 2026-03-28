@@ -59,7 +59,7 @@ export default function BlogArticlePage({ params }: PageProps) {
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
-          <nav aria-label="Navigační cesta" className="flex items-center gap-1 text-xs text-gray-400 mt-6 mb-6">
+          <nav aria-label="Navigační cesta" className="flex items-center gap-1 text-xs text-neutral-400 mt-6 mb-6">
             <Link href="/" className="hover:text-primary-600 transition-colors">Domů</Link>
             <ChevronRight className="w-3 h-3" aria-hidden="true" />
             <Link href="/blog" className="hover:text-primary-600 transition-colors">Blog</Link>
@@ -71,12 +71,12 @@ export default function BlogArticlePage({ params }: PageProps) {
             {/* Article body */}
             <article className="lg:col-span-2">
               {/* Meta */}
-              <div className="flex flex-wrap items-center gap-4 text-xs text-gray-400 mb-8 pb-6 border-b border-gray-100">
+              <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-400 mb-8 pb-6 border-b border-neutral-100">
                 <div className="flex items-center gap-2">
                   <div className={cn('w-7 h-7 rounded-full flex items-center justify-center text-white font-bold text-[10px]', article.authorColor)}>
                     {article.authorInitials}
                   </div>
-                  <span className="text-gray-600 font-medium">{article.author}</span>
+                  <span className="text-neutral-600 font-medium">{article.author}</span>
                 </div>
                 <span className="flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
@@ -92,10 +92,10 @@ export default function BlogArticlePage({ params }: PageProps) {
               <ArticleContent content={article.content} />
 
               {/* Share */}
-              <div className="mt-10 pt-6 border-t border-gray-100 flex items-center justify-between">
+              <div className="mt-10 pt-6 border-t border-neutral-100 flex items-center justify-between">
                 <Link
                   href="/blog"
-                  className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-primary-600 transition-colors"
+                  className="flex items-center gap-1.5 text-sm text-neutral-500 hover:text-primary-600 transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" aria-hidden="true" />
                   Zpět na blog
@@ -109,7 +109,7 @@ export default function BlogArticlePage({ params }: PageProps) {
               <h2 className="font-heading font-bold text-forest text-base mb-4">Další články</h2>
               {otherArticles.map((other) => (
                 <Link key={other.id} href={`/blog/${other.slug}`} className="group block">
-                  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200 overflow-hidden flex">
+                  <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm hover:shadow-card transition-all duration-200 overflow-hidden flex">
                     <div className={cn('w-20 flex-shrink-0 bg-gradient-to-br', other.coverGradient)} aria-hidden="true" />
                     <div className="p-4">
                       <span className={cn('text-[10px] font-semibold px-1.5 py-0.5 rounded-full', other.categoryColor)}>
@@ -118,7 +118,7 @@ export default function BlogArticlePage({ params }: PageProps) {
                       <p className="font-heading font-semibold text-forest text-sm mt-1 leading-snug group-hover:text-primary-600 transition-colors line-clamp-2">
                         {other.title}
                       </p>
-                      <p className="text-[11px] text-gray-400 mt-1">{other.readTime}</p>
+                      <p className="text-[11px] text-neutral-400 mt-1">{other.readTime}</p>
                     </div>
                   </div>
                 </Link>
@@ -127,7 +127,7 @@ export default function BlogArticlePage({ params }: PageProps) {
               {/* CTA */}
               <div className="bg-gradient-to-br from-primary-50 to-teal-50 rounded-2xl border border-primary-100 p-5 mt-6">
                 <h3 className="font-heading font-bold text-forest text-sm mb-2">Najděte farmu ve svém okolí</h3>
-                <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+                <p className="text-xs text-neutral-500 mb-4 leading-relaxed">
                   Stovky ověřených farem z celé České republiky.
                 </p>
                 <Link

@@ -40,7 +40,7 @@ export async function RecentReviews() {
             <AnimatedSection
               key={review.id}
               delay={(i * 100) as 0 | 100 | 200}
-              className="relative flex flex-col bg-white rounded-3xl p-7 shadow-card hover:shadow-card-hover transition-all duration-300"
+              className="relative flex flex-col bg-white rounded-xl p-7 shadow-card hover:shadow-card-hover transition-all duration-300"
             >
               {/* Decorative quote */}
               <div
@@ -57,7 +57,7 @@ export async function RecentReviews() {
                     key={idx}
                     className={cn(
                       'w-4 h-4',
-                      idx < review.rating ? 'text-earth-400 fill-earth-400' : 'text-gray-200 fill-gray-200',
+                      idx < review.rating ? 'text-earth-400 fill-earth-400' : 'text-neutral-200 fill-neutral-200',
                     )}
                     aria-hidden="true"
                   />
@@ -66,13 +66,13 @@ export async function RecentReviews() {
 
               {/* Quote */}
               <blockquote className="flex-1 mb-6">
-                <p className="text-sm text-gray-600 leading-relaxed italic">
+                <p className="text-sm text-neutral-600 leading-relaxed italic">
                   &ldquo;{review.text}&rdquo;
                 </p>
               </blockquote>
 
               {/* Author */}
-              <div className="flex items-center gap-3 pt-5 border-t border-gray-50">
+              <div className="flex items-center gap-3 pt-5 border-t border-neutral-100">
                 <div
                   className="w-10 h-10 rounded-2xl bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xs flex-shrink-0 shadow-sm"
                   aria-hidden="true"
@@ -81,7 +81,7 @@ export async function RecentReviews() {
                 </div>
                 <div>
                   <div className="font-heading font-semibold text-forest text-sm">{review.display_name}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">
+                  <div className="text-xs text-neutral-400 mt-0.5">
                     {review.city} ·{' '}
                     <Link href={`/farmy/${review.farm_slug}`} className="hover:text-primary-600 transition-colors">
                       zobrazit farmu

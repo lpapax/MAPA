@@ -58,7 +58,7 @@ export function HowItWorks() {
           >
             Tři kroky k čerstvým potravinám
           </h2>
-          <p className="text-gray-500 max-w-xl mx-auto leading-relaxed">
+          <p className="text-neutral-500 max-w-xl mx-auto leading-relaxed">
             Propojujeme zákazníky s farmáři co nejjednodušeji. Žádná registrace, žádné poplatky —
             jen přímý kontakt.
           </p>
@@ -67,10 +67,10 @@ export function HowItWorks() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 relative">
           {/* Connector line (desktop) */}
           <div
-            className="hidden md:flex absolute top-14 left-[calc(33%+2rem)] right-[calc(33%+2rem)] items-center"
+            className="hidden md:flex absolute top-14 left-[calc(33%+2.5rem)] right-[calc(33%+2.5rem)] items-center"
             aria-hidden="true"
           >
-            <div className="flex-1 border-t-2 border-dashed border-gray-200" />
+            <div className="flex-1 border-t-2 border-dashed border-neutral-200" />
           </div>
 
           {STEPS.map((step, i) => {
@@ -80,7 +80,7 @@ export function HowItWorks() {
                 key={step.number}
                 delay={(i * 200) as 0 | 200 | 400}
                 className={cn(
-                  'relative flex flex-col items-center text-center p-7 rounded-3xl border border-gray-100',
+                  'relative flex flex-col items-center text-center p-7 rounded-xl border border-neutral-100',
                   'shadow-card hover:shadow-card-hover transition-shadow duration-300',
                   step.cardBg,
                 )}
@@ -112,7 +112,7 @@ export function HowItWorks() {
                 </div>
 
                 <h3 className="font-heading font-bold text-lg text-forest mb-2">{step.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{step.description}</p>
+                <p className="text-sm text-neutral-500 leading-relaxed">{step.description}</p>
               </AnimatedSection>
             )
           })}

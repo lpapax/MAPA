@@ -42,7 +42,7 @@ export function FavoritesClient() {
           <Heart className="w-8 h-8 text-rose-300" aria-hidden="true" />
         </div>
         <h2 className="font-heading font-bold text-forest text-xl mb-2">Zatím žádné oblíbené</h2>
-        <p className="text-gray-400 text-sm mb-6 max-w-xs leading-relaxed">
+        <p className="text-neutral-400 text-sm mb-6 max-w-xs leading-relaxed">
           Klikněte na srdíčko u detailu farmy a uložte si ji sem k rychlému přístupu.
         </p>
         <Link
@@ -59,13 +59,13 @@ export function FavoritesClient() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-        <span className="text-sm text-gray-400">
+        <span className="text-sm text-neutral-400">
           {favorites.length} {favorites.length === 1 ? 'farma' : favorites.length < 5 ? 'farmy' : 'farem'}
         </span>
         <div className="flex items-center gap-3">
           <button
             onClick={() => copyShareLink(favorites)}
-            className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-primary-600 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-primary-600 transition-colors cursor-pointer"
             title="Zkopírovat odkaz"
           >
             <Share2 className="w-3.5 h-3.5" aria-hidden="true" />
@@ -73,7 +73,7 @@ export function FavoritesClient() {
           </button>
           <button
             onClick={() => exportFavoritesCSV(favorites)}
-            className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-primary-600 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-primary-600 transition-colors cursor-pointer"
             title="Stáhnout CSV"
           >
             <Download className="w-3.5 h-3.5" aria-hidden="true" />
@@ -81,7 +81,7 @@ export function FavoritesClient() {
           </button>
           <button
             onClick={clearFavorites}
-            className="text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+            className="text-xs text-neutral-400 hover:text-red-500 transition-colors cursor-pointer"
           >
             Smazat vše
           </button>
@@ -92,12 +92,12 @@ export function FavoritesClient() {
         {favorites.map((farm) => (
           <div
             key={farm.slug}
-            className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-card transition-all p-5"
+            className="bg-white rounded-2xl border border-neutral-100 shadow-sm hover:shadow-card transition-all p-5"
           >
             <div className="flex items-start justify-between gap-3 mb-3">
               <div>
                 <h2 className="font-heading font-bold text-forest text-base leading-tight">{farm.name}</h2>
-                <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
+                <div className="flex items-center gap-1 text-xs text-neutral-400 mt-0.5">
                   <MapPin className="w-3 h-3" aria-hidden="true" />
                   {farm.kraj}
                 </div>

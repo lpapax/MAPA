@@ -31,19 +31,19 @@ export function BlogGrid() {
       <div className="flex flex-col sm:flex-row gap-4 mb-8">
         {/* Search */}
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" aria-hidden="true" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" aria-hidden="true" />
           <input
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Hledat v článcích…"
-            className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-white"
+            className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-white"
             aria-label="Hledat v článcích"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 cursor-pointer"
               aria-label="Vymazat hledání"
             >
               <X className="w-3.5 h-3.5" />
@@ -61,7 +61,7 @@ export function BlogGrid() {
                 'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer',
                 activeCategory === cat
                   ? 'bg-primary-600 text-white shadow-sm'
-                  : 'bg-white border border-gray-200 text-gray-600 hover:border-primary-400 hover:text-primary-600',
+                  : 'bg-white border border-neutral-200 text-neutral-600 hover:border-primary-400 hover:text-primary-600',
               )}
               aria-pressed={activeCategory === cat}
             >
@@ -80,7 +80,7 @@ export function BlogGrid() {
         </div>
       ) : (
         <div className="text-center py-16">
-          <p className="text-gray-400 text-sm">Žádné články nenalezeny.</p>
+          <p className="text-neutral-400 text-sm">Žádné články nenalezeny.</p>
           <button
             onClick={() => { setSearchQuery(''); setActiveCategory('Vše') }}
             className="mt-3 text-primary-600 text-sm hover:underline cursor-pointer"
@@ -92,7 +92,7 @@ export function BlogGrid() {
 
       {/* Results count */}
       {filtered.length > 0 && (
-        <p className="text-xs text-gray-400 mt-6 text-center">
+        <p className="text-xs text-neutral-400 mt-6 text-center">
           Zobrazeno {filtered.length} {filtered.length === 1 ? 'článek' : filtered.length < 5 ? 'články' : 'článků'}
         </p>
       )}

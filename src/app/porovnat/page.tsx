@@ -26,7 +26,7 @@ export default async function PorovnatPage({ searchParams }: PageProps) {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <h1 className="font-heading text-3xl font-bold text-forest mb-2">Porovnat farmy</h1>
-            <p className="text-gray-500 text-sm">Srovnání {farms.length} {farms.length === 1 ? 'farmy' : 'farem'} vedle sebe.</p>
+            <p className="text-neutral-500 text-sm">Srovnání {farms.length} {farms.length === 1 ? 'farmy' : 'farem'} vedle sebe.</p>
           </div>
           <CompareClient farms={farms} />
         </div>

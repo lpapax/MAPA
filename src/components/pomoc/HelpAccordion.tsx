@@ -95,19 +95,19 @@ export function HelpAccordion() {
     <div>
       {/* Search */}
       <div className="relative mb-8">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" aria-hidden="true" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" aria-hidden="true" />
         <input
           type="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Hledat v nápovědě…"
           aria-label="Hledat v nápovědě"
-          className="w-full pl-11 pr-10 py-3.5 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-white shadow-sm"
+          className="w-full pl-11 pr-10 py-3.5 rounded-2xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-white shadow-sm"
         />
         {search && (
           <button
             onClick={() => setSearch('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 cursor-pointer"
             aria-label="Vymazat hledání"
           >
             <X className="w-4 h-4" />
@@ -116,7 +116,7 @@ export function HelpAccordion() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-12 text-gray-400 text-sm">
+        <div className="text-center py-12 text-neutral-400 text-sm">
           Žádné výsledky pro &ldquo;{search}&rdquo;.
           <button onClick={() => setSearch('')} className="block mx-auto mt-2 text-primary-600 hover:underline cursor-pointer">
             Zrušit filtr
@@ -136,7 +136,7 @@ export function HelpAccordion() {
                   const key = `${si}-${ii}`
                   const isOpen = openItem === key
                   return (
-                    <div key={ii} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div key={ii} className="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
                       <button
                         onClick={() => setOpenItem(isOpen ? null : key)}
                         aria-expanded={isOpen}
@@ -147,14 +147,14 @@ export function HelpAccordion() {
                         </span>
                         <ChevronDown
                           className={cn(
-                            'w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-200',
+                            'w-4 h-4 text-neutral-400 flex-shrink-0 transition-transform duration-200',
                             isOpen && 'rotate-180',
                           )}
                           aria-hidden="true"
                         />
                       </button>
                       {isOpen && (
-                        <div className="px-6 pb-5 text-sm text-gray-500 leading-relaxed border-t border-gray-50 pt-3">
+                        <div className="px-6 pb-5 text-sm text-neutral-500 leading-relaxed border-t border-neutral-50 pt-3">
                           {item.a}
                         </div>
                       )}

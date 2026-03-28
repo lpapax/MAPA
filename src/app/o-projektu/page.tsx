@@ -59,7 +59,7 @@ export default function OProjektuPage() {
             {STATS.map((stat) => (
               <div
                 key={stat.label}
-                className="bg-white rounded-2xl border border-gray-100 shadow-card p-6 text-center"
+                className="bg-white rounded-2xl border border-neutral-100 shadow-card p-6 text-center"
               >
                 <div className="flex justify-center mb-3" aria-hidden="true">
                   <div className="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center">
@@ -67,7 +67,7 @@ export default function OProjektuPage() {
                   </div>
                 </div>
                 <div className="font-heading font-bold text-3xl text-forest mb-1">{stat.value}</div>
-                <div className="text-xs text-gray-500">{stat.label}</div>
+                <div className="text-xs text-neutral-500">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -76,23 +76,23 @@ export default function OProjektuPage() {
         {/* Mission & Vision */}
         <AnimatedSection className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-card p-8">
+            <div className="bg-white rounded-3xl border border-neutral-100 shadow-card p-8">
               <div className="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mb-5" aria-hidden="true">
                 <Target className="w-6 h-6 text-primary-600" />
               </div>
               <h2 className="font-heading text-xl font-bold text-forest mb-3">Naše mise</h2>
-              <p className="text-gray-600 leading-relaxed text-sm">
+              <p className="text-neutral-600 leading-relaxed text-sm">
                 Usnadnit každému Čechovi přístup k lokálním, čerstvým a poctivým potravinám přímo od farmáře.
                 Chceme, aby nákup lokálně byl stejně snadný jako nákup v supermarketu – jen chutnější, zdravější
                 a s vědomím původu.
               </p>
             </div>
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-card p-8">
+            <div className="bg-white rounded-3xl border border-neutral-100 shadow-card p-8">
               <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center mb-5" aria-hidden="true">
                 <Leaf className="w-6 h-6 text-amber-600" />
               </div>
               <h2 className="font-heading text-xl font-bold text-forest mb-3">Naše vize</h2>
-              <p className="text-gray-600 leading-relaxed text-sm">
+              <p className="text-neutral-600 leading-relaxed text-sm">
                 Česká republika, kde se zkracuje vzdálenost mezi polem a talířem. Kde farmáři prosperují,
                 protože mají přímý přístup k zákazníkům, a zákazníci vědí, co jedí a od koho to kupují.
                 Zdravá příroda, zdraví lidé, zdravá ekonomika.
@@ -104,7 +104,7 @@ export default function OProjektuPage() {
         {/* Origin story */}
         <AnimatedSection className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
           <h2 className="font-heading text-2xl font-bold text-forest text-center mb-8">Jak to začalo</h2>
-          <div className="bg-white rounded-3xl border border-gray-100 shadow-card p-8 space-y-4 text-sm text-gray-600 leading-relaxed">
+          <div className="bg-white rounded-3xl border border-neutral-100 shadow-card p-8 space-y-4 text-sm text-neutral-600 leading-relaxed">
             <p>
               Mapa Farem vznikla z jednoduché frustrace: sehnat lokálního farmáře v okolí bylo překvapivě obtížné.
               Existovaly farmářské trhy, existoval Facebook, existovalo zdlouhavé hledání přes Google —
@@ -163,18 +163,18 @@ export default function OProjektuPage() {
               Pro zákazníky
             </span>
             <h2 className="font-heading text-3xl font-bold text-forest mb-3">Proč nakupovat přes Mapu Farem?</h2>
-            <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">
+            <p className="text-neutral-500 max-w-xl mx-auto text-sm leading-relaxed">
               Žádné poplatky, žádná registrace. Stačí najít farmu a kontaktovat farmáře přímo.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
             {CUSTOMER_BENEFITS.map((b) => (
-              <div key={b.title} className="bg-white rounded-2xl border border-gray-100 shadow-card p-5">
+              <div key={b.title} className="bg-white rounded-2xl border border-neutral-100 shadow-card p-5">
                 <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center mb-3" aria-hidden="true">
                   <b.Icon className="w-4 h-4 text-primary-600" />
                 </div>
                 <h3 className="font-heading font-bold text-forest text-sm mb-2">{b.title}</h3>
-                <p className="text-gray-500 text-xs leading-relaxed">{b.description}</p>
+                <p className="text-neutral-500 text-xs leading-relaxed">{b.description}</p>
               </div>
             ))}
           </div>

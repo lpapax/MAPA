@@ -25,7 +25,7 @@ export default function NotFound() {
         <h2 className="font-heading text-xl font-semibold text-forest mb-4">
           Tahle farma se ztratila v poli
         </h2>
-        <p className="text-gray-500 text-sm leading-relaxed mb-8 max-w-sm mx-auto">
+        <p className="text-neutral-500 text-sm leading-relaxed mb-8 max-w-sm mx-auto">
           Stránka, kterou hledáte, neexistuje nebo byla přesunuta. Zkuste se vrátit domů
           nebo hledat farmy přímo na mapě.
         </p>

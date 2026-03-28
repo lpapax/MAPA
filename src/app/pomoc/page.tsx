@@ -50,7 +50,7 @@ export default function PomocPage() {
             <h2 className="font-heading text-xl font-bold text-forest mb-2">
               Nenašli jste odpověď?
             </h2>
-            <p className="text-gray-500 text-sm mb-8 leading-relaxed max-w-md mx-auto">
+            <p className="text-neutral-500 text-sm mb-8 leading-relaxed max-w-md mx-auto">
               Náš tým je vám k dispozici v pracovní dny od 9:00 do 17:00. Rádi zodpovíme
               jakýkoliv dotaz.
             </p>
@@ -64,13 +64,13 @@ export default function PomocPage() {
               </a>
               <a
                 href="tel:+420800123456"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-forest font-semibold text-sm transition-colors duration-200 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-forest font-semibold text-sm transition-colors duration-200 cursor-pointer"
               >
                 <Phone className="w-4 h-4" aria-hidden="true" />
                 +420 800 123 456
               </a>
             </div>
-            <p className="text-xs text-gray-400 mt-4">
+            <p className="text-xs text-neutral-400 mt-4">
               Nebo vyplňte{' '}
               <Link href="/kontakt" className="text-primary-600 hover:underline cursor-pointer">
                 kontaktní formulář

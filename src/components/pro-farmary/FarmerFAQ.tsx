@@ -37,7 +37,7 @@ export function FarmerFAQ() {
   return (
     <div className="space-y-3">
       {FARMER_FAQ.map((item, i) => (
-        <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div key={i} className="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
           <button
             onClick={() => setOpen(open === i ? null : i)}
             aria-expanded={open === i}
@@ -46,14 +46,14 @@ export function FarmerFAQ() {
             <span className="font-heading font-semibold text-forest text-sm pr-4">{item.q}</span>
             <ChevronDown
               className={cn(
-                'w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-200',
+                'w-4 h-4 text-neutral-400 flex-shrink-0 transition-transform duration-200',
                 open === i && 'rotate-180',
               )}
               aria-hidden="true"
             />
           </button>
           {open === i && (
-            <div className="px-6 pb-5 text-sm text-gray-500 leading-relaxed border-t border-gray-50 pt-3">
+            <div className="px-6 pb-5 text-sm text-neutral-500 leading-relaxed border-t border-neutral-50 pt-3">
               {item.a}
             </div>
           )}

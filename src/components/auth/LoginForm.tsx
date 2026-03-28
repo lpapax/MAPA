@@ -37,7 +37,7 @@ export function LoginForm() {
 
   return (
     <div className="w-full max-w-md">
-      <div className="bg-white rounded-3xl shadow-card p-8 border border-gray-100">
+      <div className="bg-white rounded-3xl shadow-card p-8 border border-neutral-100">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-8">
           <div className="w-10 h-10 rounded-2xl bg-primary-600 flex items-center justify-center">
@@ -54,7 +54,7 @@ export function LoginForm() {
               <CheckCircle2 className="w-8 h-8 text-primary-600" aria-hidden="true" />
             </div>
             <h2 className="font-heading font-bold text-forest text-xl mb-2">Zkontrolujte e-mail</h2>
-            <p className="text-gray-500 text-sm leading-relaxed mb-6">
+            <p className="text-neutral-500 text-sm leading-relaxed mb-6">
               Poslali jsme magický odkaz na{' '}
               <strong className="text-forest">{email}</strong>.
               Odkaz platí 1 hodinu.
@@ -69,7 +69,7 @@ export function LoginForm() {
         ) : (
           <>
             <h1 className="font-heading font-bold text-forest text-2xl mb-2 text-center">Přihlásit se</h1>
-            <p className="text-gray-500 text-sm text-center mb-8">
+            <p className="text-neutral-500 text-sm text-center mb-8">
               Zadejte e-mail a zašleme vám přihlašovací odkaz. Žádné heslo není třeba.
             </p>
 
@@ -79,7 +79,7 @@ export function LoginForm() {
                   E-mailová adresa
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" aria-hidden="true" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" aria-hidden="true" />
                   <input
                     id="email"
                     type="email"
@@ -88,7 +88,7 @@ export function LoginForm() {
                     placeholder="vas@email.cz"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all"
+                    className="w-full pl-9 pr-4 py-3 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all"
                   />
                 </div>
               </div>
@@ -105,7 +105,7 @@ export function LoginForm() {
 
             <div className="mt-6 space-y-2">
               {['Synchronizujte oblíbené farmy', 'Ukládejte recenze trvale', 'Pracujte ze všech zařízení'].map((benefit) => (
-                <div key={benefit} className="flex items-center gap-2 text-xs text-gray-400">
+                <div key={benefit} className="flex items-center gap-2 text-xs text-neutral-400">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary-400 flex-shrink-0" />
                   {benefit}
                 </div>

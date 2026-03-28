@@ -71,10 +71,10 @@ export default function CookiesPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="mb-10">
             <h1 className="font-heading text-4xl font-bold text-forest mb-3">Cookie politika</h1>
-            <p className="text-gray-500 text-sm">Platné od <strong>1. 1. 2025</strong></p>
+            <p className="text-neutral-500 text-sm">Platné od <strong>1. 1. 2025</strong></p>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-12 text-sm text-gray-600 leading-relaxed">
+          <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm p-8 space-y-12 text-sm text-neutral-600 leading-relaxed">
 
             {/* Intro */}
             <section>
@@ -98,12 +98,12 @@ export default function CookiesPage() {
                       <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${section.typeColor}`}>
                         {section.type}
                       </span>
-                      <span className="text-xs text-gray-400">{section.description}</span>
+                      <span className="text-xs text-neutral-400">{section.description}</span>
                     </div>
-                    <div className="overflow-x-auto rounded-xl border border-gray-100">
+                    <div className="overflow-x-auto rounded-xl border border-neutral-100">
                       <table className="w-full text-xs">
                         <thead>
-                          <tr className="bg-gray-50 border-b border-gray-100">
+                          <tr className="bg-neutral-50 border-b border-neutral-100">
                             <th className="text-left px-4 py-3 font-semibold text-forest">Název</th>
                             <th className="text-left px-4 py-3 font-semibold text-forest">Účel</th>
                             <th className="text-left px-4 py-3 font-semibold text-forest">Platnost</th>
@@ -112,11 +112,11 @@ export default function CookiesPage() {
                         </thead>
                         <tbody className="divide-y divide-gray-50">
                           {section.cookies.map((cookie) => (
-                            <tr key={cookie.name} className="hover:bg-gray-50">
-                              <td className="px-4 py-3 font-mono text-gray-700">{cookie.name}</td>
-                              <td className="px-4 py-3 text-gray-500">{cookie.purpose}</td>
-                              <td className="px-4 py-3 text-gray-500">{cookie.duration}</td>
-                              <td className="px-4 py-3 text-gray-500">{cookie.provider}</td>
+                            <tr key={cookie.name} className="hover:bg-neutral-50">
+                              <td className="px-4 py-3 font-mono text-neutral-700">{cookie.name}</td>
+                              <td className="px-4 py-3 text-neutral-500">{cookie.purpose}</td>
+                              <td className="px-4 py-3 text-neutral-500">{cookie.duration}</td>
+                              <td className="px-4 py-3 text-neutral-500">{cookie.provider}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -138,7 +138,7 @@ export default function CookiesPage() {
                 {BROWSER_GUIDES.map((guide) => (
                   <div key={guide.name} className="bg-primary-50 rounded-xl p-4">
                     <h3 className="font-semibold text-forest text-sm mb-1.5">{guide.name}</h3>
-                    <p className="text-gray-500 text-xs leading-relaxed">{guide.steps}</p>
+                    <p className="text-neutral-500 text-xs leading-relaxed">{guide.steps}</p>
                   </div>
                 ))}
               </div>

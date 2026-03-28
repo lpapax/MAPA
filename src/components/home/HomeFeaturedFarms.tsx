@@ -75,7 +75,7 @@ function SpotlightCard({ farm }: { farm: Farm }) {
   return (
     <Link
       href={`/farmy/${farm.slug}`}
-      className="group relative flex flex-col sm:flex-row rounded-3xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer min-h-[280px] hover:scale-[1.01]"
+      className="group relative flex flex-col sm:flex-row rounded-xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer min-h-[280px] hover:scale-[1.01]"
       aria-label={`Farma: ${farm.name}`}
     >
       {/* Cover gradient */}
@@ -113,14 +113,14 @@ function SpotlightCard({ farm }: { farm: Farm }) {
                   <CheckCircle className="w-4 h-4 text-primary-500 flex-shrink-0" aria-label="Ověřená farma" />
                 )}
               </div>
-              <div className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
+              <div className="text-xs text-neutral-500 flex items-center gap-1 mt-0.5">
                 <MapPin className="w-3 h-3" aria-hidden="true" />
                 {farm.location.city}, {farm.location.kraj}
               </div>
             </div>
           </div>
           {farm.description && (
-            <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 mt-2">{farm.description}</p>
+            <p className="text-sm text-neutral-500 leading-relaxed line-clamp-2 mt-2">{farm.description}</p>
           )}
           <div className="flex flex-wrap gap-1.5 mt-3">
             {farm.categories.slice(0, 4).map((cat) => (
@@ -133,7 +133,7 @@ function SpotlightCard({ farm }: { farm: Farm }) {
             ))}
           </div>
         </div>
-        <div className="flex items-center justify-end mt-5 pt-4 border-t border-gray-50">
+        <div className="flex items-center justify-end mt-5 pt-4 border-t border-neutral-100">
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 group-hover:gap-2.5 transition-all" aria-hidden="true">
             Zobrazit farmu <ArrowRight className="w-3 h-3" />
           </span>
@@ -148,7 +148,7 @@ function FarmCard({ farm }: { farm: Farm }) {
   return (
     <Link
       href={`/farmy/${farm.slug}`}
-      className="group flex flex-col rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:scale-[1.01]"
+      className="group flex flex-col rounded-xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:scale-[1.01]"
       aria-label={`Farma: ${farm.name}`}
     >
       {/* Cover gradient */}
@@ -182,7 +182,7 @@ function FarmCard({ farm }: { farm: Farm }) {
                 <CheckCircle className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" aria-label="Ověřená farma" />
               )}
             </h3>
-            <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
+            <div className="flex items-center gap-1 text-xs text-neutral-400 mt-0.5">
               <MapPin className="w-3 h-3 flex-shrink-0" aria-hidden="true" />
               <span className="truncate">{farm.location.city}, {farm.location.kraj}</span>
             </div>
@@ -200,7 +200,7 @@ function FarmCard({ farm }: { farm: Farm }) {
           ))}
         </div>
 
-        <div className="flex items-center justify-end mt-auto pt-3 border-t border-gray-50">
+        <div className="flex items-center justify-end mt-auto pt-3 border-t border-neutral-100">
           <span className="text-xs font-semibold text-primary-600 group-hover:text-primary-700 transition-colors inline-flex items-center gap-1">
             Zobrazit <ArrowRight className="w-3 h-3" aria-hidden="true" />
           </span>

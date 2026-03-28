@@ -80,7 +80,7 @@ function ToastMessage({
     <div
       role="status"
       className={cn(
-        'flex items-center gap-3 px-4 py-3 bg-white rounded-xl shadow-2xl border border-gray-100',
+        'flex items-center gap-3 px-4 py-3 bg-white rounded-xl shadow-2xl border border-neutral-100',
         'max-w-xs w-full transition-all duration-300',
         visible ? 'translate-x-0 opacity-100' : 'translate-x-6 opacity-0',
       )}
@@ -90,7 +90,7 @@ function ToastMessage({
       <button
         onClick={() => onDismiss(toast.id)}
         aria-label="Zavřít"
-        className="text-gray-300 hover:text-gray-500 transition-colors cursor-pointer flex-shrink-0"
+        className="text-neutral-300 hover:text-neutral-500 transition-colors cursor-pointer flex-shrink-0"
       >
         <X className="w-3.5 h-3.5" />
       </button>

@@ -63,12 +63,12 @@ export function RecentlyViewed() {
               >
                 Naposledy zobrazeno
               </h2>
-              <p className="text-xs text-gray-400">Farmy, které jste nedávno navštívili</p>
+              <p className="text-xs text-neutral-400">Farmy, které jste nedávno navštívili</p>
             </div>
           </div>
           <button
             onClick={clearRecent}
-            className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+            className="flex items-center gap-1 text-xs text-neutral-400 hover:text-neutral-600 transition-colors cursor-pointer"
             aria-label="Vymazat historii"
           >
             <X className="w-3.5 h-3.5" aria-hidden="true" />
@@ -110,7 +110,7 @@ export function RecentlyViewed() {
                   <h3 className="font-heading font-bold text-sm text-forest truncate leading-tight">
                     {farm.name}
                   </h3>
-                  <div className="flex items-center gap-1 text-[11px] text-gray-400 mt-0.5 mb-2">
+                  <div className="flex items-center gap-1 text-[11px] text-neutral-400 mt-0.5 mb-2">
                     <MapPin className="w-3 h-3 flex-shrink-0" aria-hidden="true" />
                     <span className="truncate">{farm.kraj}</span>
                   </div>

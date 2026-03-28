@@ -21,7 +21,7 @@ export function FavoriteButton({ entry }: FavoriteButtonProps) {
         'flex items-center gap-1.5 px-3 py-2 rounded-xl border transition-all duration-200 cursor-pointer text-sm',
         active
           ? 'bg-rose-50 border-rose-200 text-rose-600 hover:bg-rose-100'
-          : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-rose-500 hover:border-rose-200',
+          : 'bg-white border-neutral-200 text-neutral-500 hover:bg-neutral-50 hover:text-rose-500 hover:border-rose-200',
       )}
     >
       <Heart
