@@ -176,12 +176,12 @@ export default function ProFarmaryPage() {
               >
                 Přidat farmu zdarma
               </Link>
-              <a
-                href="#pricing"
+              <Link
+                href="/pro-farmary/narokovat"
                 className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl border-2 border-white/30 text-white font-heading font-semibold text-sm hover:border-white/60 hover:bg-white/10 transition-all duration-200 cursor-pointer"
               >
-                Zobrazit ceník
-              </a>
+                Spravovat existující farmu
+              </Link>
             </div>
           </div>
         </AnimatedSection>

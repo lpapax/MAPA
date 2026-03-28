@@ -6,6 +6,8 @@ import { useUserPrefs } from '@/hooks/useUserPrefs'
 import { CATEGORY_LABELS } from '@/lib/farms'
 import { cn } from '@/lib/utils'
 import type { FarmCategory, KrajCode } from '@/types/farm'
+import { AuthSection } from './AuthSection'
+import { SavedSearchesSection } from './SavedSearchesSection'
 
 const UNIQUE_CATEGORIES: FarmCategory[] = [
   'zelenina', 'ovoce', 'maso', 'mléko', 'vejce', 'med', 'byliny', 'sýry', 'víno', 'ryby', 'chléb', 'ostatní',
@@ -36,6 +38,12 @@ export function ProfilClient() {
 
   return (
     <div className="space-y-6">
+
+      {/* Account (auth) */}
+      <AuthSection />
+
+      {/* Saved searches */}
+      <SavedSearchesSection />
 
       {/* Quick links */}
       <section className="bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden">

@@ -7,14 +7,8 @@ import { CATEGORY_LABELS } from '@/lib/farms'
 import type { Farm } from '@/types/farm'
 import { useRecentFarms } from '@/hooks/useRecentFarms'
 import { useBedynka } from '@/hooks/useBedynka'
-
-interface StoredReview {
-  name: string
-  city: string
-  rating: number
-  text: string
-  date: string
-}
+import { useReviews } from '@/hooks/useReviews'
+import { useToast } from '@/components/ui/Toast'
 
 const TABS = [
   { id: 'o-farme', label: 'O farmě' },
@@ -41,23 +35,15 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
   const [activeTab, setActiveTab] = useState<TabId>('o-farme')
   const [formState, setFormState] = useState({ name: '', email: '', message: '', sent: false })
   const [reviewForm, setReviewForm] = useState({ name: '', city: '', rating: 5, text: '', sent: false })
-  const [reviews, setReviews] = useState<StoredReview[]>([])
   const { addRecentFarm } = useRecentFarms()
   const { addItem, isInBedynka } = useBedynka()
+  const { reviews, submitReview } = useReviews(farm.slug)
+  const { show } = useToast()
 
   // Record this page view in the recently viewed list
   useEffect(() => {
     addRecentFarm(farm)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [farm.slug])
-
-  // Load reviews from localStorage
-  useEffect(() => {
-    try {
-      const key = `mf_reviews_${farm.slug}`
-      const stored = JSON.parse(localStorage.getItem(key) ?? '[]') as StoredReview[]
-      if (Array.isArray(stored)) setReviews(stored)
-    } catch { /* ignore storage errors */ }
   }, [farm.slug])
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -209,8 +195,8 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                 </div>
               ) : (
                 <div className="space-y-4 mb-8">
-                  {reviews.map((review, i) => (
-                    <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                  {reviews.map((review) => (
+                    <div key={review.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
                       <div className="flex items-start gap-3">
                         <div className="w-9 h-9 rounded-xl bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xs flex-shrink-0">
                           <User className="w-4 h-4" aria-hidden="true" />
@@ -244,16 +230,16 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                   </div>
                 ) : (
                   <form
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                       e.preventDefault()
                       const { name, city, rating, text } = reviewForm
                       if (!name.trim() || !text.trim()) return
-                      const newReview: StoredReview = { name, city, rating, text, date: new Date().toISOString() }
-                      const key = `mf_reviews_${farm.slug}`
-                      const updated = [...reviews, newReview]
-                      try { localStorage.setItem(key, JSON.stringify(updated)) } catch { /* ignore */ }
-                      setReviews(updated)
-                      setReviewForm((s) => ({ ...s, sent: true }))
+                      const { error } = await submitReview({ name, city, rating, text })
+                      if (error) {
+                        show(error, 'error')
+                      } else {
+                        setReviewForm((s) => ({ ...s, sent: true }))
+                      }
                     }}
                     className="space-y-4"
                     aria-label="Formulář pro recenzi"

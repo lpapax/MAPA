@@ -13,7 +13,7 @@ export function getSupabaseClient() {
   return createClient<Database>(supabaseUrl, supabaseAnonKey)
 }
 
-// Singleton for client-side usage
+// Singleton for client-side usage (typed with Database for autocomplete on known tables)
 let _client: ReturnType<typeof createClient<Database>> | null = null
 
 export function getSupabaseClientSingleton() {
@@ -22,4 +22,16 @@ export function getSupabaseClientSingleton() {
     _client = createClient<Database>(supabaseUrl, supabaseAnonKey)
   }
   return _client
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyClient = ReturnType<typeof createClient<any>>
+
+/**
+ * Same singleton but typed as `any` database schema.
+ * Use this when accessing tables not yet declared in Database (user-authored tables).
+ */
+export function getSupabaseRaw(): AnyClient | null {
+  if (!supabaseUrl || !supabaseAnonKey) return null
+  return (getSupabaseClientSingleton() as AnyClient | null)
 }

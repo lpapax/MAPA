@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { ToastProvider } from '@/components/ui/Toast'
 import { ThemeProvider } from '@/components/ui/ThemeProvider'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 export const metadata: Metadata = {
   title: {
@@ -42,9 +43,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Přejít na obsah
         </a>
         <ThemeProvider>
-          <ToastProvider>
-            <div id="main-content">{children}</div>
-          </ToastProvider>
+          <AuthProvider>
+            <ToastProvider>
+              <div id="main-content">{children}</div>
+            </ToastProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

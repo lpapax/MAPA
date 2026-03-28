@@ -2,12 +2,14 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
-import { Search, X, SlidersHorizontal, MapPin, Star, Clock, List, Map as MapIcon, CheckCircle, Heart } from 'lucide-react'
+import { Search, X, SlidersHorizontal, MapPin, Star, Clock, List, Map as MapIcon, CheckCircle, Heart, Bookmark } from 'lucide-react'
 import { MapViewWrapper } from '@/components/map/MapViewWrapper'
 import { useFarmStore, getFilteredFarms } from '@/store/farmStore'
 import { useCompareStore, MAX_COMPARE_FARMS } from '@/store/compareStore'
 import { useFavoriteFarms } from '@/hooks/useFavoriteFarms'
 import { useUserPrefs } from '@/hooks/useUserPrefs'
+import { useAuth } from '@/hooks/useAuth'
+import { useSavedSearches } from '@/hooks/useSavedSearches'
 import { CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { CompareBar } from '@/components/farms/CompareBar'
 import { cn } from '@/lib/utils'
@@ -67,6 +69,9 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
 
   const { isInCompare, toggleCompare, compareIds } = useCompareStore()
   const { isFavorite, toggleFavorite } = useFavoriteFarms()
+  const { user } = useAuth()
+  const { saveSearch } = useSavedSearches()
+  const [savingSearch, setSavingSearch] = useState(false)
 
   const filtered = useMemo(() => getFilteredFarms(allFarms, store), [allFarms, store])
   const hasActiveFilters = filters.categories.length > 0 || filters.kraj !== null || filters.openNow
@@ -112,6 +117,26 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
               </span>
             )}
           </button>
+
+          {/* Save search (logged-in users only, only when filters active) */}
+          {user && hasActiveFilters && (
+            <button
+              onClick={async () => {
+                if (savingSearch) return
+                const name = prompt('Název hledání:')
+                if (!name?.trim()) return
+                setSavingSearch(true)
+                await saveSearch(name.trim(), filters)
+                setSavingSearch(false)
+              }}
+              disabled={savingSearch}
+              aria-label="Uložit aktuální hledání"
+              title="Uložit hledání"
+              className="hidden sm:flex items-center justify-center w-9 h-9 rounded-xl border border-gray-200 text-gray-500 hover:border-primary-400 hover:text-primary-600 transition-colors cursor-pointer disabled:opacity-50"
+            >
+              <Bookmark className="w-4 h-4" aria-hidden="true" />
+            </button>
+          )}
 
           {/* Mobile toggle */}
           <div className="flex md:hidden rounded-xl overflow-hidden border border-gray-200">

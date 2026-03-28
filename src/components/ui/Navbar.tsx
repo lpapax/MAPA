@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Menu, X, Plus, Search, UserCircle2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/useAuth'
 
 interface SearchResult {
   id: string
@@ -22,6 +23,7 @@ const NAV_LINKS = [
 ]
 
 export function Navbar() {
+  const { user } = useAuth()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -128,11 +130,17 @@ export function Navbar() {
             </button>
 
             <Link
-              href="/profil"
-              aria-label="Můj profil"
+              href={user ? '/profil' : '/prihlasit'}
+              aria-label={user ? 'Můj profil' : 'Přihlásit se'}
               className="flex items-center justify-center w-9 h-9 rounded-xl text-forest hover:bg-primary-50 transition-colors duration-200 cursor-pointer"
             >
-              <UserCircle2 className="w-4 h-4" aria-hidden="true" />
+              {user ? (
+                <span className="w-7 h-7 rounded-full bg-primary-600 flex items-center justify-center text-white text-xs font-bold">
+                  {(user.email ?? '?').charAt(0).toUpperCase()}
+                </span>
+              ) : (
+                <UserCircle2 className="w-4 h-4" aria-hidden="true" />
+              )}
             </Link>
 
             <Link
@@ -179,6 +187,14 @@ export function Navbar() {
             >
               <Plus className="w-4 h-4" aria-hidden="true" />
               Přidat farmu
+            </Link>
+            <Link
+              href={user ? '/profil' : '/prihlasit'}
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-gray-200 text-forest text-sm font-medium transition-colors duration-200 cursor-pointer hover:bg-surface"
+            >
+              <UserCircle2 className="w-4 h-4" aria-hidden="true" />
+              {user ? 'Můj profil' : 'Přihlásit se'}
             </Link>
           </div>
         )}
