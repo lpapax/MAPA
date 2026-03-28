@@ -5,7 +5,6 @@ import {
   Users,
   Shield,
   CheckCircle,
-  BarChart2,
 } from 'lucide-react'
 import { Navbar } from '@/components/ui/Navbar'
 import { Footer } from '@/components/ui/Footer'
@@ -57,15 +56,9 @@ const BENEFITS = [
   },
   {
     icon: Shield,
-    title: 'Ověřený profil farmy',
+    title: 'Snadný profil farmy',
     description:
-      'Vaše farma dostane ověřovací odznak. Zákazníci vědí, že jde o skutečného lokálního producenta.',
-  },
-  {
-    icon: BarChart2,
-    title: 'Statistiky návštěvnosti',
-    description:
-      'Sledujte, kolik lidí navštívilo váš profil, odkud přichází zákazníci a co je nejvíce zajímá.',
+      'Jednoduché rozhraní pro správu profilu — aktualizujte kontakt, otevírací dobu a popis kdykoliv sami.',
   },
 ]
 
@@ -220,7 +213,7 @@ export default function ProFarmaryPage() {
                 Co Mapa Farem přinese vám
               </h2>
               <p className="text-gray-500 text-sm max-w-xl mx-auto">
-                Stovky farmářů již využívají Mapu Farem k přímému prodeji. Výsledky mluví za sebe.
+                Přidejte svou farmu do adresáře a dostaňte se k zákazníkům, kteří hledají lokální produkty ve vašem regionu.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

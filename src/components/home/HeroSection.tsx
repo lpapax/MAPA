@@ -8,9 +8,8 @@ import { ArrowRight, Map, Tractor, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const STATS = [
-  { value: 'Stovky', label: 'farem' },
+  { value: '3 960+', label: 'farem' },
   { value: '14', label: 'krajů' },
-  { value: 'Tisíce', label: 'produktů' },
 ]
 
 export function HeroSection() {

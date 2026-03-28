@@ -190,9 +190,9 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     coverGradient: 'from-rose-400 to-orange-500',
     coverImage: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&h=480&fit=crop&q=80',
     slug: 'recepty-sezonni-zelenina',
-    author: 'Lucie Marková',
-    authorInitials: 'LM',
-    authorColor: 'bg-rose-500',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
     publishedAt: '2. dubna 2025',
     content: `Léto je nejkrásnější čas pro vaření. Stánky farmářů se prohýbají pod tíhou čerstvé zeleniny a ovoce. Rajčata voní jako nikdy, kukuřice je sladká, cukety rostou tak rychle, že nestíháte zpracovávat. Tenhle průvodce vám ukáže, jak z letní úrody vytěžit maximum bez složitých receptů.
 
@@ -275,9 +275,9 @@ Letní vaření je radost. Nepotřebujete složité recepty ani drahé ingredien
     coverGradient: 'from-amber-300 to-yellow-500',
     coverImage: 'https://images.unsplash.com/photo-1471943311424-646960669fbc?w=800&h=480&fit=crop&q=80',
     slug: 'jak-poznat-kvalitni-med',
-    author: 'Pavel Krejčí',
-    authorInitials: 'PK',
-    authorColor: 'bg-amber-500',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
     publishedAt: '18. března 2025',
     content: `Med je jednou z nejčastěji falšovaných potravin na světě. Podle výzkumů EU je až třetina medu prodávaného v evropských supermarketech ředěna kukuřičným sirupem nebo pochází z Číny, přičemž je označena jako „původ: EU". Jak tedy poznat skutečný, kvalitní med?
 
@@ -359,9 +359,9 @@ Med skladujte při pokojové teplotě, daleko od tepla a přímého světla. Nep
     coverGradient: 'from-teal-400 to-emerald-600',
     coverImage: 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=800&h=480&fit=crop&q=80',
     slug: 'primy-prodej-z-farmy',
-    author: 'Jan Novák',
-    authorInitials: 'JN',
-    authorColor: 'bg-teal-500',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
     publishedAt: '25. února 2025',
     content: `Přímý prodej – kdy zákazník kupuje potraviny přímo od producenta bez zprostředkovatelů – není v Česku nový jev. Farmářské trhy, prodej ze dvora a bedýnkové systémy existují desítky let. Ale proč na tom záleží víc než kdy dřív?
 
@@ -418,9 +418,9 @@ Mapa Farem je platforma, která přímý prodej usnadňuje. Místo zdlouhavého 
     coverGradient: 'from-emerald-400 to-teal-500',
     coverImage: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&h=480&fit=crop&q=80',
     slug: 'proc-kupovat-lokalni-potraviny',
-    author: 'Jana Horáčková',
-    authorInitials: 'JH',
-    authorColor: 'bg-emerald-500',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
     publishedAt: '12. března 2025',
     content: `Lokální potraviny se v posledních letech staly stále populárnějším tématem. Ale proč vlastně? Je to jen módní trend nebo za tím stojí skutečné, pádné důvody?
 
@@ -469,9 +469,9 @@ Lokální potraviny nejsou luxusem pro vyvolené. Jsou to každodenní volby, kt
     coverGradient: 'from-green-400 to-emerald-600',
     coverImage: 'https://images.unsplash.com/photo-1590682680695-43b964a3ae17?w=800&h=480&fit=crop&q=80',
     slug: 'bedynka-zeleniny-pruvodce',
-    author: 'Tomáš Veselý',
-    authorInitials: 'TV',
-    authorColor: 'bg-blue-500',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
     publishedAt: '5. února 2025',
     content: `Bedýnka zeleniny – pravidelná zásilka čerstvé, sezónní zeleniny přímo od farmáře – je skvělý způsob, jak jíst zdravě, lokálně a s vědomím původu toho, co jíte. Pro mnoho lidí je ale první bedýnka trochu výzvou: Co vlastně přijde? Jak to zpracovat? A co s kedlubenem?
 
@@ -540,9 +540,9 @@ Na Mapě Farem najdete farmáře ve vašem okolí, kteří bedýnky nabízejí. 
     coverGradient: 'from-lime-400 to-green-500',
     coverImage: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=800&h=480&fit=crop&q=80',
     slug: 'jak-poznam-bio-certifikaci',
-    author: 'Markéta Procházková',
-    authorInitials: 'MP',
-    authorColor: 'bg-amber-500',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
     publishedAt: '28. ledna 2025',
     content: `Slovo „bio" je dnes všude – na obalech v supermarketech, v reklamách, na tržnicích a farmářských trzích. Ale co to vlastně znamená? Jak poznáte, že je produkt skutečně bio? A proč by vám to mělo záležet?
 

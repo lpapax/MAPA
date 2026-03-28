@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { MapPin, Sprout, ShoppingBag, TrendingUp, Target, Leaf, ArrowLeftRight, Eye, Heart } from 'lucide-react'
+import { MapPin, Sprout, Target, Leaf, ArrowLeftRight, Eye, Heart } from 'lucide-react'
 import { Navbar } from '@/components/ui/Navbar'
 import { Footer } from '@/components/ui/Footer'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
@@ -12,10 +12,8 @@ export const metadata: Metadata = {
 }
 
 const STATS = [
-  { value: 'Stovky', label: 'ověřených farem', Icon: Sprout },
+  { value: '3 960+', label: 'farem v adresáři', Icon: Sprout },
   { value: '14', label: 'krajů ČR', Icon: MapPin },
-  { value: 'Tisíce', label: 'druhů produktů', Icon: ShoppingBag },
-  { value: 'Rosteme', label: 'každým dnem', Icon: TrendingUp },
 ]
 
 
@@ -27,18 +25,11 @@ const FARMER_BENEFITS = [
 ]
 
 const CUSTOMER_BENEFITS = [
-  { title: 'Ověřené farmy', description: 'Každá farma prochází procesem ověření. Žádné falešné profily.', Icon: Target },
   { title: 'Přímý nákup', description: 'Nakupujte přímo od farmáře bez obchodních marží.', Icon: ArrowLeftRight },
   { title: 'Lokální produkty', description: 'Filtrujte podle kraje, kategorie nebo dostupnosti produktů.', Icon: MapPin },
-  { title: 'Recenze komunity', description: 'Čtěte zkušenosti ostatních zákazníků a hodnoťte vaše nákupy.', Icon: Heart },
+  { title: 'Recenze komunity', description: 'Přidejte recenzi farmy a čtěte zkušenosti ostatních zákazníků.', Icon: Heart },
 ]
 
-const TIMELINE = [
-  { year: '2022', title: 'Vznik myšlenky', description: 'Frustrace z obtížného hledání lokálních farmářů vedla k nápadu vytvořit přehledný adresář.' },
-  { year: '2023', title: 'Beta verze', description: 'První verze platformy, první farmáři a zákazníci. Testování konceptu v praxi.' },
-  { year: '2024', title: 'Spuštění', description: 'Rozšíření na celou Českou republiku, interaktivní mapa a mobilní přístup.' },
-  { year: '2025', title: 'Rozvoj', description: 'Nové funkce, bedýnkový systém, sezónní průvodce a rostoucí komunita.' },
-]
 
 export default function OProjektuPage() {
   return (
@@ -128,29 +119,6 @@ export default function OProjektuPage() {
               Jsme na začátku. Farmy přibývají, komunita roste a rádi bychom jednou pokryli
               každý kraj v Česku. Pokud znáte farmáře, který tu ještě není — pošlete mu odkaz.
             </p>
-          </div>
-        </AnimatedSection>
-
-        {/* Timeline */}
-        <AnimatedSection className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-          <h2 className="font-heading text-2xl font-bold text-forest text-center mb-10">Náš příběh</h2>
-          <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-8 top-0 bottom-0 w-px bg-primary-100" aria-hidden="true" />
-            <div className="space-y-8">
-              {TIMELINE.map((item) => (
-                <div key={item.year} className="relative flex gap-6">
-                  <div className="w-16 flex-shrink-0 flex flex-col items-center">
-                    <div className="w-5 h-5 rounded-full bg-primary-600 border-4 border-white shadow-sm z-10 mt-1" aria-hidden="true" />
-                  </div>
-                  <div className="flex-1 pb-2">
-                    <span className="text-xs font-semibold text-primary-600 uppercase tracking-wider">{item.year}</span>
-                    <h3 className="font-heading font-bold text-forest text-base mt-0.5">{item.title}</h3>
-                    <p className="text-sm text-gray-500 leading-relaxed mt-1">{item.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </AnimatedSection>
 
