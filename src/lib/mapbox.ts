@@ -2,11 +2,18 @@ import type { FarmMapMarker } from '@/types/farm'
 
 export const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ''
 
-export const MAP_STYLE = 'mapbox://styles/mapbox/outdoors-v12'
+export const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12'
 
 export const DEFAULT_CENTER: [number, number] = [15.4729, 49.8175] // Center of Czech Republic
-export const DEFAULT_ZOOM = 7
+export const DEFAULT_ZOOM = 7.2
 export const DETAIL_ZOOM = 14
+export const MIN_ZOOM = 6.5
+
+// Czech Republic bounds — map cannot be panned or zoomed outside this box
+export const CZ_BOUNDS: [[number, number], [number, number]] = [
+  [11.5, 48.2], // SW corner
+  [19.5, 51.5], // NE corner
+]
 
 export const CLUSTER_CONFIG = {
   cluster: true,

@@ -12,6 +12,8 @@ import {
   DEFAULT_CENTER,
   DEFAULT_ZOOM,
   DETAIL_ZOOM,
+  MIN_ZOOM,
+  CZ_BOUNDS,
   farmToGeoJSON,
 } from '@/lib/mapbox'
 import { useFarmStore } from '@/store/farmStore'
@@ -46,6 +48,8 @@ export function MapView({ markers }: MapViewProps) {
       style: MAP_STYLE,
       center: DEFAULT_CENTER,
       zoom: DEFAULT_ZOOM,
+      minZoom: MIN_ZOOM,
+      maxBounds: CZ_BOUNDS,
       attributionControl: false,
     })
 
