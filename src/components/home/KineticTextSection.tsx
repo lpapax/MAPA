@@ -99,7 +99,7 @@ export function KineticTextSection() {
     // Container is tall — its scroll distance drives the animations
     <div
       ref={containerRef}
-      style={{ height: reducedMotion ? 'auto' : '350vh' }}
+      style={{ height: reducedMotion ? 'auto' : '280vh' }}
       className="relative bg-forest"
       aria-label="Čerstvé, lokální, poctivé z farmy"
     >

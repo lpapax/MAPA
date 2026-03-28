@@ -119,7 +119,7 @@ export function HeroSection() {
           style={{ y: bgY }}
         >
           <Image
-            src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1920&h=1080&fit=crop&q=85"
+            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&h=1080&fit=crop&q=85"
             alt=""
             fill
             priority

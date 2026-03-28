@@ -7,56 +7,57 @@ import {
   motion,
   useScroll,
   useTransform,
+  useSpring,
   useReducedMotion,
 } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 
-// ─── Data ────────────────────────────────────────────────────────────────────
+// ─── Data — only verified Unsplash IDs from mockData ─────────────────────────
 
 const PANELS = [
   {
     label: 'ZELENINA',
     sub: 'Přímá z pole',
     href: '/mapa?q=zelenina',
-    img: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=1400&h=900&fit=crop&q=85',
-    accent: 'from-emerald-900/70',
+    img: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=1600&h=900&fit=crop&q=85',
+    accent: 'from-emerald-950/80 via-emerald-900/40',
   },
   {
     label: 'OVOCE',
     sub: 'Sezónní sklizeň',
     href: '/mapa?q=ovoce',
-    img: 'https://images.unsplash.com/photo-1490885578174-acda8905c2c6?w=1400&h=900&fit=crop&q=85',
-    accent: 'from-amber-900/70',
+    img: 'https://images.unsplash.com/photo-1486328228599-85db4443971f?w=1600&h=900&fit=crop&q=85',
+    accent: 'from-orange-950/80 via-orange-900/40',
   },
   {
     label: 'MLÉČNÉ',
-    sub: 'Denní dojení',
+    sub: 'Čerstvé každý den',
     href: '/mapa?q=mléko',
-    img: 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1400&h=900&fit=crop&q=85',
-    accent: 'from-sky-900/60',
+    img: 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1600&h=900&fit=crop&q=85',
+    accent: 'from-sky-950/75 via-sky-900/35',
   },
   {
     label: 'MASO',
     sub: 'Volný chov',
     href: '/mapa?q=maso',
-    img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=1400&h=900&fit=crop&q=85',
-    accent: 'from-red-900/65',
+    img: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1600&h=900&fit=crop&q=85',
+    accent: 'from-red-950/80 via-red-900/40',
   },
   {
     label: 'MED',
     sub: 'Přírodní med',
     href: '/mapa?q=med',
-    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1400&h=900&fit=crop&q=85',
-    accent: 'from-yellow-900/65',
+    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1600&h=900&fit=crop&q=85',
+    accent: 'from-yellow-950/80 via-yellow-900/40',
   },
 ]
 
-// ─── Mobile fallback — simple vertical grid ───────────────────────────────
+// ─── Mobile fallback ──────────────────────────────────────────────────────────
 
 function MobileCategories() {
   return (
     <section className="bg-forest py-12 px-4 lg:hidden" aria-label="Kategorie produktů">
-      <h2 className="font-heading text-2xl font-bold text-white mb-8 text-center tracking-tight">
+      <h2 className="font-heading text-2xl font-bold text-white mb-6 text-center tracking-tight">
         Co hledáš?
       </h2>
       <div className="grid grid-cols-2 gap-3">
@@ -75,9 +76,7 @@ function MobileCategories() {
             />
             <div className={`absolute inset-0 bg-gradient-to-t ${p.accent} to-transparent`} />
             <div className="absolute bottom-0 left-0 p-4">
-              <p className="font-heading font-black text-white text-base leading-tight">
-                {p.label}
-              </p>
+              <p className="font-heading font-black text-white text-base leading-tight">{p.label}</p>
               <p className="text-white/60 text-xs mt-0.5">{p.sub}</p>
             </div>
           </Link>
@@ -98,98 +97,95 @@ export function HorizontalCategoriesSection() {
     offset: ['start start', 'end end'],
   })
 
-  // Translate the track: at progress=0 → x=0; at progress=1 → x=-(n-1)*100vw
+  // Spring-smoothed progress → removes the choppy frame-by-frame feel
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  })
+
   const x = useTransform(
-    scrollYProgress,
+    reducedMotion ? scrollYProgress : smoothProgress,
     [0, 1],
-    ['0vw', `${-(PANELS.length - 1) * 100}vw`],
+    ['0%', `${-(PANELS.length - 1) * (100 / PANELS.length)}%`],
   )
 
   return (
     <>
-      {/* Mobile */}
       <MobileCategories />
 
-      {/* Desktop — horizontal scroll via sticky */}
+      {/* Desktop — sticky horizontal scroll */}
       <div
         ref={containerRef}
-        // Height = number of panels × 100vh (each panel gets one screen of scroll)
         style={{ height: `${PANELS.length * 100}vh` }}
-        className="relative hidden lg:block bg-forest"
+        className="relative hidden lg:block"
         aria-label="Kategorie produktů"
       >
         <div className="sticky top-0 h-screen overflow-hidden">
-          {/* Horizontal track */}
+          {/* GPU-accelerated track */}
           <motion.div
             style={{
-              width: `${PANELS.length * 100}vw`,
-              ...(reducedMotion ? {} : { x }),
+              x: reducedMotion ? 0 : x,
+              width: `${PANELS.length * 100}%`,
+              willChange: 'transform',
             }}
             className="flex h-full"
           >
             {PANELS.map((panel, i) => (
               <div
                 key={panel.label}
-                className="relative w-screen h-full flex-shrink-0 flex items-end"
+                style={{ width: `${100 / PANELS.length}%` }}
+                className="relative h-full flex-shrink-0 flex items-end"
               >
-                {/* Full-bleed photo */}
+                {/* Photo */}
                 <Image
                   src={panel.img}
                   alt={panel.label}
                   fill
                   className="object-cover"
                   sizes="100vw"
-                  priority={i === 0}
+                  priority={i < 2}
                 />
 
-                {/* Gradient overlay */}
+                {/* Left gradient for text legibility */}
                 <div
                   className={`absolute inset-0 bg-gradient-to-r ${panel.accent} to-transparent`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                {/* Bottom vignette */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
 
-                {/* Panel number */}
+                {/* Ghost number */}
                 <span
-                  className="absolute top-8 right-10 font-heading font-black text-white/10 text-[14vw] leading-none select-none"
+                  className="absolute top-8 right-10 font-heading font-black text-white/[0.07] text-[16vw] leading-none select-none pointer-events-none"
                   aria-hidden="true"
                 >
                   0{i + 1}
                 </span>
 
-                {/* Content */}
-                <div className="relative z-10 p-12 lg:p-16 xl:p-20 max-w-xl">
-                  <p className="text-white/50 text-xs tracking-[0.3em] uppercase font-semibold mb-4">
+                {/* Text content */}
+                <div className="relative z-10 p-12 lg:p-16 xl:p-24 pb-20">
+                  <p className="text-white/50 text-[10px] tracking-[0.35em] uppercase font-bold mb-5">
                     {panel.sub}
                   </p>
-                  <h2 className="font-heading font-black text-white text-[8vw] leading-none tracking-tighter mb-8">
+                  <h2 className="font-heading font-black text-white text-[6vw] leading-[0.9] tracking-tighter mb-10">
                     {panel.label}
                   </h2>
                   <Link
                     href={panel.href}
-                    className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-white/10 border border-white/25 text-white text-sm font-semibold tracking-wide backdrop-blur-sm hover:bg-white/20 transition-colors duration-300 group"
+                    className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-white/25 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold hover:bg-white/20 transition-colors duration-300 group"
                   >
                     Zobrazit farmy
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                   </Link>
                 </div>
 
-                {/* Scroll hint (first panel only) */}
-                {i === 0 && (
-                  <div className="absolute right-10 bottom-10 flex flex-col items-center gap-2 text-white/30">
-                    <span className="text-[10px] tracking-widest uppercase font-medium rotate-90 origin-center mb-4">
-                      scroll
-                    </span>
-                    <div className="w-px h-12 bg-white/20" />
-                  </div>
-                )}
-
                 {/* Progress dots */}
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2">
+                <div className="absolute bottom-8 right-10 flex gap-2 items-center">
                   {PANELS.map((_, j) => (
                     <div
                       key={j}
                       className={`rounded-full transition-all duration-300 ${
-                        j === i ? 'w-6 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/30'
+                        j === i ? 'w-5 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/25'
                       }`}
                       aria-hidden="true"
                     />
