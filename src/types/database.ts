@@ -16,6 +16,7 @@ export interface FarmRow {
   opening_hours: Json | null
   images: string[]
   verified: boolean
+  view_count: number
   created_at: string
 }
 

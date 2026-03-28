@@ -40,9 +40,10 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
   const { reviews, submitReview } = useReviews(farm.slug)
   const { show } = useToast()
 
-  // Record this page view in the recently viewed list
+  // Record this page view in the recently viewed list + increment server counter
   useEffect(() => {
     addRecentFarm(farm)
+    fetch(`/api/farms/${farm.slug}/view`, { method: 'POST' }).catch(() => null)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [farm.slug])
 

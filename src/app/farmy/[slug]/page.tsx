@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { CheckCircle, Clock, MapPin, ChevronRight } from 'lucide-react'
+import { CheckCircle, Clock, MapPin, ChevronRight, Eye } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getFarmBySlug, CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { FarmDetailClient } from '@/components/farms/FarmDetailClient'
@@ -147,6 +147,12 @@ export default async function FarmDetailPage({ params }: PageProps) {
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-50 border border-primary-200 text-primary-700 text-xs font-semibold">
                     <CheckCircle className="w-3.5 h-3.5" aria-hidden="true" />
                     Ověřeno
+                  </span>
+                )}
+                {(farm.viewCount ?? 0) > 0 && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-50 border border-gray-200 text-gray-500 text-xs">
+                    <Eye className="w-3.5 h-3.5" aria-hidden="true" />
+                    {farm.viewCount?.toLocaleString('cs-CZ')} zobrazení
                   </span>
                 )}
                 {farm.openingHours && (

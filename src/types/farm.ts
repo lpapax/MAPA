@@ -49,6 +49,7 @@ export interface Farm {
   openingHours?: OpeningHours
   images: string[]
   verified: boolean
+  viewCount?: number
   createdAt: string
 }
 

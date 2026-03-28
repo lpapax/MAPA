@@ -24,6 +24,7 @@ function rowToFarm(row: FarmRow): Farm {
     openingHours: (row.opening_hours as OpeningHours) ?? undefined,
     images: row.images,
     verified: row.verified,
+    viewCount: row.view_count ?? 0,
     createdAt: row.created_at,
   }
 }
@@ -92,6 +93,46 @@ export async function getFarmBySlug(slug: string): Promise<Farm | undefined> {
   }
 
   return data ? rowToFarm(data) : undefined
+}
+
+/**
+ * Fetch a small number of farms for the homepage — efficient, does not load all 3 960.
+ * Prefers verified farms; falls back to any farms if fewer than `limit` are verified.
+ */
+export async function getHomepageFarms(limit = 6): Promise<Farm[]> {
+  const supabase = getSupabaseClient()
+
+  if (!supabase) {
+    // From seed: pick one farm per kraj to get geographic variety
+    const seen = new Set<string>()
+    const result: Farm[] = []
+    for (const farm of seedFarms) {
+      if (!seen.has(farm.location.kraj) && result.length < limit) {
+        seen.add(farm.location.kraj)
+        result.push(farm)
+      }
+    }
+    return result.length >= limit ? result : seedFarms.slice(0, limit)
+  }
+
+  // Try verified farms first
+  const { data: verified } = await supabase
+    .from('farms')
+    .select('*')
+    .eq('verified', true)
+    .limit(limit)
+
+  if (verified && verified.length >= limit) return verified.map(rowToFarm)
+
+  // Not enough verified — fill from all farms
+  const { data: any, error } = await supabase
+    .from('farms')
+    .select('*')
+    .order('name', { ascending: true })
+    .limit(limit)
+
+  if (error) return seedFarms.slice(0, limit)
+  return (any ?? []).map(rowToFarm)
 }
 
 /**
