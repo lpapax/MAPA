@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { use3dEffect } from '@/hooks/use3dEffect'
+import { Search, Map, ArrowRight, Tractor } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 const STATS = [
   { value: '3 960+', label: 'farem' },
