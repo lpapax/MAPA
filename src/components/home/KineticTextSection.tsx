@@ -54,7 +54,7 @@ function KineticLine({
   const x = useTransform(
     progress,
     [enter[0], enter[1], exitRange[0], exitRange[1]],
-    reducedMotion ? [0, 0, 0, 0] : [fromX, '0vw', '0vw', fromX === '-12vw' ? '12vw' : '-12vw'],
+    reducedMotion ? ['0vw', '0vw', '0vw', '0vw'] : [fromX, '0vw', '0vw', fromX === '-12vw' ? '12vw' : '-12vw'],
   )
   const opacity = useTransform(
     progress,
