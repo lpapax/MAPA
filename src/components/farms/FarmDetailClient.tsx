@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Send, ShoppingBasket, Check, Star, User, MapPin, ExternalLink, ShoppingCart, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Send, ShoppingBasket, Check, Star, User, MapPin, ExternalLink, ShoppingCart, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CATEGORY_LABELS, CATEGORY_META, isFarmOpenNow } from '@/lib/farms'
 import type { Farm } from '@/types/farm'
@@ -43,7 +43,7 @@ const GALLERY_GRADIENTS = [
 export function FarmDetailClient({ farm }: { farm: Farm }) {
   const [activeTab, setActiveTab] = useState<TabId>('o-farme')
   const [formState, setFormState] = useState({ name: '', email: '', message: '', sent: false })
-  const [reviewForm, setReviewForm] = useState({ name: '', city: '', rating: 5, text: '', tags: [] as string[], sent: false })
+  const [reviewForm, setReviewForm] = useState({ name: '', city: '', rating: 5, text: '', tags: [] as string[], sent: false, loading: false })
   const [lightbox, setLightbox] = useState<{ photos: string[]; index: number } | null>(null)
   const { addRecentFarm } = useRecentFarms()
   const { addItem, isInBedynka } = useBedynka()
@@ -323,11 +323,13 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                       e.preventDefault()
                       const { name, city, rating, text } = reviewForm
                       if (!name.trim() || !text.trim()) return
+                      setReviewForm((s) => ({ ...s, loading: true }))
                       const { error } = await submitReview({ name, city, rating, text })
                       if (error) {
                         show(error, 'error')
+                        setReviewForm((s) => ({ ...s, loading: false }))
                       } else {
-                        setReviewForm((s) => ({ ...s, sent: true }))
+                        setReviewForm((s) => ({ ...s, sent: true, loading: false }))
                       }
                     }}
                     className="space-y-4"
@@ -390,8 +392,15 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                     <FormField id="review-text" label="Recenze" required>
                       <textarea id="review-text" required minLength={20} rows={3} placeholder="Popište svou zkušenost s farmou…" value={reviewForm.text} onChange={(e) => setReviewForm((s) => ({ ...s, text: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
                     </FormField>
-                    <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors cursor-pointer">
-                      <Send className="w-3.5 h-3.5" aria-hidden="true" />
+                    <button
+                      type="submit"
+                      disabled={reviewForm.loading}
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      {reviewForm.loading
+                        ? <Loader2 className="w-3.5 h-3.5 animate-spin" aria-hidden="true" />
+                        : <Send className="w-3.5 h-3.5" aria-hidden="true" />
+                      }
                       Odeslat recenzi
                     </button>
                   </form>

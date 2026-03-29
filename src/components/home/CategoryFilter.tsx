@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   LayoutGrid,
   Flame,
@@ -19,23 +20,30 @@ interface Category {
   id: string
   label: string
   icon: React.ElementType
+  mapQuery?: string
 }
 
 const CATEGORIES: Category[] = [
-  { id: 'all', label: 'Všechny', icon: LayoutGrid },
-  { id: 'maso', label: 'Maso', icon: Flame },
-  { id: 'mléko', label: 'Mléčné', icon: Milk },
-  { id: 'vejce', label: 'Vejce', icon: Egg },
-  { id: 'ovoce', label: 'Ovoce', icon: Apple },
-  { id: 'zelenina', label: 'Zelenina', icon: Leaf },
-  { id: 'med', label: 'Med', icon: Sun },
-  { id: 'byliny', label: 'Byliny', icon: Flower2 },
-  { id: 'ryby', label: 'Ryby', icon: Fish },
-  { id: 'chléb', label: 'Pečivo', icon: Wheat },
+  { id: 'all',      label: 'Všechny',  icon: LayoutGrid },
+  { id: 'zelenina', label: 'Zelenina', icon: Leaf,    mapQuery: 'zelenina' },
+  { id: 'ovoce',    label: 'Ovoce',    icon: Apple,   mapQuery: 'ovoce' },
+  { id: 'maso',     label: 'Maso',     icon: Flame,   mapQuery: 'maso' },
+  { id: 'mléko',    label: 'Mléčné',   icon: Milk,    mapQuery: 'mléko' },
+  { id: 'vejce',    label: 'Vejce',    icon: Egg,     mapQuery: 'vejce' },
+  { id: 'med',      label: 'Med',      icon: Sun,     mapQuery: 'med' },
+  { id: 'byliny',   label: 'Byliny',   icon: Flower2, mapQuery: 'byliny' },
+  { id: 'ryby',     label: 'Ryby',     icon: Fish,    mapQuery: 'ryby' },
+  { id: 'chléb',    label: 'Pečivo',   icon: Wheat,   mapQuery: 'chléb' },
 ]
 
 export function CategoryFilter() {
   const [active, setActive] = useState('all')
+  const router = useRouter()
+
+  const handleClick = (cat: Category) => {
+    setActive(cat.id)
+    router.push(cat.mapQuery ? `/mapa?q=${encodeURIComponent(cat.mapQuery)}` : '/mapa')
+  }
 
   return (
     <div className="bg-cream border-b border-neutral-100 shadow-sm sticky top-[72px] z-30">
@@ -47,18 +55,19 @@ export function CategoryFilter() {
 
         <div
           role="group"
-          aria-label="Filtrovat podle kategorie"
+          aria-label="Přejít na kategorii farem"
           className="flex items-center gap-2 overflow-x-auto scrollbar-none py-3"
         >
-          {CATEGORIES.map(({ id, label, icon: Icon }) => {
+          {CATEGORIES.map((cat) => {
+            const { id, label, icon: Icon } = cat
             const isActive = active === id
             return (
               <button
                 key={id}
-                onClick={() => setActive(id)}
+                onClick={() => handleClick(cat)}
                 aria-pressed={isActive}
                 className={cn(
-                  'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold flex-shrink-0',
+                  'flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-full text-sm font-semibold flex-shrink-0',
                   'border transition-all duration-200 cursor-pointer whitespace-nowrap',
                   isActive
                     ? 'bg-primary-600 border-primary-600 text-white shadow-sm'

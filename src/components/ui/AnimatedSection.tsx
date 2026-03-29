@@ -27,14 +27,16 @@ export function AnimatedSection({
 }: AnimatedSectionProps) {
   const { ref, isVisible } = useIntersectionObserver()
 
-  // Subtle fade-up only — no dramatic slide-ins
+  // Respect prefers-reduced-motion — skip animation entirely
+  const prefersReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
   return (
     <div
       ref={ref}
       className={cn(
-        'transition-opacity duration-500 ease-out',
-        delayClass[delay],
-        isVisible ? 'opacity-100' : 'opacity-0',
+        prefersReduced ? '' : 'transition-opacity duration-500 ease-out',
+        prefersReduced ? '' : delayClass[delay],
+        prefersReduced || isVisible ? 'opacity-100' : 'opacity-0',
         className,
       )}
     >

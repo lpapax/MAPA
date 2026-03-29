@@ -14,6 +14,13 @@ export function AnimatedCounter({ target, suffix = '', duration = 1600 }: Animat
   const started = useRef(false)
 
   useEffect(() => {
+    // Respect user's motion preference
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reducedMotion) {
+      setCount(target)
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting || started.current) return

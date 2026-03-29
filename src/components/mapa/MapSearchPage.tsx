@@ -412,15 +412,15 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                       </div>
                     </button>
 
-                    {/* Action buttons */}
-                    <div className="flex flex-col items-center gap-1 flex-shrink-0">
+                    {/* Action buttons — min 44×44px touch targets */}
+                    <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
                       <button
                         onClick={() => toggleFavorite({ slug: farm.slug, name: farm.name, categories: farm.categories, kraj: farm.location.kraj, savedAt: Date.now() })}
                         aria-label={favorited ? 'Odebrat z oblíbených' : 'Přidat do oblíbených'}
                         aria-pressed={favorited}
-                        className="p-1 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
+                        className="w-[44px] h-[44px] flex items-center justify-center rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
                       >
-                        <Heart className={cn('w-3.5 h-3.5 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-neutral-300 hover:text-rose-400')} aria-hidden="true" />
+                        <Heart className={cn('w-4 h-4 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-neutral-300 hover:text-rose-400')} aria-hidden="true" />
                       </button>
                       <button
                         onClick={() => { if (!compareDisabled) toggleCompare(farm.id) }}
@@ -428,7 +428,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                         aria-label={comparing ? 'Odebrat z porovnání' : 'Přidat do porovnání'}
                         aria-pressed={comparing}
                         className={cn(
-                          'text-[9px] px-1.5 py-0.5 rounded-full border transition-all cursor-pointer leading-tight',
+                          'w-[44px] h-[22px] flex items-center justify-center rounded-full border text-[9px] font-bold transition-all cursor-pointer',
                           comparing ? 'bg-forest text-white border-forest' : compareDisabled ? 'opacity-30 border-neutral-200 text-neutral-400 cursor-not-allowed' : 'border-neutral-200 text-neutral-400 hover:border-forest hover:text-forest',
                         )}
                       >
