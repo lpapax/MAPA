@@ -40,23 +40,38 @@ export const CLUSTER_LAYER_PAINT = {
 export function farmToGeoJSON(
   markers: FarmMapMarker[],
 ): GeoJSON.FeatureCollection<GeoJSON.Point> {
+  // Jitter farms at identical coordinates so they don't overlap
+  const coordCount = new Map<string, number>()
+
   return {
     type: 'FeatureCollection',
-    features: markers.map((marker) => ({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [marker.lng, marker.lat],
-      },
-      properties: {
-        id: marker.id,
-        slug: marker.slug,
-        name: marker.name,
-        categories: marker.categories.join(','),
-        category: marker.categories[0] ?? 'ostatní',
-        verified: marker.verified,
-      },
-    })),
+    features: markers.map((marker) => {
+      const key = `${marker.lat.toFixed(5)},${marker.lng.toFixed(5)}`
+      const idx = coordCount.get(key) ?? 0
+      coordCount.set(key, idx + 1)
+
+      // Golden-angle spiral offset for duplicates (~50m max)
+      const angle = (idx * 137.508 * Math.PI) / 180
+      const radius = idx > 0 ? 0.0004 * Math.sqrt(idx) : 0
+      const jLat = marker.lat + radius * Math.cos(angle)
+      const jLng = marker.lng + radius * Math.sin(angle)
+
+      return {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [jLng, jLat],
+        },
+        properties: {
+          id: marker.id,
+          slug: marker.slug,
+          name: marker.name,
+          categories: marker.categories.join(','),
+          category: marker.categories[0] ?? 'ostatní',
+          verified: marker.verified,
+        },
+      }
+    }),
   }
 }
 

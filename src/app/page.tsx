@@ -10,6 +10,7 @@ import { SeasonalBanner } from '@/components/home/SeasonalBanner'
 import { RecentReviews } from '@/components/home/RecentReviews'
 import { BlogPreview } from '@/components/home/BlogPreview'
 import { Newsletter } from '@/components/home/Newsletter'
+import { StatsBar } from '@/components/home/StatsBar'
 
 export const metadata = {
   title: 'Mapa Farem – Nakupujte přímo od farmářů z celé ČR',
@@ -21,6 +22,7 @@ export default async function HomePage() {
       <Navbar />
       <main id="main-content">
         <HeroSection />
+        <StatsBar />
         <CategoryFilter />
         <RecentlyViewed />
         <HomeFeaturedFarms />

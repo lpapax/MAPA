@@ -7,6 +7,7 @@ import { MapViewWrapper } from '@/components/map/MapViewWrapper'
 import { useFarmStore, getFilteredFarms } from '@/store/farmStore'
 import { useGeolocation } from '@/hooks/useGeolocation'
 import { haversineKm, formatDistance } from '@/lib/geo'
+import { useRecentSearches } from '@/hooks/useRecentSearches'
 import { useCompareStore, MAX_COMPARE_FARMS } from '@/store/compareStore'
 import { useFavoriteFarms } from '@/hooks/useFavoriteFarms'
 import { useUserPrefs } from '@/hooks/useUserPrefs'
@@ -59,7 +60,9 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
   const [mobileView, setMobileView] = useState<'map' | 'list'>(prefs.defaultView)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [sortByDistance, setSortByDistance] = useState(false)
+  const [searchFocused, setSearchFocused] = useState(false)
   const { lat: userLat, lng: userLng } = useGeolocation()
+  const { searches: recentSearches, addSearch: saveRecentSearch, removeSearch } = useRecentSearches()
 
   const store = useFarmStore()
 
@@ -118,6 +121,14 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
               placeholder="Hledat farmu nebo město…"
               value={filters.searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setTimeout(() => setSearchFocused(false), 150)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && filters.searchQuery.trim()) {
+                  saveRecentSearch(filters.searchQuery.trim())
+                  setSearchFocused(false)
+                }
+              }}
               aria-label="Vyhledávání farem"
               className="w-full pl-9 pr-3 py-2 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-surface"
             />
@@ -125,6 +136,30 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
               <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 cursor-pointer transition-colors" aria-label="Smazat hledání">
                 <X className="w-3.5 h-3.5" />
               </button>
+            )}
+            {/* Recent searches dropdown */}
+            {searchFocused && !filters.searchQuery && recentSearches.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-neutral-200 shadow-lg z-30 overflow-hidden">
+                <p className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider px-3 pt-2.5 pb-1">Nedávná hledání</p>
+                {recentSearches.map((q) => (
+                  <div key={q} className="flex items-center gap-2 px-3 py-2 hover:bg-neutral-50 group">
+                    <button
+                      onMouseDown={() => { setSearchQuery(q); setSearchFocused(false) }}
+                      className="flex items-center gap-2 flex-1 text-left text-sm text-neutral-600 cursor-pointer"
+                    >
+                      <Search className="w-3 h-3 text-neutral-300 flex-shrink-0" aria-hidden="true" />
+                      {q}
+                    </button>
+                    <button
+                      onMouseDown={() => removeSearch(q)}
+                      aria-label={`Smazat hledání "${q}"`}
+                      className="opacity-0 group-hover:opacity-100 p-0.5 text-neutral-300 hover:text-neutral-500 cursor-pointer transition-opacity"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
 
@@ -185,7 +220,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
             {POPULAR_CHIPS.map((chip) => (
               <button
                 key={chip.query}
-                onClick={() => setSearchQuery(chip.query)}
+                onClick={() => { setSearchQuery(chip.query); saveRecentSearch(chip.query) }}
                 className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface border border-neutral-200 text-neutral-500 hover:border-primary-400 hover:text-primary-600 transition-colors cursor-pointer"
               >
                 {chip.label}

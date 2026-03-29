@@ -1,14 +1,23 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Send, ShoppingBasket, Check, Star, User, MapPin, ExternalLink, ShoppingCart } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Send, ShoppingBasket, Check, Star, User, MapPin, ExternalLink, ShoppingCart, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { CATEGORY_LABELS } from '@/lib/farms'
+import { CATEGORY_LABELS, CATEGORY_META, isFarmOpenNow } from '@/lib/farms'
 import type { Farm } from '@/types/farm'
 import { useRecentFarms } from '@/hooks/useRecentFarms'
 import { useBedynka } from '@/hooks/useBedynka'
 import { useReviews } from '@/hooks/useReviews'
 import { useToast } from '@/components/ui/Toast'
+
+const REVIEW_TAGS = [
+  { emoji: '👍', label: 'Skvělá kvalita' },
+  { emoji: '🌿', label: 'Opravdu bio' },
+  { emoji: '😊', label: 'Přátelský farmář' },
+  { emoji: '💰', label: 'Dobrá cena' },
+  { emoji: '🚀', label: 'Rychlé vyřízení' },
+  { emoji: '🔄', label: 'Vrátím se' },
+]
 
 const TABS = [
   { id: 'o-farme', label: 'O farmě' },
@@ -34,11 +43,27 @@ const GALLERY_GRADIENTS = [
 export function FarmDetailClient({ farm }: { farm: Farm }) {
   const [activeTab, setActiveTab] = useState<TabId>('o-farme')
   const [formState, setFormState] = useState({ name: '', email: '', message: '', sent: false })
-  const [reviewForm, setReviewForm] = useState({ name: '', city: '', rating: 5, text: '', sent: false })
+  const [reviewForm, setReviewForm] = useState({ name: '', city: '', rating: 5, text: '', tags: [] as string[], sent: false })
+  const [lightbox, setLightbox] = useState<{ photos: string[]; index: number } | null>(null)
   const { addRecentFarm } = useRecentFarms()
   const { addItem, isInBedynka } = useBedynka()
   const { reviews, submitReview } = useReviews(farm.slug)
   const { show } = useToast()
+
+  const closeLightbox = useCallback(() => setLightbox(null), [])
+  const prevPhoto = useCallback(() => setLightbox((lb) => lb ? { ...lb, index: (lb.index - 1 + lb.photos.length) % lb.photos.length } : null), [])
+  const nextPhoto = useCallback(() => setLightbox((lb) => lb ? { ...lb, index: (lb.index + 1) % lb.photos.length } : null), [])
+
+  useEffect(() => {
+    if (!lightbox) return
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox()
+      if (e.key === 'ArrowLeft') prevPhoto()
+      if (e.key === 'ArrowRight') nextPhoto()
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [lightbox, closeLightbox, prevPhoto, nextPhoto])
 
   // Record this page view in the recently viewed list + increment server counter
   useEffect(() => {
@@ -53,6 +78,41 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
   }
 
   return (
+    <>
+    {/* Lightbox */}
+    {lightbox && (
+      <div
+        className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Fotogalerie"
+        onClick={closeLightbox}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={lightbox.photos[lightbox.index]}
+          alt={`${farm.name} foto ${lightbox.index + 1}`}
+          className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+        />
+        <button onClick={closeLightbox} aria-label="Zavřít" className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer transition-colors">
+          <X className="w-5 h-5" />
+        </button>
+        {lightbox.photos.length > 1 && (
+          <>
+            <button onClick={(e) => { e.stopPropagation(); prevPhoto() }} aria-label="Předchozí foto" className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer transition-colors">
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button onClick={(e) => { e.stopPropagation(); nextPhoto() }} aria-label="Další foto" className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer transition-colors">
+              <ChevronRight className="w-5 h-5" />
+            </button>
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-sm">
+              {lightbox.index + 1} / {lightbox.photos.length}
+            </div>
+          </>
+        )}
+      </div>
+    )}
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Tab nav */}
       <div className="flex gap-1.5 mb-8 overflow-x-auto scrollbar-none pb-0.5" role="tablist" aria-label="Sekce farmy">
@@ -170,15 +230,20 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                   return (
                     <div className="columns-2 sm:columns-3 gap-3 space-y-3">
                       {realPhotos.map((url, i) => (
-                        <div key={i} className="break-inside-avoid rounded-xl overflow-hidden bg-neutral-100">
+                        <button
+                          key={i}
+                          onClick={() => setLightbox({ photos: realPhotos, index: i })}
+                          className="break-inside-avoid rounded-xl overflow-hidden bg-neutral-100 block w-full cursor-zoom-in group relative"
+                          aria-label={`Zobrazit foto ${i + 1} z farmy ${farm.name}`}
+                        >
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={url}
                             alt={`${farm.name} – foto ${i + 1}`}
-                            className="w-full object-cover"
+                            className="w-full object-cover group-hover:scale-105 transition-transform duration-300"
                             loading="lazy"
                           />
-                        </div>
+                        </button>
                       ))}
                     </div>
                   )
@@ -293,6 +358,35 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
                         ))}
                       </div>
                     </div>
+                    {/* Quick tags */}
+                    <div>
+                      <div className="text-xs font-semibold text-forest mb-2">Rychlé hodnocení</div>
+                      <div className="flex flex-wrap gap-2" role="group" aria-label="Rychlé štítky">
+                        {REVIEW_TAGS.map((tag) => {
+                          const active = reviewForm.tags.includes(tag.label)
+                          return (
+                            <button
+                              key={tag.label}
+                              type="button"
+                              aria-pressed={active}
+                              onClick={() => setReviewForm((s) => ({
+                                ...s,
+                                tags: active ? s.tags.filter((t) => t !== tag.label) : [...s.tags, tag.label],
+                              }))}
+                              className={cn(
+                                'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer',
+                                active
+                                  ? 'bg-primary-600 border-primary-600 text-white'
+                                  : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
+                              )}
+                            >
+                              <span>{tag.emoji}</span>
+                              {tag.label}
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </div>
                     <FormField id="review-text" label="Recenze" required>
                       <textarea id="review-text" required minLength={20} rows={3} placeholder="Popište svou zkušenost s farmou…" value={reviewForm.text} onChange={(e) => setReviewForm((s) => ({ ...s, text: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
                     </FormField>
@@ -375,6 +469,7 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
         </aside>
       </div>
     </div>
+    </>
   )
 }
 
@@ -393,9 +488,29 @@ function FarmInfoCard({ farm }: { farm: Farm }) {
   const { contact, location, openingHours } = farm
   const DAY_LABELS: Record<string, string> = { po: 'Po', út: 'Út', st: 'St', čt: 'Čt', pá: 'Pá', so: 'So', ne: 'Ne' }
   const DAY_ORDER = ['po', 'út', 'st', 'čt', 'pá', 'so', 'ne']
+  const isOpen = openingHours ? isFarmOpenNow(farm) : null
+  const primaryMeta = CATEGORY_META[farm.categories[0]] ?? CATEGORY_META.ostatní
 
   return (
     <div className="bg-white rounded-2xl border border-neutral-100 shadow-card overflow-hidden">
+      {/* Open/closed status + category */}
+      {isOpen !== null && (
+        <div
+          className={cn('px-5 py-3 flex items-center justify-between', isOpen ? 'bg-green-50 border-b border-green-100' : 'bg-neutral-50 border-b border-neutral-100')}
+          aria-live="polite"
+        >
+          <div className="flex items-center gap-2">
+            <span
+              className={cn('w-2 h-2 rounded-full flex-shrink-0', isOpen ? 'bg-green-500 animate-pulse' : 'bg-neutral-400')}
+              aria-hidden="true"
+            />
+            <span className={cn('text-xs font-semibold', isOpen ? 'text-green-700' : 'text-neutral-500')}>
+              {isOpen ? 'Nyní otevřeno' : 'Nyní zavřeno'}
+            </span>
+          </div>
+          <span className="text-lg" aria-label={primaryMeta.label}>{primaryMeta.emoji}</span>
+        </div>
+      )}
       {/* Contact info */}
       <div className="p-5 space-y-3">
         <h3 className="font-heading font-bold text-forest text-sm">Kontakt</h3>
