@@ -604,8 +604,9 @@ function SimilarFarms({ farms, currentKraj }: { farms: Farm[]; currentKraj: stri
       </div>
       <div className="divide-y divide-neutral-50">
         {farms.map((f) => {
-          const meta = CATEGORY_META[f.categories[0]] ?? CATEGORY_META.ostatní
-          const photo = f.images?.[0]?.startsWith('http') && !f.images[0].includes('placeholder') ? f.images[0] : null
+          const meta = CATEGORY_META[f.categories[0] ?? 'ostatní'] ?? CATEGORY_META.ostatní
+          const img = f.images?.[0] ?? ''
+          const photo = img.startsWith('http') && !img.includes('placeholder') ? img : null
           return (
             <Link
               key={f.slug}

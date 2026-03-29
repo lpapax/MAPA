@@ -37,7 +37,7 @@ export default async function ZebricekPage() {
     kraj: f.location.kraj,
     verified: f.verified,
     viewCount: f.viewCount ?? 0,
-    image: f.images?.[0]?.startsWith('http') && !f.images[0].includes('placeholder') ? f.images[0] : null,
+    image: (() => { const img = f.images?.[0] ?? ''; return img.startsWith('http') && !img.includes('placeholder') ? img : null })(),
   }))
 
   // Pre-compute region counts for the leaderboard
