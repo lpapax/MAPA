@@ -1,11 +1,12 @@
 {
   "name": "Mapa Farem",
   "short_name": "MapaFarem",
-  "description": "Nakupujte čerstvé potraviny přímo od českých farmářů.",
+  "description": "Objevujte lokální české farmy, bioproduktory a farmářské trhy",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ECFDF5",
-  "theme_color": "#059669",
+  "background_color": "#faf7f0",
+  "theme_color": "#4a8c3f",
+  "lang": "cs",
   "orientation": "portrait-primary",
   "icons": [
     {
@@ -20,5 +21,20 @@
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Mapa farem",
+      "short_name": "Mapa",
+      "url": "/mapa",
+      "description": "Interaktivní mapa českých farem"
+    },
+    {
+      "name": "Oblíbené farmy",
+      "short_name": "Oblíbené",
+      "url": "/oblibene",
+      "description": "Moje oblíbené farmy"
+    }
+  ],
+  "categories": ["food", "lifestyle", "travel"]
 }

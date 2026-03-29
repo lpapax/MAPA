@@ -53,6 +53,7 @@ export function farmToGeoJSON(
         slug: marker.slug,
         name: marker.name,
         categories: marker.categories.join(','),
+        category: marker.categories[0] ?? 'ostatní',
         verified: marker.verified,
       },
     })),

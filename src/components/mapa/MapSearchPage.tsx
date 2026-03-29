@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Search, X, SlidersHorizontal, MapPin, Star, Clock, List, Map as MapIcon, CheckCircle, Heart, Bookmark } from 'lucide-react'
 import { MapViewWrapper } from '@/components/map/MapViewWrapper'
 import { useFarmStore, getFilteredFarms } from '@/store/farmStore'
+import { useGeolocation } from '@/hooks/useGeolocation'
+import { haversineKm, formatDistance } from '@/lib/geo'
 import { useCompareStore, MAX_COMPARE_FARMS } from '@/store/compareStore'
 import { useFavoriteFarms } from '@/hooks/useFavoriteFarms'
 import { useUserPrefs } from '@/hooks/useUserPrefs'
@@ -47,6 +49,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
   const { prefs } = useUserPrefs()
   const [mobileView, setMobileView] = useState<'map' | 'list'>(prefs.defaultView)
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const { lat: userLat, lng: userLng } = useGeolocation()
 
   const store = useFarmStore()
 
@@ -252,6 +255,10 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                 const isHovered = hoveredFarmId === farm.id
                 const gradient = CARD_GRADIENTS[farm.categories[0]] ?? CARD_GRADIENTS.default
                 const favorited = isFavorite(farm.slug)
+                const thumbUrl = farm.images.find((u) => u.startsWith('http') && !u.includes('placeholder')) ?? null
+                const distanceKm = userLat != null && userLng != null
+                  ? haversineKm(userLat, userLng, farm.location.lat, farm.location.lng)
+                  : null
                 const comparing = isInCompare(farm.id)
                 const compareDisabled = !comparing && compareIds.length >= MAX_COMPARE_FARMS
                 return (
@@ -268,8 +275,13 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                           : 'border-neutral-100 bg-white hover:border-primary-200 hover:shadow-sm',
                     )}
                   >
-                    {/* Cover thumb */}
-                    <div className={cn('w-14 h-14 rounded-xl flex-shrink-0 bg-gradient-to-br', gradient)} aria-hidden="true" />
+                    {/* Cover thumb — real photo or gradient fallback */}
+                    <div className={cn('w-14 h-14 rounded-xl flex-shrink-0 overflow-hidden bg-gradient-to-br', gradient)} aria-hidden="true">
+                      {thumbUrl && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={thumbUrl} alt="" className="w-full h-full object-cover" loading="lazy" />
+                      )}
+                    </div>
 
                     {/* Info — clickable area */}
                     <button
@@ -287,6 +299,11 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                       <div className="flex items-center gap-1 text-xs text-neutral-400 mb-1.5">
                         <MapPin className="w-3 h-3" aria-hidden="true" />
                         {farm.location.city} · {farm.location.kraj}
+                        {distanceKm != null && (
+                          <span className="ml-auto text-[10px] font-medium text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded-full">
+                            {formatDistance(distanceKm)}
+                          </span>
+                        )}
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="flex flex-wrap gap-1">

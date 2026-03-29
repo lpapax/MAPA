@@ -106,7 +106,7 @@ export function MapView({ markers }: MapViewProps) {
         paint: { 'text-color': '#ffffff' },
       })
 
-      // Individual farm dots — native GL circles, state-driven styling
+      // Individual farm dots — native GL circles, state-driven styling + category colors
       map.addLayer({
         id: UNCLUSTERED_LAYER_ID,
         type: 'circle',
@@ -122,7 +122,21 @@ export function MapView({ markers }: MapViewProps) {
           'circle-color': [
             'case',
             ['boolean', ['feature-state', 'selected'], false], '#064E3B',
-            '#4a8c3f',
+            [
+              'match', ['get', 'category'],
+              'zelenina', '#4a8c3f',
+              'ovoce',    '#e05a6e',
+              'maso',     '#bf5b3d',
+              'mléko',    '#4a90c4',
+              'vejce',    '#c8963e',
+              'med',      '#c8a23e',
+              'byliny',   '#6ba832',
+              'chléb',    '#a07850',
+              'sýry',     '#d4a855',
+              'víno',     '#7b3d8c',
+              'ryby',     '#3d7fa0',
+              '#6b7280',
+            ],
           ],
           'circle-stroke-width': [
             'case',
