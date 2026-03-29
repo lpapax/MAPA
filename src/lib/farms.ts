@@ -233,3 +233,18 @@ export const CATEGORY_LABELS: Record<FarmCategory, string> = {
   ryby: 'Ryby',
   ostatní: 'Ostatní',
 }
+
+export const CATEGORY_META: Record<FarmCategory, { label: string; emoji: string; color: string }> = {
+  zelenina: { label: 'Zelenina',     emoji: '🥕', color: '#4a8c3f' },
+  ovoce:    { label: 'Ovoce',        emoji: '🍎', color: '#e05a6e' },
+  maso:     { label: 'Maso',         emoji: '🥩', color: '#bf5b3d' },
+  mléko:    { label: 'Mléko',        emoji: '🥛', color: '#4a90c4' },
+  vejce:    { label: 'Vejce',        emoji: '🥚', color: '#c8963e' },
+  med:      { label: 'Med',          emoji: '🍯', color: '#c8a23e' },
+  chléb:    { label: 'Chléb',        emoji: '🍞', color: '#a07850' },
+  sýry:     { label: 'Sýry',         emoji: '🧀', color: '#d4a855' },
+  víno:     { label: 'Víno',         emoji: '🍷', color: '#7b3d8c' },
+  byliny:   { label: 'Bylinky',      emoji: '🌿', color: '#6ba832' },
+  ryby:     { label: 'Ryby',         emoji: '🐟', color: '#3d7fa0' },
+  ostatní:  { label: 'Ostatní',      emoji: '🏪', color: '#6b7280' },
+}

@@ -4,6 +4,9 @@ import { useEffect, useRef, useCallback } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { MapControls } from './MapControls'
+import { MapLegend } from './MapLegend'
+import { CATEGORY_META } from '@/lib/farms'
+import type { FarmCategory } from '@/types/farm'
 import {
   MAPBOX_TOKEN,
   MAP_STYLE,
@@ -189,9 +192,11 @@ export function MapView({ markers }: MapViewProps) {
 
         if (name) {
           const coords = (feature.geometry as GeoJSON.Point).coordinates as [number, number]
+          const cat = (feature.properties?.category ?? 'ostatní') as FarmCategory
+          const emoji = CATEGORY_META[cat]?.emoji ?? '🏪'
           popup
             .setLngLat(coords)
-            .setHTML(`<div class="farm-popup-inner">${name}</div>`)
+            .setHTML(`<div class="farm-popup-inner"><span class="farm-popup-emoji">${emoji}</span>${name}</div>`)
             .addTo(map)
         }
       })
@@ -284,6 +289,7 @@ export function MapView({ markers }: MapViewProps) {
         onZoomOut={handleZoomOut}
         onLocate={handleLocate}
       />
+      <MapLegend />
     </div>
   )
 }

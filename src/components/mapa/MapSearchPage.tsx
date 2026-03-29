@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Search, X, SlidersHorizontal, MapPin, Star, Clock, List, Map as MapIcon, CheckCircle, Heart, Bookmark } from 'lucide-react'
+import { Search, X, SlidersHorizontal, MapPin, Star, Clock, List, Map as MapIcon, CheckCircle, Heart, Bookmark, Navigation2 } from 'lucide-react'
 import { MapViewWrapper } from '@/components/map/MapViewWrapper'
 import { useFarmStore, getFilteredFarms } from '@/store/farmStore'
 import { useGeolocation } from '@/hooks/useGeolocation'
@@ -12,7 +12,7 @@ import { useFavoriteFarms } from '@/hooks/useFavoriteFarms'
 import { useUserPrefs } from '@/hooks/useUserPrefs'
 import { useAuth } from '@/hooks/useAuth'
 import { useSavedSearches } from '@/hooks/useSavedSearches'
-import { CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
+import { CATEGORY_LABELS, CATEGORY_META, isFarmOpenNow } from '@/lib/farms'
 import { CompareBar } from '@/components/farms/CompareBar'
 import { cn } from '@/lib/utils'
 import type { Farm, FarmCategory, FarmMapMarker, KrajCode } from '@/types/farm'
@@ -25,6 +25,15 @@ const KRAJ_OPTIONS = [
   'Praha', 'Středočeský', 'Jihočeský', 'Plzeňský', 'Karlovarský',
   'Ústecký', 'Liberecký', 'Královéhradecký', 'Pardubický',
   'Vysočina', 'Jihomoravský', 'Olomoucký', 'Moravskoslezský', 'Zlínský',
+]
+
+const POPULAR_CHIPS: { label: string; query: string }[] = [
+  { label: '🥕 Bio zelenina',    query: 'bio zelenina' },
+  { label: '🥛 Čerstvé mléko',   query: 'mléko' },
+  { label: '🥚 Farmářská vejce', query: 'vejce' },
+  { label: '🍯 Místní med',      query: 'med' },
+  { label: '🥩 Domácí maso',     query: 'maso' },
+  { label: '🍷 Víno',            query: 'víno' },
 ]
 
 const CARD_GRADIENTS: Record<string, string> = {
@@ -49,6 +58,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
   const { prefs } = useUserPrefs()
   const [mobileView, setMobileView] = useState<'map' | 'list'>(prefs.defaultView)
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const [sortByDistance, setSortByDistance] = useState(false)
   const { lat: userLat, lng: userLng } = useGeolocation()
 
   const store = useFarmStore()
@@ -76,7 +86,16 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
   const { saveSearch } = useSavedSearches()
   const [savingSearch, setSavingSearch] = useState(false)
 
-  const filtered = useMemo(() => getFilteredFarms(allFarms, store), [allFarms, store])
+  const filteredBase = useMemo(() => getFilteredFarms(allFarms, store), [allFarms, store])
+  const filtered = useMemo(() => {
+    if (sortByDistance && userLat != null && userLng != null) {
+      return [...filteredBase].sort((a, b) =>
+        haversineKm(userLat, userLng, a.location.lat, a.location.lng) -
+        haversineKm(userLat, userLng, b.location.lat, b.location.lng)
+      )
+    }
+    return filteredBase
+  }, [filteredBase, sortByDistance, userLat, userLng])
   const hasActiveFilters = filters.categories.length > 0 || filters.kraj !== null || filters.openNow
 
   const PAGE_SIZE = 50
@@ -160,6 +179,21 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
           </div>
         </div>
 
+        {/* Popular chips — only when search is empty and filters closed */}
+        {!filtersOpen && !filters.searchQuery && !hasActiveFilters && (
+          <div className="max-w-7xl mx-auto mt-2 flex flex-wrap gap-1.5">
+            {POPULAR_CHIPS.map((chip) => (
+              <button
+                key={chip.query}
+                onClick={() => setSearchQuery(chip.query)}
+                className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface border border-neutral-200 text-neutral-500 hover:border-primary-400 hover:text-primary-600 transition-colors cursor-pointer"
+              >
+                {chip.label}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Filters panel */}
         {filtersOpen && (
           <div className="max-w-7xl mx-auto mt-3 pt-3 border-t border-neutral-100">
@@ -225,17 +259,35 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
           )}
           aria-label="Seznam farem"
         >
-          {/* Result count */}
+          {/* Result count + sort */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-50 flex-shrink-0">
             <span className="text-sm font-semibold text-forest">
               {filtered.length}{' '}
               {filtered.length === 1 ? 'farma' : filtered.length < 5 ? 'farmy' : 'farem'}
             </span>
-            {hasActiveFilters && (
-              <button onClick={clearFilters} className="text-xs text-primary-600 hover:text-primary-700 font-medium cursor-pointer transition-colors">
-                Zrušit filtry
-              </button>
-            )}
+            <div className="flex items-center gap-2">
+              {userLat != null && (
+                <button
+                  onClick={() => setSortByDistance((v) => !v)}
+                  aria-pressed={sortByDistance}
+                  title="Seřadit podle vzdálenosti"
+                  className={cn(
+                    'flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-lg border transition-colors cursor-pointer',
+                    sortByDistance
+                      ? 'bg-primary-50 border-primary-400 text-primary-700'
+                      : 'border-neutral-200 text-neutral-400 hover:border-primary-300 hover:text-primary-600',
+                  )}
+                >
+                  <Navigation2 className="w-3 h-3" aria-hidden="true" />
+                  Vzdálenost
+                </button>
+              )}
+              {hasActiveFilters && (
+                <button onClick={clearFilters} className="text-xs text-primary-600 hover:text-primary-700 font-medium cursor-pointer transition-colors">
+                  Zrušit filtry
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Farm list */}
@@ -254,6 +306,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                 const isSelected = selectedFarmId === farm.id
                 const isHovered = hoveredFarmId === farm.id
                 const gradient = CARD_GRADIENTS[farm.categories[0]] ?? CARD_GRADIENTS.default
+                const primaryMeta = CATEGORY_META[farm.categories[0]] ?? CATEGORY_META.ostatní
                 const favorited = isFavorite(farm.slug)
                 const thumbUrl = farm.images.find((u) => u.startsWith('http') && !u.includes('placeholder')) ?? null
                 const distanceKm = userLat != null && userLng != null
@@ -266,20 +319,23 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                     key={farm.id}
                     onMouseEnter={() => hoverFarm(farm.id)}
                     onMouseLeave={() => hoverFarm(null)}
+                    style={{ borderLeftColor: primaryMeta.color }}
                     className={cn(
-                      'w-full flex gap-3 p-3 rounded-xl border transition-all duration-200',
+                      'w-full flex gap-3 p-3 rounded-xl border border-l-4 transition-all duration-200',
                       isSelected
-                        ? 'border-primary-500 bg-primary-50 shadow-glow'
+                        ? 'bg-primary-50 shadow-glow border-r-primary-500 border-t-primary-500 border-b-primary-500'
                         : isHovered
-                          ? 'border-primary-300 bg-primary-50/50 shadow-sm'
-                          : 'border-neutral-100 bg-white hover:border-primary-200 hover:shadow-sm',
+                          ? 'bg-primary-50/50 shadow-sm border-r-primary-300 border-t-primary-300 border-b-primary-300'
+                          : 'bg-white hover:shadow-sm border-r-neutral-100 border-t-neutral-100 border-b-neutral-100',
                     )}
                   >
-                    {/* Cover thumb — real photo or gradient fallback */}
-                    <div className={cn('w-14 h-14 rounded-xl flex-shrink-0 overflow-hidden bg-gradient-to-br', gradient)} aria-hidden="true">
-                      {thumbUrl && (
+                    {/* Cover thumb — real photo or emoji+gradient fallback */}
+                    <div className={cn('w-14 h-14 rounded-xl flex-shrink-0 overflow-hidden bg-gradient-to-br relative', gradient)} aria-hidden="true">
+                      {thumbUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={thumbUrl} alt="" className="w-full h-full object-cover" loading="lazy" />
+                      ) : (
+                        <span className="absolute inset-0 flex items-center justify-center text-2xl">{primaryMeta.emoji}</span>
                       )}
                     </div>
 

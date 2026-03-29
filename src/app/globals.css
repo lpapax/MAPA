@@ -118,12 +118,19 @@
   }
   .farm-popup .mapboxgl-popup-tip { display: none; }
   .farm-popup-inner {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     padding: 6px 10px;
     font-size: 12px;
     font-weight: 600;
     color: #064E3B;
     white-space: nowrap;
     font-family: system-ui, sans-serif;
+  }
+  .farm-popup-emoji {
+    font-size: 14px;
+    line-height: 1;
   }
   .mapboxgl-ctrl-group {
     border-radius: 8px !important;
