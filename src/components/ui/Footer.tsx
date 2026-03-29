@@ -3,6 +3,8 @@ import Link from 'next/link'
 const NAV_COL = [
   { href: '/', label: 'Farmy' },
   { href: '/mapa', label: 'Mapa' },
+  { href: '/trhy', label: 'Farmářské trhy' },
+  { href: '/zebricek', label: 'Žebříček farem' },
   { href: '/blog', label: 'Blog' },
   { href: '/o-projektu', label: 'O projektu' },
   { href: '/kontakt', label: 'Kontakt' },

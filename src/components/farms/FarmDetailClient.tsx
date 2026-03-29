@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Link from 'next/link'
 import { Send, ShoppingBasket, Check, Star, User, MapPin, ExternalLink, ShoppingCart, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CATEGORY_LABELS, CATEGORY_META, isFarmOpenNow } from '@/lib/farms'
@@ -40,7 +41,7 @@ const GALLERY_GRADIENTS = [
 ]
 
 
-export function FarmDetailClient({ farm }: { farm: Farm }) {
+export function FarmDetailClient({ farm, similarFarms = [] }: { farm: Farm; similarFarms?: Farm[] }) {
   const [activeTab, setActiveTab] = useState<TabId>('o-farme')
   const [formState, setFormState] = useState({ name: '', email: '', message: '', sent: false })
   const [reviewForm, setReviewForm] = useState({ name: '', city: '', rating: 5, text: '', tags: [] as string[], sent: false, loading: false })
@@ -475,6 +476,9 @@ export function FarmDetailClient({ farm }: { farm: Farm }) {
         {/* Sidebar */}
         <aside className="space-y-5" aria-label="Informace o farmě">
           <FarmInfoCard farm={farm} />
+          {similarFarms.length > 0 && (
+            <SimilarFarms farms={similarFarms} currentKraj={farm.location.kraj} />
+          )}
         </aside>
       </div>
     </div>
@@ -587,6 +591,55 @@ function FarmInfoCard({ farm }: { farm: Farm }) {
           </table>
         </div>
       )}
+    </div>
+  )
+}
+
+function SimilarFarms({ farms, currentKraj }: { farms: Farm[]; currentKraj: string }) {
+  return (
+    <div className="bg-white rounded-2xl border border-neutral-100 shadow-card overflow-hidden">
+      <div className="px-5 pt-5 pb-3">
+        <h3 className="font-heading font-bold text-forest text-sm mb-0.5">Podobné farmy</h3>
+        <p className="text-xs text-neutral-400">{currentKraj}</p>
+      </div>
+      <div className="divide-y divide-neutral-50">
+        {farms.map((f) => {
+          const meta = CATEGORY_META[f.categories[0]] ?? CATEGORY_META.ostatní
+          const photo = f.images?.[0]?.startsWith('http') && !f.images[0].includes('placeholder') ? f.images[0] : null
+          return (
+            <Link
+              key={f.slug}
+              href={`/farmy/${f.slug}`}
+              className="flex items-center gap-3 px-5 py-3 hover:bg-surface transition-colors group cursor-pointer"
+              aria-label={`Přejít na farmu ${f.name}`}
+            >
+              <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 bg-primary-50 flex items-center justify-center">
+                {photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={photo} alt="" className="w-full h-full object-cover" aria-hidden="true" />
+                ) : (
+                  <span className="text-lg" aria-hidden="true">{meta.emoji}</span>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold text-forest truncate group-hover:text-primary-600 transition-colors">
+                  {f.name}
+                </div>
+                <div className="text-xs text-neutral-400 truncate">{f.location.city}</div>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-neutral-300 flex-shrink-0" aria-hidden="true" />
+            </Link>
+          )
+        })}
+      </div>
+      <div className="px-5 pb-4 pt-2">
+        <Link
+          href={`/mapa?kraj=${encodeURIComponent(currentKraj)}`}
+          className="text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors cursor-pointer"
+        >
+          Zobrazit všechny farmy v kraji →
+        </Link>
+      </div>
     </div>
   )
 }

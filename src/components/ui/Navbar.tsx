@@ -18,8 +18,9 @@ interface SearchResult {
 const NAV_LINKS = [
   { href: '/',          label: 'Farmy' },
   { href: '/mapa',      label: 'Mapa' },
+  { href: '/trhy',      label: 'Trhy' },
+  { href: '/zebricek',  label: 'Žebříček' },
   { href: '/blog',      label: 'Blog' },
-  { href: '/o-projektu', label: 'O projektu' },
 ]
 
 export function Navbar() {

@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { CheckCircle, Clock, MapPin, ChevronRight, Eye } from 'lucide-react'
 import type { Metadata } from 'next'
-import { getFarmBySlug, CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
+import { getFarmBySlug, getSimilarFarms, CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { FarmDetailClient } from '@/components/farms/FarmDetailClient'
 import { ShareFarmButton } from '@/components/ui/ShareFarmButton'
 import { FavoriteButton } from '@/components/farms/FavoriteButton'
@@ -51,6 +51,8 @@ const CATEGORY_GRADIENT: Record<string, string> = {
 export default async function FarmDetailPage({ params }: PageProps) {
   const farm = await getFarmBySlug(params.slug)
   if (!farm) notFound()
+
+  const similarFarms = await getSimilarFarms(farm.slug, farm.location.kraj)
 
   const isOpen = isFarmOpenNow(farm)
   const heroGradient = CATEGORY_GRADIENT[farm.categories[0]] ?? CATEGORY_GRADIENT.default
@@ -208,7 +210,7 @@ export default async function FarmDetailPage({ params }: PageProps) {
           </div>
         </div>
 
-        <FarmDetailClient farm={farm} />
+        <FarmDetailClient farm={farm} similarFarms={similarFarms} />
       </main>
 
       <Footer />

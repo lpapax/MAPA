@@ -136,6 +136,36 @@ export async function getHomepageFarms(limit = 6): Promise<Farm[]> {
 }
 
 /**
+ * Fetch farms from the same kraj, excluding the given slug.
+ * Used for the "similar farms" sidebar on farm detail pages.
+ */
+export async function getSimilarFarms(slug: string, kraj: string, limit = 3): Promise<Farm[]> {
+  const supabase = getSupabaseClient()
+
+  if (!supabase) {
+    return seedFarms
+      .filter((f) => f.location.kraj === kraj && f.slug !== slug)
+      .slice(0, limit)
+  }
+
+  const { data, error } = await supabase
+    .from('farms')
+    .select('*')
+    .eq('kraj', kraj)
+    .neq('slug', slug)
+    .order('view_count', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    return seedFarms
+      .filter((f) => f.location.kraj === kraj && f.slug !== slug)
+      .slice(0, limit)
+  }
+
+  return (data ?? []).map(rowToFarm)
+}
+
+/**
  * Return all slugs — used by generateStaticParams.
  * Falls back to seed when Supabase is unavailable (build time).
  */
