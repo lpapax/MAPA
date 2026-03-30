@@ -4,6 +4,8 @@ import './globals.css'
 import { ToastProvider } from '@/components/ui/Toast'
 import { ThemeProvider } from '@/components/ui/ThemeProvider'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { CookieConsent } from '@/components/ui/CookieConsent'
+import { GTMScript } from '@/components/ui/GTMScript'
 
 const playfair = Playfair_Display({
   subsets: ['latin', 'latin-ext'],
@@ -20,6 +22,8 @@ const dmSans = DM_Sans({
   display: 'swap',
 })
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.mapafarem.cz'
+
 export const metadata: Metadata = {
   title: {
     default: 'Mapa Farem – Nakupujte přímo od farmářů',
@@ -27,13 +31,34 @@ export const metadata: Metadata = {
   },
   description:
     'Propojujeme vás s místními farmáři. Čerstvé, lokální, poctivé potraviny přímo ze dvora – zelenina, maso, mléko, med a stovky dalších produktů z celé ČR.',
-  keywords: ['farma', 'farmářský trh', 'lokální potraviny', 'bio', 'mapa farem', 'čerstvé'],
+  keywords: ['farma', 'farmářský trh', 'lokální potraviny', 'bio', 'mapa farem', 'čerstvé potraviny', 'česká republika'],
+  metadataBase: new URL(SITE_URL),
   openGraph: {
-    title: 'Mapa Farem',
-    description: 'Nakupujte čerstvé potraviny přímo od českých farmářů.',
+    title: 'Mapa Farem – Nakupujte přímo od farmářů',
+    description: 'Nakupujte čerstvé, lokální potraviny přímo od českých farmářů. 3 960+ farem v celé ČR.',
     type: 'website',
     locale: 'cs_CZ',
     siteName: 'MapaFarem.cz',
+    url: SITE_URL,
+    images: [
+      {
+        url: '/api/og',
+        width: 1200,
+        height: 630,
+        alt: 'Mapa Farem – Nakupujte přímo od českých farmářů',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mapa Farem – Nakupujte přímo od farmářů',
+    description: 'Nakupujte čerstvé, lokální potraviny přímo od českých farmářů.',
+    images: ['/api/og'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
   },
 }
 
@@ -50,6 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
+        <GTMScript />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-forest focus:text-white focus:rounded-md focus:font-semibold focus:text-sm focus:shadow-lg"
@@ -60,6 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AuthProvider>
             <ToastProvider>
               <div id="main-content">{children}</div>
+              <CookieConsent />
             </ToastProvider>
           </AuthProvider>
         </ThemeProvider>

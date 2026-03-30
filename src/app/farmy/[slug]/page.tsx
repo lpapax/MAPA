@@ -25,6 +25,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const farm = await getFarmBySlug(params.slug)
   if (!farm) return {}
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.mapafarem.cz'
+  const farmPhoto = farm.images.find((u) => u.startsWith('http') && !u.includes('placeholder'))
+  const ogImage = farmPhoto
+    ? { url: farmPhoto, width: 1200, height: 630, alt: farm.name }
+    : { url: `${siteUrl}/api/og?title=${encodeURIComponent(farm.name)}&subtitle=${encodeURIComponent(farm.location.city + ' · ' + farm.location.kraj)}`, width: 1200, height: 630, alt: farm.name }
+
   return {
     title: `${farm.name} – Mapa Farem`,
     description: farm.description,
@@ -33,6 +40,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: farm.description,
       type: 'website',
       locale: 'cs_CZ',
+      images: [ogImage],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: farm.name,
+      description: farm.description,
+      images: [ogImage.url],
     },
   }
 }
