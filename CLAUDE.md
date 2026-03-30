@@ -41,7 +41,9 @@ git commit --allow-empty -m "chore: redeploy" && git push
 
 ### Data layer (`src/lib/farms.ts`)
 
-All server-side farm data access goes through these functions: `getAllFarms()`, `getFarmBySlug()`, `getAllSlugs()`, `getFarmMapMarkers()`, `getHomepageFarms(limit)`. Each tries Supabase first and silently falls back to `src/data/farms.json` when env vars are absent.
+All server-side farm data access goes through these functions: `getAllFarms()`, `getFarmBySlug()`, `getAllSlugs()`, `getFarmMapMarkers()`, `getHomepageFarms(limit)`, `getSimilarFarms(slug, kraj, limit)`. Each tries Supabase first and silently falls back to `src/data/farms.json` when env vars are absent.
+
+`getSimilarFarms(slug, kraj, limit = 3)` fetches up to `limit` farms from the same `kraj`, excluding the current farm, ordered by `view_count` desc. Used by `FarmDetailPage` to populate the "Similar farms" sidebar in `FarmDetailClient`.
 
 `getHomepageFarms(limit = 6)` prefers verified farms, falls back to alphabetical order, and on the JSON fallback picks one farm per kraj for geographic variety.
 
@@ -88,11 +90,15 @@ Two Zustand stores (no persistence — in-memory only):
 - `src/store/farmStore.ts` — `selectedFarmId`, `hoveredFarmId`, and `filters` (`FarmFilters`). The map and sidebar both read from this store to stay in sync.
 - `src/store/compareStore.ts` — `compareIds[]` (max 3 farms). `CompareBar` reads it and links to `/porovnat?ids=...`.
 
-Four localStorage hooks (SSR-safe: hydrate via `useEffect` after mount):
+Six localStorage hooks (SSR-safe: hydrate via `useEffect` after mount):
 - `src/hooks/useFavoriteFarms.ts` — key `mf_favorites`
 - `src/hooks/useBedynka.ts` — key `mf_bedynka`, item ids are `farmSlug__productId`; `totalItems` is exposed for the nav badge
 - `src/hooks/useRecentFarms.ts` — key `mf_recent_farms`, max 6 entries, written on every farm detail page visit
+- `src/hooks/useRecentSearches.ts` — key `mf_recent_searches`, max 5 entries. Exposes `searches`, `addSearch(query)`, `removeSearch(query)`. Used in map search autocomplete.
 - Reviews are stored directly (not via a hook) under key `mf_reviews_${farm.slug}` inside `FarmDetailClient` (localStorage fallback; also synced to Supabase `reviews` table when user is logged in via `useReviews`)
+
+Browser API hook:
+- `src/hooks/useGeolocation.ts` — uses `navigator.geolocation.watchPosition` (continuous tracking). Returns `{ lat, lng, error }`. SSR-safe (initialises in `useEffect`); cleans up the watcher on unmount. Used by `MarketsClient` and the map "Kolem mě" feature.
 
 Supabase-backed hooks (require auth):
 - `src/hooks/useProfile.ts` — reads/writes `user_profiles` via `getSupabaseRaw()`
@@ -118,6 +124,7 @@ Auth flow: magic link only (`signInWithOtp`). Callback lands at `/auth/callback`
 - Individual farm dots: a `circle` layer with paint expressions driven by `feature-state`:
   - `selected` state → larger radius (13px), dark forest color, 3px stroke
   - `hovered` state → medium radius (11px), primary green, 2px stroke
+  - Default fill color: a `match` expression keyed on the farm's primary category, using `CATEGORY_META[cat].color` values baked into the paint expression at map-init time
 - `selectedFarmId`/`hoveredFarmId` changes call `map.setFeatureState({ source, id }, { selected/hovered: true/false })` — only the previous and new IDs are touched, not all farms
 - Hover shows a small Mapbox Popup (`farm-popup` class) with the farm name
 - Click fires `selectFarm(id)` which updates the Zustand store and triggers flyTo
@@ -144,7 +151,16 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 
 `next/image` with `fill` is used for blog covers and the homepage hero. Any parent of a `fill` image must have `position: relative` (and usually `overflow-hidden`). Allowed remote patterns in `next.config.mjs`: `*.supabase.co`, `**.mapafarem.cz`, and `images.unsplash.com`.
 
-**Farm photos** (`farm.images[]`) are stored as raw external URLs (og:image scraped from farm websites) and displayed with plain `<img>` tags — not `next/image` — because the domains are arbitrary and cannot all be whitelisted. About 610 farms in Supabase have real photo URLs; the rest have an empty array. Always check `url.startsWith('http') && !url.includes('placeholder')` before rendering.
+**Farm photos** (`farm.images[]`) are stored as raw external URLs (og:image scraped from farm websites) and displayed with plain `<img>` tags — not `next/image` — because the domains are arbitrary and cannot all be whitelisted. About 610 farms in Supabase have real photo URLs; the rest have an empty array. Always use an intermediate variable when checking — never chain optional access twice on the same index:
+
+```typescript
+// CORRECT
+const img = farm.images?.[0] ?? ''
+const photo = img.startsWith('http') && !img.includes('placeholder') ? img : null
+
+// WRONG — second access is not guarded
+farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
+```
 
 ### Route structure
 
@@ -155,6 +171,8 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 | `/farmy/[slug]` | Dynamic (on-demand) | `dynamicParams = true`, `generateStaticParams` returns `[]` — pages built on first visit and cached. Cannot be SSG with ~4,009 farms. |
 | `/blog` | Static | Article grid from mockData |
 | `/blog/[slug]` | SSG | Article content rendered client-side in `ArticleContent` |
+| `/trhy` | Static | `MarketsClient` — 20 Czech farmers markets with geolocation sort ("Kolem mě"), ICS calendar export, countdown, time filters. Data is hardcoded in the component (no Supabase table). Daily markets use `isDaily: true` flag so they always show "Otevřeno denně" instead of a next-occurrence countdown. |
+| `/zebricek` | ISR (5 min) | `LeaderboardClient` — top-20 farms per tab (popular/verified/category). Server fetches all farms via `getAllFarms()`, serialises to `LeaderboardFarm[]`. Region breakdown links to `/mapa?kraj=X`. Sort: viewCount desc → verified first → `localeCompare('cs')`. |
 | `/kraje` | Static | 14 region cards → `/mapa?kraj=...` |
 | `/oblibene` | Static shell | Content from `useFavoriteFarms` localStorage hook |
 | `/bedynka` | Static shell | Content from `useBedynka` localStorage hook. In `MobileBottomNav` with item-count badge from `totalItems`. |
@@ -223,6 +241,12 @@ Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw 
 
 The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge).
 
+`src/lib/geo.ts` — two distance utilities used by `MarketsClient` and the map "Kolem mě" feature:
+- `haversineKm(lat1, lng1, lat2, lng2): number` — great-circle distance in kilometres
+- `formatDistance(km: number): string` — formats as "0.5 km" or "12 km"
+
+`CATEGORY_META` in `src/lib/farms.ts` — record mapping every `FarmCategory` to `{ label: string, emoji: string, color: string }`. Used by map circle layer color expressions, leaderboard badges, markets category pills, and the `SimilarFarms` sidebar. Import as `import { CATEGORY_META } from '@/lib/farms'`.
+
 **Icons:** use Lucide React SVGs only — no emoji characters as decorative icons anywhere in JSX. The `emoji` field on `KrajData` in `KRAJ_LIST` exists in the data type but is intentionally **not rendered** — the kraje page uses a `MapPin` icon instead.
 
 ### Global UI components
@@ -240,3 +264,5 @@ The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-m
 - **Galerie** — shows real images from `farm.images[]` when URLs are valid (`startsWith('http')`, not placeholder). Falls back to CSS gradient placeholders.
 
 `FarmDetailPage` (`src/app/farmy/[slug]/page.tsx`) renders a `<script type="application/ld+json">` LocalBusiness JSON-LD block. The hero section uses a real farm photo (`farm.images[0]`) as a background `<img>` when available, falling back to a category-colour gradient. `FavoriteButton` and `ShareFarmButton` are in the header alongside the farm name.
+
+`FarmDetailClient` accepts an optional `similarFarms?: Farm[]` prop. When non-empty, a `SimilarFarms` sidebar section is rendered showing up to 3 same-kraj farms (thumbnail or category emoji, farm name, city, ChevronRight chevron) plus a "Show all farms in region" link to `/mapa?kraj=X`. Farm images are checked via the intermediate-variable pattern above.

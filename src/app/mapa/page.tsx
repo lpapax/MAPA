@@ -1,8 +1,8 @@
 import { Navbar } from '@/components/ui/Navbar'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
 import { MapSearchPage } from '@/components/mapa/MapSearchPage'
-import { getAllFarms, getFarmMapMarkers } from '@/lib/farms'
-import type { KrajCode } from '@/types/farm'
+import { getAllFarms } from '@/lib/farms'
+import type { FarmMapMarker, KrajCode } from '@/types/farm'
 
 export const metadata = {
   title: 'Mapa farem – Najdi farmáře ve svém okolí',
@@ -23,7 +23,16 @@ const VALID_KRAJE: KrajCode[] = [
 ]
 
 export default async function MapaPage({ searchParams }: PageProps) {
-  const [farms, markers] = await Promise.all([getAllFarms(), getFarmMapMarkers()])
+  const farms = await getAllFarms()
+  const markers: FarmMapMarker[] = farms.map((f) => ({
+    id: f.id,
+    slug: f.slug,
+    name: f.name,
+    lat: f.location.lat,
+    lng: f.location.lng,
+    categories: f.categories,
+    verified: f.verified,
+  }))
 
   const rawKraj = searchParams.kraj ?? ''
   const initialKraj = VALID_KRAJE.includes(rawKraj as KrajCode) ? (rawKraj as KrajCode) : null

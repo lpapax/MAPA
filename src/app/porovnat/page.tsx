@@ -3,7 +3,7 @@ import { Navbar } from '@/components/ui/Navbar'
 import { Footer } from '@/components/ui/Footer'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
 import { CompareClient } from '@/components/farms/CompareClient'
-import { getAllFarms } from '@/lib/farms'
+import { getFarmsByIds } from '@/lib/farms'
 
 export const metadata: Metadata = {
   title: 'Porovnat farmy – Mapa Farem',
@@ -15,9 +15,8 @@ interface PageProps {
 }
 
 export default async function PorovnatPage({ searchParams }: PageProps) {
-  const ids = (searchParams.ids ?? '').split(',').filter(Boolean)
-  const allFarms = await getAllFarms()
-  const farms = allFarms.filter((f) => ids.includes(f.id))
+  const ids = (searchParams.ids ?? '').split(',').filter(Boolean).slice(0, 10)
+  const farms = await getFarmsByIds(ids)
 
   return (
     <>

@@ -5,7 +5,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Search, ArrowRight } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { staggerContainer, fadeUp, fadeIn } from '@/lib/motionVariants'
 
 const TRUST_ITEMS = [
   '3 960+ farem',
@@ -29,7 +31,13 @@ export function HeroSection() {
       aria-labelledby="hero-heading"
     >
       {/* Background photo */}
-      <div className="absolute inset-0" aria-hidden="true">
+      <motion.div
+        className="absolute inset-0"
+        variants={fadeIn}
+        initial="hidden"
+        animate="visible"
+        aria-hidden="true"
+      >
         <Image
           src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1920&h=1080&fit=crop&q=85"
           alt=""
@@ -38,40 +46,49 @@ export function HeroSection() {
           className="object-cover object-center"
           sizes="100vw"
         />
-      </div>
+      </motion.div>
 
-      {/* Overlay — dark on left, fades right */}
+      {/* Overlay */}
       <div
         className="absolute inset-0 bg-gradient-to-r from-[#0d1e09]/90 via-[#1a4214]/65 to-[#1a4214]/15"
         aria-hidden="true"
       />
 
-      {/* Content */}
+      {/* Content — staggered children */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
-        <div className="max-w-2xl">
-
+        <motion.div
+          className="max-w-2xl"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+        >
           {/* Eyebrow */}
-          <p className="text-primary-300 text-sm font-semibold uppercase tracking-[0.18em] mb-6">
+          <motion.p
+            variants={fadeUp}
+            className="text-primary-300 text-sm font-semibold uppercase tracking-[0.18em] mb-6"
+          >
             Farmářský adresář · Česká republika
-          </p>
+          </motion.p>
 
           {/* Heading */}
-          <h1
+          <motion.h1
             id="hero-heading"
+            variants={fadeUp}
             className="font-heading font-bold text-white leading-[1.05] mb-6"
             style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
           >
             Nakupujte přímo
             <br />
             <em className="not-italic text-primary-300">od farmářů</em>
-          </h1>
+          </motion.h1>
 
-          <p className="text-white/70 text-lg mb-10 leading-relaxed max-w-lg">
+          <motion.p variants={fadeUp} className="text-white/70 text-lg mb-10 leading-relaxed max-w-lg">
             Propojujeme vás s místními farmáři. Čerstvé, lokální, poctivé&nbsp;— bez&nbsp;prostředníků.
-          </p>
+          </motion.p>
 
           {/* Search form */}
-          <form
+          <motion.form
+            variants={fadeUp}
             onSubmit={handleSearch}
             className="flex gap-2 mb-8 max-w-md"
             aria-label="Vyhledat farmu"
@@ -105,21 +122,28 @@ export function HeroSection() {
             >
               Hledat
             </button>
-          </form>
+          </motion.form>
 
           {/* Map CTA */}
-          <Link
-            href="/mapa"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-medium transition-colors duration-150 group"
-          >
-            Zobrazit interaktivní mapu farem
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
-          </Link>
-        </div>
+          <motion.div variants={fadeUp}>
+            <Link
+              href="/mapa"
+              className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-medium transition-colors duration-150 group"
+            >
+              Zobrazit interaktivní mapu farem
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+            </Link>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Trust bar at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 bg-black/30 backdrop-blur-sm border-t border-white/10">
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 z-10 bg-black/30 backdrop-blur-sm border-t border-white/10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7, duration: 0.5, ease: 'easeOut' }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-6 overflow-x-auto scrollbar-none">
           {TRUST_ITEMS.map((item, i) => (
             <div key={item} className="flex items-center gap-4 flex-shrink-0">
@@ -128,7 +152,7 @@ export function HeroSection() {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Wave divider */}
       <div className="absolute bottom-[52px] left-0 right-0 z-10 pointer-events-none" aria-hidden="true">

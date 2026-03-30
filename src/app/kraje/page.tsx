@@ -6,7 +6,7 @@ import { Footer } from '@/components/ui/Footer'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
 import { AnimatedSection } from '@/components/ui/AnimatedSection'
 import { KRAJ_LIST } from '@/data/mockData'
-import { getAllFarms } from '@/lib/farms'
+import { getFarmCountByKraj } from '@/lib/farms'
 import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = {
@@ -17,14 +17,8 @@ export const metadata: Metadata = {
 export const revalidate = 300
 
 export default async function KrajePage() {
-  const farms = await getAllFarms()
-
-  // Real farm counts by kraj
-  const countByKraj: Record<string, number> = {}
-  for (const farm of farms) {
-    const k = farm.location.kraj
-    countByKraj[k] = (countByKraj[k] ?? 0) + 1
-  }
+  const countByKraj = await getFarmCountByKraj()
+  const totalFarms = Object.values(countByKraj).reduce((s, n) => s + n, 0)
 
   return (
     <>
@@ -91,7 +85,7 @@ export default async function KrajePage() {
           <div className="mt-10 grid grid-cols-3 gap-4">
             {[
               { label: 'Krajů', value: '14' },
-              { label: 'Ověřených farem', value: farms.length > 0 ? String(farms.length) : 'Stovky' },
+              { label: 'Farem celkem', value: totalFarms > 0 ? String(totalFarms) : 'Stovky' },
               { label: 'Druhů produktů', value: 'Tisíce' },
             ].map((stat) => (
               <div key={stat.label} className="bg-white rounded-2xl border border-neutral-100 shadow-sm p-5 text-center">

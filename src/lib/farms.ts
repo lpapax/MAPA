@@ -15,17 +15,17 @@ function rowToFarm(row: FarmRow): Farm {
     location: {
       lat: row.lat,
       lng: row.lng,
-      address: row.address,
+      address: row.address ?? '',
       city: row.city,
       kraj: row.kraj,
-      zip: row.zip,
+      zip: row.zip ?? '',
     },
-    contact: row.contact as FarmContact,
+    contact: (row.contact ?? {}) as FarmContact,
     openingHours: (row.opening_hours as OpeningHours) ?? undefined,
     images: row.images,
     verified: row.verified,
     viewCount: row.view_count ?? 0,
-    createdAt: row.created_at,
+    createdAt: row.created_at ?? '',
   }
 }
 
@@ -51,10 +51,13 @@ export async function getAllFarms(): Promise<Farm[]> {
   const pageSize = 1000
   let from = 0
 
+  // Select only columns needed for map/sidebar — skips contact, address, zip, created_at
+  const COLS = 'id,slug,name,description,categories,lat,lng,city,kraj,opening_hours,images,verified,view_count'
+
   while (true) {
     const { data, error } = await supabase
       .from('farms')
-      .select('*')
+      .select(COLS)
       .order('name', { ascending: true })
       .range(from, from + pageSize - 1)
 
@@ -200,6 +203,66 @@ export async function getFarmMapMarkers(): Promise<FarmMapMarker[]> {
     categories: farm.categories,
     verified: farm.verified,
   }))
+}
+
+/**
+ * Fetch a small set of farms by their IDs — used by /porovnat.
+ * Much cheaper than getAllFarms() when only 2-3 farms are needed.
+ */
+export async function getFarmsByIds(ids: string[]): Promise<Farm[]> {
+  if (ids.length === 0) return []
+  const supabase = getSupabaseClient()
+
+  if (!supabase) {
+    return seedFarms.filter((f) => ids.includes(f.id))
+  }
+
+  const { data, error } = await supabase
+    .from('farms')
+    .select('*')
+    .in('id', ids)
+    .limit(10)
+
+  if (error) return seedFarms.filter((f) => ids.includes(f.id))
+  return (data ?? []).map(rowToFarm)
+}
+
+/**
+ * Count farms grouped by kraj — used by /kraje.
+ * Much cheaper than getAllFarms() since it only fetches the kraj column.
+ */
+export async function getFarmCountByKraj(): Promise<Record<string, number>> {
+  const supabase = getSupabaseClient()
+
+  if (!supabase) {
+    const counts: Record<string, number> = {}
+    for (const farm of seedFarms) {
+      const k = farm.location.kraj
+      counts[k] = (counts[k] ?? 0) + 1
+    }
+    return counts
+  }
+
+  const counts: Record<string, number> = {}
+  const pageSize = 1000
+  let from = 0
+
+  while (true) {
+    const { data, error } = await supabase
+      .from('farms')
+      .select('kraj')
+      .range(from, from + pageSize - 1)
+
+    if (error) break
+    for (const row of data ?? []) {
+      const k = (row as { kraj: string }).kraj
+      counts[k] = (counts[k] ?? 0) + 1
+    }
+    if (!data || data.length < pageSize) break
+    from += pageSize
+  }
+
+  return counts
 }
 
 // ── Client-side filtering (pure / synchronous) ────────────────

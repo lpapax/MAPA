@@ -39,6 +39,7 @@ export function MapView({ markers }: MapViewProps) {
   const selectedIdRef = useRef<string | null>(null)
   const hoveredIdRef = useRef<string | null>(null)
   const popupRef = useRef<mapboxgl.Popup | null>(null)
+  const clickPopupRef = useRef<mapboxgl.Popup | null>(null)
 
   const { selectedFarmId, selectFarm, hoverFarm } = useFarmStore()
 
@@ -65,6 +66,15 @@ export function MapView({ markers }: MapViewProps) {
       className: 'farm-popup',
     })
     popupRef.current = popup
+
+    const clickPopup = new mapboxgl.Popup({
+      closeButton: true,
+      closeOnClick: false,
+      offset: 14,
+      className: 'farm-click-popup',
+      maxWidth: '280px',
+    })
+    clickPopupRef.current = clickPopup
 
     map.on('load', () => {
       // GeoJSON source with clustering — promoteId lets setFeatureState use the 'id' property
@@ -165,12 +175,51 @@ export function MapView({ markers }: MapViewProps) {
         })
       })
 
-      // Farm click → select
+      // Farm click → select + show detail popup
       map.on('click', UNCLUSTERED_LAYER_ID, (e) => {
         const feature = e.features?.[0]
-        if (!feature) return
+        if (!feature?.geometry) return
         const id = feature.properties?.id as string | undefined
+        const name = feature.properties?.name as string | undefined
+        const slug = feature.properties?.slug as string | undefined
+        const cat = (feature.properties?.category ?? 'ostatní') as FarmCategory
+        const verified = feature.properties?.verified as boolean | undefined
+
         if (id) selectFarm(id)
+
+        if (name && slug) {
+          const coords = (feature.geometry as GeoJSON.Point).coordinates as [number, number]
+          const emoji = CATEGORY_META[cat]?.emoji ?? '🏪'
+          const label = CATEGORY_META[cat]?.label ?? 'Farma'
+          const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+          const verifiedHtml = verified
+            ? `<span class="farm-click-popup-verified">✓ Ověřeno</span>`
+            : ''
+          clickPopupRef.current
+            ?.setLngLat(coords)
+            .setHTML(`
+              <div class="farm-click-popup-inner">
+                <div class="farm-click-popup-header">
+                  <div class="farm-click-popup-emoji-wrap">${emoji}</div>
+                  <div>
+                    <div class="farm-click-popup-name">${esc(name)}</div>
+                    <div class="farm-click-popup-meta">
+                      <span class="farm-click-popup-cat">${esc(label)}</span>
+                      ${verifiedHtml}
+                    </div>
+                  </div>
+                </div>
+                <a href="/farmy/${esc(slug)}" class="farm-click-popup-btn">Zobrazit detail farmy →</a>
+              </div>
+            `)
+            .addTo(map)
+        }
+      })
+
+      // Close click popup when clicking empty map
+      map.on('click', (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: [UNCLUSTERED_LAYER_ID, CLUSTER_LAYER_ID] })
+        if (features.length === 0) clickPopupRef.current?.remove()
       })
 
       // Farm hover → highlight + popup
@@ -219,6 +268,7 @@ export function MapView({ markers }: MapViewProps) {
 
     return () => {
       popup.remove()
+      clickPopup.remove()
       map.remove()
       mapRef.current = null
     }

@@ -1,46 +1,50 @@
 'use client'
 
-import { useIntersectionObserver } from '@/hooks/useIntersectionObserver'
+import { motion, type TargetAndTransition } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 interface AnimatedSectionProps {
   children: React.ReactNode
   className?: string
-  delay?: 0 | 100 | 200 | 300 | 400 | 500
+  /** Delay in milliseconds before the animation starts */
+  delay?: number
   direction?: 'up' | 'left' | 'right' | 'none'
 }
 
-const delayClass: Record<number, string> = {
-  0:   '',
-  100: 'delay-75',
-  200: 'delay-100',
-  300: 'delay-150',
-  400: 'delay-200',
-  500: 'delay-300',
+const INITIAL: Record<string, TargetAndTransition> = {
+  up:    { opacity: 0, y: 28 },
+  left:  { opacity: 0, x: -28 },
+  right: { opacity: 0, x: 28 },
+  none:  { opacity: 0 },
+}
+
+const ANIMATE: Record<string, TargetAndTransition> = {
+  up:    { opacity: 1, y: 0 },
+  left:  { opacity: 1, x: 0 },
+  right: { opacity: 1, x: 0 },
+  none:  { opacity: 1 },
 }
 
 export function AnimatedSection({
   children,
   className,
   delay = 0,
-  direction: _direction = 'up',
+  direction = 'up',
 }: AnimatedSectionProps) {
-  const { ref, isVisible } = useIntersectionObserver()
-
-  // Respect prefers-reduced-motion — skip animation entirely
-  const prefersReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
   return (
-    <div
-      ref={ref}
-      className={cn(
-        prefersReduced ? '' : 'transition-opacity duration-500 ease-out',
-        prefersReduced ? '' : delayClass[delay],
-        prefersReduced || isVisible ? 'opacity-100' : 'opacity-0',
-        className,
-      )}
+    <motion.div
+      className={cn(className)}
+      initial={INITIAL[direction]}
+      whileInView={ANIMATE[direction]}
+      viewport={{ once: true, margin: '-80px 0px' }}
+      transition={{
+        type: 'spring',
+        stiffness: 200,
+        damping: 30,
+        delay: delay / 1000,
+      }}
     >
       {children}
-    </div>
+    </motion.div>
   )
 }

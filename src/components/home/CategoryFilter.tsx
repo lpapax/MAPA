@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 import {
   LayoutGrid,
   Flame,
@@ -67,18 +68,28 @@ export function CategoryFilter() {
                 onClick={() => handleClick(cat)}
                 aria-pressed={isActive}
                 className={cn(
-                  'flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-full text-sm font-semibold flex-shrink-0',
-                  'border transition-all duration-200 cursor-pointer whitespace-nowrap',
+                  'relative flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-full text-sm font-semibold flex-shrink-0',
+                  'border transition-colors duration-150 cursor-pointer whitespace-nowrap',
                   isActive
-                    ? 'bg-primary-600 border-primary-600 text-white shadow-sm'
+                    ? 'border-primary-600 text-white'
                     : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-300 hover:text-primary-700 hover:bg-primary-50/60',
                 )}
               >
+                {/* Sliding background pill */}
+                {isActive && (
+                  <motion.span
+                    layoutId="category-pill"
+                    className="absolute inset-0 rounded-full bg-primary-600"
+                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                    aria-hidden="true"
+                  />
+                )}
+
                 <Icon
-                  className={cn('w-4 h-4', isActive ? 'text-white' : 'text-neutral-400')}
+                  className={cn('w-4 h-4 relative z-10', isActive ? 'text-white' : 'text-neutral-400')}
                   aria-hidden="true"
                 />
-                {label}
+                <span className="relative z-10">{label}</span>
               </button>
             )
           })}
