@@ -41,24 +41,24 @@ git commit --allow-empty -m "chore: redeploy" && git push
 
 ### Data layer (`src/lib/farms.ts`)
 
-All server-side farm data access goes through these functions: `getAllFarms()`, `getFarmBySlug()`, `getAllSlugs()`, `getFarmMapMarkers()`, `getHomepageFarms(limit)`, `getSimilarFarms(slug, kraj, limit)`. Each tries Supabase first and silently falls back to `src/data/farms.json` when env vars are absent.
+All server-side farm data access goes through these functions: `getAllFarms()`, `getFarmBySlug()`, `getAllSlugs()`, `getFarmMapMarkers()`, `getHomepageFarms(limit)`, `getSimilarFarms(slug, kraj, limit)`, `getFarmsByIds(ids)`, `getFarmCountByKraj()`. Each tries Supabase first and silently falls back to `src/data/farms.json` when env vars are absent.
 
-`getSimilarFarms(slug, kraj, limit = 3)` fetches up to `limit` farms from the same `kraj`, excluding the current farm, ordered by `view_count` desc. Used by `FarmDetailPage` to populate the "Similar farms" sidebar in `FarmDetailClient`.
+`getAllFarms()` paginates Supabase in chunks of 1000 rows. It selects specific columns only — **not `select('*')`** — to reduce payload: `id,slug,name,description,categories,lat,lng,city,kraj,opening_hours,images,verified,view_count`. The `contact`, `address`, `zip`, and `created_at` columns are intentionally omitted. Do not add `select('*')` back — it doubles the RSC payload size.
 
-`getHomepageFarms(limit = 6)` prefers verified farms, falls back to alphabetical order, and on the JSON fallback picks one farm per kraj for geographic variety.
+`getFarmsByIds(ids)` fetches a small set of farms by ID array using `select('*')` (includes `contact`). Used by `/porovnat` instead of `getAllFarms()` — never load all 4,009 farms to display 2–3.
 
-`getAllFarms()` paginates Supabase in chunks of 1000 rows to handle the full dataset (currently ~4,009 farms). Do not replace this with a single `.select('*')` call — Supabase defaults to a 1000-row limit.
+`getFarmCountByKraj()` returns `Record<string, number>` by fetching only the `kraj` column. Used by `/kraje` — never load full farm objects just to count.
 
-`src/data/farms.json` contains ~4,009 real Czech farms imported from Google Places API (filtered to the Czech Republic bounding box: lat 48.55–51.06, lng 12.09–18.86). This is the fallback when Supabase is unavailable — it is not placeholder data. Farm photos (`images[]`) in this JSON may be stale — Supabase is the authoritative source for photos.
+`getFarmMapMarkers()` calls `getAllFarms()` internally. The `/mapa` page derives markers from farms directly (not by calling both) to avoid a duplicate Supabase fetch.
+
+`src/data/farms.json` contains ~4,009 real Czech farms. This is the fallback when Supabase is unavailable — it is not placeholder data. Farm photos (`images[]`) in this JSON may be stale — Supabase is the authoritative source for photos.
 
 `src/lib/supabase.ts` exports three functions, all returning `null` when env vars are missing:
 - `getSupabaseClient()` — new typed client per call (server components)
 - `getSupabaseClientSingleton()` — cached typed client (client components, auth)
 - `getSupabaseRaw()` — same singleton but typed as `createClient<any>`. **Use this** when writing to tables not yet in the `Database` type (`user_profiles`, `user_favorites`, `reviews`, `saved_searches`, `farm_claims`). Requires `// eslint-disable-next-line @typescript-eslint/no-explicit-any` and `as any` casts on `.upsert()`/`.insert()` calls.
 
-`src/data/mockData.ts` holds static data for pages that don't have a Supabase table yet: featured farms (`MockFarm[]`), blog articles (`BlogArticle[]`), seasonal calendar, and kraj metadata. Both `MockFarm` and `BlogArticle` have a `coverImage` field (Unsplash URL) used by `next/image` components — keep this in sync when extending those interfaces.
-
-`MockFarm` intentionally has **no** `rating`, `reviewCount`, `distance`, or `quote` fields — these were removed to avoid fake social proof. Do not add them back until there is real data to populate them.
+`src/data/mockData.ts` holds static data for pages that don't have a Supabase table yet: featured farms (`MockFarm[]`), blog articles (`BlogArticle[]`), seasonal calendar, and kraj metadata. `MockFarm` intentionally has **no** `rating`, `reviewCount`, `distance`, or `quote` fields — do not add them back until there is real data.
 
 ### Supabase schema
 
@@ -74,7 +74,7 @@ Seven tables across five migration files (`supabase/migrations/`):
 | `saved_searches` | owner only | `filters JSONB` — cast via `as unknown as FarmFilters` when reading. |
 | `farm_claims` | owner only | Status: `pending | approved | rejected`. |
 
-**Running migrations:** The Supabase direct DB connection (`db.PROJECT.supabase.co:5432`) is IPv6-only and unreachable from most local machines. Run migrations manually via the **Supabase SQL Editor**: `https://supabase.com/dashboard/project/eqrmwkyzllkpkuqhwswk/sql`. Apply files in numeric order.
+**Running migrations:** The Supabase direct DB connection is IPv6-only and unreachable from most local machines. Run migrations manually via the **Supabase SQL Editor**: `https://supabase.com/dashboard/project/eqrmwkyzllkpkuqhwswk/sql`. Apply files in numeric order.
 
 An RPC function `increment_farm_view(farm_slug TEXT)` exists (migration 005) — called by `POST /api/farms/[slug]/view` to atomically increment `view_count`.
 
@@ -90,68 +90,92 @@ Two Zustand stores (no persistence — in-memory only):
 - `src/store/farmStore.ts` — `selectedFarmId`, `hoveredFarmId`, and `filters` (`FarmFilters`). The map and sidebar both read from this store to stay in sync.
 - `src/store/compareStore.ts` — `compareIds[]` (max 3 farms). `CompareBar` reads it and links to `/porovnat?ids=...`.
 
-Six localStorage hooks (SSR-safe: hydrate via `useEffect` after mount):
+localStorage hooks (SSR-safe: hydrate via `useEffect` after mount):
 - `src/hooks/useFavoriteFarms.ts` — key `mf_favorites`
-- `src/hooks/useBedynka.ts` — key `mf_bedynka`, item ids are `farmSlug__productId`; `totalItems` is exposed for the nav badge
-- `src/hooks/useRecentFarms.ts` — key `mf_recent_farms`, max 6 entries, written on every farm detail page visit
-- `src/hooks/useRecentSearches.ts` — key `mf_recent_searches`, max 5 entries. Exposes `searches`, `addSearch(query)`, `removeSearch(query)`. Used in map search autocomplete.
-- Reviews are stored directly (not via a hook) under key `mf_reviews_${farm.slug}` inside `FarmDetailClient` (localStorage fallback; also synced to Supabase `reviews` table when user is logged in via `useReviews`)
+- `src/hooks/useBedynka.ts` — key `mf_bedynka`, item ids are `farmSlug__productId`; `totalItems` exposed for nav badge
+- `src/hooks/useRecentFarms.ts` — key `mf_recent_farms`, max 6 entries
+- `src/hooks/useRecentSearches.ts` — key `mf_recent_searches`, max 5 entries
+- `src/hooks/useCookieConsent.ts` — key `mf_cookie_consent`, values `'accepted' | 'rejected'`. Returns `{ consent, accept, reject, showBanner }`. `showBanner` is only `true` after hydration when no stored decision exists — prevents SSR flash.
 
 Browser API hook:
-- `src/hooks/useGeolocation.ts` — uses `navigator.geolocation.watchPosition` (continuous tracking). Returns `{ lat, lng, error }`. SSR-safe (initialises in `useEffect`); cleans up the watcher on unmount. Used by `MarketsClient` and the map "Kolem mě" feature.
+- `src/hooks/useGeolocation.ts` — uses `navigator.geolocation.watchPosition` (continuous tracking). Returns `{ lat, lng, error }`. SSR-safe; cleans up watcher on unmount.
 
 Supabase-backed hooks (require auth):
-- `src/hooks/useProfile.ts` — reads/writes `user_profiles` via `getSupabaseRaw()`
-- `src/hooks/useReviews.ts` — reads/writes `reviews` table; merges with localStorage reviews
-- `src/hooks/useSavedSearches.ts` — reads/writes `saved_searches`; casts `filters JSONB` as `unknown as FarmFilters`
+- `src/hooks/useProfile.ts`, `useReviews.ts`, `useSavedSearches.ts`
 - `src/lib/syncFavorites.ts` — merges `mf_favorites` localStorage into `user_favorites` table on login
 
 ### Auth
 
 `src/contexts/AuthContext.tsx` — `AuthProvider` wraps the app (in `layout.tsx`). Exports `useAuth()` hook with `{ session, user, loading, signInWithMagicLink, signOut, deleteAccount }`.
 
-Auth flow: magic link only (`signInWithOtp`). Callback lands at `/auth/callback` (route handler in `src/app/auth/callback/route.ts`) which exchanges the code and redirects to `/profil`. Delete account calls `DELETE /api/auth/delete-account` with `Authorization: Bearer <token>` — the route uses `SUPABASE_SERVICE_ROLE_KEY` to delete from `auth.users`.
+Auth flow: magic link only (`signInWithOtp`). Callback lands at `/auth/callback` which exchanges the code and redirects to `/profil`. Delete account calls `DELETE /api/auth/delete-account` with `Authorization: Bearer <token>`.
 
-`src/hooks/useAuth.ts` re-exports `useAuth` from `AuthContext` for convenience.
+### Cookie consent & GTM
+
+`src/hooks/useCookieConsent.ts` — shared hook, reads/writes `mf_cookie_consent` in localStorage. Consent is `'pending' | 'accepted' | 'rejected'`.
+
+`src/components/ui/CookieConsent.tsx` — GDPR banner, framer-motion slide-up from bottom-right. Shows only after hydration (`showBanner`). Has "Přijmout vše" and "Odmítnout volitelné" buttons. Mounted inside `ToastProvider` in `layout.tsx`.
+
+`src/components/ui/GTMScript.tsx` — renders `next/script` with `strategy="afterInteractive"` **only when `consent === 'accepted'`**. GTM ID comes from `NEXT_PUBLIC_GTM_ID`. Returns `null` when env var is absent or consent not given — safe to have in layout even without GTM configured. GA4, Meta Pixel, and Google Ads conversion tags are configured inside the GTM dashboard, not in code.
 
 ### Map rendering
 
 `MapView` (`src/components/map/MapView.tsx`) is always loaded via `dynamic(..., { ssr: false })` inside `MapViewWrapper` — never import it directly.
 
-**All 4,009 farms are rendered as a single native Mapbox GL `circle` layer** — not as DOM markers. This is critical for performance. The architecture:
+**All 4,009 farms are rendered as a single native Mapbox GL `circle` layer** — not as DOM markers. The architecture:
 - GeoJSON source uses `promoteId: 'id'` so that `setFeatureState` works by farm ID string
-- Cluster circles: standard GL `circle` layer filtered by `has point_count`
-- Individual farm dots: a `circle` layer with paint expressions driven by `feature-state`:
-  - `selected` state → larger radius (13px), dark forest color, 3px stroke
-  - `hovered` state → medium radius (11px), primary green, 2px stroke
-  - Default fill color: a `match` expression keyed on the farm's primary category, using `CATEGORY_META[cat].color` values baked into the paint expression at map-init time
-- `selectedFarmId`/`hoveredFarmId` changes call `map.setFeatureState({ source, id }, { selected/hovered: true/false })` — only the previous and new IDs are touched, not all farms
-- Hover shows a small Mapbox Popup (`farm-popup` class) with the farm name
-- Click fires `selectFarm(id)` which updates the Zustand store and triggers flyTo
+- `selected` state → 13px radius, dark forest color, 3px stroke
+- `hovered` state → 11px radius, primary green, 2px stroke
+- Default fill: `match` expression keyed on primary category using `CATEGORY_META[cat].color`
+- `selectedFarmId`/`hoveredFarmId` changes call `map.setFeatureState` — only the previous and new IDs are touched
 
-The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — changing it in Vercel requires a fresh build (clear cache + new commit).
+**Two popups:**
+- Hover popup (`farm-popup` class, `closeButton: false`) — shows farm name + emoji on mousemove, removed on mouseleave
+- Click popup (`farm-click-popup` class, `closeButton: true`) — shown on farm pin click with name, category label, verified badge, and "Zobrazit detail farmy →" link. Closed by clicking the X or clicking empty map area. HTML content is XSS-escaped via an inline `esc()` function before insertion.
+
+The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — changing it in Vercel requires a fresh build.
 
 ### Map sidebar pagination
 
-`MapSearchPage` (`src/components/mapa/MapSearchPage.tsx`) renders only the first `PAGE_SIZE = 50` filtered farms in the sidebar. A "Načíst další (X zbývá)" button appends the next 50. Page resets to 1 whenever filters change. Height is `h-[calc(100vh-64px)]` (navbar is `h-16 = 64px` — keep in sync if navbar height changes).
+`MapSearchPage` renders only the first `PAGE_SIZE = 50` filtered farms in the sidebar. Height is `h-[calc(100vh-64px)]` (navbar is `h-16 = 64px` — keep in sync if navbar height changes).
 
 ### RSC boundary constraint
 
-`AnimatedSection` (`src/components/ui/AnimatedSection.tsx`) is a `'use client'` component that renders a `<div>` wrapper (not `<section>` — was changed to avoid polluting accessibility landmarks). **Do not pass complex server-rendered JSX trees through it** — event handlers and client components cannot cross the RSC boundary via `children`. For content-heavy pages, render content inside a dedicated `'use client'` component or use plain `<section>` elements instead of `AnimatedSection`.
+`AnimatedSection` is a `'use client'` component. **Do not pass complex server-rendered JSX trees through it** — event handlers and client components cannot cross the RSC boundary via `children`. Use plain `<section>` elements for content-heavy server components instead.
 
-`HomeFarmCards.tsx` (`src/components/home/HomeFarmCards.tsx`) is a `'use client'` component that was extracted from `HomeFeaturedFarms.tsx` for this exact reason — card components use hooks (`useState`, `useCallback`) and cannot live in the async server component.
+`HomeFarmCards.tsx` was extracted from `HomeFeaturedFarms.tsx` for this exact reason.
 
 ### Animation
 
-`src/lib/motionVariants.ts` — shared framer-motion spring presets (`SPRING_GENTLE`, `SPRING_BOUNCY`, `SPRING_STIFF`) and variant presets (`fadeUp`, `fadeIn`, `scaleIn`, `staggerContainer`, `staggerContainerFast`, `tabSlide`). Import from here rather than redefining locally.
+All framer-motion animations use shared presets from `src/lib/motionVariants.ts`:
+- Spring presets: `SPRING_GENTLE` (200/30), `SPRING_BOUNCY` (400/20), `SPRING_STIFF` (600/35)
+- Entry variants: `fadeUp`, `fadeIn`, `fadeLeft`, `fadeRight`, `scaleIn`
+- Stagger containers: `staggerContainer` (0.1s children), `staggerContainerFast` (0.07s)
+- Tab transitions: `tabSlide`
 
-`MapSearchPage.tsx` uses framer-motion for animated filter panel collapse (spring height), staggered farm card entrance (first 15 only, `ANIMATE_THRESHOLD = 15`), and animated result count. Only first 15 cards get entrance animations to avoid performance issues with ~4,009 farms.
+Import from here rather than redefining locally.
+
+`AnimatedSection` uses `motion.div` + `whileInView` with `viewport={{ once: true, margin: '-80px 0px' }}`. The `direction` prop (`'up' | 'left' | 'right' | 'none'`) is fully functional. `delay` is in **milliseconds** and converted to seconds internally.
+
+`AnimatedCounter` uses `useMotionValue` + framer-motion `animate()` with expo-out easing. The `duration` prop is in **seconds** (default 1.6).
+
+`HeroSection` uses `staggerContainer` + `fadeUp` variants for staggered entrance of each text element. Trust bar animates separately with a 0.7s delay.
+
+`CategoryFilter` uses `layoutId="category-pill"` on a `motion.span` — the green background pill slides smoothly between buttons on click.
+
+`MapSearchPage.tsx` animates only the first 15 farm cards (`ANIMATE_THRESHOLD = 15`) to avoid performance issues with ~4,009 farms.
+
+### OG image
+
+`/api/og` (edge runtime) — generates a branded 1200×630 OG image using `next/og` (`ImageResponse`). Accepts optional `?title=` and `?subtitle=` query params. Used as default og:image in `layout.tsx` and as fallback on farm detail pages that have no real photo.
+
+Farm detail pages (`/farmy/[slug]`) use the farm's first real photo as og:image when available; fall back to `/api/og?title=...&subtitle=...` with farm name and city/kraj.
 
 ### Images
 
-`next/image` with `fill` is used for blog covers and the homepage hero. Any parent of a `fill` image must have `position: relative` (and usually `overflow-hidden`). Allowed remote patterns in `next.config.mjs`: `*.supabase.co`, `**.mapafarem.cz`, and `images.unsplash.com`.
+`next/image` with `fill` is used for blog covers and the homepage hero. Any parent of a `fill` image must have `position: relative`. Allowed remote patterns in `next.config.mjs`: `*.supabase.co`, `**.mapafarem.cz`, `images.unsplash.com`.
 
-**Farm photos** (`farm.images[]`) are stored as raw external URLs (og:image scraped from farm websites) and displayed with plain `<img>` tags — not `next/image` — because the domains are arbitrary and cannot all be whitelisted. About 610 farms in Supabase have real photo URLs; the rest have an empty array. Always use an intermediate variable when checking — never chain optional access twice on the same index:
+**Farm photos** (`farm.images[]`) are displayed with plain `<img>` tags because domains are arbitrary and cannot all be whitelisted. Always use an intermediate variable when checking:
 
 ```typescript
 // CORRECT
@@ -167,36 +191,37 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | Route | Rendering | Notes |
 |---|---|---|
 | `/` | Static | Homepage sections from mockData + Supabase |
-| `/mapa` | Dynamic (ISR 5 min) | Split panel: `MapSearchPage` client component + Mapbox. Accepts `?kraj=` and `?q=` query params |
-| `/farmy/[slug]` | Dynamic (on-demand) | `dynamicParams = true`, `generateStaticParams` returns `[]` — pages built on first visit and cached. Cannot be SSG with ~4,009 farms. |
+| `/mapa` | Dynamic (ISR 5 min) | Split panel: `MapSearchPage` client component + Mapbox. Accepts `?kraj=` and `?q=` query params. Derives markers from farms in-page — does not call `getFarmMapMarkers()` separately. |
+| `/farmy/[slug]` | Dynamic (on-demand) | `dynamicParams = true`, `generateStaticParams` returns `[]` — pages built on first visit and cached. |
 | `/blog` | Static | Article grid from mockData |
 | `/blog/[slug]` | SSG | Article content rendered client-side in `ArticleContent` |
-| `/trhy` | Static | `MarketsClient` — 20 Czech farmers markets with geolocation sort ("Kolem mě"), ICS calendar export, countdown, time filters. Data is hardcoded in the component (no Supabase table). Daily markets use `isDaily: true` flag so they always show "Otevřeno denně" instead of a next-occurrence countdown. |
-| `/zebricek` | ISR (5 min) | `LeaderboardClient` — top-20 farms per tab (popular/verified/category). Server fetches all farms via `getAllFarms()`, serialises to `LeaderboardFarm[]`. Region breakdown links to `/mapa?kraj=X`. Sort: viewCount desc → verified first → `localeCompare('cs')`. |
-| `/kraje` | Static | 14 region cards → `/mapa?kraj=...` |
-| `/oblibene` | Static shell | Content from `useFavoriteFarms` localStorage hook |
-| `/bedynka` | Static shell | Content from `useBedynka` localStorage hook. In `MobileBottomNav` with item-count badge from `totalItems`. |
-| `/porovnat` | Dynamic | Accepts `?ids=` (comma-separated), fetches matching farms server-side |
+| `/trhy` | Static | `MarketsClient` — 20 Czech farmers markets. Data is hardcoded (no Supabase table). `isDaily: true` flag shows "Otevřeno denně". |
+| `/zebricek` | ISR (5 min) | `LeaderboardClient` — top-20 farms per tab. Sort: viewCount desc → verified first → `localeCompare('cs')`. |
+| `/kraje` | Static | Uses `getFarmCountByKraj()` — not `getAllFarms()`. |
+| `/oblibene` | Static shell | `useFavoriteFarms` localStorage hook |
+| `/bedynka` | Static shell | `useBedynka` localStorage hook. In `MobileBottomNav` with item-count badge. |
+| `/porovnat` | Dynamic | Uses `getFarmsByIds(ids)` — not `getAllFarms()`. |
 | `/sezona` | Static | `SeasonalCalendarClient` with mockData calendar |
 | `/o-projektu` | Static | Static content |
-| `/pro-farmary` | Static | Farmer landing page with pricing. `PRICING` array has `soon: boolean` on plan and individual features — `soon: true` renders a "brzy" badge. Paid tier CTAs go to `/kontakt`, not `/pridat-farmu`. |
-| `/pridat-farmu` | Static shell | 5-step `AddFarmForm` client component with localStorage draft save. Not in the mobile bottom nav (replaced by `/bedynka`). |
-| `/kontakt` | Static | `ContactForm` saves to `localStorage` key `mf_contact_messages` (no backend yet) |
+| `/pro-farmary` | Static | `PRICING` array has `soon: boolean` — renders "brzy" badge. Paid CTAs go to `/kontakt`. |
+| `/pridat-farmu` | Static shell | 5-step `AddFarmForm` with localStorage draft save. |
+| `/kontakt` | Static | `ContactForm` saves to `localStorage` key `mf_contact_messages` (no email backend yet) |
 | `/pomoc` | Static | `HelpAccordion` with search input |
 | `/podminky` | Static | Terms of service |
 | `/soukromi` | Static | Privacy policy (GDPR) |
 | `/cookies` | Static | Cookie policy |
 | `/certifikace` | Static | Bio certification guide |
-| `/prihlasit` | Static shell | Magic link login form — calls `signInWithMagicLink` from `AuthContext` |
-| `/auth/callback` | Dynamic | Route handler: exchanges Supabase auth code, redirects to `/profil` |
-| `/profil` | Static shell | `ProfilClient` — shows display name edit, favorites list, saved searches; requires auth |
-| `/profil/recenze` | Static shell | `MyReviewsClient` — lists user's submitted reviews; requires auth |
-| `/profil/historie` | Static shell | `HistorieClient` — recently viewed farms from `mf_recent_farms` localStorage |
-| `/pro-farmary/narokovat` | Static shell | Farm claim form; requires auth; writes to `farm_claims` table |
-| `/api/search` | Dynamic | GET `?q=` — searches farm name/city/description, returns max 5 results |
-| `/api/newsletter` | Dynamic | POST `{ email }` — inserts into Supabase `subscribers` table, falls back to no-op |
-| `/api/farms/[slug]/view` | Dynamic | POST — calls `increment_farm_view` RPC to increment `view_count` |
-| `/api/auth/delete-account` | Dynamic | DELETE with `Authorization: Bearer <token>` — deletes auth user via service role |
+| `/prihlasit` | Static shell | Magic link login |
+| `/auth/callback` | Dynamic | Exchanges Supabase auth code, redirects to `/profil` |
+| `/profil` | Static shell | Requires auth |
+| `/profil/recenze` | Static shell | Requires auth |
+| `/profil/historie` | Static shell | `mf_recent_farms` localStorage |
+| `/pro-farmary/narokovat` | Static shell | Requires auth; writes to `farm_claims` |
+| `/api/og` | Edge | Branded OG image generation. Params: `?title=`, `?subtitle=` |
+| `/api/search` | Dynamic | GET `?q=` — returns max 5 results |
+| `/api/newsletter` | Dynamic | POST `{ email }` — inserts into `subscribers` |
+| `/api/farms/[slug]/view` | Dynamic | POST — increments `view_count` via RPC |
+| `/api/auth/delete-account` | Dynamic | DELETE with Bearer token |
 
 ### Key environment variables
 
@@ -205,10 +230,10 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `NEXT_PUBLIC_MAPBOX_TOKEN` | Mapbox GL — inlined at build time |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key (public) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role — server-side only (seeding scripts, delete-account API) |
-| `GOOGLE_PLACES_API_KEY` | Google Places API (New) — only for `import-farms` script |
-
-The first three are set in Vercel production. The last two are local-only (`.env.local`).
+| `NEXT_PUBLIC_SITE_URL` | Canonical site URL — used in `metadataBase` and og:image fallback URLs |
+| `NEXT_PUBLIC_GTM_ID` | Google Tag Manager container ID (e.g. `GTM-XXXXXXX`). GTM is not loaded when this is absent or when user has not accepted cookies. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role — server-side only |
+| `GOOGLE_PLACES_API_KEY` | Google Places API — only for `import-farms` script |
 
 ### Vercel deployment
 
@@ -217,52 +242,51 @@ Vercel project: **`mapafarem`** (under `lpapaxs-projects`), GitHub repo `lpapax/
 ```bash
 npx vercel link       # link local repo to correct project
 npx vercel env ls     # list env vars
-npx vercel env add NEXT_PUBLIC_MAPBOX_TOKEN production
+npx vercel env add NEXT_PUBLIC_GTM_ID production
 ```
 
 ### Design system
 
-Typography: `font-sans` = DM Sans, `font-heading` = Playfair Display. Both loaded via `next/font/google` in `src/app/layout.tsx` with `latin-ext` subset (required for Czech characters). The CSS variables `--font-body` and `--font-heading` are set on the `<html>` element. Body background is warm parchment `#faf7f0`.
+Typography: `font-sans` = DM Sans, `font-heading` = Playfair Display. Both loaded via `next/font/google` in `layout.tsx` with `latin-ext` subset (required for Czech characters). Body background is warm parchment `#faf7f0`.
 
 Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw colors:
 
 | Token | Value | Use for |
 |---|---|---|
 | `primary-*` | Muted green scale (`#4a8c3f` at 500) | CTAs, active states, category badges |
-| `earth-*` | Warm amber scale | Stars, secondary accents, highlight badges |
+| `earth-*` | Warm amber scale | Stars, secondary accents |
 | `cta` / `cta-dark` | Cyan `#0891B2` | Info/CTA variant |
 | `forest` | `#1a4214` | Main headings, dark backgrounds |
 | `surface` | `#faf7f0` | Section backgrounds (warm parchment) |
-| `cream` | `#ffffff` | Card backgrounds, lightest surface |
-| `neutral-*` | Warm neutral scale | Use instead of raw `gray-*` classes |
+| `cream` | `#ffffff` | Card backgrounds |
+| `neutral-*` | Warm neutral scale | Use instead of raw `gray-*` |
 | `shadow-card` | subtle drop shadow | Default card |
 | `shadow-card-hover` | green-tinted hover | Card on hover |
-| `shadow-card-earth` | amber-tinted | Earth-accented cards |
 
 The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge).
 
-`src/lib/geo.ts` — two distance utilities used by `MarketsClient` and the map "Kolem mě" feature:
-- `haversineKm(lat1, lng1, lat2, lng2): number` — great-circle distance in kilometres
-- `formatDistance(km: number): string` — formats as "0.5 km" or "12 km"
+`src/lib/geo.ts` — `haversineKm(lat1, lng1, lat2, lng2)` and `formatDistance(km)`.
 
-`CATEGORY_META` in `src/lib/farms.ts` — record mapping every `FarmCategory` to `{ label: string, emoji: string, color: string }`. Used by map circle layer color expressions, leaderboard badges, markets category pills, and the `SimilarFarms` sidebar. Import as `import { CATEGORY_META } from '@/lib/farms'`.
+`CATEGORY_META` in `src/lib/farms.ts` — maps every `FarmCategory` to `{ label, emoji, color }`. Used by map layer paint expressions, leaderboard badges, markets pills, and `SimilarFarms` sidebar.
 
-**Icons:** use Lucide React SVGs only — no emoji characters as decorative icons anywhere in JSX. The `emoji` field on `KrajData` in `KRAJ_LIST` exists in the data type but is intentionally **not rendered** — the kraje page uses a `MapPin` icon instead.
+**Icons:** Lucide React SVGs only — no emoji characters as decorative icons in JSX.
 
 ### Global UI components
 
-`src/components/ui/Toast.tsx` — `ToastProvider` + `useToast()` hook. `ToastProvider` is wrapped around the body in `src/app/layout.tsx`. Call `useToast().show(message, type)` from any client component; `type` is `'success' | 'error' | 'info'`.
+`src/components/ui/Toast.tsx` — `ToastProvider` + `useToast()`. Call `useToast().show(message, type)` where `type` is `'success' | 'error' | 'info'`.
+
+`src/components/ui/CookieConsent.tsx` — GDPR consent banner. Always rendered inside `layout.tsx`; uses `showBanner` from `useCookieConsent` to avoid SSR flash.
+
+`src/components/ui/GTMScript.tsx` — conditionally loads GTM. Safe to leave in layout even without `NEXT_PUBLIC_GTM_ID` set.
 
 `src/app/not-found.tsx`, `src/app/error.tsx`, `src/app/loading.tsx` — custom 404, error boundary, and skeleton loader.
 
 ### Farm detail tabs
 
-`FarmDetailClient` (`src/components/farms/FarmDetailClient.tsx`) has five tabs: O farmě, Produkty, Galerie, Recenze, Kontakt.
+`FarmDetailClient` has five tabs: O farmě, Produkty, Galerie, Recenze, Kontakt.
 
-- **Produkty** — shows one card per farm category with a "Do bedýnky" / "V bedýnce" toggle backed by `useBedynka`. No Supabase products table yet; prices/availability are intentionally omitted.
-- **Recenze** — reads from localStorage key `mf_reviews_${farm.slug}` (array of `StoredReview`). When user is authenticated, `useReviews` also reads/writes the Supabase `reviews` table and merges both sources. Do not seed fake reviews.
-- **Galerie** — shows real images from `farm.images[]` when URLs are valid (`startsWith('http')`, not placeholder). Falls back to CSS gradient placeholders.
+- **Produkty** — one card per farm category with "Do bedýnky" / "V bedýnce" toggle backed by `useBedynka`. No products table yet.
+- **Recenze** — localStorage key `mf_reviews_${farm.slug}`. When authenticated, `useReviews` merges with Supabase `reviews` table. Do not seed fake reviews.
+- **Galerie** — real images from `farm.images[]`; falls back to CSS gradient placeholders.
 
-`FarmDetailPage` (`src/app/farmy/[slug]/page.tsx`) renders a `<script type="application/ld+json">` LocalBusiness JSON-LD block. The hero section uses a real farm photo (`farm.images[0]`) as a background `<img>` when available, falling back to a category-colour gradient. `FavoriteButton` and `ShareFarmButton` are in the header alongside the farm name.
-
-`FarmDetailClient` accepts an optional `similarFarms?: Farm[]` prop. When non-empty, a `SimilarFarms` sidebar section is rendered showing up to 3 same-kraj farms (thumbnail or category emoji, farm name, city, ChevronRight chevron) plus a "Show all farms in region" link to `/mapa?kraj=X`. Farm images are checked via the intermediate-variable pattern above.
+`FarmDetailClient` accepts `similarFarms?: Farm[]` — renders a "Similar farms" sidebar with up to 3 same-kraj farms.
