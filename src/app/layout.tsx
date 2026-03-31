@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/ui/ThemeProvider'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { CookieConsent } from '@/components/ui/CookieConsent'
 import { GTMScript } from '@/components/ui/GTMScript'
+import { Analytics } from '@vercel/analytics/next'
 
 const playfair = Playfair_Display({
   subsets: ['latin', 'latin-ext'],
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Přejít na obsah
         </a>
+        <Analytics />
         <ThemeProvider>
           <AuthProvider>
             <ToastProvider>
