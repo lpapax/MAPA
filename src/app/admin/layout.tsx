@@ -7,8 +7,6 @@ import { useAuth } from '@/contexts/AuthContext'
 import { LayoutDashboard, Tractor, FileText, Mail, Star, LogOut, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL
-
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/admin/farmy', label: 'Farmy', icon: Tractor },
@@ -18,19 +16,25 @@ const NAV = [
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user, loading, signOut } = useAuth()
+  const { user, loading, session, signOut } = useAuth()
   const router = useRouter()
   const pathname = usePathname()
   const [checked, setChecked] = useState(false)
 
   useEffect(() => {
     if (loading) return
-    if (!user || (ADMIN_EMAIL && user.email !== ADMIN_EMAIL)) {
-      router.replace('/prihlasit')
-    } else {
-      setChecked(true)
-    }
-  }, [user, loading, router])
+    if (!user || !session) { router.replace('/prihlasit'); return }
+
+    fetch('/api/admin/check', {
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+      .then(r => r.json())
+      .then((data: { admin: boolean }) => {
+        if (data.admin) setChecked(true)
+        else router.replace('/')
+      })
+      .catch(() => router.replace('/'))
+  }, [user, loading, session, router])
 
   if (!checked) {
     return (
