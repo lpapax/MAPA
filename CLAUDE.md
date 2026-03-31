@@ -222,6 +222,18 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `/api/newsletter` | Dynamic | POST `{ email }` — inserts into `subscribers` |
 | `/api/farms/[slug]/view` | Dynamic | POST — increments `view_count` via RPC |
 | `/api/auth/delete-account` | Dynamic | DELETE with Bearer token |
+| `/api/admin/check` | Dynamic | GET with Bearer token — returns `{ admin: true/false }`. Checks token against private `ADMIN_EMAIL` env var server-side. |
+| `/admin` | Client shell | Dashboard — requires auth + admin email check via `/api/admin/check` |
+| `/admin/farmy` | Client shell | Farm list with verify toggle, search, pagination (50/page) |
+| `/admin/claimy` | Client shell | Farm claim requests — approve/reject |
+| `/admin/odbery` | Client shell | Newsletter subscribers + CSV export |
+| `/admin/recenze` | Client shell | All reviews — read and delete |
+
+### Admin panel
+
+`src/app/admin/layout.tsx` — client-side auth guard. On mount, calls `GET /api/admin/check` with the Supabase Bearer token. Redirects to `/prihlasit` if not logged in, to `/` if logged in but not admin. Shows spinner until check resolves.
+
+`ADMIN_EMAIL` (private, no `NEXT_PUBLIC_` prefix) — only this email can access `/admin`. Checked server-side in `/api/admin/check` only — never exposed to the browser bundle. All admin data reads use `getSupabaseRaw()` with the anon key (RLS still applies for read operations).
 
 ### Key environment variables
 
@@ -232,6 +244,7 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key (public) |
 | `NEXT_PUBLIC_SITE_URL` | Canonical site URL — used in `metadataBase` and og:image fallback URLs |
 | `NEXT_PUBLIC_GTM_ID` | Google Tag Manager container ID (e.g. `GTM-XXXXXXX`). GTM is not loaded when this is absent or when user has not accepted cookies. |
+| `ADMIN_EMAIL` | Private — email allowed to access `/admin`. Checked server-side only in `/api/admin/check`. No `NEXT_PUBLIC_` prefix. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role — server-side only |
 | `GOOGLE_PLACES_API_KEY` | Google Places API — only for `import-farms` script |
 
@@ -278,6 +291,8 @@ The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-m
 `src/components/ui/CookieConsent.tsx` — GDPR consent banner. Always rendered inside `layout.tsx`; uses `showBanner` from `useCookieConsent` to avoid SSR flash.
 
 `src/components/ui/GTMScript.tsx` — conditionally loads GTM. Safe to leave in layout even without `NEXT_PUBLIC_GTM_ID` set.
+
+`@vercel/analytics` — `<Analytics />` is mounted in `layout.tsx` just before `<ThemeProvider>`. Tracks page views automatically on Vercel. No configuration needed.
 
 `src/app/not-found.tsx`, `src/app/error.tsx`, `src/app/loading.tsx` — custom 404, error boundary, and skeleton loader.
 
