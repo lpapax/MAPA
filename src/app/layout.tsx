@@ -74,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="cs" suppressHydrationWarning className={`${playfair.variable} ${dmSans.variable}`}>
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
       </head>
       <body>
         <GTMScript />

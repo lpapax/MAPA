@@ -42,16 +42,22 @@ export function ContactForm() {
     e.preventDefault()
     if (!validate()) return
     setLoading(true)
-    // localStorage mock — upgrade to API when ready
-    await new Promise((r) => setTimeout(r, 600))
     try {
-      const existing = JSON.parse(localStorage.getItem('mf_contact_messages') ?? '[]') as unknown[]
-      localStorage.setItem(
-        'mf_contact_messages',
-        JSON.stringify([...existing, { ...form, sentAt: new Date().toISOString() }]),
-      )
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      const data = await res.json() as { success: boolean; error?: string }
+      if (!data.success) {
+        setErrors({ message: data.error ?? 'Nastala chyba. Zkuste to prosím znovu.' })
+        setLoading(false)
+        return
+      }
     } catch {
-      // ignore storage errors
+      setErrors({ message: 'Nastala chyba. Zkuste to prosím znovu.' })
+      setLoading(false)
+      return
     }
     setLoading(false)
     setSubmitted(true)

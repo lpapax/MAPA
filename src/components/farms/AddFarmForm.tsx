@@ -168,10 +168,30 @@ export function AddFarmForm() {
   }
   const prev = () => { setErrors({}); setStep((s) => Math.max(s - 1, 1)) }
 
-  const handleSubmit = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('mf_pending_farm', JSON.stringify({ ...data, submittedAt: new Date().toISOString() }))
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitting, setSubmitting] = useState(false)
+
+  const handleSubmit = async () => {
+    setSubmitError(null)
+    setSubmitting(true)
+    try {
+      const res = await fetch('/api/farms/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      const result = await res.json() as { success: boolean; error?: string }
+      if (!result.success) {
+        setSubmitError(result.error ?? 'Nastala chyba. Zkuste to prosím znovu.')
+        setSubmitting(false)
+        return
+      }
+    } catch {
+      setSubmitError('Nastala chyba. Zkuste to prosím znovu.')
+      setSubmitting(false)
+      return
     }
+    setSubmitting(false)
     setSubmitted(true)
   }
 
@@ -516,6 +536,9 @@ export function AddFarmForm() {
         )}
 
         {/* Navigation */}
+        {submitError && (
+          <p className="mt-4 text-sm text-red-600 text-center">{submitError}</p>
+        )}
         <div className="flex items-center justify-between mt-8 pt-6 border-t border-neutral-100">
           {step > 1 ? (
             <button
@@ -540,10 +563,11 @@ export function AddFarmForm() {
           ) : (
             <button
               onClick={handleSubmit}
-              className="flex items-center gap-1.5 px-6 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors cursor-pointer shadow-sm"
+              disabled={submitting}
+              className="flex items-center gap-1.5 px-6 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-700 disabled:opacity-60 text-white text-sm font-semibold transition-colors cursor-pointer shadow-sm"
             >
               <Check className="w-4 h-4" aria-hidden="true" />
-              Odeslat žádost
+              {submitting ? 'Odesílám…' : 'Odeslat žádost'}
             </button>
           )}
         </div>
