@@ -66,13 +66,14 @@ Seven tables across five migration files (`supabase/migrations/`):
 
 | Table | RLS | Notes |
 |---|---|---|
-| `farms` | public read, service_role write | `slug`, `kraj`, `categories` (GIN) indexes. Has `view_count INTEGER DEFAULT 0`. `images TEXT[]` stores og:image URLs scraped from farm websites. |
+| `farms` | public read, service_role write | `slug`, `kraj`, `categories` (GIN) indexes. Has `view_count INTEGER DEFAULT 0`, `tier TEXT DEFAULT 'free'`. `images TEXT[]` stores og:image URLs scraped from farm websites. |
 | `subscribers` | public insert, service_role read | Newsletter emails |
 | `user_profiles` | owner only | Created automatically on `auth.users` insert via trigger. `display_name TEXT`. |
 | `user_favorites` | owner only | `(user_id, farm_slug)` unique. Stores `farm_name`, `categories[]`, `kraj`. |
 | `reviews` | public read, auth write | `farm_slug`, `rating SMALLINT (1–5)`, `display_name`, `city`, `text`. |
 | `saved_searches` | owner only | `filters JSONB` — cast via `as unknown as FarmFilters` when reading. |
 | `farm_claims` | owner only | Status: `pending | approved | rejected`. |
+| `subscriptions` | owner read, service_role write | Stripe subscription records. `tier TEXT`, `status TEXT`, `stripe_subscription_id` (unique), `current_period_end TIMESTAMPTZ`. Webhook handler in `/api/stripe/webhook` keeps this in sync with Stripe. |
 
 **Running migrations:** The Supabase direct DB connection is IPv6-only and unreachable from most local machines. Run migrations manually via the **Supabase SQL Editor**: `https://supabase.com/dashboard/project/eqrmwkyzllkpkuqhwswk/sql`. Apply files in numeric order.
 
@@ -221,6 +222,8 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `/api/search` | Dynamic | GET `?q=` — returns max 5 results |
 | `/api/newsletter` | Dynamic | POST `{ email }` — inserts into `subscribers` |
 | `/api/farms/[slug]/view` | Dynamic | POST — increments `view_count` via RPC |
+| `/api/stripe/checkout` | Dynamic | POST `{ farm_slug, price_id }` with `Authorization: Bearer <token>` — creates Stripe Checkout Session. Returns `{ url }`. 503 when `STRIPE_SECRET_KEY` absent. |
+| `/api/stripe/webhook` | Dynamic | POST — Stripe webhook handler. Verifies signature, handles `checkout.session.completed`, `customer.subscription.updated/deleted`. Updates `subscriptions` table and `farms.tier`. Always returns 200 except on invalid signature. |
 | `/api/auth/delete-account` | Dynamic | DELETE with Bearer token |
 | `/api/admin/check` | Dynamic | GET with Bearer token — returns `{ admin: true/false }`. Checks token against private `ADMIN_EMAIL` env var server-side. |
 | `/admin` | Client shell | Dashboard — requires auth + admin email check via `/api/admin/check` |
@@ -247,6 +250,10 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `ADMIN_EMAIL` | Private — email allowed to access `/admin`. Checked server-side only in `/api/admin/check`. No `NEXT_PUBLIC_` prefix. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role — server-side only |
 | `GOOGLE_PLACES_API_KEY` | Google Places API — only for `import-farms` script |
+| `STRIPE_SECRET_KEY` | Stripe secret key (`sk_test_...` / `sk_live_...`) — all `/api/stripe/*` routes return 503 when absent |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret (`whsec_...`) — used by `/api/stripe/webhook` to verify event signatures |
+| `STRIPE_PRICE_PROFESIONAL` | Stripe Price ID for 299 CZK/month plan — used to derive tier in webhook handler |
+| `STRIPE_PRICE_PREMIUM` | Stripe Price ID for 799 CZK/month plan — used to derive tier in webhook handler |
 
 ### Vercel deployment
 
