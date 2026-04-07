@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Moon, Sun, Map, List, AlignJustify, LayoutGrid, Star, History, ChevronRight } from 'lucide-react'
+import { Moon, Sun, Map, List, AlignJustify, LayoutGrid, Star, History, ChevronRight, Tractor } from 'lucide-react'
 import { useUserPrefs } from '@/hooks/useUserPrefs'
 import { CATEGORY_LABELS } from '@/lib/farms'
 import { cn } from '@/lib/utils'
@@ -44,6 +44,21 @@ export function ProfilClient() {
           <h2 className="font-heading font-semibold text-forest text-base">Moje data</h2>
         </div>
         <div className="divide-y divide-gray-50">
+          <Link
+            href="/profil/farma"
+            className="flex items-center justify-between px-5 py-4 hover:bg-surface transition-colors group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-primary-50 flex items-center justify-center">
+                <Tractor className="w-4 h-4 text-primary-600" aria-hidden="true" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-forest">Moje farma</p>
+                <p className="text-xs text-neutral-400">Spravujte informace o vaší farmě</p>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-neutral-300 group-hover:text-neutral-500 transition-colors" aria-hidden="true" />
+          </Link>
           <Link
             href="/profil/recenze"
             className="flex items-center justify-between px-5 py-4 hover:bg-surface transition-colors group"
