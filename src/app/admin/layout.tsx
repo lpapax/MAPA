@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
-import { LayoutDashboard, Tractor, FileText, Mail, Star, LogOut, ChevronRight, ClipboardList } from 'lucide-react'
+import { LayoutDashboard, Tractor, FileText, Mail, Star, LogOut, ChevronRight, ClipboardList, BookOpen } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const NAV = [
@@ -12,6 +12,7 @@ const NAV = [
   { href: '/admin/farmy', label: 'Farmy', icon: Tractor },
   { href: '/admin/zadosti', label: 'Žádosti', icon: ClipboardList },
   { href: '/admin/claimy', label: 'Claimy', icon: FileText },
+  { href: '/admin/blog', label: 'Blog', icon: BookOpen },
   { href: '/admin/odbery', label: 'Odběry', icon: Mail },
   { href: '/admin/recenze', label: 'Recenze', icon: Star },
 ]

@@ -1,19 +1,32 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Search, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { BLOG_ARTICLES } from '@/data/mockData'
+import { BLOG_ARTICLES, type BlogArticle } from '@/data/mockData'
 import { BlogCard } from './BlogCard'
 
-const ALL_CATEGORIES = ['Vše', ...Array.from(new Set(BLOG_ARTICLES.map((a) => a.category)))]
-
 export function BlogGrid() {
+  const [articles, setArticles] = useState<BlogArticle[]>(BLOG_ARTICLES)
   const [activeCategory, setActiveCategory] = useState('Vše')
   const [searchQuery, setSearchQuery] = useState('')
 
+  useEffect(() => {
+    fetch('/api/blog')
+      .then(r => r.json())
+      .then((data: { articles?: BlogArticle[] }) => {
+        if (data.articles && data.articles.length > 0) setArticles(data.articles)
+      })
+      .catch(() => null)
+  }, [])
+
+  const allCategories = useMemo(
+    () => ['Vše', ...Array.from(new Set(articles.map((a) => a.category)))],
+    [articles],
+  )
+
   const filtered = useMemo(() => {
-    return BLOG_ARTICLES.filter((article) => {
+    return articles.filter((article) => {
       const matchesCategory = activeCategory === 'Vše' || article.category === activeCategory
       const q = searchQuery.toLowerCase()
       const matchesSearch =
@@ -53,7 +66,7 @@ export function BlogGrid() {
 
         {/* Category filters */}
         <div className="flex flex-wrap gap-2" role="group" aria-label="Filtry kategorií">
-          {ALL_CATEGORIES.map((cat) => (
+          {allCategories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
