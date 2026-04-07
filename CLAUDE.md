@@ -184,6 +184,8 @@ Farm detail pages (`/farmy/[slug]`) use the farm's first real photo as og:image 
 
 **TypeScript Set iteration:** Use `Array.from(new Set([...]))` instead of `[...new Set([...])]` — the spread syntax fails with the project's `downlevelIteration` setting.
 
+**Event handlers on `<img>` require a client component.** Server components silently drop `onError`/`onLoad` — they are never called. If you need to hide a broken image or react to load events, extract a small `'use client'` wrapper (see `src/components/farms/HeroImage.tsx` for the pattern).
+
 **Farm photos** (`farm.images[]`) are displayed with plain `<img>` tags because domains are arbitrary and cannot all be whitelisted. Always use an intermediate variable when checking:
 
 ```typescript
@@ -324,6 +326,7 @@ The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-m
 
 - **Produkty** — one card per farm category with "Do bedýnky" / "V bedýnce" toggle backed by `useBedynka`. No products table yet.
 - **Recenze** — localStorage key `mf_reviews_${farm.slug}`. When authenticated, `useReviews` merges with Supabase `reviews` table. Do not seed fake reviews.
-- **Galerie** — real images from `farm.images[]`; falls back to CSS gradient placeholders.
+- **Galerie** — real images from `farm.images[]`; shows an empty state with a Google Maps link when no real photos exist. The gallery tab label includes a count badge (`Galerie (3)`) when photos are available. Failed images are tracked in `failedImages: Set<string>` state and filtered out of both the grid and lightbox.
+- **Photo strip** — a horizontal row of up to 6 thumbnails appears above the tabs whenever ≥2 real photos exist; clicking any opens the lightbox.
 
 `FarmDetailClient` accepts `similarFarms?: Farm[]` — renders a "Similar farms" sidebar with up to 3 same-kraj farms.
