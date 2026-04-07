@@ -2,9 +2,23 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Star, ArrowLeft } from 'lucide-react'
+import { Star, ArrowLeft, Loader2 } from 'lucide-react'
+import { useAuth } from '@/hooks/useAuth'
+import { getSupabaseRaw } from '@/lib/supabase'
 
-interface StoredReview {
+interface ReviewWithFarm {
+  farmSlug: string
+  farmName: string
+  review: {
+    name: string
+    city: string
+    rating: number
+    text: string
+    date: string
+  }
+}
+
+interface LocalStoredReview {
   name: string
   city: string
   rating: number
@@ -12,13 +26,7 @@ interface StoredReview {
   date: string
 }
 
-interface ReviewWithFarm {
-  farmSlug: string
-  farmName: string
-  review: StoredReview
-}
-
-function readAllReviews(): ReviewWithFarm[] {
+function readAllLocalReviews(): ReviewWithFarm[] {
   if (typeof window === 'undefined') return []
   const results: ReviewWithFarm[] = []
   try {
@@ -28,32 +36,99 @@ function readAllReviews(): ReviewWithFarm[] {
       const farmSlug = key.replace('mf_reviews_', '')
       const raw = localStorage.getItem(key)
       if (!raw) continue
-      const reviews = JSON.parse(raw) as StoredReview[]
+      const reviews = JSON.parse(raw) as LocalStoredReview[]
       if (!Array.isArray(reviews)) continue
       reviews.forEach((r) => {
-        results.push({
-          farmSlug,
-          farmName: farmSlug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
-          review: r,
-        })
+        results.push({ farmSlug, farmName: farmSlug, review: r })
       })
     }
   } catch {
     // ignore storage errors
   }
-  return results.sort((a, b) => new Date(b.review.date).getTime() - new Date(a.review.date).getTime())
+  return results.sort(
+    (a, b) => new Date(b.review.date).getTime() - new Date(a.review.date).getTime(),
+  )
 }
 
 export function MyReviewsClient() {
+  const { user, loading: authLoading } = useAuth()
   const [reviews, setReviews] = useState<ReviewWithFarm[]>([])
-  const [hydrated, setHydrated] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setReviews(readAllReviews())
-    setHydrated(true)
-  }, [])
+    if (authLoading) return
 
-  if (!hydrated) return null
+    if (!user) {
+      setReviews(readAllLocalReviews())
+      setLoading(false)
+      return
+    }
+
+    // User is logged in — fetch from Supabase
+    const supabase = getSupabaseRaw()
+    if (!supabase) {
+      setReviews(readAllLocalReviews())
+      setLoading(false)
+      return
+    }
+
+    setLoading(true)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(supabase as any)
+      .from('reviews')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .then(async ({ data }: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const rows = (data ?? []) as any[]
+
+        // Fetch farm names for unique slugs
+        const slugs = Array.from(new Set(rows.map((r) => r.farm_slug as string)))
+        const farmNames: Record<string, string> = {}
+
+        if (slugs.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { data: farmData } = await (supabase as any)
+            .from('farms')
+            .select('slug, name')
+            .in('slug', slugs)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          for (const f of (farmData ?? []) as any[]) {
+            farmNames[f.slug as string] = f.name as string
+          }
+        }
+
+        const mapped: ReviewWithFarm[] = rows.map((r) => ({
+          farmSlug: r.farm_slug as string,
+          farmName: farmNames[r.farm_slug as string] ?? (r.farm_slug as string),
+          review: {
+            name: r.display_name as string,
+            city: (r.city as string) ?? '',
+            rating: r.rating as number,
+            text: (r.text as string) ?? '',
+            date: new Date(r.created_at as string).toLocaleDateString('cs-CZ'),
+          },
+        }))
+
+        setReviews(mapped)
+        setLoading(false)
+      })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .catch((_err: any) => {
+        setReviews(readAllLocalReviews())
+        setLoading(false)
+      })
+  }, [user, authLoading])
+
+  if (authLoading || loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="w-6 h-6 animate-spin text-neutral-300" />
+      </div>
+    )
+  }
 
   if (reviews.length === 0) {
     return (
@@ -101,14 +176,23 @@ export function MyReviewsClient() {
               {[1, 2, 3, 4, 5].map((s) => (
                 <Star
                   key={s}
-                  className={s <= review.rating ? 'w-4 h-4 text-earth-400 fill-earth-400' : 'w-4 h-4 text-neutral-200'}
+                  className={
+                    s <= review.rating
+                      ? 'w-4 h-4 text-earth-400 fill-earth-400'
+                      : 'w-4 h-4 text-neutral-200'
+                  }
                   aria-hidden="true"
                 />
               ))}
             </div>
           </div>
-          {review.text && <p className="text-sm text-neutral-600 leading-relaxed">{review.text}</p>}
-          <p className="text-xs text-neutral-400 mt-2">{review.name}{review.city ? `, ${review.city}` : ''}</p>
+          {review.text && (
+            <p className="text-sm text-neutral-600 leading-relaxed">{review.text}</p>
+          )}
+          <p className="text-xs text-neutral-400 mt-2">
+            {review.name}
+            {review.city ? `, ${review.city}` : ''}
+          </p>
         </div>
       ))}
     </div>
