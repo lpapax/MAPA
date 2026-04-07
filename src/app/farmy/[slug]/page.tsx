@@ -2,8 +2,9 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { CheckCircle, Clock, MapPin, ChevronRight, Eye } from 'lucide-react'
 import type { Metadata } from 'next'
-import { getFarmBySlug, getSimilarFarms, CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
+import { getFarmBySlug, getSimilarFarms, CATEGORY_LABELS, CATEGORY_META, isFarmOpenNow } from '@/lib/farms'
 import { FarmDetailClient } from '@/components/farms/FarmDetailClient'
+import { HeroImage } from '@/components/farms/HeroImage'
 import { ShareFarmButton } from '@/components/ui/ShareFarmButton'
 import { FavoriteButton } from '@/components/farms/FavoriteButton'
 import { Navbar } from '@/components/ui/Navbar'
@@ -134,37 +135,31 @@ export default async function FarmDetailPage({ params }: PageProps) {
       <main>
         {/* Hero */}
         {(() => {
-          const heroPhoto = farm.images?.[0] && !farm.images[0].includes('placeholder') ? farm.images[0] : null
+          const img = farm.images?.[0] ?? ''
+          const heroPhoto = img.startsWith('http') && !img.includes('placeholder') ? img : null
+          const primaryEmoji = CATEGORY_META[farm.categories[0]]?.emoji ?? '🌾'
           return (
             <section
-              className={cn('relative h-[55vh] min-h-[360px] bg-gradient-to-br overflow-hidden', heroGradient)}
+              className={cn('relative h-[50vh] min-h-[320px] bg-gradient-to-br overflow-hidden', heroGradient)}
               aria-label={`Titulní fotografie farmy ${farm.name}`}
             >
-              {heroPhoto ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={heroPhoto}
-                  alt={farm.name}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  loading="eager"
-                />
-              ) : (
-                <div className="absolute inset-0 opacity-10" aria-hidden="true">
-                  <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <circle cx="2" cy="2" r="1.5" fill="white" />
-                      </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#dots)" />
-                  </svg>
+              {heroPhoto && <HeroImage src={heroPhoto} alt={farm.name} />}
+
+              {/* Overlay — stronger when photo present so text stays readable */}
+              {heroPhoto && (
+                <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
+              )}
+
+              {/* No-photo centred emoji */}
+              {!heroPhoto && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3" aria-hidden="true">
+                  <span className="text-8xl drop-shadow-lg select-none">{primaryEmoji}</span>
+                  <span className="text-white/50 text-sm font-medium tracking-wide">{farm.location.city}</span>
                 </div>
               )}
-              {heroPhoto && (
-                <div className="absolute inset-0 bg-black/30" aria-hidden="true" />
-              )}
+
               <div
-                className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface to-transparent"
+                className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-surface to-transparent"
                 aria-hidden="true"
               />
             </section>
