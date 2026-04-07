@@ -70,30 +70,41 @@ function farmGradient(farm: Farm) {
 
 function SpotlightCard({ farm }: { farm: Farm }) {
   const gradient = farmGradient(farm)
+  const img = farm.images?.[0] ?? ''
+  const photo = img.startsWith('http') && !img.includes('placeholder') ? img : null
+
   return (
     <Link
       href={`/farmy/${farm.slug}`}
       className="group flex flex-col sm:flex-row rounded-xl overflow-hidden bg-white border border-neutral-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 cursor-pointer min-h-[260px]"
       aria-label={`Farma: ${farm.name}`}
     >
-      {/* Color cover */}
+      {/* Cover — photo or gradient */}
       <div
-        className={cn('relative sm:w-[42%] min-h-[180px] sm:min-h-0 flex-shrink-0 bg-gradient-to-br', gradient)}
+        className={cn('relative sm:w-[42%] min-h-[180px] sm:min-h-0 flex-shrink-0 overflow-hidden', photo ? 'bg-neutral-200' : cn('bg-gradient-to-br', gradient))}
         aria-hidden="true"
       >
-        {/* Subtle dot pattern */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="sp-dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
-              <circle cx="2" cy="2" r="1.5" fill="white" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#sp-dots)" />
-        </svg>
-        {/* Initial badge */}
-        <div className="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center text-white font-bold text-xl font-heading">
-          {farm.name.charAt(0)}
-        </div>
+        {photo ? (
+          <img
+            src={photo}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <>
+            <svg className="absolute inset-0 w-full h-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="sp-dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1.5" fill="white" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#sp-dots)" />
+            </svg>
+            <div className="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center text-white font-bold text-xl font-heading">
+              {farm.name.charAt(0)}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Content */}
@@ -139,26 +150,38 @@ function SpotlightCard({ farm }: { farm: Farm }) {
 
 function FarmCard({ farm }: { farm: Farm }) {
   const gradient = farmGradient(farm)
+  const img = farm.images?.[0] ?? ''
+  const photo = img.startsWith('http') && !img.includes('placeholder') ? img : null
+
   return (
     <Link
       href={`/farmy/${farm.slug}`}
       className="group flex flex-col rounded-xl overflow-hidden bg-white border border-neutral-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
       aria-label={`Farma: ${farm.name}`}
     >
-      {/* Cover */}
-      <div className={cn('relative h-36 bg-gradient-to-br overflow-hidden flex-shrink-0', gradient)} aria-hidden="true">
-        <svg className="absolute inset-0 w-full h-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id={`dots-${farm.id}`} x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
-              <circle cx="2" cy="2" r="1.5" fill="white" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill={`url(#dots-${farm.id})`} />
-        </svg>
-        {/* Initial */}
-        <div className="absolute bottom-3 left-3 w-9 h-9 rounded-lg bg-white/20 border border-white/30 flex items-center justify-center text-white font-bold text-sm font-heading">
-          {farm.name.charAt(0)}
-        </div>
+      {/* Cover — photo or gradient */}
+      <div className={cn('relative h-36 overflow-hidden flex-shrink-0', photo ? 'bg-neutral-200' : cn('bg-gradient-to-br', gradient))} aria-hidden="true">
+        {photo ? (
+          <img
+            src={photo}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <>
+            <svg className="absolute inset-0 w-full h-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id={`dots-${farm.id}`} x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1.5" fill="white" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill={`url(#dots-${farm.id})`} />
+            </svg>
+            <div className="absolute bottom-3 left-3 w-9 h-9 rounded-lg bg-white/20 border border-white/30 flex items-center justify-center text-white font-bold text-sm font-heading">
+              {farm.name.charAt(0)}
+            </div>
+          </>
+        )}
         {farm.verified && (
           <div className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-white/90 flex items-center justify-center">
             <CheckCircle className="w-3.5 h-3.5 text-primary-600" aria-label="Ověřená farma" />
