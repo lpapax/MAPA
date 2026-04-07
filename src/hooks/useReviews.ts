@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { getSupabaseRaw } from '@/lib/supabase'
+import { syncLocalReviewsForFarm } from '@/lib/syncReviews'
 import type { ReviewRow } from '@/types/database'
 
 export interface ReviewEntry {
@@ -59,20 +60,28 @@ export function useReviews(farmSlug: string) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const local = readLocalReviews(farmSlug)
     const supabase = getSupabaseRaw()
 
     if (!supabase) {
-      setReviews(local)
+      setReviews(readLocalReviews(farmSlug))
       return
     }
 
     setLoading(true)
-    supabase
-      .from('reviews')
-      .select('*')
-      .eq('farm_slug', farmSlug)
-      .order('created_at', { ascending: false })
+
+    // Sync offline-written reviews to Supabase when user is logged in
+    const syncPromise = user
+      ? syncLocalReviewsForFarm(supabase, user.id, farmSlug)
+      : Promise.resolve()
+
+    syncPromise
+      .then(() =>
+        supabase
+          .from('reviews')
+          .select('*')
+          .eq('farm_slug', farmSlug)
+          .order('created_at', { ascending: false }),
+      )
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then(({ data }: any) => {
         const remote: ReviewEntry[] = ((data as ReviewRow[]) ?? []).map((r) => ({
@@ -85,13 +94,18 @@ export function useReviews(farmSlug: string) {
           source: 'remote' as const,
         }))
 
-        // Merge: remote + local-only (no duplicates by matching name+date)
+        // After potential sync, re-read local to avoid showing already-synced reviews
+        const localAfterSync = readLocalReviews(farmSlug)
         const remoteDates = new Set(remote.map((r) => `${r.name}-${r.date}`))
-        const localOnly = local.filter((l) => !remoteDates.has(`${l.name}-${l.date}`))
+        const localOnly = localAfterSync.filter((l) => !remoteDates.has(`${l.name}-${l.date}`))
         setReviews([...remote, ...localOnly])
         setLoading(false)
       })
-  }, [farmSlug])
+      .catch(() => {
+        setReviews(readLocalReviews(farmSlug))
+        setLoading(false)
+      })
+  }, [farmSlug, user])
 
   const submitReview = useCallback(async (data: NewReviewData): Promise<{ error: string | null }> => {
     const dateStr = new Date().toLocaleDateString('cs-CZ')
