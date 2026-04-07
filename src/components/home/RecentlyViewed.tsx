@@ -92,13 +92,20 @@ export function RecentlyViewed() {
                 className="group flex-shrink-0 snap-start w-52 rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-0.5 cursor-pointer"
                 aria-label={`${farm.name} — naposledy zobrazeno ${timeAgo(farm.visitedAt)}`}
               >
-                {/* Mini cover */}
+                {/* Mini cover — photo or gradient */}
                 <div
-                  className={cn('h-20 bg-gradient-to-br relative', gradient)}
+                  className={cn('h-20 relative overflow-hidden', farm.image ? 'bg-neutral-200' : cn('bg-gradient-to-br', gradient))}
                   aria-hidden="true"
                 >
+                  {farm.image && (
+                    <img
+                      src={farm.image}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
                   <div className="absolute bottom-2 left-3 right-3">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-white/90">
+                    <span className={cn('inline-flex items-center gap-1 text-[10px] font-semibold', farm.image ? 'text-white drop-shadow' : 'text-white/90')}>
                       <Clock className="w-2.5 h-2.5" aria-hidden="true" />
                       {timeAgo(farm.visitedAt)}
                     </span>

@@ -12,6 +12,7 @@ export interface RecentFarmEntry {
   categories: FarmCategory[]
   kraj: string
   visitedAt: number // Unix timestamp ms
+  image?: string
 }
 
 function readStorage(): RecentFarmEntry[] {
@@ -44,6 +45,8 @@ export function useRecentFarms() {
     setRecentFarms((prev) => {
       // Remove any existing entry for this slug, then prepend
       const filtered = prev.filter((e) => e.slug !== farm.slug)
+      const rawImg = farm.images?.[0] ?? ''
+      const image = rawImg.startsWith('http') && !rawImg.includes('placeholder') ? rawImg : undefined
       const next: RecentFarmEntry[] = [
         {
           slug: farm.slug,
@@ -51,6 +54,7 @@ export function useRecentFarms() {
           categories: farm.categories,
           kraj: farm.location.kraj,
           visitedAt: Date.now(),
+          image,
         },
         ...filtered,
       ].slice(0, MAX_ENTRIES)
