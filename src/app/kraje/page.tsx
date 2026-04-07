@@ -47,7 +47,7 @@ export default async function KrajePage() {
               return (
                 <Link
                   key={kraj.code}
-                  href={`/mapa?kraj=${encodeURIComponent(kraj.code)}`}
+                  href={`/kraje/${kraj.slug}`}
                   className="group block"
                 >
                   <div

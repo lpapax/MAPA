@@ -648,24 +648,25 @@ export const MONTH_NAMES = [
 export interface KrajData {
   name: string
   code: string
+  slug: string
   emoji: string
   farmCount: number
   gradient: string
 }
 
 export const KRAJ_LIST: KrajData[] = [
-  { name: 'Praha', code: 'Praha', emoji: '🏙️', farmCount: 18, gradient: 'from-blue-400 to-indigo-500' },
-  { name: 'Středočeský', code: 'Středočeský', emoji: '🌾', farmCount: 34, gradient: 'from-emerald-400 to-teal-500' },
-  { name: 'Jihočeský', code: 'Jihočeský', emoji: '🌲', farmCount: 28, gradient: 'from-green-500 to-emerald-600' },
-  { name: 'Plzeňský', code: 'Plzeňský', emoji: '🍺', farmCount: 19, gradient: 'from-amber-400 to-yellow-500' },
-  { name: 'Karlovarský', code: 'Karlovarský', emoji: '♨️', farmCount: 11, gradient: 'from-rose-400 to-pink-500' },
-  { name: 'Ústecký', code: 'Ústecký', emoji: '⛰️', farmCount: 14, gradient: 'from-slate-400 to-gray-500' },
-  { name: 'Liberecký', code: 'Liberecký', emoji: '🏔️', farmCount: 12, gradient: 'from-sky-400 to-blue-500' },
-  { name: 'Královéhradecký', code: 'Královéhradecký', emoji: '🏰', farmCount: 21, gradient: 'from-violet-400 to-purple-500' },
-  { name: 'Pardubický', code: 'Pardubický', emoji: '🌄', farmCount: 17, gradient: 'from-orange-400 to-amber-500' },
-  { name: 'Vysočina', code: 'Vysočina', emoji: '🌿', farmCount: 22, gradient: 'from-lime-500 to-green-600' },
-  { name: 'Jihomoravský', code: 'Jihomoravský', emoji: '🍷', farmCount: 31, gradient: 'from-red-400 to-rose-500' },
-  { name: 'Olomoucký', code: 'Olomoucký', emoji: '🏛️', farmCount: 20, gradient: 'from-teal-400 to-cyan-500' },
-  { name: 'Zlínský', code: 'Zlínský', emoji: '🌻', farmCount: 16, gradient: 'from-yellow-400 to-orange-500' },
-  { name: 'Moravskoslezský', code: 'Moravskoslezský', emoji: '⚙️', farmCount: 24, gradient: 'from-gray-400 to-slate-600' },
+  { name: 'Praha', code: 'Praha', slug: 'praha', emoji: '🏙️', farmCount: 18, gradient: 'from-blue-400 to-indigo-500' },
+  { name: 'Středočeský', code: 'Středočeský', slug: 'stredocesky', emoji: '🌾', farmCount: 34, gradient: 'from-emerald-400 to-teal-500' },
+  { name: 'Jihočeský', code: 'Jihočeský', slug: 'jihocesky', emoji: '🌲', farmCount: 28, gradient: 'from-green-500 to-emerald-600' },
+  { name: 'Plzeňský', code: 'Plzeňský', slug: 'plzensky', emoji: '🍺', farmCount: 19, gradient: 'from-amber-400 to-yellow-500' },
+  { name: 'Karlovarský', code: 'Karlovarský', slug: 'karlovarsky', emoji: '♨️', farmCount: 11, gradient: 'from-rose-400 to-pink-500' },
+  { name: 'Ústecký', code: 'Ústecký', slug: 'ustecky', emoji: '⛰️', farmCount: 14, gradient: 'from-slate-400 to-gray-500' },
+  { name: 'Liberecký', code: 'Liberecký', slug: 'liberecky', emoji: '🏔️', farmCount: 12, gradient: 'from-sky-400 to-blue-500' },
+  { name: 'Královéhradecký', code: 'Královéhradecký', slug: 'kralovehradecky', emoji: '🏰', farmCount: 21, gradient: 'from-violet-400 to-purple-500' },
+  { name: 'Pardubický', code: 'Pardubický', slug: 'pardubicky', emoji: '🌄', farmCount: 17, gradient: 'from-orange-400 to-amber-500' },
+  { name: 'Vysočina', code: 'Vysočina', slug: 'vysocina', emoji: '🌿', farmCount: 22, gradient: 'from-lime-500 to-green-600' },
+  { name: 'Jihomoravský', code: 'Jihomoravský', slug: 'jihomoravsky', emoji: '🍷', farmCount: 31, gradient: 'from-red-400 to-rose-500' },
+  { name: 'Olomoucký', code: 'Olomoucký', slug: 'olomoucky', emoji: '🏛️', farmCount: 20, gradient: 'from-teal-400 to-cyan-500' },
+  { name: 'Zlínský', code: 'Zlínský', slug: 'zlinsky', emoji: '🌻', farmCount: 16, gradient: 'from-yellow-400 to-orange-500' },
+  { name: 'Moravskoslezský', code: 'Moravskoslezský', slug: 'moravskoslezsky', emoji: '⚙️', farmCount: 24, gradient: 'from-gray-400 to-slate-600' },
 ]
