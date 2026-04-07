@@ -71,11 +71,38 @@ export default async function FarmDetailPage({ params }: PageProps) {
   const isOpen = isFarmOpenNow(farm)
   const heroGradient = CATEGORY_GRADIENT[farm.categories[0]] ?? CATEGORY_GRADIENT.default
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.mapafarem.cz'
+  const farmPhoto = farm.images.find((u) => u.startsWith('http') && !u.includes('placeholder'))
+
+  // Opening hours → schema.org DayOfWeek spec
+  const DAY_MAP: Record<string, string> = {
+    po: 'Monday', út: 'Tuesday', st: 'Wednesday', čt: 'Thursday',
+    pá: 'Friday', so: 'Saturday', ne: 'Sunday',
+  }
+  const openingHoursSpec = farm.openingHours
+    ? Object.entries(farm.openingHours)
+        .filter(([, h]) => h != null)
+        .map(([day, h]) => ({
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: `https://schema.org/${DAY_MAP[day] ?? day}`,
+          opens: h!.open,
+          closes: h!.close,
+        }))
+    : undefined
+
+  const sameAs = [
+    farm.contact.web,
+    farm.contact.instagram ? `https://instagram.com/${farm.contact.instagram.replace('@', '')}` : null,
+    farm.contact.facebook ? `https://facebook.com/${farm.contact.facebook}` : null,
+  ].filter(Boolean)
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: farm.name,
     description: farm.description,
+    url: `${siteUrl}/farmy/${farm.slug}`,
+    ...(farmPhoto && { image: farmPhoto }),
     address: {
       '@type': 'PostalAddress',
       streetAddress: farm.location.address,
@@ -88,9 +115,12 @@ export default async function FarmDetailPage({ params }: PageProps) {
       latitude: farm.location.lat,
       longitude: farm.location.lng,
     },
+    hasMap: `https://maps.google.com/maps?q=${farm.location.lat},${farm.location.lng}`,
     ...(farm.contact.phone && { telephone: farm.contact.phone }),
     ...(farm.contact.email && { email: farm.contact.email }),
-    ...(farm.contact.web && { url: farm.contact.web }),
+    ...(openingHoursSpec?.length && { openingHoursSpecification: openingHoursSpec }),
+    ...(sameAs.length && { sameAs }),
+    ...(farm.verified && { isicV4: 'A', knowsAbout: farm.categories.join(', ') }),
   }
 
   return (
