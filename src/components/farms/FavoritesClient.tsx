@@ -13,7 +13,7 @@ function exportFavoritesCSV(favorites: ReturnType<typeof useFavoriteFarms>['favo
         `"${f.name}"`,
         `"${f.kraj}"`,
         `"${f.categories.map((c) => CATEGORY_LABELS[c]).join('; ')}"`,
-        `"https://mapafarem.cz/farmy/${f.slug}"`,
+        `"${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.mapafarem.cz'}/farmy/${f.slug}"`,
       ].join(','),
     ),
   ]

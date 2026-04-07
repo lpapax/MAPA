@@ -7,7 +7,6 @@ const STORAGE_KEY = 'mf_prefs'
 
 export type DefaultView = 'map' | 'list'
 export type CardSize = 'compact' | 'full'
-export type BedynkaFrequency = 'weekly' | 'biweekly' | 'monthly' | null
 
 export interface UserPrefs {
   categories: FarmCategory[]
@@ -16,7 +15,6 @@ export interface UserPrefs {
   cardSize: CardSize
   darkMode: boolean
   searchRadius: number // km
-  bedynkaFrequency: BedynkaFrequency
 }
 
 const DEFAULT_PREFS: UserPrefs = {
@@ -26,7 +24,6 @@ const DEFAULT_PREFS: UserPrefs = {
   cardSize: 'full',
   darkMode: false,
   searchRadius: 30,
-  bedynkaFrequency: null,
 }
 
 function readStorage(): UserPrefs {

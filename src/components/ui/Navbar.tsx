@@ -88,7 +88,7 @@ export function Navbar() {
     <>
       {/* ── Main bar ─────────────────────────────────── */}
       <header
-        className="sticky top-0 z-50 w-full bg-white border-b border-neutral-200"
+        className="sticky top-0 z-50 w-full bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800"
         role="banner"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-6">
@@ -96,11 +96,11 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer group"
+            className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer group dark:opacity-95"
             aria-label="Mapa Farem – domovská stránka"
           >
             <LeafLogo />
-            <span className="font-heading font-bold text-[15px] text-forest leading-none tracking-tight">
+            <span className="font-heading font-bold text-[15px] text-forest dark:text-primary-300 leading-none tracking-tight">
               Mapa <span className="text-primary-600">Farem</span>
             </span>
           </Link>
@@ -116,8 +116,8 @@ export function Navbar() {
                   className={cn(
                     'px-3.5 py-2 text-sm font-medium rounded-md transition-colors duration-150 cursor-pointer',
                     active
-                      ? 'text-forest bg-primary-50'
-                      : 'text-neutral-600 hover:text-forest hover:bg-neutral-50',
+                      ? 'text-forest bg-primary-50 dark:text-primary-300 dark:bg-primary-900/30'
+                      : 'text-neutral-600 hover:text-forest hover:bg-neutral-50 dark:text-neutral-300 dark:hover:text-primary-300 dark:hover:bg-neutral-800',
                   )}
                 >
                   {link.label}
@@ -132,7 +132,7 @@ export function Navbar() {
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Hledat farmu"
-              className="flex items-center justify-center w-9 h-9 rounded-md text-neutral-500 hover:text-forest hover:bg-neutral-50 transition-colors duration-150 cursor-pointer"
+              className="flex items-center justify-center w-9 h-9 rounded-md text-neutral-500 hover:text-forest hover:bg-neutral-50 dark:text-neutral-400 dark:hover:text-primary-300 dark:hover:bg-neutral-800 transition-colors duration-150 cursor-pointer"
             >
               <Search className="w-4 h-4" aria-hidden="true" />
             </button>
@@ -141,7 +141,7 @@ export function Navbar() {
             <Link
               href={user ? '/profil' : '/prihlasit'}
               aria-label={user ? 'Můj profil' : 'Přihlásit se'}
-              className="flex items-center justify-center w-9 h-9 rounded-md text-neutral-500 hover:text-forest hover:bg-neutral-50 transition-colors duration-150 cursor-pointer"
+              className="flex items-center justify-center w-9 h-9 rounded-md text-neutral-500 hover:text-forest hover:bg-neutral-50 dark:text-neutral-400 dark:hover:text-primary-300 dark:hover:bg-neutral-800 transition-colors duration-150 cursor-pointer"
             >
               {user ? (
                 <span className="w-7 h-7 rounded-full bg-forest flex items-center justify-center text-white text-xs font-bold">
@@ -179,12 +179,12 @@ export function Navbar() {
 
         {/* Mobile menu */}
         {open && (
-          <div className="md:hidden border-t border-neutral-100 bg-white px-4 pb-4 pt-2 space-y-0.5">
+          <div className="md:hidden border-t border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 pb-4 pt-2 space-y-0.5">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="flex items-center px-3 py-2.5 text-sm font-medium text-neutral-700 hover:text-forest hover:bg-neutral-50 rounded-md transition-colors cursor-pointer"
+                className="flex items-center px-3 py-2.5 text-sm font-medium text-neutral-700 hover:text-forest hover:bg-neutral-50 dark:text-neutral-300 dark:hover:text-primary-300 dark:hover:bg-neutral-800 rounded-md transition-colors cursor-pointer"
               >
                 {link.label}
               </Link>
@@ -199,7 +199,7 @@ export function Navbar() {
               </Link>
               <Link
                 href={user ? '/profil' : '/prihlasit'}
-                className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-md border border-neutral-200 text-neutral-700 text-sm font-medium transition-colors cursor-pointer hover:bg-neutral-50"
+                className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 text-sm font-medium transition-colors cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800"
               >
                 <UserCircle2 className="w-4 h-4" aria-hidden="true" />
                 {user ? 'Můj profil' : 'Přihlásit se'}
@@ -228,12 +228,12 @@ export function Navbar() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Hledat farmu nebo město…"
                   aria-label="Vyhledávání farem"
-                  className="w-full pl-11 pr-12 py-4 rounded-lg bg-white shadow-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 border border-neutral-200"
+                  className="w-full pl-11 pr-12 py-4 rounded-lg bg-white dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder-neutral-500 shadow-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 border border-neutral-200 dark:border-neutral-700"
                 />
                 <button
                   type="button"
                   onClick={() => setSearchOpen(false)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-md hover:bg-neutral-100 text-neutral-400 cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-400 cursor-pointer"
                   aria-label="Zavřít hledání"
                 >
                   <X className="w-4 h-4" />
@@ -241,7 +241,7 @@ export function Navbar() {
               </form>
 
               {(searchResults.length > 0 || searchLoading) && (
-                <div className="mt-1 bg-white rounded-lg shadow-xl border border-neutral-100 overflow-hidden">
+                <div className="mt-1 bg-white dark:bg-neutral-900 rounded-lg shadow-xl border border-neutral-100 dark:border-neutral-800 overflow-hidden">
                   {searchLoading ? (
                     <div className="px-4 py-3 text-sm text-neutral-400">Hledám…</div>
                   ) : (
@@ -250,14 +250,14 @@ export function Navbar() {
                         key={r.id}
                         href={`/farmy/${r.slug}`}
                         onClick={() => setSearchOpen(false)}
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-primary-50 transition-colors border-b border-neutral-50 last:border-0 cursor-pointer"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors border-b border-neutral-50 dark:border-neutral-800 last:border-0 cursor-pointer"
                       >
-                        <div className="w-8 h-8 rounded-md bg-primary-100 flex items-center justify-center text-xs font-bold text-primary-700 flex-shrink-0">
+                        <div className="w-8 h-8 rounded-md bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-xs font-bold text-primary-700 dark:text-primary-300 flex-shrink-0">
                           {r.name.charAt(0)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="font-medium text-sm text-forest truncate">{r.name}</div>
-                          <div className="text-xs text-neutral-400">{r.city} · {r.kraj}</div>
+                          <div className="font-medium text-sm text-forest dark:text-primary-200 truncate">{r.name}</div>
+                          <div className="text-xs text-neutral-400 dark:text-neutral-500">{r.city} · {r.kraj}</div>
                         </div>
                       </Link>
                     ))
@@ -265,7 +265,7 @@ export function Navbar() {
                   {!searchLoading && searchResults.length > 0 && (
                     <button
                       onClick={() => { setSearchOpen(false); router.push(`/mapa?q=${encodeURIComponent(searchQuery.trim())}`) }}
-                      className="w-full px-4 py-2.5 text-xs text-primary-600 font-medium hover:bg-primary-50 transition-colors cursor-pointer text-left"
+                      className="w-full px-4 py-2.5 text-xs text-primary-600 dark:text-primary-400 font-medium hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors cursor-pointer text-left"
                     >
                       Zobrazit všechny výsledky pro &bdquo;{searchQuery}&ldquo; →
                     </button>
@@ -274,7 +274,7 @@ export function Navbar() {
               )}
 
               {!searchLoading && searchQuery.trim() && searchResults.length === 0 && (
-                <div className="mt-1 bg-white rounded-lg shadow-xl border border-neutral-100 px-4 py-3 text-sm text-neutral-400">
+                <div className="mt-1 bg-white dark:bg-neutral-900 rounded-lg shadow-xl border border-neutral-100 dark:border-neutral-800 px-4 py-3 text-sm text-neutral-400 dark:text-neutral-500">
                   Žádné výsledky pro &bdquo;{searchQuery}&ldquo;
                 </div>
               )}

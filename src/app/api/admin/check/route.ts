@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   if (!adminEmail) return NextResponse.json({ admin: false }, { status: 403 })
 
   const authHeader = req.headers.get('authorization')
-  const token = authHeader?.replace('Bearer ', '')
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
   if (!token) return NextResponse.json({ admin: false }, { status: 401 })
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL

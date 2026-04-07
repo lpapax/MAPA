@@ -24,11 +24,9 @@ export async function POST(req: NextRequest) {
       .insert({ email, created_at: new Date().toISOString() })
 
     if (error) {
-      // Duplicate email — treat as success
       if (error.code === '23505') {
-        return NextResponse.json({ success: true, message: 'Již jste přihlášeni.' })
+        return NextResponse.json({ success: false, error: 'Tento e-mail je již přihlášen k odběru.' }, { status: 409 })
       }
-      console.error('[newsletter] supabase error:', error.message)
       return NextResponse.json({ success: false, error: 'Chyba při uložení. Zkuste to prosím znovu.' }, { status: 500 })
     }
   }

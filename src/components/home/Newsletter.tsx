@@ -23,11 +23,11 @@ export function Newsletter() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim() }),
       })
-      const data = await res.json() as { ok: boolean; message?: string }
-      if (!res.ok && res.status === 409) {
-        setToast({ type: 'info', message: 'Tento e-mail je již přihlášen.' })
-      } else if (!res.ok) {
-        setToast({ type: 'error', message: data.message ?? 'Něco se nepovedlo. Zkuste to znovu.' })
+      const data = await res.json() as { success: boolean; error?: string }
+      if (res.status === 409) {
+        setToast({ type: 'info', message: 'Tento e-mail je již přihlášen k odběru.' })
+      } else if (!data.success) {
+        setToast({ type: 'error', message: data.error ?? 'Něco se nepovedlo. Zkuste to znovu.' })
       } else {
         setSubmitted(true)
       }
@@ -82,7 +82,7 @@ export function Newsletter() {
         {submitted ? (
           <div className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-white/18 border border-white/28 text-white font-semibold">
             <CheckCircle className="w-5 h-5 text-primary-300" aria-hidden="true" />
-            Výborně! Brzy vám napíšeme.
+            Přihlášení proběhlo úspěšně. Těšte se na novinky!
           </div>
         ) : (
           <form

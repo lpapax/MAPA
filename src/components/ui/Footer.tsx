@@ -122,15 +122,6 @@ export function Footer() {
                 </a>
               </p>
               <p>
-                <span className="text-white/35 block text-[10px] uppercase tracking-wider mb-1">Telefon</span>
-                <a
-                  href="tel:+420800123456"
-                  className="hover:text-white transition-colors cursor-pointer"
-                >
-                  +420 800 123 456
-                </a>
-              </p>
-              <p>
                 <span className="text-white/35 block text-[10px] uppercase tracking-wider mb-1">Sídlo</span>
                 Praha, Česká republika
               </p>

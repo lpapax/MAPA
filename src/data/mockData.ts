@@ -460,74 +460,54 @@ Lokální potraviny nejsou luxusem pro vyvolené. Jsou to každodenní volby, kt
   },
   {
     id: 'b2',
-    title: 'Bedýnka zeleniny: kompletní průvodce pro začátečníky',
+    title: 'Jak najít skvělý farmářský trh ve vašem okolí',
     category: 'Průvodce',
     categoryColor: 'bg-blue-100 text-blue-700',
-    readTime: '7 min čtení',
+    readTime: '5 min čtení',
     excerpt:
-      'Jak vybrat správnou bedýnku, co v ní očekávat a jak zpracovat méně známou zeleninu. Vše, co potřebujete vědět.',
+      'Farmářské trhy jsou nejlepší místo pro nákup čerstvých lokálních potravin. Poradíme, na co se zaměřit a jak z návštěvy vytěžit maximum.',
     coverGradient: 'from-green-400 to-emerald-600',
-    coverImage: 'https://images.unsplash.com/photo-1590682680695-43b964a3ae17?w=800&h=480&fit=crop&q=80',
-    slug: 'bedynka-zeleniny-pruvodce',
+    coverImage: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&h=480&fit=crop&q=80',
+    slug: 'jak-najit-farmářsky-trh',
     author: 'Redakce Mapa Farem',
     authorInitials: 'MF',
     authorColor: 'bg-primary-600',
     publishedAt: '5. února 2025',
-    content: `Bedýnka zeleniny – pravidelná zásilka čerstvé, sezónní zeleniny přímo od farmáře – je skvělý způsob, jak jíst zdravě, lokálně a s vědomím původu toho, co jíte. Pro mnoho lidí je ale první bedýnka trochu výzvou: Co vlastně přijde? Jak to zpracovat? A co s kedlubenem?
+    content: `Farmářské trhy zažívají v Česku renesanci. V každém krajském městě dnes najdete alespoň jeden, v Praze a Brně jich jsou desítky. Jak ale vybrat ten správný a co na trhu hledat?
 
-## Co je bedýnka zeleniny?
+## Proč chodit na farmářský trh?
 
-Bedýnka (v zahraničí označovaná jako CSA – Community Supported Agriculture, tedy komunitou podporované zemědělství) je systém přímého propojení zákazníka s farmářem. Zákazník si předplatí pravidelné zásilky čerstvé zeleniny. Farmář na oplátku dostane jistotu odbytu a může plánovat pěstování. Obsah bedýnky určuje farmář podle toho, co právě roste a dozrává – dostanete vždy to nejčerstvější a nejlepší z aktuální sezóny.
+Potraviny na farmářském trhu jsou čerstvé, sezónní a lokální – od pěstitele přímo k vám. Žádné zbytečné mezičlánky, žádné týdny v chladírně. Navíc osobní kontakt s farmářem má svou cenu: víte přesně, kde vaše jídlo vzniklo, jak bylo vypěstováno a můžete se zeptat na cokoliv.
 
-## Typy bedýnek
+## Jak najít trh ve svém okolí
 
-Většina farmářů nabízí více velikostí a variant:
+Na Mapě Farem najdete přehled farmářských trhů po celé republice. Filtrujte podle kraje, dne v týdnu nebo vzdálenosti od vás – a přidejte si termín přímo do kalendáře jedním klikem.
 
-- **Malá bedýnka**: 4–5 druhů zeleniny, ideální pro jednotlivce nebo pár
-- **Standardní bedýnka**: 6–8 druhů pro rodinu 2–3 osoby, nejoblíbenější varianta
-- **Velká bedýnka**: 8–10 druhů pro větší domácnosti nebo vášnivé vařiče
-- **Bedýnka s ovocem**: Kombinace zeleniny a sezónního ovoce – jahody, třešně, švestky…
-- **Bylinková bedýnka**: Čerstvé bylinky pro kuchyni – bazalka, petržel, kopr, tymián
+## Na co se zaměřit při výběru
 
-## Jak vybrat tu správnou bedýnku?
+**Složení prodejců** – Hledejte trhy, kde prodávají přímo farmáři, ne překupníci. Poznáte to tak, že prodejce zná detaily o svém zboží – kdy bylo sklizeno, jak bylo pěstováno, čím hnojeno.
 
-Než si objednáte, zamyslete se nad několika otázkami: Kolik lidí v domácnosti zeleninu jí? Jak moc jste odvážní při vaření? Máte čas a chuť zpracovat méně známé druhy? Menší bedýnka je vždy bezpečnější start – lépe přecenit zájem než skončit s plesnivou kapustou, protože jste nestíhali vařit.
+**Sezónnost sortimentu** – Pokud v lednu vidíte jahody nebo rajčata za nízkou cenu, jsou s největší pravděpodobností dovozem, ne lokální produkcí. Sezonní trh v zimě nabídne kořenovou zeleninu, zelí, jablka, vejce a mléčné výrobky.
 
-## Méně známá zelenina a jak na ni
+**Certifikace BIO** – Certifikované bio produkty poznáte podle loga KO-BIO nebo EU organic. Bez certifikátu může farmář tvrdit, že pěstuje bez chemie, ale nemůže produkt označit jako bio.
 
-Tohle je nejčastější obava začátečníků. Co s ní? Nebojte se – s několika základními tipy zvládnete cokoliv.
+**Atmosféra a komunita** – Dobrý farmářský trh je živé místo. Lidé se znají, farmáři si povídají se zákazníky, děti ochutnávají. Pokud je na trhu ticho a prodejci nezvedají oči od mobilu, pravděpodobně to není to pravé.
 
-**Kapusta** – Skvělá do polévky nebo orestovaná na másle s česnekem a špetkou muškátového oříšku. Mladé listy jdou i do salátu nebo jako základ pro smoothie. Robustní zimní zelenina plná vitamínu C.
+## Praktické tipy pro návštěvu
 
-**Kedluben** – Výborný syrový, nastrouhaný do salátu (zkuste s jablkem a citrónem) nebo nakrájený na tyčinky jako svačina. Dá se také restovat na másle nebo přidat do polévky. Chuť mírně připomíná brokolici stonky.
+**Přijďte brzy.** Nejlepší kousky jdou pryč jako první – zejména sezónní speciality a omezené šarže.
 
-**Ředkev** – Pokud ji nastrouháte, posolíte a necháte 15 minut odlehnout, ztratí ostrý nádech a krásně změkne. Výborná do salátů, jako příloha nebo do asijsky laděných jídel.
+**Vezměte si vlastní tašky.** Papírové sáčky jsou fajn, ale pevná látková taška nebo košík jsou praktičtější pro větší nákup.
 
-**Pasterňák** – Podobný mrkvi, ale s intenzivnější, nasládlou a lehce ořechovou chutí. Výborný v zeleninovém vývaru, zapékaný do zlatova nebo jako pyré místo brambor.
+**Ochutnávejte.** Naprostá většina farmářů ráda nechá ochutnat – sýr, uzeninu, ovoce. Není to nezdvořilé, je to součást kultury trhů.
 
-**Mangold** – Listy připravte jako špenát (osmahněte na olivovém oleji s česnekem), robustní barevné řapíky jako chřest. Krásně vypadá a skvěle chutná.
+**Buďte zvídaví.** Zeptejte se, jak se pěstuje, kdy se sklízí, co s tou zeleninou doma uvařit. Farmáři tohle milují.
 
-**Cuketa** – Univerzální zelenina do polévky, na gril, do těstoviny, zapékané nebo syrová do salátu. Velké cuketynadívejte a zapečte v troubě.
+**Plaťte hotově.** Kartou dnes umí čím dál více prodejců, ale hotovost je stále jistota – a pro malé farmáře výrazně výhodnější.
 
-## Praktické tipy pro zvládnutí bedýnky
+## Jak podpořit svůj oblíbený trh
 
-**1. Zpracujte hned po doručení.** Čím čerstvější zelenina, tím lépe. Ideálně zpracujte do 3–5 dnů.
-
-**2. Plánujte jídelníček podle bedýnky, ne obráceně.** Podívejte se, co přijde, a přizpůsobte vaření. Tohle je největší mentální přechod.
-
-**3. Blanšírujte a mrazte.** Co nestíháte zpracovat, blanšírujte (30 sekund ve vroucí vodě, pak okamžitě do ledové) a zmrazte v sáčcích.
-
-**4. Nastrouhaná zelenina do mrazáku.** Nakrouhaná mrkev, kedluben nebo cuketa v mrazáku je záchrana pro polévky, omáčky a bramboráky kdykoli potřebujete.
-
-**5. Sdílejte s přáteli nebo sousedy.** Pokud máte přebytek, nabídněte okolí – budujete komunitu a nic nepřijde nazmar.
-
-## Komunikujte s farmářem
-
-Pokud vám přijde něco, s čím si nevíte rady, zeptejte se přímo farmáře. Napište zprávu přes Mapu Farem nebo zavolejte – farmáři mají rádi zákazníky, kteří se zajímají, a rádi poradí s přípravou.
-
-## Jak začít?
-
-Na Mapě Farem najdete farmáře ve vašem okolí, kteří bedýnky nabízejí. Stačí kliknout na detail farmy, kontaktovat farmáře a domluvit první dodávku. Většina farmářů ráda pošle první bedýnku bez závazků – vyzkoušejte to a uvidíte sami!`,
+Choďte pravidelně, nakupujte od více prodejců, sdílejte trh s přáteli a na sociálních sítích. Farmářské trhy přežívají díky věrné komunitě zákazníků – každý nákup je hlas pro lokální zemědělství.`,
   },
   {
     id: 'b3',

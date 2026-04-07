@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Mail, Phone } from 'lucide-react'
+import { Mail } from 'lucide-react'
 import { Navbar } from '@/components/ui/Navbar'
 import { Footer } from '@/components/ui/Footer'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
@@ -61,13 +61,6 @@ export default function PomocPage() {
               >
                 <Mail className="w-4 h-4" aria-hidden="true" />
                 info@mapafarem.cz
-              </a>
-              <a
-                href="tel:+420800123456"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-forest font-semibold text-sm transition-colors duration-200 cursor-pointer"
-              >
-                <Phone className="w-4 h-4" aria-hidden="true" />
-                +420 800 123 456
               </a>
             </div>
             <p className="text-xs text-neutral-400 mt-4">

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Moon, Sun, Map, List, AlignJustify, LayoutGrid, Star, Clock, History, ChevronRight } from 'lucide-react'
+import { Moon, Sun, Map, List, AlignJustify, LayoutGrid, Star, History, ChevronRight } from 'lucide-react'
 import { useUserPrefs } from '@/hooks/useUserPrefs'
 import { CATEGORY_LABELS } from '@/lib/farms'
 import { cn } from '@/lib/utils'
@@ -18,13 +18,6 @@ const KRAJ_OPTIONS: KrajCode[] = [
   'Ústecký', 'Liberecký', 'Královéhradecký', 'Pardubický',
   'Vysočina', 'Jihomoravský', 'Olomoucký', 'Moravskoslezský', 'Zlínský',
 ]
-
-const BEDYNKA_OPTIONS = [
-  { value: null, label: 'Bez připomínek' },
-  { value: 'weekly', label: 'Každý týden' },
-  { value: 'biweekly', label: 'Každé 2 týdny' },
-  { value: 'monthly', label: 'Každý měsíc' },
-] as const
 
 export function ProfilClient() {
   const { prefs, update, reset } = useUserPrefs()
@@ -267,37 +260,6 @@ export function ProfilClient() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* Bedynka frequency */}
-      <section className="bg-white rounded-2xl border border-neutral-100 shadow-card p-5">
-        <h2 className="font-heading font-semibold text-forest text-base mb-4">Bedýnka</h2>
-        <p className="text-sm font-medium text-forest mb-2">Frekvence připomínek</p>
-        <p className="text-xs text-neutral-400 mb-3">Jak často vám připomínat, abyste si vyřídili bedýnku</p>
-        <div className="flex flex-wrap gap-2">
-          {BEDYNKA_OPTIONS.map((opt) => (
-            <button
-              key={String(opt.value)}
-              onClick={() => update({ bedynkaFrequency: opt.value })}
-              className={cn(
-                'px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer',
-                prefs.bedynkaFrequency === opt.value
-                  ? 'bg-primary-600 border-primary-600 text-white'
-                  : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-300 hover:text-primary-700',
-              )}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-        {prefs.bedynkaFrequency && (
-          <div className="mt-4 flex items-center gap-2 p-3 rounded-xl bg-primary-50 border border-primary-100">
-            <Clock className="w-4 h-4 text-primary-600 flex-shrink-0" aria-hidden="true" />
-            <p className="text-xs text-primary-700">
-              Připomínky jsou zatím pouze vizuální — notifikace přijdou v příští verzi.
-            </p>
-          </div>
-        )}
       </section>
 
       {/* Reset */}

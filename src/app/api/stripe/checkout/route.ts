@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   }
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://mapafarem.cz'
 
-  const stripe = new Stripe(secretKey, { apiVersion: '2025-03-31.basil' })
+  const stripe = new Stripe(secretKey, { apiVersion: '2026-03-25.dahlia' })
 
   try {
     const session = await stripe.checkout.sessions.create({

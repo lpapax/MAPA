@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Mail, Phone, MapPin, Clock } from 'lucide-react'
+import { Mail, MapPin, Clock } from 'lucide-react'
 import { Navbar } from '@/components/ui/Navbar'
 import { Footer } from '@/components/ui/Footer'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
@@ -23,12 +23,6 @@ const CONTACT_INFO = [
     label: 'E-mail',
     value: 'info@mapafarem.cz',
     href: 'mailto:info@mapafarem.cz',
-  },
-  {
-    icon: Phone,
-    label: 'Telefon',
-    value: '+420 800 123 456',
-    href: 'tel:+420800123456',
   },
   {
     icon: MapPin,
