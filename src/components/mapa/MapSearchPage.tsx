@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils'
 import type { Farm, FarmCategory, FarmMapMarker, KrajCode } from '@/types/farm'
 
 const FILTER_CATEGORIES: FarmCategory[] = [
-  'zelenina', 'ovoce', 'maso', 'mléko', 'vejce', 'med', 'byliny',
+  'zelenina', 'ovoce', 'maso', 'mléko', 'vejce', 'med', 'byliny', 'chléb', 'sýry', 'víno', 'ryby', 'ostatní',
 ]
 
 const KRAJ_OPTIONS = [
@@ -81,7 +81,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const { filters, setSearchQuery, toggleCategory, setKraj, setOpenNow, clearFilters, selectFarm, hoverFarm, selectedFarmId, hoveredFarmId } = store
+  const { filters, setSearchQuery, toggleCategory, setKraj, setOpenNow, setVerifiedOnly, setHasPhotos, clearFilters, selectFarm, hoverFarm, selectedFarmId, hoveredFarmId } = store
 
   const { isInCompare, toggleCompare, compareIds } = useCompareStore()
   const { isFavorite, toggleFavorite } = useFavoriteFarms()
@@ -99,7 +99,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
     }
     return filteredBase
   }, [filteredBase, sortByDistance, userLat, userLng])
-  const hasActiveFilters = filters.categories.length > 0 || filters.kraj !== null || filters.openNow
+  const hasActiveFilters = filters.categories.length > 0 || filters.kraj !== null || filters.openNow || filters.verifiedOnly || filters.hasPhotos
 
   const PAGE_SIZE = 50
   const [page, setPage] = useState(1)
@@ -178,7 +178,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
             Filtry
             {hasActiveFilters && (
               <span className="w-4 h-4 rounded-full bg-white text-primary-600 text-[10px] font-bold flex items-center justify-center">
-                {filters.categories.length + (filters.kraj ? 1 : 0) + (filters.openNow ? 1 : 0)}
+                {filters.categories.length + (filters.kraj ? 1 : 0) + (filters.openNow ? 1 : 0) + (filters.verifiedOnly ? 1 : 0) + (filters.hasPhotos ? 1 : 0)}
               </span>
             )}
           </button>
@@ -262,15 +262,29 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                 </select>
               </div>
 
-              {/* Open now */}
+              {/* Availability + quality */}
               <div>
-                <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Dostupnost</div>
-                <button onClick={() => setOpenNow(!filters.openNow)} aria-pressed={filters.openNow}
-                  className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
-                    filters.openNow ? 'bg-green-50 border-green-400 text-green-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-green-400',
-                  )}>
-                  <Clock className="w-3.5 h-3.5" aria-hidden="true" /> Nyní otevřeno
-                </button>
+                <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Dostupnost a kvalita</div>
+                <div className="flex flex-wrap gap-2">
+                  <button onClick={() => setOpenNow(!filters.openNow)} aria-pressed={filters.openNow}
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                      filters.openNow ? 'bg-green-50 border-green-400 text-green-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-green-400',
+                    )}>
+                    <Clock className="w-3.5 h-3.5" aria-hidden="true" /> Nyní otevřeno
+                  </button>
+                  <button onClick={() => setVerifiedOnly(!filters.verifiedOnly)} aria-pressed={filters.verifiedOnly}
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                      filters.verifiedOnly ? 'bg-primary-50 border-primary-400 text-primary-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
+                    )}>
+                    <CheckCircle className="w-3.5 h-3.5" aria-hidden="true" /> Pouze ověřené
+                  </button>
+                  <button onClick={() => setHasPhotos(!filters.hasPhotos)} aria-pressed={filters.hasPhotos}
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                      filters.hasPhotos ? 'bg-primary-50 border-primary-400 text-primary-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
+                    )}>
+                    <Star className="w-3.5 h-3.5" aria-hidden="true" /> S fotografiemi
+                  </button>
+                </div>
               </div>
 
               {hasActiveFilters && (

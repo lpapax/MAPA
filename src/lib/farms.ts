@@ -288,6 +288,11 @@ export function filterFarms(farms: Farm[], filters: FarmFilters): Farm[] {
     }
 
     if (filters.openNow && !isFarmOpenNow(farm)) return false
+    if (filters.verifiedOnly && !farm.verified) return false
+    if (filters.hasPhotos) {
+      const img = farm.images?.[0] ?? ''
+      if (!img.startsWith('http') || img.includes('placeholder')) return false
+    }
 
     return true
   })

@@ -85,4 +85,6 @@ export interface FarmFilters {
   kraj: KrajCode | null
   openNow: boolean
   searchQuery: string
+  verifiedOnly: boolean
+  hasPhotos: boolean
 }

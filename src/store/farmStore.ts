@@ -18,6 +18,8 @@ interface FarmStore {
   setKraj: (kraj: FarmFilters['kraj']) => void
   setOpenNow: (value: boolean) => void
   setSearchQuery: (query: string) => void
+  setVerifiedOnly: (value: boolean) => void
+  setHasPhotos: (value: boolean) => void
   clearFilters: () => void
 }
 
@@ -26,6 +28,8 @@ const defaultFilters: FarmFilters = {
   kraj: null,
   openNow: false,
   searchQuery: '',
+  verifiedOnly: false,
+  hasPhotos: false,
 }
 
 export const useFarmStore = create<FarmStore>((set) => ({
@@ -55,6 +59,12 @@ export const useFarmStore = create<FarmStore>((set) => ({
   setSearchQuery: (query) =>
     set((state) => ({ filters: { ...state.filters, searchQuery: query } })),
 
+  setVerifiedOnly: (value) =>
+    set((state) => ({ filters: { ...state.filters, verifiedOnly: value } })),
+
+  setHasPhotos: (value) =>
+    set((state) => ({ filters: { ...state.filters, hasPhotos: value } })),
+
   clearFilters: () => set({ filters: defaultFilters }),
 }))
 
@@ -63,6 +73,8 @@ export const selectHasActiveFilters = (state: FarmStore): boolean =>
   state.filters.categories.length > 0 ||
   state.filters.kraj !== null ||
   state.filters.openNow ||
+  state.filters.verifiedOnly ||
+  state.filters.hasPhotos ||
   state.filters.searchQuery.trim().length > 0
 
 // Derive filtered farms outside store to avoid coupling to data layer
@@ -75,6 +87,11 @@ export function getFilteredFarms(farms: Farm[], store: FarmStore): Farm[] {
     )
       return false
     if (filters.kraj && farm.location.kraj !== filters.kraj) return false
+    if (filters.verifiedOnly && !farm.verified) return false
+    if (filters.hasPhotos) {
+      const img = farm.images?.[0] ?? ''
+      if (!img.startsWith('http') || img.includes('placeholder')) return false
+    }
     if (filters.searchQuery.trim()) {
       const q = filters.searchQuery.toLowerCase()
       if (
