@@ -39,7 +39,7 @@ export function FarmFilters() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className={cn(
             'w-full pl-9 pr-3 py-2 rounded-xl text-sm',
-            'bg-white border border-border',
+            'bg-white dark:bg-card border border-border',
             'placeholder:text-muted-foreground/60 text-foreground',
             'focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary',
             'transition-shadow duration-150',

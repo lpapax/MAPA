@@ -72,6 +72,93 @@
     --ring: 113 38% 40%;
   }
 
+  .dark {
+    /* ── Design tokens (dark) ──────────────────────── */
+    --color-background:     #111a0e;
+    --color-surface:        #1a2718;
+    --color-border:         #2d3d28;
+    --color-text-primary:   #f0ece4;
+    --color-text-secondary: #a09080;
+    --color-text-muted:     #6b6058;
+
+    /* ── shadcn/ui CSS vars (dark) ─────────────────── */
+    --background:           125 20% 8%;
+    --foreground:           38 18% 92%;
+    --card:                 125 18% 12%;
+    --card-foreground:      38 18% 92%;
+    --popover:              125 18% 12%;
+    --popover-foreground:   38 18% 92%;
+    --primary:              113 38% 48%;
+    --primary-foreground:   0 0% 100%;
+    --secondary:            125 15% 20%;
+    --secondary-foreground: 38 15% 88%;
+    --muted:                125 15% 18%;
+    --muted-foreground:     30 8% 58%;
+    --accent:               191 91% 40%;
+    --accent-foreground:    0 0% 100%;
+    --destructive:          0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border:               125 15% 24%;
+    --input:                125 15% 24%;
+    --ring:                 113 38% 48%;
+
+    --shadow-sm:  0 1px 2px rgba(0,0,0,0.30);
+    --shadow-md:  0 4px 12px rgba(0,0,0,0.35);
+    --shadow-lg:  0 8px 24px rgba(0,0,0,0.40);
+
+    color-scheme: dark;
+  }
+
+  /* Dark mode: swap bg-white/bg-neutral-50/100 elements to dark card bg */
+  .dark .bg-white,
+  .dark [class~="bg-white"] {
+    background-color: hsl(var(--card)) !important;
+  }
+  .dark .bg-neutral-50 {
+    background-color: hsl(125 18% 14%) !important;
+  }
+  .dark .bg-neutral-100 {
+    background-color: hsl(125 15% 18%) !important;
+  }
+  .dark .bg-surface {
+    background-color: hsl(125 18% 12%) !important;
+  }
+  /* Input / form fields */
+  .dark input:not([class*="bg-"]),
+  .dark textarea:not([class*="bg-"]) {
+    background-color: hsl(var(--input));
+    color: hsl(var(--foreground));
+    border-color: hsl(var(--border));
+  }
+  .dark input[class*="bg-white"],
+  .dark textarea[class*="bg-white"] {
+    background-color: hsl(var(--input)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+  /* Text on white backgrounds */
+  .dark .text-neutral-900,
+  .dark .text-forest { color: hsl(var(--foreground)); }
+  .dark .text-neutral-700 { color: hsl(38 12% 78%); }
+  .dark .text-neutral-600 { color: hsl(38 10% 68%); }
+  .dark .text-neutral-500 { color: hsl(38 8% 55%); }
+  .dark .text-neutral-400 { color: hsl(38 6% 48%); }
+  /* Borders */
+  .dark .border-neutral-100 { border-color: hsl(125 15% 22%); }
+  .dark .border-neutral-200 { border-color: hsl(125 15% 24%); }
+  /* Table/admin backgrounds */
+  .dark .bg-gray-50 { background-color: hsl(125 15% 11%) !important; }
+
+  /* Primary-tinted backgrounds */
+  .dark .bg-primary-50 { background-color: hsl(125 20% 16%) !important; }
+  .dark .bg-primary-100 { background-color: hsl(125 20% 20%) !important; }
+  .dark .border-primary-100 { border-color: hsl(125 20% 22%) !important; }
+  .dark .border-primary-200 { border-color: hsl(125 20% 25%) !important; }
+  .dark .text-primary-700 { color: hsl(113 38% 60%) !important; }
+
+  /* White/light text on dark backgrounds should stay light */
+  .dark .text-white { color: #ffffff !important; }
+  .dark .text-forest { color: hsl(38 18% 88%) !important; }
+
   * {
     @apply border-border;
     box-sizing: border-box;

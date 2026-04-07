@@ -22,7 +22,7 @@ export function FarmList({ farms }: FarmListProps) {
       aria-label="Seznam farem"
     >
       {/* Header */}
-      <div className="px-4 pt-4 pb-3 border-b border-border bg-white/80 backdrop-blur-sm">
+      <div className="px-4 pt-4 pb-3 border-b border-border bg-white/80 dark:bg-card/90 backdrop-blur-sm">
         <div className="flex items-baseline justify-between mb-3">
           <h1 className="text-base font-bold text-foreground">
             Mapa farem

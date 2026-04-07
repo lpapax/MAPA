@@ -40,7 +40,7 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
       onKeyDown={(e) => e.key === 'Enter' && handleClick()}
       className={cn(
         'group relative rounded-xl p-4 cursor-pointer',
-        'bg-white border transition-all duration-200',
+        'bg-white dark:bg-card border transition-all duration-200',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
         isSelected
           ? 'border-primary shadow-card-hover ring-1 ring-primary'

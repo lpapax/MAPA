@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { getSupabaseRaw } from '@/lib/supabase'
+import { useAuth } from '@/contexts/AuthContext'
 import { CheckCircle, XCircle, Clock, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -23,10 +24,13 @@ const STATUS_LABEL: Record<string, { label: string; color: string }> = {
 }
 
 export default function AdminClaimy() {
+  const { session } = useAuth()
   const [claims, setClaims] = useState<Claim[]>([])
   const [filter, setFilter] = useState<Filter>('pending')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState<string | null>(null)
+
+  const token = session?.access_token ?? ''
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -48,10 +52,13 @@ export default function AdminClaimy() {
   useEffect(() => { load() }, [load])
 
   async function updateStatus(id: string, status: 'approved' | 'rejected') {
+    if (!token) return
     setSaving(id)
-    const sb = getSupabaseRaw()
-    if (!sb) { setSaving(null); return }
-    await sb.from('farm_claims').update({ status } as never).eq('id', id)
+    await fetch(`/api/admin/claimy/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ status }),
+    })
     setClaims(prev => prev.map(c => c.id === id ? { ...c, status } : c))
     setSaving(null)
   }

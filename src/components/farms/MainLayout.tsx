@@ -45,7 +45,7 @@ export function MainLayout({ farms, markers }: MainLayoutProps) {
       </div>
 
       {/* Mobile toggle bar */}
-      <div className="lg:hidden flex items-center justify-center py-2.5 px-4 bg-white border-t border-border">
+      <div className="lg:hidden flex items-center justify-center py-2.5 px-4 bg-white dark:bg-card border-t border-border">
         <MobileToggle view={mobileView} onChange={setMobileView} />
       </div>
     </div>
