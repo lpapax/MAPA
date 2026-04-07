@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Playfair_Display, DM_Sans, Geist } from 'next/font/google'
+import { Playfair_Display, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { ToastProvider } from '@/components/ui/Toast'
 import { ThemeProvider } from '@/components/ui/ThemeProvider'
@@ -8,8 +8,6 @@ import { CookieConsent } from '@/components/ui/CookieConsent'
 import { GTMScript } from '@/components/ui/GTMScript'
 import { Analytics } from '@vercel/analytics/next'
 import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const playfair = Playfair_Display({
   subsets: ['latin', 'latin-ext'],
@@ -84,7 +82,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="cs" suppressHydrationWarning className={cn(playfair.variable, dmSans.variable, "font-sans", geist.variable)}>
+    <html lang="cs" suppressHydrationWarning className={cn(playfair.variable, dmSans.variable, "font-sans")}>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

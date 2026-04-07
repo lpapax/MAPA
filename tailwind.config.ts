@@ -18,6 +18,7 @@ const config: Config = {
         // ── Primary — deep forest green ──────────────────
         primary: {
           DEFAULT: '#4a8c3f',
+          foreground: '#ffffff',
           50:  '#f3faf0',
           100: '#e0f4d7',
           200: '#c3e8b2',
