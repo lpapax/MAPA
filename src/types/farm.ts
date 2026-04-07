@@ -49,6 +49,9 @@ export interface Farm {
   openingHours?: OpeningHours
   images: string[]
   verified: boolean
+  bio: boolean
+  delivery: boolean
+  pickYourOwn: boolean
   viewCount?: number
   createdAt: string
 }
@@ -87,4 +90,7 @@ export interface FarmFilters {
   searchQuery: string
   verifiedOnly: boolean
   hasPhotos: boolean
+  bioOnly: boolean
+  deliveryOnly: boolean
+  pickYourOwnOnly: boolean
 }

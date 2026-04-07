@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
 
   const { data: farms } = await sb
     .from('farms')
-    .select('id,slug,name,description,categories,city,kraj,images,verified,tier,opening_hours,contact')
+    .select('id,slug,name,description,categories,city,kraj,images,verified,bio,delivery,pick_your_own,tier,opening_hours,contact')
     .in('slug', slugs)
 
   return NextResponse.json({ farms: farms ?? [] })

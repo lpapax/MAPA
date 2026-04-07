@@ -20,6 +20,9 @@ interface FarmStore {
   setSearchQuery: (query: string) => void
   setVerifiedOnly: (value: boolean) => void
   setHasPhotos: (value: boolean) => void
+  setBioOnly: (value: boolean) => void
+  setDeliveryOnly: (value: boolean) => void
+  setPickYourOwnOnly: (value: boolean) => void
   clearFilters: () => void
 }
 
@@ -30,6 +33,9 @@ const defaultFilters: FarmFilters = {
   searchQuery: '',
   verifiedOnly: false,
   hasPhotos: false,
+  bioOnly: false,
+  deliveryOnly: false,
+  pickYourOwnOnly: false,
 }
 
 export const useFarmStore = create<FarmStore>((set) => ({
@@ -65,6 +71,15 @@ export const useFarmStore = create<FarmStore>((set) => ({
   setHasPhotos: (value) =>
     set((state) => ({ filters: { ...state.filters, hasPhotos: value } })),
 
+  setBioOnly: (value) =>
+    set((state) => ({ filters: { ...state.filters, bioOnly: value } })),
+
+  setDeliveryOnly: (value) =>
+    set((state) => ({ filters: { ...state.filters, deliveryOnly: value } })),
+
+  setPickYourOwnOnly: (value) =>
+    set((state) => ({ filters: { ...state.filters, pickYourOwnOnly: value } })),
+
   clearFilters: () => set({ filters: defaultFilters }),
 }))
 
@@ -75,6 +90,9 @@ export const selectHasActiveFilters = (state: FarmStore): boolean =>
   state.filters.openNow ||
   state.filters.verifiedOnly ||
   state.filters.hasPhotos ||
+  state.filters.bioOnly ||
+  state.filters.deliveryOnly ||
+  state.filters.pickYourOwnOnly ||
   state.filters.searchQuery.trim().length > 0
 
 // Derive filtered farms outside store to avoid coupling to data layer
@@ -92,6 +110,9 @@ export function getFilteredFarms(farms: Farm[], store: FarmStore): Farm[] {
       const img = farm.images?.[0] ?? ''
       if (!img.startsWith('http') || img.includes('placeholder')) return false
     }
+    if (filters.bioOnly && !farm.bio) return false
+    if (filters.deliveryOnly && !farm.delivery) return false
+    if (filters.pickYourOwnOnly && !farm.pickYourOwn) return false
     if (filters.searchQuery.trim()) {
       const q = filters.searchQuery.toLowerCase()
       if (

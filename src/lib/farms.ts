@@ -24,6 +24,9 @@ function rowToFarm(row: FarmRow): Farm {
     openingHours: (row.opening_hours as OpeningHours) ?? undefined,
     images: row.images,
     verified: row.verified,
+    bio: row.bio ?? false,
+    delivery: row.delivery ?? false,
+    pickYourOwn: row.pick_your_own ?? false,
     viewCount: row.view_count ?? 0,
     createdAt: row.created_at ?? '',
   }
@@ -52,7 +55,7 @@ export async function getAllFarms(): Promise<Farm[]> {
   let from = 0
 
   // Select only columns needed for map/sidebar — skips contact, address, zip, created_at
-  const COLS = 'id,slug,name,description,categories,lat,lng,city,kraj,opening_hours,images,verified,view_count'
+  const COLS = 'id,slug,name,description,categories,lat,lng,city,kraj,opening_hours,images,verified,bio,delivery,pick_your_own,view_count'
 
   while (true) {
     const { data, error } = await supabase
@@ -293,6 +296,9 @@ export function filterFarms(farms: Farm[], filters: FarmFilters): Farm[] {
       const img = farm.images?.[0] ?? ''
       if (!img.startsWith('http') || img.includes('placeholder')) return false
     }
+    if (filters.bioOnly && !farm.bio) return false
+    if (filters.deliveryOnly && !farm.delivery) return false
+    if (filters.pickYourOwnOnly && !farm.pickYourOwn) return false
 
     return true
   })

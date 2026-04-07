@@ -81,7 +81,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const { filters, setSearchQuery, toggleCategory, setKraj, setOpenNow, setVerifiedOnly, setHasPhotos, clearFilters, selectFarm, hoverFarm, selectedFarmId, hoveredFarmId } = store
+  const { filters, setSearchQuery, toggleCategory, setKraj, setOpenNow, setVerifiedOnly, setHasPhotos, setBioOnly, setDeliveryOnly, setPickYourOwnOnly, clearFilters, selectFarm, hoverFarm, selectedFarmId, hoveredFarmId } = store
 
   const { isInCompare, toggleCompare, compareIds } = useCompareStore()
   const { isFavorite, toggleFavorite } = useFavoriteFarms()
@@ -99,7 +99,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
     }
     return filteredBase
   }, [filteredBase, sortByDistance, userLat, userLng])
-  const hasActiveFilters = filters.categories.length > 0 || filters.kraj !== null || filters.openNow || filters.verifiedOnly || filters.hasPhotos
+  const hasActiveFilters = filters.categories.length > 0 || filters.kraj !== null || filters.openNow || filters.verifiedOnly || filters.hasPhotos || filters.bioOnly || filters.deliveryOnly || filters.pickYourOwnOnly
 
   const PAGE_SIZE = 50
   const [page, setPage] = useState(1)
@@ -178,7 +178,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
             Filtry
             {hasActiveFilters && (
               <span className="w-4 h-4 rounded-full bg-white text-primary-600 text-[10px] font-bold flex items-center justify-center">
-                {filters.categories.length + (filters.kraj ? 1 : 0) + (filters.openNow ? 1 : 0) + (filters.verifiedOnly ? 1 : 0) + (filters.hasPhotos ? 1 : 0)}
+                {filters.categories.length + (filters.kraj ? 1 : 0) + (filters.openNow ? 1 : 0) + (filters.verifiedOnly ? 1 : 0) + (filters.hasPhotos ? 1 : 0) + (filters.bioOnly ? 1 : 0) + (filters.deliveryOnly ? 1 : 0) + (filters.pickYourOwnOnly ? 1 : 0)}
               </span>
             )}
           </button>
@@ -283,6 +283,24 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                       filters.hasPhotos ? 'bg-primary-50 border-primary-400 text-primary-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
                     )}>
                     <Star className="w-3.5 h-3.5" aria-hidden="true" /> S fotografiemi
+                  </button>
+                  <button onClick={() => setBioOnly(!filters.bioOnly)} aria-pressed={filters.bioOnly}
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                      filters.bioOnly ? 'bg-green-50 border-green-500 text-green-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-green-400',
+                    )}>
+                    ♻️ Bio/Eko
+                  </button>
+                  <button onClick={() => setDeliveryOnly(!filters.deliveryOnly)} aria-pressed={filters.deliveryOnly}
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                      filters.deliveryOnly ? 'bg-primary-50 border-primary-400 text-primary-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
+                    )}>
+                    <Navigation2 className="w-3.5 h-3.5" aria-hidden="true" /> Rozvoz
+                  </button>
+                  <button onClick={() => setPickYourOwnOnly(!filters.pickYourOwnOnly)} aria-pressed={filters.pickYourOwnOnly}
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                      filters.pickYourOwnOnly ? 'bg-primary-50 border-primary-400 text-primary-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
+                    )}>
+                    <MapPin className="w-3.5 h-3.5" aria-hidden="true" /> Samosběr
                   </button>
                 </div>
               </div>

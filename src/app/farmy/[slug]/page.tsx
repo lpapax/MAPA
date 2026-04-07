@@ -213,6 +213,21 @@ export default async function FarmDetailPage({ params }: PageProps) {
                     Ověřeno
                   </span>
                 )}
+                {farm.bio && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-50 border border-green-200 text-green-700 text-xs font-semibold">
+                    ♻️ Bio / Eko
+                  </span>
+                )}
+                {farm.delivery && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-xs font-semibold">
+                    🚚 Rozvoz
+                  </span>
+                )}
+                {farm.pickYourOwn && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold">
+                    🧺 Samosběr
+                  </span>
+                )}
                 {(farm.viewCount ?? 0) > 0 && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-neutral-50 border border-neutral-200 text-neutral-500 text-xs">
                     <Eye className="w-3.5 h-3.5" aria-hidden="true" />

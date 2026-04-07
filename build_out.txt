@@ -1,0 +1,142 @@
+
+> mapafarem-tmp@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+
+./src/app/admin/trhy/page.tsx
+236:17  Warning: Empty components are self-closing  react/self-closing-comp
+
+./src/components/blog/BlogGrid.tsx
+39:6  Warning: React Hook useMemo has a missing dependency: 'articles'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+   Collecting page data ...
+ ⚠ Using edge runtime on a page currently disables static generation for that page
+   Generating static pages (0/73) ...
+   Generating static pages (18/73) 
+   Generating static pages (36/73) 
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+   Generating static pages (54/73) 
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+[farms] Supabase error, falling back to seed: column farms.bio does not exist
+ ✓ Generating static pages (73/73)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    13.4 kB         241 kB
+├ ○ /_not-found                          148 B          88.1 kB
+├ ○ /admin                               2.56 kB         147 kB
+├ ○ /admin/blog                          4.82 kB         157 kB
+├ ○ /admin/claimy                        3.03 kB         156 kB
+├ ○ /admin/farmy                         2.62 kB         155 kB
+├ ○ /admin/odbery                        1.89 kB         146 kB
+├ ○ /admin/recenze                       1.94 kB         146 kB
+├ ○ /admin/trhy                          7.18 kB         160 kB
+├ ○ /admin/zadosti                       3.67 kB         156 kB
+├ ƒ /api/admin/blog                      0 B                0 B
+├ ƒ /api/admin/blog/[id]                 0 B                0 B
+├ ƒ /api/admin/claimy/[id]               0 B                0 B
+├ ƒ /api/admin/check                     0 B                0 B
+├ ƒ /api/admin/zadosti                   0 B                0 B
+├ ƒ /api/admin/zadosti/[id]              0 B                0 B
+├ ƒ /api/auth/delete-account             0 B                0 B
+├ ○ /api/blog                            0 B                0 B
+├ ƒ /api/contact                         0 B                0 B
+├ ƒ /api/farms/[slug]/edit               0 B                0 B
+├ ƒ /api/farms/[slug]/google-reviews     0 B                0 B
+├ ƒ /api/farms/[slug]/view               0 B                0 B
+├ ƒ /api/farms/mine                      0 B                0 B
+├ ƒ /api/farms/submit                    0 B                0 B
+├ ƒ /api/markets                         0 B                0 B
+├ ƒ /api/markets/[id]                    0 B                0 B
+├ ƒ /api/newsletter                      0 B                0 B
+├ ƒ /api/og                              0 B                0 B
+├ ƒ /api/search                          0 B                0 B
+├ ƒ /api/stripe/checkout                 0 B                0 B
+├ ƒ /api/stripe/webhook                  0 B                0 B
+├ ○ /auth/callback                       1.23 kB         146 kB
+├ ○ /blog                                3.11 kB         225 kB
+├ ● /blog/[slug]                         2.51 kB         168 kB
+├   ├ /blog/recepty-sezonni-zelenina
+├   ├ /blog/jak-poznat-kvalitni-med
+├   ├ /blog/primy-prodej-z-farmy
+├   └ [+3 more paths]
+├ ○ /certifikace                         3.35 kB         213 kB
+├ ○ /cookies                             1.92 kB         167 kB
+├ ● /farmy/[slug]                        11.8 kB         178 kB
+├ ○ /icon.svg                            0 B                0 B
+├ ○ /kontakt                             3.89 kB         213 kB
+├ ○ /kraje                               2.03 kB         211 kB
+├ ● /kraje/[slug]                        1.92 kB         167 kB
+├   ├ /kraje/praha
+├   ├ /kraje/stredocesky
+├   ├ /kraje/jihocesky
+├   └ [+11 more paths]
+├ ○ /llms.txt                            0 B                0 B
+├ ƒ /mapa                                10.9 kB         178 kB
+├ ○ /o-projektu                          2.03 kB         211 kB
+├ ○ /oblibene                            3.73 kB         170 kB
+├ ○ /podminky                            1.92 kB         167 kB
+├ ○ /pomoc                               4.95 kB         214 kB
+├ ƒ /porovnat                            2.6 kB          169 kB
+├ ○ /pridat-farmu                        6.21 kB         216 kB
+├ ○ /prihlasit                           3.1 kB          168 kB
+├ ○ /pro-farmary                         3.21 kB         213 kB
+├ ○ /pro-farmary/narokovat               4.21 kB         169 kB
+├ ○ /profil                              8.5 kB          175 kB
+├ ○ /profil/farma                        6.31 kB         173 kB
+├ ○ /profil/historie                     2.81 kB         170 kB
+├ ○ /profil/recenze                      3.49 kB         169 kB
+├ ○ /robots.txt                          0 B                0 B
+├ ○ /sezona                              2.57 kB         225 kB
+├ ○ /sitemap.xml                         0 B                0 B
+├ ○ /soukromi                            1.92 kB         167 kB
+├ ○ /trhy                                6.5 kB          216 kB
+└ ○ /zebricek                            3.14 kB         218 kB
++ First Load JS shared by all            88 kB
+  ├ chunks/2117-e2f6ee4d0dae3f5a.js      31.9 kB
+  ├ chunks/fd9d1056-e41ec4e61b8d2347.js  53.6 kB
+  └ other shared chunks (total)          2.43 kB
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses getStaticProps)
+ƒ  (Dynamic)  server-rendered on demand
+

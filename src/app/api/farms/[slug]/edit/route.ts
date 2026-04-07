@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 
 const ALLOWED_FIELDS = new Set([
   'description', 'categories', 'opening_hours', 'contact', 'images',
+  'bio', 'delivery', 'pick_your_own',
 ])
 
 export async function PATCH(

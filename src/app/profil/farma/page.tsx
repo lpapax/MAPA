@@ -35,6 +35,9 @@ interface FarmData {
   kraj: string
   images: string[]
   verified: boolean
+  bio: boolean
+  delivery: boolean
+  pick_your_own: boolean
   tier: string
   opening_hours: Record<string, { open: string; close: string }> | null
   contact: {
@@ -59,6 +62,9 @@ export default function ProfilFarmaPage() {
   // Editable fields
   const [description, setDescription] = useState('')
   const [categories, setCategories] = useState<FarmCategory[]>([])
+  const [bio, setBio] = useState(false)
+  const [delivery, setDelivery] = useState(false)
+  const [pickYourOwn, setPickYourOwn] = useState(false)
   const [contact, setContact] = useState({ phone: '', email: '', web: '', instagram: '', facebook: '' })
   const [hours, setHours] = useState<Record<string, { enabled: boolean; open: string; close: string }>>({})
   const [images, setImages] = useState<string[]>([])
@@ -77,6 +83,9 @@ export default function ProfilFarmaPage() {
       setFarm(f)
       setDescription(f.description ?? '')
       setCategories(f.categories ?? [])
+      setBio(f.bio ?? false)
+      setDelivery(f.delivery ?? false)
+      setPickYourOwn(f.pick_your_own ?? false)
       setImages(f.images ?? [])
       const c = f.contact ?? {}
       setContact({ phone: c.phone ?? '', email: c.email ?? '', web: c.web ?? '', instagram: c.instagram ?? '', facebook: c.facebook ?? '' })
@@ -118,6 +127,9 @@ export default function ProfilFarmaPage() {
       body: JSON.stringify({
         description,
         categories,
+        bio,
+        delivery,
+        pick_your_own: pickYourOwn,
         contact,
         opening_hours: Object.keys(opening_hours).length > 0 ? opening_hours : null,
         images,
@@ -240,6 +252,30 @@ export default function ProfilFarmaPage() {
                   >
                     {CATEGORY_LABELS[cat]}
                   </button>
+                ))}
+              </div>
+            </Card>
+
+            {/* Features */}
+            <Card title="Vlastnosti farmy">
+              <div className="space-y-3">
+                {([
+                  { key: 'bio', label: 'Bio / Eko certifikace', hint: 'Farma má certifikaci ekologického zemědělství', value: bio, set: setBio },
+                  { key: 'delivery', label: 'Nabízí rozvoz', hint: 'Doručení přímo k zákazníkovi nebo zásilkový prodej', value: delivery, set: setDelivery },
+                  { key: 'pickYourOwn', label: 'Samosběr', hint: 'Zákazníci si mohou sami sbírat produkty', value: pickYourOwn, set: setPickYourOwn },
+                ] as const).map((item) => (
+                  <label key={item.key} className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={item.value}
+                      onChange={(e) => item.set(e.target.checked)}
+                      className="w-4 h-4 rounded accent-primary-600 mt-0.5 flex-shrink-0"
+                    />
+                    <div>
+                      <p className="text-sm font-medium text-forest group-hover:text-primary-700 transition-colors">{item.label}</p>
+                      <p className="text-xs text-neutral-400">{item.hint}</p>
+                    </div>
+                  </label>
                 ))}
               </div>
             </Card>
