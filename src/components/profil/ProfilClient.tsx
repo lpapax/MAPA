@@ -6,8 +6,18 @@ import { useUserPrefs } from '@/hooks/useUserPrefs'
 import { CATEGORY_LABELS } from '@/lib/farms'
 import { cn } from '@/lib/utils'
 import type { FarmCategory, KrajCode } from '@/types/farm'
+import type { DietPreference } from '@/hooks/useUserPrefs'
 import { AuthSection } from './AuthSection'
 import { SavedSearchesSection } from './SavedSearchesSection'
+
+const DIET_OPTIONS: { value: DietPreference; label: string; emoji: string; hint: string }[] = [
+  { value: 'vegetarian', label: 'Vegetarián', emoji: '🥦', hint: 'Bez masa' },
+  { value: 'vegan', label: 'Vegan', emoji: '🌱', hint: 'Bez živočišných produktů' },
+  { value: 'gluten-free', label: 'Bezlepkový', emoji: '🌾', hint: 'Celiakie nebo intolerance' },
+  { value: 'lactose-free', label: 'Bezlaktózový', emoji: '🥛', hint: 'Intolerance laktózy' },
+  { value: 'organic', label: 'Bio/Eko', emoji: '♻️', hint: 'Preferuji certifikované bio' },
+  { value: 'local', label: 'Lokální', emoji: '📍', hint: 'Jen z mého kraje' },
+]
 
 const UNIQUE_CATEGORIES: FarmCategory[] = [
   'zelenina', 'ovoce', 'maso', 'mléko', 'vejce', 'med', 'byliny', 'sýry', 'víno', 'ryby', 'chléb', 'ostatní',
@@ -21,6 +31,13 @@ const KRAJ_OPTIONS: KrajCode[] = [
 
 export function ProfilClient() {
   const { prefs, update, reset } = useUserPrefs()
+
+  const toggleDiet = (d: DietPreference) => {
+    const next = prefs.diet.includes(d)
+      ? prefs.diet.filter((x) => x !== d)
+      : [...prefs.diet, d]
+    update({ diet: next })
+  }
 
   const toggleCategory = (cat: FarmCategory) => {
     const next = prefs.categories.includes(cat)
@@ -106,6 +123,39 @@ export function ProfilClient() {
             </div>
             <ChevronRight className="w-4 h-4 text-neutral-300 group-hover:text-neutral-500 transition-colors" aria-hidden="true" />
           </Link>
+        </div>
+      </section>
+
+      {/* Diet preferences */}
+      <section className="bg-white rounded-2xl border border-neutral-100 shadow-card p-5 space-y-4">
+        <div>
+          <h2 className="font-heading font-semibold text-forest text-base">Stravovací preference</h2>
+          <p className="text-xs text-neutral-400 mt-1">Ovlivní doporučení a filtry na mapě</p>
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          {DIET_OPTIONS.map((opt) => {
+            const active = prefs.diet.includes(opt.value)
+            return (
+              <button
+                key={opt.value}
+                onClick={() => toggleDiet(opt.value)}
+                className={cn(
+                  'flex items-start gap-3 px-3 py-3 rounded-xl border text-left transition-all cursor-pointer',
+                  active
+                    ? 'bg-primary-50 border-primary-300 text-primary-700'
+                    : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300',
+                )}
+              >
+                <span className="text-lg leading-none mt-0.5" aria-hidden="true">{opt.emoji}</span>
+                <div>
+                  <p className={cn('text-xs font-semibold leading-tight', active ? 'text-primary-700' : 'text-forest')}>
+                    {opt.label}
+                  </p>
+                  <p className="text-[10px] text-neutral-400 mt-0.5 leading-tight">{opt.hint}</p>
+                </div>
+              </button>
+            )
+          })}
         </div>
       </section>
 
