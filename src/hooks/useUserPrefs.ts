@@ -14,6 +14,10 @@ export type DietPreference =
   | 'lactose-free'
   | 'organic'
   | 'local'
+  | 'carnivore'
+  | 'pescatarian'
+  | 'paleo'
+  | 'keto'
 
 export interface UserPrefs {
   categories: FarmCategory[]

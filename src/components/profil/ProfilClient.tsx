@@ -13,6 +13,10 @@ import { SavedSearchesSection } from './SavedSearchesSection'
 const DIET_OPTIONS: { value: DietPreference; label: string; emoji: string; hint: string }[] = [
   { value: 'vegetarian', label: 'Vegetarián', emoji: '🥦', hint: 'Bez masa' },
   { value: 'vegan', label: 'Vegan', emoji: '🌱', hint: 'Bez živočišných produktů' },
+  { value: 'carnivore', label: 'Masožravec', emoji: '🥩', hint: 'Maso, živočišné produkty' },
+  { value: 'pescatarian', label: 'Pescetarián', emoji: '🐟', hint: 'Ryby, bez červeného masa' },
+  { value: 'paleo', label: 'Paleo', emoji: '🦴', hint: 'Maso, zelenina, bez obilovin' },
+  { value: 'keto', label: 'Keto', emoji: '🧈', hint: 'Nízkosacharidová strava' },
   { value: 'gluten-free', label: 'Bezlepkový', emoji: '🌾', hint: 'Celiakie nebo intolerance' },
   { value: 'lactose-free', label: 'Bezlaktózový', emoji: '🥛', hint: 'Intolerance laktózy' },
   { value: 'organic', label: 'Bio/Eko', emoji: '♻️', hint: 'Preferuji certifikované bio' },
