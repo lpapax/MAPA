@@ -43,7 +43,7 @@ git commit --allow-empty -m "chore: redeploy" && git push
 
 All server-side farm data access goes through these functions: `getAllFarms()`, `getFarmBySlug()`, `getAllSlugs()`, `getFarmMapMarkers()`, `getHomepageFarms(limit)`, `getSimilarFarms(slug, kraj, limit)`, `getFarmsByIds(ids)`, `getFarmCountByKraj()`. Each tries Supabase first and silently falls back to `src/data/farms.json` when env vars are absent.
 
-`getAllFarms()` paginates Supabase in chunks of 1000 rows. It selects specific columns only — **not `select('*')`** — to reduce payload: `id,slug,name,description,categories,lat,lng,city,kraj,opening_hours,images,verified,view_count`. The `contact`, `address`, `zip`, and `created_at` columns are intentionally omitted. Do not add `select('*')` back — it doubles the RSC payload size.
+`getAllFarms()` paginates Supabase in chunks of 1000 rows. It selects specific columns only — **not `select('*')`** — to reduce payload: `id,slug,name,description,categories,lat,lng,city,kraj,opening_hours,images,verified,view_count,bio,delivery,pick_your_own`. The `contact`, `address`, `zip`, and `created_at` columns are intentionally omitted. Do not add `select('*')` back — it doubles the RSC payload size.
 
 `getFarmsByIds(ids)` fetches a small set of farms by ID array using `select('*')` (includes `contact`). Used by `/porovnat` instead of `getAllFarms()` — never load all 4,009 farms to display 2–3.
 
@@ -60,20 +60,23 @@ All server-side farm data access goes through these functions: `getAllFarms()`, 
 
 `src/data/mockData.ts` holds static data for pages that don't have a Supabase table yet: featured farms (`MockFarm[]`), blog articles (`BlogArticle[]`), seasonal calendar, and kraj metadata. `MockFarm` intentionally has **no** `rating`, `reviewCount`, `distance`, or `quote` fields — do not add them back until there is real data.
 
+`KRAJ_LIST` entries have a `slug` field (e.g. `jihomoravsky`) used for `/kraje/[slug]` static params. If adding a new kraj, add both `code` (Czech diacritics, matches DB) and `slug` (URL-safe ASCII) fields.
+
 ### Supabase schema
 
-Seven tables across five migration files (`supabase/migrations/`):
+Nine tables across ten migration files (`supabase/migrations/`):
 
 | Table | RLS | Notes |
 |---|---|---|
-| `farms` | public read, service_role write | `slug`, `kraj`, `categories` (GIN) indexes. Has `view_count INTEGER DEFAULT 0`, `tier TEXT DEFAULT 'free'`. `images TEXT[]` stores og:image URLs scraped from farm websites. |
+| `farms` | public read, service_role write | `slug`, `kraj`, `categories` (GIN) indexes. Has `view_count INTEGER DEFAULT 0`, `tier TEXT DEFAULT 'free'`, `bio BOOLEAN DEFAULT false`, `delivery BOOLEAN DEFAULT false`, `pick_your_own BOOLEAN DEFAULT false`. `images TEXT[]` stores og:image URLs scraped from farm websites. Partial indexes on `bio` and `delivery` WHERE = true (migration 010). |
 | `subscribers` | public insert, service_role read | Newsletter emails |
 | `user_profiles` | owner only | Created automatically on `auth.users` insert via trigger. `display_name TEXT`. |
 | `user_favorites` | owner only | `(user_id, farm_slug)` unique. Stores `farm_name`, `categories[]`, `kraj`. |
-| `reviews` | public read, auth write | `farm_slug`, `rating SMALLINT (1–5)`, `display_name`, `city`, `text`. |
+| `reviews` | public read, auth write | `farm_slug`, `user_id UUID REFERENCES auth.users`, `rating SMALLINT (1–5)`, `display_name`, `city`, `text`. `user_id` used by `MyReviewsClient` to query reviews per user. |
 | `saved_searches` | owner only | `filters JSONB` — cast via `as unknown as FarmFilters` when reading. |
 | `farm_claims` | owner only | Status: `pending | approved | rejected`. |
 | `subscriptions` | owner read, service_role write | Stripe subscription records. `tier TEXT`, `status TEXT`, `stripe_subscription_id` (unique), `current_period_end TIMESTAMPTZ`. Webhook handler in `/api/stripe/webhook` keeps this in sync with Stripe. |
+| `articles` | public read (draft=false), service_role write | Blog CMS (migration 009). `slug` unique, `draft BOOLEAN`, `published_at TIMESTAMPTZ`. Admin UI at `/admin/blog`. |
 
 **Running migrations:** The Supabase direct DB connection is IPv6-only and unreachable from most local machines. Run migrations manually via the **Supabase SQL Editor**: `https://supabase.com/dashboard/project/eqrmwkyzllkpkuqhwswk/sql`. Apply files in numeric order.
 
@@ -85,6 +88,8 @@ Filter logic is **duplicated** in two places and must be kept in sync when addin
 - `src/store/farmStore.ts` → `getFilteredFarms()` — used client-side in MapSearchPage (no `openNow` support)
 - `src/lib/farms.ts` → `filterFarms()` — used server-side and in API routes (has `openNow` support)
 
+Current `FarmFilters` fields (all must be in both functions): `query`, `categories`, `kraj`, `openNow`, `verifiedOnly`, `hasPhotos`, `bioOnly`, `deliveryOnly`, `pickYourOwnOnly`.
+
 ### State management
 
 Two Zustand stores (no persistence — in-memory only):
@@ -92,6 +97,7 @@ Two Zustand stores (no persistence — in-memory only):
 - `src/store/compareStore.ts` — `compareIds[]` (max 3 farms). `CompareBar` reads it and links to `/porovnat?ids=...`.
 
 localStorage hooks (SSR-safe: hydrate via `useEffect` after mount):
+- `src/hooks/useUserPrefs.ts` — key `mf_prefs`. Stores `{ theme, radius, diet }`. `diet: DietPreference[]` where `DietPreference` is `'vegetarian' | 'vegan' | 'gluten-free' | 'lactose-free' | 'organic' | 'local' | 'carnivore' | 'pescatarian' | 'paleo' | 'keto'`. UI rendered in `ProfilClient.tsx` as toggle cards.
 - `src/hooks/useFavoriteFarms.ts` — key `mf_favorites`
 - `src/hooks/useBedynka.ts` — key `mf_bedynka`, item ids are `farmSlug__productId`; `totalItems` exposed for nav badge
 - `src/hooks/useRecentFarms.ts` — key `mf_recent_farms`, max 6 entries
@@ -176,6 +182,8 @@ Farm detail pages (`/farmy/[slug]`) use the farm's first real photo as og:image 
 
 `next/image` with `fill` is used for blog covers and the homepage hero. Any parent of a `fill` image must have `position: relative`. Allowed remote patterns in `next.config.mjs`: `*.supabase.co`, `**.mapafarem.cz`, `images.unsplash.com`.
 
+**TypeScript Set iteration:** Use `Array.from(new Set([...]))` instead of `[...new Set([...])]` — the spread syntax fails with the project's `downlevelIteration` setting.
+
 **Farm photos** (`farm.images[]`) are displayed with plain `<img>` tags because domains are arbitrary and cannot all be whitelisted. Always use an intermediate variable when checking:
 
 ```typescript
@@ -198,7 +206,8 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `/blog/[slug]` | SSG | Article content rendered client-side in `ArticleContent` |
 | `/trhy` | Static | `MarketsClient` — 20 Czech farmers markets. Data is hardcoded (no Supabase table). `isDaily: true` flag shows "Otevřeno denně". |
 | `/zebricek` | ISR (5 min) | `LeaderboardClient` — top-20 farms per tab. Sort: viewCount desc → verified first → `localeCompare('cs')`. |
-| `/kraje` | Static | Uses `getFarmCountByKraj()` — not `getAllFarms()`. |
+| `/kraje` | Static | Uses `getFarmCountByKraj()` — not `getAllFarms()`. Links to `/kraje/[slug]` pages. |
+| `/kraje/[slug]` | SSG | 14 kraj landing pages. `generateStaticParams` returns all slug entries from `KRAJ_LIST` in mockData. Renders farm grid for that kraj, top categories, and CTA to `/mapa?kraj=...`. |
 | `/oblibene` | Static shell | `useFavoriteFarms` localStorage hook |
 | `/bedynka` | Static shell | `useBedynka` localStorage hook. In `MobileBottomNav` with item-count badge. |
 | `/porovnat` | Dynamic | Uses `getFarmsByIds(ids)` — not `getAllFarms()`. |
@@ -218,6 +227,7 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `/profil/recenze` | Static shell | Requires auth |
 | `/profil/historie` | Static shell | `mf_recent_farms` localStorage |
 | `/pro-farmary/narokovat` | Static shell | Requires auth; writes to `farm_claims` |
+| `/profil/farma` | Static shell | Farm owner edit page. Requires auth + approved claim. Loads via `GET /api/farms/mine`. Editable fields: description, categories, bio, delivery, pick_your_own, contact, opening_hours, images. Saves via `PATCH /api/farms/[slug]/edit`. |
 | `/api/og` | Edge | Branded OG image generation. Params: `?title=`, `?subtitle=` |
 | `/api/search` | Dynamic | GET `?q=` — returns max 5 results |
 | `/api/newsletter` | Dynamic | POST `{ email }` — inserts into `subscribers` |
@@ -226,11 +236,16 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `/api/stripe/webhook` | Dynamic | POST — Stripe webhook handler. Verifies signature, handles `checkout.session.completed`, `customer.subscription.updated/deleted`. Updates `subscriptions` table and `farms.tier`. Always returns 200 except on invalid signature. |
 | `/api/auth/delete-account` | Dynamic | DELETE with Bearer token |
 | `/api/admin/check` | Dynamic | GET with Bearer token — returns `{ admin: true/false }`. Checks token against private `ADMIN_EMAIL` env var server-side. |
+| `/api/admin/zadosti` | Dynamic | GET — lists pending farm claims. PATCH `[id]` — approve or reject a claim (updates `farm_claims.status`). |
+| `/api/farms/mine` | Dynamic | GET with Bearer token — returns farms owned by the authenticated user (approved claims). |
+| `/api/farms/[slug]/edit` | Dynamic | PATCH with Bearer token — updates allowed farm fields. Requires approved claim for that slug. Allowed: `description`, `categories`, `bio`, `delivery`, `pick_your_own`, `contact`, `opening_hours`, `images`. |
 | `/admin` | Client shell | Dashboard — requires auth + admin email check via `/api/admin/check` |
 | `/admin/farmy` | Client shell | Farm list with verify toggle, search, pagination (50/page) |
 | `/admin/claimy` | Client shell | Farm claim requests — approve/reject |
+| `/admin/zadosti` | Client shell | Pending farm submission requests (`farm_claims` status=pending). Approve/reject via `/api/admin/zadosti/[id]`. |
 | `/admin/odbery` | Client shell | Newsletter subscribers + CSV export |
 | `/admin/recenze` | Client shell | All reviews — read and delete |
+| `/admin/blog` | Client shell | Blog article management — create/edit/delete entries in `articles` table. |
 
 ### Admin panel
 

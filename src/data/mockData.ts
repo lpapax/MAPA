@@ -574,6 +574,345 @@ Začněte u produktů, kde rozdíl nejsilněji pocítíte: čerstvá zelenina a 
 
 Bio zemědělství je důležitý krok správným směrem a certifikace je cenným nástrojem pro transparentnost. Ale začíná to vždy u znalosti a vztahu – a k tomu Mapa Farem pomáhá každý den.`,
   },
+  {
+    id: 'b6',
+    title: 'Jak nakupovat přímo od farmáře — průvodce pro začátečníky',
+    category: 'Průvodce',
+    categoryColor: 'bg-blue-100 text-blue-700',
+    readTime: '7 min čtení',
+    excerpt: 'Přímý prodej od farmáře šetří peníze, zaručuje čerstvost a buduje vztah s těmi, kdo vaše jídlo pěstují. Tenhle průvodce vám ukáže, kde začít.',
+    coverGradient: 'from-green-400 to-emerald-600',
+    coverImage: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&h=480&fit=crop&q=80',
+    slug: 'jak-nakupovat-primo-od-farmare',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
+    publishedAt: '10. dubna 2025',
+    content: `Přímý nákup od farmáře je jednou z nejlepších věcí, které můžete pro kvalitu svého jídla udělat. Zelenina sklizená ráno a prodaná odpoledne chutnáhle jinak než ta, která strávila tři dny v distribučním skladu. A přesto si mnoho lidí myslí, že je to komplikované nebo drahé. Není.
+
+## Co je přímý prodej?
+
+Přímý prodej znamená, že si produkt koupíte přímo od výrobce — od farmáře, vinaře, včelaře nebo pekaře — bez jakéhokoliv prostředníka. Farmář dostane plnou cenu, vy dostanete čerstvý produkt a ušetříte na obchodní přirážce supermarketu.
+
+V České republice je přímý prodej ze zákona povolen na zemědělské usedlosti, farmářských trzích i e-shopem s doručením. Farmář nepotřebuje žádnou zvláštní licenci — stačí být registrovaný zemědělec.
+
+## Kde farmy najít?
+
+Nejjednodušší způsob je použít **Mapu Farem** — databázi, která mapuje farmy s přímým prodejem v celé ČR. Zadáte svůj kraj nebo město a zobrazí se vám farmy v okolí s kontakty, otevírací dobou a informacemi o tom, co prodávají.
+
+Dalšími možnostmi jsou farmářské trhy (konají se pravidelně ve většině větších měst), lokální Facebook skupiny nebo doporučení od sousedů.
+
+## Na co se farmáře zeptat při první návštěvě?
+
+Nebojte se ptát. Farmáři rádi mluví o své práci — je to jejich vášeň. Dobré otázky:
+
+- **Jak pěstujete / chováte?** — Chemie, nebo bez? Volný výběh, nebo klece?
+- **Kdy sklízíte?** — Čerstvost je klíčová, zejména u zeleniny.
+- **Máte pravidelnou nabídku?** — Mnozí farmáři nabízejí týdenní bedýnky s rezervací.
+- **Přijímáte objednávky předem?** — U masa nebo čerstvého mléka je to obvyklé.
+
+## Bedýnky versus přímý nákup
+
+**Bedýnka** je pravidelná box zeleniny (nebo smíšených produktů), kterou farmář připraví každý týden nebo dvoutýdně. Platíte předem, dostáváte to, co je právě k dispozici — sezónní a čerstvé. Výhoda: pravidelnost a pohodlí. Nevýhoda: nevybíráte si položky.
+
+**Přímý nákup** na farmě nebo farmářském trhu vám dává svobodu výběru, ale vyžaduje aktivnější přístup — musíte vědět, kdy farma prodává a vyrazit tam.
+
+Mnoho lidí kombinuje obojí: bedýnku se základní zeleninou a příležitostné návštěvy farmy pro maso, vejce nebo ovoce.
+
+## Jak plánovat nákupy podle sezóny?
+
+Přímý nákup od farmáře vás přirozeně naučí jíst sezónně. V létě rajčata a cukety, na podzim dýně a jablka, v zimě kořenová zelenina a zelí. Sezónní produkty jsou levnější, čerstvější a výživnější — nebyly pěstovány ve skleníku ani letěly z druhého konce světa.
+
+Dobrý tip: zeptejte se farmáře, co bude mít za dva týdny. Mnozí rádi sdílejí plán sklizně.
+
+## Tipy pro dlouhodobý vztah s farmářem
+
+Přímý prodej funguje nejlépe jako dlouhodobý vztah, ne jednorázový nákup. Farmář, kterého znáte, vám nechá stranou nejlepší kousky, upozorní vás na mimořádnou nabídku a bude s vámi komunikovat otevřeně. Na oplátku: buďte spolehlivý zákazník, plaťte včas a respektujte, že farma je živý organismus — někdy přijde méně, protože bylo sucho nebo mráz.
+
+Začněte jednou farmou. Navštivte ji, ochutnejte, ptejte se. Jeden dobrý farmář v okolí změní váš pohled na jídlo víc než jakákoliv dieta nebo výživový trend.`,
+  },
+  {
+    id: 'b7',
+    title: 'Pastevní chov v ČR — proč na tom záleží',
+    category: 'Zemědělství',
+    categoryColor: 'bg-amber-100 text-amber-700',
+    readTime: '6 min čtení',
+    excerpt: 'Krávy na pastvě, prasata v bahně, slepice na trávě — pastevní chov je vzácný a drahý, ale výsledek stojí za to. Co ho dělá jiným?',
+    coverGradient: 'from-amber-400 to-orange-500',
+    coverImage: 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=800&h=480&fit=crop&q=80',
+    slug: 'pastevni-chov-proc-zalezi',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
+    publishedAt: '22. března 2025',
+    content: `Krávy pasoucí se na zelené louce jsou pro mnoho z nás ikonou venkova. Jenže realita průmyslového zemědělství je jiná — většina hovězího masa a mléka v českých supermarketech pochází ze zvířat, která nikdy louku neviděla. Pastevní chov je výjimka, ne pravidlo. Proč na tom záleží?
+
+## Co je pastevní chov?
+
+Pastevní chov znamená, že zvířata tráví podstatnou část roku venku na pastvinách, kde se přirozeně pasou. Nejde jen o to, že mají "přístup ven" — skutečný pastevní chov zajišťuje, že tráva tvoří základ jejich stravy.
+
+V ČR se pastevní chov týká především:
+- **Hovězího dobytka** — krávy, býci a telata na horských a podhorských loukách
+- **Ovcí a koz** — přirození spásači krajiny
+- **Prasat** — venkovní chov s přístupem k půdě a bahnu
+- **Drůbeže** — slepice s volným výběhem na trávě
+
+## Rozdíl v kvalitě masa a mléka
+
+Zvířata krmená trávou mají jiné složení tuku než zvířata krmená kukuřicí a sójou. Pastevní hovězí obsahuje:
+
+- **Více omega-3 mastných kyselin** — až 3–5× více než průmyslové hovězí
+- **Více CLA (kyselina linolová)** — přirozený antioxidant
+- **Více vitaminu E a beta-karotenu** — odtud žlutší tuk a sytěji zbarvené mléko
+
+Chuťový rozdíl je výrazný — pastevní maso má bohatší, komplexnější chuť. Tuk je žlutší. Mléko od krav na pastvě je krémovější a voňavější.
+
+## Welfare zvířat
+
+Pastevní chov je pro zvířata přirozenější. Mohou se pohybovat, projevovat přirozené chování, žít ve stádě. To má přímý vliv na jejich stres — a stres se promítá do kvality masa. Zvíře, které prožilo spokojený život, dává lepší produkt.
+
+Průmyslový chov v halách s vysokou hustotou zvířat naopak vyžaduje preventivní podávání antibiotik, která pak v malých dávkách přecházejí do potravinového řetězce.
+
+## Ekologický dopad pastvy
+
+Správně vedená pastva má pozitivní ekologický dopad — na rozdíl od toho, co si mnozí myslí. Spásající zvířata:
+
+- **Udržují biodiverzitu luk** — bez pastvy zarůstají louky křovím a mizejí luční druhy
+- **Sekvestrují uhlík** — kořeny trav vázají CO₂ do půdy
+- **Udržují krajinný ráz** — typická česká krajina s loukami a mezemi
+
+Problém není pastva samotná, ale průmyslový chov s externím krmivem z druhého konce světa.
+
+## Jak poznat pastevní produkty?
+
+Na obalu bohužel nemusí být jasně uvedeno. Spolehlivé signály:
+- Přímý nákup od farmáře, který vám provoz popíše
+- Označení "pasture-raised" nebo "travou krmený"
+- Bio certifikace — bio normy vyžadují přístup na pastvu
+- Žlutý tuk u hovězího a másla — signál vysokého obsahu beta-karotenu
+
+Nejlepší způsob: navštivte farmu a podívejte se vlastníma očima. Farmáři, kteří chovají pastevně, jsou na to hrdí a rádi vám ukáží.
+
+## Kde pastevní farmy v ČR najít?
+
+Pastevní farmy jsou soustředěny v podhorských a horských oblastech — Vysočina, Šumava, Beskydy, Jeseníky, Krkonoše. Na Mapě Farem je najdete filtrováním kategorie "maso" nebo "mléko" v příslušných krajích.
+
+Cena pastevního masa je vyšší. Ale je to cena za kvalitu, welfare a udržitelnost — tři věci, které v supermarketovém mase nenajdete.`,
+  },
+  {
+    id: 'b8',
+    title: 'Sezónní kalendář: co jíst každý měsíc v roce',
+    category: 'Sezóna',
+    categoryColor: 'bg-green-100 text-green-700',
+    readTime: '5 min čtení',
+    excerpt: 'Sezónní stravování není trend — je to způsob, jak jíst levněji, zdravěji a s lepší chutí. Tady je přehled, co roste kdy.',
+    coverGradient: 'from-lime-400 to-green-500',
+    coverImage: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&h=480&fit=crop&q=80',
+    slug: 'sezonni-kalendar-co-jist',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
+    publishedAt: '5. dubna 2025',
+    content: `Rajče v lednu z holandského skleníku a rajče v srpnu ze zahrady jsou dvě různé potraviny — ve chuti, výživě i ceně. Sezónní stravování není životní styl pro vyvolené, je to prostý zdravý rozum. Tady je přehled, co kdy roste a proč to jíst.
+
+## Proč jíst sezónně?
+
+**Chuť.** Zelenina sklizená ve správnou dobu chutná nesrovnatelně lépe než ta pěstovaná mimo sezónu pod umělým osvětlením. Rajče potřebuje slunce. Jahoda potřebuje teplo. Dýně potřebuje podzimní chlad.
+
+**Výživa.** Obsah vitamínů a antioxidantů je nejvyšší těsně po sklizni. Se každým dnem přepravy a skladování klesá. Čím kratší cesta od pole na talíř, tím více živin.
+
+**Cena.** Sezónní produkty jsou levné, protože jsou dostupné v hojnosti. Jahody v červnu stojí desetinu ceny proti jarním skleníkovým.
+
+**Ekologie.** Sezónní stravování přirozeně omezuje poptávku po dovozu ze vzdálených zemí a skleníkovém pěstování.
+
+## Jaro (duben–červen)
+
+Jaro je po zimě jako výbuch chutí. Prvními hosty jsou:
+
+- **Duben:** medvědí česnek, ředkvičky, špenát, pažitka, rebarbora, chřest (konec dubna)
+- **Květen:** saláty, zelená cibulka, ředkvičky, hrášek, jahody (konec května)
+- **Červen:** jahody, třešně, rybíz, hrášek, salát, cukety (začátek)
+
+Chřest má v ČR krátkou sezónu — jen 4–6 týdnů. Nenechte si ho ujít a kupujte jej výhradně od českých farmářů, ne z Peru.
+
+## Léto (červenec–září)
+
+Léto je ráj pro zeleninu. Farmářské stánky se prohýbají pod tíhou:
+
+- **Červenec:** rajčata, okurky, papriky, cukety, borůvky, maliny, meruňky
+- **Srpen:** kukuřice, rajčata (vrchol), lilek, broskve, švestky, melony
+- **Září:** jablka, hrušky, švestky, fazolové lusky, pozdní rajčata, zelí
+
+Paradox léta: zeleniny je tolik, že nestíháte zpracovávat. Skvělá příležitost zavařovat, mrazit a fermentovat na zimu.
+
+## Podzim (říjen–listopad)
+
+Podzim přináší dary, které vydrží celou zimu:
+
+- **Říjen:** dýně, jablka, hrušky, kdoule, řepa, mrkev, petržel, zelí na kysání, houby
+- **Listopad:** kořenová zelenina, brambory (poslední sklizeň), zelí, pórek, kapusta
+
+Dýně je podzimní hvězda — peče se, polévá, pyré, dá se zasušit. A česká odrůda Hokkaidó nepotřebuje loupání.
+
+## Zima (prosinec–březen)
+
+Zima je zásobárna. Co přežívá:
+
+- Kořenová zelenina (mrkev, petržel, celer, pastinák, řepa)
+- Zelí — čerstvé i kysané (kysané zelí je zimní superpotravina plná vitamínu C)
+- Brambory, cibule, česnek
+- Jablka a hrušky (skladované odrůdy)
+- Maso, vejce, mléčné výrobky — ty jsou celoroční
+
+## Jak uchovat sezónní přebytky?
+
+- **Mražení:** rajčata, byliny, borůvky, fazolky — blanšírujte a zmrazte
+- **Fermentace:** zelí, okurky, řepa — kvašení přidá probiotika a prodlouží trvanlivost
+- **Zavařování:** džemy, kompoty, protlak — klasika, která funguje
+- **Sušení:** bylinky, houby, ovoce — suchý vzduch nebo sušička
+
+Začněte sezónním stravováním postupně. Jeden produkt, jeden měsíc. Sledujte, co je na farmářském trhu nejlevnější a nejhojnější — příroda vám poradí sama.`,
+  },
+  {
+    id: 'b9',
+    title: 'Kváskový chléb od farmáře — co ho dělá výjimečným',
+    category: 'Produkty',
+    categoryColor: 'bg-orange-100 text-orange-700',
+    readTime: '5 min čtení',
+    excerpt: 'Kváskový chléb zažívá renesanci. Ale ne každý "kváskový" chléb je skutečný. Jak poznat ten pravý a proč je lepší?',
+    coverGradient: 'from-orange-300 to-amber-500',
+    coverImage: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&h=480&fit=crop&q=80',
+    slug: 'kvaskovy-chleb-od-farmare',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
+    publishedAt: '28. března 2025',
+    content: `Chléb pečený na kvásku je v Čechách stará tradice, která se na dekády ztratila v průmyslové výrobě a nyní se vrací. Dnes ho pečou farmáři, malé pekárny i domácí pekaři. Co ho dělá jiným a jak poznat ten skutečný?
+
+## Co je kvásek?
+
+Kvásek je přírodní kultura divokých kvasinek a bakterií mléčného kvašení, která vzniká fermentací mouky a vody. Žádné průmyslové droždí — jen přirozeně se vyskytující mikroorganismy, které jsou všude kolem nás.
+
+Správně vedený kvásek může být živý desítky let. Mnozí pekaři chlubí se kváskem staým 50 nebo i 100 let, předávaným z generace na generaci.
+
+## Jak fermentace funguje?
+
+Při kynutí na kvásku probíhají dva procesy současně: kvasinky produkují CO₂ (chléb kyne) a bakterie mléčného kvašení produkují kyselinu mléčnou a octovou (chléb získává chuť a přirozenou kyselost).
+
+Tento dvojitý proces trvá výrazně déle než kynutí na droždí — 8 až 24 hodin. Právě tato délka je klíčová: za tu dobu enzymy rozkládají lepek a fytovou kyselinu, čímž chléb získává lepší stravitelnost.
+
+## Rozdíl oproti průmyslovému chlebu
+
+Průmyslový chléb vzniká za 2–3 hodiny s pomocí průmyslového droždí, emulgátorů a zlepšovačů mouky. Kvásek žádné přísady nepotřebuje — mouka, voda, sůl, čas.
+
+Důsledky:
+- **Trvanlivost:** kváskový chléb vydrží 5–7 dní bez plísně (kyselost přirozeně konzervuje). Průmyslový chléb bez konzervantů zplísní za 2–3 dny.
+- **Chuť:** komplexní, mírně kyselá, plná — nezaměnitelná
+- **Stravitelnost:** pre-fermentace částečně rozkládá lepek; mnozí lidé s citlivostí na lepek snášejí kváskový chléb lépe než průmyslový (pozor: celiakie je stále kontraindikace)
+
+## Jak poznat skutečný kváskový chléb?
+
+Trh je plný "kváskových" chlebů, které jsou jen marketingem. Pravý kváskový chléb poznáte:
+
+- **Složení:** mouka, voda, sůl. Žádné droždí, žádné emulgátory, žádné "zlepšovače"
+- **Cena:** opravdový kváskový chléb stojí 80–150 Kč za bochník. Levnější varianta téměř jistě není poctivá.
+- **Kůrka:** silná, křupavá, tmavá. Průmyslový chléb má tenkou, měkkou kůrku.
+- **Střídka:** nepravidelné, různě velké díry — výsledek přirozené fermentace
+- **Vůně:** kyselá, komplexní. Průmyslový chléb voní neutrálně nebo droždím.
+
+## Kde koupit kváskový chléb od farmáře?
+
+Mnoho farem, které pěstují obilí nebo mají vlastní mlýn, peče chléb přímo na místě. Farmářské trhy jsou dalším dobrým zdrojem — hledejte stánky malých pekáren, ne velkých dodavatelů.
+
+Na Mapě Farem najdete farmy s kategorií "chléb a pečivo" — tam je šance na opravdový kváskový chléb nejvyšší. Nebojte se zeptat na složení a proces — poctivý pekař vám rád odpoví.`,
+  },
+  {
+    id: 'b10',
+    title: 'Farmářská vejce — proč jsou jiná a jak je poznat',
+    category: 'Produkty',
+    categoryColor: 'bg-yellow-100 text-yellow-700',
+    readTime: '4 min čtení',
+    excerpt: 'Číslo na vejci prozradí víc, než si myslíte. Jak číst kód, co znamená volný výběh a proč jsou farmářská vejce sytěji zbarvená?',
+    coverGradient: 'from-yellow-300 to-amber-400',
+    coverImage: 'https://images.unsplash.com/photo-1518569656558-1f25e69d2fd0?w=800&h=480&fit=crop&q=80',
+    slug: 'farmarska-vejce-proc-jsou-jina',
+    author: 'Redakce Mapa Farem',
+    authorInitials: 'MF',
+    authorColor: 'bg-primary-600',
+    publishedAt: '15. března 2025',
+    content: `Vejce je základní potravina, která skrývá víc informací, než by se zdálo. Číslice vyražená na skořápce prozradí, jak slepice žila. A to přímo určuje, co uvnitř vejce najdete.
+
+## Co znamenají číslice na vejci?
+
+Každé vejce prodávané v EU musí mít na skořápce vyražený kód výrobce. První číslice označuje způsob chovu:
+
+- **0** — ekologický chov (bio): slepice na trávě, bio krmivo, max. 6 slepic na m²
+- **1** — volný výběh: přístup ven, min. 4 m² na slepici venku
+- **2** — halový chov: v hale, bez výběhu, max. 9 slepic na m²
+- **3** — klecový chov: v obohacených klecích (v ČR stále legální)
+
+Za číslicí následuje kód země (CZ = Česká republika) a číslo hospodářství.
+
+Vejce z farmářského přímého prodeje kód nemusejí mít — zákon to vyžaduje až od producentů s více než 50 slepicemi. Malý farmář s domácím chovem může prodávat vejce bez razítka.
+
+## Proč jsou farmářská vejce sytěji zbarvená?
+
+Sytě oranžový žloutek je přirozený důsledek přístupu slepice k trávě, hmyzu a přirozenému slunci. Xantofyly a karoteny z přirozeného krmení zbarvují žloutek.
+
+Průmyslové chovy barvu žloutku regulují přídavky paprikového prášku nebo syntetickými barvivy v krmivu — všechno povolené, ale zavádějící. Tmavý žloutek tedy není automatický důkaz kvality; je jím tehdy, když pochází z přirozeného chovu.
+
+## Výživová hodnota farmářských vajec
+
+Vejce od slepic s přístupem na pastvu obsahují oproti klatovým vejcím:
+
+- **2× více omega-3** mastných kyselin
+- **3× více vitaminu E**
+- **7× více beta-karotenu**
+- **Méně nasycených tuků**
+
+Jsou to data z nezávislých studií porovnávajících vejce z různých způsobů chovu. Rozdíl není marginální — je zásadní.
+
+## Jak správně vejce skladovat?
+
+V Evropě se vejce nemyjí (mycím procesem se odstraňuje přirozená ochranná vrstva — kutikula). Proto se mohou a měla by se skladovat při pokojové teplotě — ne v lednici. Správně skladované vejce vydrží 3–4 týdny.
+
+Pokud vejce koupíte od farmáře a jsou čerstvě snesená, vydrží při pokojové teplotě klidně měsíc. Čerstvost otestujete vodním testem: čerstvé vejce klesne ke dnu, starší se postaví na špičku, zkažené pluje.
+
+## Kde koupit farmářská vejce?
+
+Farmářská vejce jsou dostupná na farmářských trzích, přímo na farmách nebo přes bedýnkové systémy. Na Mapě Farem najdete farmy s kategorií "vejce" — mnohé nabízejí pravidelné odběry.
+
+Cena bývá 5–8 Kč za vejce (oproti 3–4 Kč za klecové). Za tu korunu navíc dostanete slepici, která chodila po trávě, a vejce s reálně vyšší výživovou hodnotou. To je férový obchod.`,
+  },
+]
+
+// ──────────────────────────────────────────────
+// Category landing pages — /kategorie/[slug]
+// ──────────────────────────────────────────────
+
+export interface CategoryPageData {
+  slug: string
+  category: string        // matches FarmCategory value e.g. 'mléko'
+  name: string            // display name
+  emoji: string
+  headline: string        // H1 text
+  description: string     // meta description + intro paragraph
+  gradient: string        // Tailwind gradient for hero
+}
+
+export const CATEGORY_PAGE_LIST: CategoryPageData[] = [
+  { slug: 'zelenina', category: 'zelenina', name: 'Zelenina', emoji: '🥕', headline: 'Čerstvá zelenina přímo od farmáře', description: 'Kupte čerstvou zeleninu přímo od českých farmářů. Žádná distribuce, žádné zbytečné prostředníky — zelenina sklizená dnes a u vás zítra.', gradient: 'from-emerald-400 to-green-500' },
+  { slug: 'ovoce', category: 'ovoce', name: 'Ovoce', emoji: '🍎', headline: 'Čerstvé ovoce z českých sadů a zahrad', description: 'Jahody, třešně, jablka, hrušky a další ovoce přímo z českých sadů. Sezónní, čerstvé, bez chemie.', gradient: 'from-rose-400 to-pink-500' },
+  { slug: 'maso', category: 'maso', name: 'Maso', emoji: '🥩', headline: 'Farmářské maso z pastevního chovu', description: 'Hovězí, vepřové, jehněčí a drůbeží maso od farmářů, kteří chovají zvířata na pastvě. Víte, co jíte a odkud to pochází.', gradient: 'from-amber-500 to-orange-600' },
+  { slug: 'mleko', category: 'mléko', name: 'Mléko a mléčné výrobky', emoji: '🥛', headline: 'Čerstvé farmářské mléko a mléčné výrobky', description: 'Plnotučné mléko, kefír, jogurt a smetana přímo od farmářů s vlastním stádem. Bez UHT zpracování, plné výživných látek.', gradient: 'from-sky-300 to-blue-400' },
+  { slug: 'vejce', category: 'vejce', name: 'Vejce', emoji: '🥚', headline: 'Farmářská vejce ze volného chovu', description: 'Vejce od slepic, které se volně pohybují na trávě. Žloutek sytě žlutý, chuť nesrovnatelná s klecovým chovem.', gradient: 'from-yellow-300 to-amber-400' },
+  { slug: 'med', category: 'med', name: 'Med', emoji: '🍯', headline: 'Přírodní med přímo od českých včelařů', description: 'Lipový, akátový, pohankový i lesní med od malých včelařů. Nekrystalizovaný průmyslový med nemůže konkurovat chuti pravého medu z úlu.', gradient: 'from-amber-300 to-yellow-400' },
+  { slug: 'chleb', category: 'chléb', name: 'Chléb a pečivo', emoji: '🍞', headline: 'Domácí chléb a pečivo od farmářů a pekařů', description: 'Kváskový chléb, celozrnné pečivo a tradiční vdolky pečené z lokální mouky. Bez konzervantů, upečené s péčí.', gradient: 'from-orange-300 to-amber-500' },
+  { slug: 'syry', category: 'sýry', name: 'Sýry', emoji: '🧀', headline: 'Farmářské sýry z čerstvého mléka', description: 'Čerstvé i zrající sýry přímo od farmářů s vlastní výrobou. Balkánský sýr, hermelín, niva nebo tvaroh — bez průmyslového zpracování.', gradient: 'from-yellow-400 to-orange-400' },
+  { slug: 'vino', category: 'víno', name: 'Víno', emoji: '🍷', headline: 'Moravská a česká vína přímo od vinaře', description: 'Bílá, červená i růžová vína z moravských a českých vinohradů. Kupujte přímo od vinaře — bez obchodní přirážky a s příběhem každé lahve.', gradient: 'from-purple-500 to-violet-600' },
+  { slug: 'byliny', category: 'byliny', name: 'Bylinky', emoji: '🌿', headline: 'Čerstvé a sušené bylinky od farmářů', description: 'Levandule, máta, meduňka, šalvěj a desítky dalších bylin pěstovaných bez chemie. Čerstvé i sušené, na čaje, do kuchyně i pro zdraví.', gradient: 'from-lime-400 to-green-500' },
+  { slug: 'ryby', category: 'ryby', name: 'Ryby', emoji: '🐟', headline: 'Čerstvé ryby z českých rybníků a chovů', description: 'Kapr, pstruh, candát a další sladkovodní ryby přímo od rybářů a chovatelů. Čerstvé nebo živé, bez dlouhé přepravy.', gradient: 'from-cyan-400 to-teal-500' },
+  { slug: 'ostatni', category: 'ostatní', name: 'Ostatní produkty', emoji: '🌾', headline: 'Ostatní farmářské produkty', description: 'Česnek, cibule, brambory, luštěniny, jedlé houby, domácí džemy, sirupy a další produkty přímo od českých farmářů.', gradient: 'from-neutral-400 to-stone-500' },
 ]
 
 // ──────────────────────────────────────────────
