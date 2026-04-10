@@ -38,7 +38,7 @@ export function BlogPreview() {
             <AnimatedSection key={article.id} delay={(i * 100) as 0 | 100 | 200}>
               <Link
                 href={`/blog/${article.slug}`}
-                className="group flex flex-col rounded-2xl overflow-hidden bg-surface border border-earth-50 hover:shadow-card-hover transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:scale-[1.01]"
+                className="group flex flex-col rounded-2xl overflow-hidden bg-surface border border-earth-50 hover:shadow-card-hover transition-[transform,box-shadow] duration-300 cursor-pointer hover:-translate-y-1"
                 aria-label={`Číst článek: ${article.title}`}
               >
                 {/* Cover */}
@@ -78,8 +78,8 @@ export function BlogPreview() {
                     {article.excerpt}
                   </p>
 
-                  <span className="text-xs font-semibold text-primary-600 inline-flex items-center gap-1.5 group-hover:gap-2 transition-all">
-                    Číst více <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                  <span className="text-xs font-semibold text-primary-600 inline-flex items-center gap-1.5">
+                    Číst více <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" aria-hidden="true" />
                   </span>
                 </div>
               </Link>

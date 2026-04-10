@@ -278,7 +278,7 @@ export function MarketsClient() {
                 key={f.id}
                 onClick={() => setTimeFilter(f.id)}
                 className={cn(
-                  'px-4 py-1.5 rounded-full text-sm font-medium border transition-all cursor-pointer',
+                  'px-4 py-1.5 rounded-full text-sm font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer active:scale-[0.97]',
                   timeFilter === f.id
                     ? 'bg-earth-500 border-earth-500 text-white shadow-sm'
                     : 'bg-white border-neutral-200 text-neutral-600 hover:border-earth-300 hover:text-earth-700',

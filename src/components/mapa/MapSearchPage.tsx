@@ -130,7 +130,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                 }
               }}
               aria-label="Vyhledávání farem"
-              className="w-full pl-9 pr-3 py-2 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-surface"
+              className="w-full pl-9 pr-3 py-2 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-[border-color,box-shadow] bg-surface"
             />
             {filters.searchQuery && (
               <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 cursor-pointer transition-colors" aria-label="Smazat hledání">
@@ -239,7 +239,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                 <div className="flex flex-wrap gap-1.5" role="group" aria-label="Kategorie">
                   {FILTER_CATEGORIES.map((cat) => (
                     <button key={cat} onClick={() => toggleCategory(cat)} aria-pressed={filters.categories.includes(cat)}
-                      className={cn('px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer',
+                      className={cn('px-3 py-1 rounded-full text-xs font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                         filters.categories.includes(cat) ? 'bg-primary-600 border-primary-600 text-white' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400 hover:text-primary-600',
                       )}>
                       {CATEGORY_LABELS[cat]}
@@ -267,37 +267,37 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                 <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">Dostupnost a kvalita</div>
                 <div className="flex flex-wrap gap-2">
                   <button onClick={() => setOpenNow(!filters.openNow)} aria-pressed={filters.openNow}
-                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                       filters.openNow ? 'bg-green-50 border-green-400 text-green-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-green-400',
                     )}>
                     <Clock className="w-3.5 h-3.5" aria-hidden="true" /> Nyní otevřeno
                   </button>
                   <button onClick={() => setVerifiedOnly(!filters.verifiedOnly)} aria-pressed={filters.verifiedOnly}
-                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                       filters.verifiedOnly ? 'bg-primary-50 border-primary-400 text-primary-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
                     )}>
                     <CheckCircle className="w-3.5 h-3.5" aria-hidden="true" /> Pouze ověřené
                   </button>
                   <button onClick={() => setHasPhotos(!filters.hasPhotos)} aria-pressed={filters.hasPhotos}
-                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                       filters.hasPhotos ? 'bg-primary-50 border-primary-400 text-primary-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
                     )}>
                     <Star className="w-3.5 h-3.5" aria-hidden="true" /> S fotografiemi
                   </button>
                   <button onClick={() => setBioOnly(!filters.bioOnly)} aria-pressed={filters.bioOnly}
-                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                       filters.bioOnly ? 'bg-green-50 border-green-500 text-green-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-green-400',
                     )}>
                     ♻️ Bio/Eko
                   </button>
                   <button onClick={() => setDeliveryOnly(!filters.deliveryOnly)} aria-pressed={filters.deliveryOnly}
-                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                       filters.deliveryOnly ? 'bg-primary-50 border-primary-400 text-primary-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
                     )}>
                     <Navigation2 className="w-3.5 h-3.5" aria-hidden="true" /> Rozvoz
                   </button>
                   <button onClick={() => setPickYourOwnOnly(!filters.pickYourOwnOnly)} aria-pressed={filters.pickYourOwnOnly}
-                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer',
+                    className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                       filters.pickYourOwnOnly ? 'bg-primary-50 border-primary-400 text-primary-700' : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
                     )}>
                     <MapPin className="w-3.5 h-3.5" aria-hidden="true" /> Samosběr
@@ -386,14 +386,13 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                     key={farm.id}
                     onMouseEnter={() => hoverFarm(farm.id)}
                     onMouseLeave={() => hoverFarm(null)}
-                    style={{ borderLeftColor: primaryMeta.color }}
                     className={cn(
-                      'w-full flex gap-3 p-3 rounded-xl border border-l-4 transition-all duration-200',
+                      'w-full flex gap-3 p-3 rounded-xl border transition-[border-color,box-shadow,background-color] duration-200',
                       isSelected
-                        ? 'bg-primary-50 shadow-glow border-r-primary-500 border-t-primary-500 border-b-primary-500'
+                        ? 'bg-primary-50 shadow-md border-primary-300'
                         : isHovered
-                          ? 'bg-primary-50/50 shadow-sm border-r-primary-300 border-t-primary-300 border-b-primary-300'
-                          : 'bg-white hover:shadow-sm border-r-neutral-100 border-t-neutral-100 border-b-neutral-100',
+                          ? 'bg-primary-50/40 shadow-sm border-primary-200'
+                          : 'bg-white hover:shadow-sm border-neutral-100',
                     )}
                   >
                     {/* Cover thumb — real photo or emoji+gradient fallback */}
@@ -460,7 +459,7 @@ export function MapSearchPage({ farms: allFarms, markers: allMarkers, initialKra
                         aria-label={comparing ? 'Odebrat z porovnání' : 'Přidat do porovnání'}
                         aria-pressed={comparing}
                         className={cn(
-                          'w-[44px] h-[22px] flex items-center justify-center rounded-full border text-[9px] font-bold transition-all cursor-pointer',
+                          'w-[44px] h-[22px] flex items-center justify-center rounded-full border text-[9px] font-bold transition-[border-color,background-color,color] duration-150 cursor-pointer',
                           comparing ? 'bg-forest text-white border-forest' : compareDisabled ? 'opacity-30 border-neutral-200 text-neutral-400 cursor-not-allowed' : 'border-neutral-200 text-neutral-400 hover:border-forest hover:text-forest',
                         )}
                       >

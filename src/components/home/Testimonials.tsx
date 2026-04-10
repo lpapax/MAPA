@@ -38,7 +38,7 @@ export function Testimonials() {
             <AnimatedSection
               key={t.id}
               delay={(i * 100) as 0 | 100 | 200}
-              className="relative flex flex-col bg-white rounded-3xl p-7 shadow-card hover:shadow-card-hover transition-all duration-300"
+              className="relative flex flex-col bg-white rounded-3xl p-7 shadow-card hover:shadow-card-hover transition-[box-shadow] duration-300"
             >
               {/* Large decorative quote mark */}
               <div

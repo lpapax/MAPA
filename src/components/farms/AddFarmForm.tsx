@@ -118,7 +118,7 @@ function FormField({
 }
 
 const inputCls =
-  'w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-white'
+  'w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-[border-color,box-shadow] bg-white'
 
 export function AddFarmForm() {
   const [step, setStep] = useState(1)
@@ -225,7 +225,7 @@ export function AddFarmForm() {
             <div key={s.id} className="flex flex-col items-center flex-1">
               <div
                 className={cn(
-                  'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300',
+                  'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-[border-color,background-color,color] duration-300',
                   step > s.id
                     ? 'bg-primary-600 border-primary-600 text-white'
                     : step === s.id
@@ -249,7 +249,7 @@ export function AddFarmForm() {
         </div>
         <div className="h-1.5 bg-neutral-100 rounded-full overflow-hidden">
           <div
-            className="h-full bg-primary-600 rounded-full transition-all duration-500"
+            className="h-full bg-primary-600 rounded-full transition-[width] duration-500"
             style={{ width: `${((step - 1) / (STEPS.length - 1)) * 100}%` }}
             role="progressbar"
             aria-valuenow={step}
@@ -272,9 +272,11 @@ export function AddFarmForm() {
                 value={data.name}
                 onChange={(e) => update('name', e.target.value)}
                 placeholder="Ekofarma Novák"
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? 'farm-name-error' : undefined}
                 className={cn(inputCls, errors.name && 'border-red-300 focus:ring-red-300')}
               />
-              {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+              {errors.name && <p id="farm-name-error" role="alert" className="text-red-500 text-xs mt-1">{errors.name}</p>}
             </FormField>
             <FormField id="farm-desc" label="Popis farmy" required>
               <textarea
@@ -283,9 +285,11 @@ export function AddFarmForm() {
                 value={data.description}
                 onChange={(e) => update('description', e.target.value)}
                 placeholder="Stručně popište vaši farmu, co pěstujete a jak hospodaříte…"
+                aria-invalid={!!errors.description}
+                aria-describedby={errors.description ? 'farm-desc-error' : undefined}
                 className={cn(inputCls, 'resize-none', errors.description && 'border-red-300')}
               />
-              {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
+              {errors.description && <p id="farm-desc-error" role="alert" className="text-red-500 text-xs mt-1">{errors.description}</p>}
             </FormField>
             <div>
               <p className="text-xs font-semibold text-forest mb-2">
@@ -296,7 +300,7 @@ export function AddFarmForm() {
                   <label
                     key={cat.value}
                     className={cn(
-                      'flex items-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-medium cursor-pointer transition-all',
+                      'flex items-center gap-2 px-3 py-2.5 rounded-xl border text-xs font-medium cursor-pointer transition-[border-color,background-color,color] duration-150',
                       data.categories.includes(cat.value)
                         ? 'bg-primary-50 border-primary-300 text-primary-700'
                         : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-200',
@@ -337,9 +341,11 @@ export function AddFarmForm() {
                 value={data.address}
                 onChange={(e) => update('address', e.target.value)}
                 placeholder="Farmářská 12"
+                aria-invalid={!!errors.address}
+                aria-describedby={errors.address ? 'farm-address-error' : undefined}
                 className={cn(inputCls, errors.address && 'border-red-300')}
               />
-              {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
+              {errors.address && <p id="farm-address-error" role="alert" className="text-red-500 text-xs mt-1">{errors.address}</p>}
             </FormField>
             <div className="grid grid-cols-2 gap-4">
               <FormField id="farm-city" label="Město / obec" required>
@@ -349,9 +355,11 @@ export function AddFarmForm() {
                   value={data.city}
                   onChange={(e) => update('city', e.target.value)}
                   placeholder="České Budějovice"
+                  aria-invalid={!!errors.city}
+                  aria-describedby={errors.city ? 'farm-city-error' : undefined}
                   className={cn(inputCls, errors.city && 'border-red-300')}
                 />
-                {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
+                {errors.city && <p id="farm-city-error" role="alert" className="text-red-500 text-xs mt-1">{errors.city}</p>}
               </FormField>
               <FormField id="farm-zip" label="PSČ" required>
                 <input
@@ -361,9 +369,11 @@ export function AddFarmForm() {
                   onChange={(e) => update('zip', e.target.value)}
                   placeholder="370 01"
                   maxLength={6}
+                  aria-invalid={!!errors.zip}
+                  aria-describedby={errors.zip ? 'farm-zip-error' : undefined}
                   className={cn(inputCls, errors.zip && 'border-red-300')}
                 />
-                {errors.zip && <p className="text-red-500 text-xs mt-1">{errors.zip}</p>}
+                {errors.zip && <p id="farm-zip-error" role="alert" className="text-red-500 text-xs mt-1">{errors.zip}</p>}
               </FormField>
             </div>
             <FormField id="farm-kraj" label="Kraj" required>
@@ -371,6 +381,8 @@ export function AddFarmForm() {
                 id="farm-kraj"
                 value={data.kraj}
                 onChange={(e) => update('kraj', e.target.value)}
+                aria-invalid={!!errors.kraj}
+                aria-describedby={errors.kraj ? 'farm-kraj-error' : undefined}
                 className={cn(inputCls, errors.kraj && 'border-red-300')}
               >
                 <option value="">— Vyberte kraj —</option>
@@ -378,7 +390,7 @@ export function AddFarmForm() {
                   <option key={k} value={k}>{k}</option>
                 ))}
               </select>
-              {errors.kraj && <p className="text-red-500 text-xs mt-1">{errors.kraj}</p>}
+              {errors.kraj && <p id="farm-kraj-error" role="alert" className="text-red-500 text-xs mt-1">{errors.kraj}</p>}
             </FormField>
           </div>
         )}
@@ -395,6 +407,8 @@ export function AddFarmForm() {
                   value={data.phone}
                   onChange={(e) => update('phone', e.target.value)}
                   placeholder="+420 123 456 789"
+                  aria-invalid={!!errors.phone}
+                  aria-describedby={errors.phone ? 'farm-phone-error' : undefined}
                   className={cn(inputCls, errors.phone && 'border-red-300')}
                 />
               </FormField>
@@ -409,7 +423,7 @@ export function AddFarmForm() {
                 />
               </FormField>
             </div>
-            {errors.phone && <p className="text-red-500 text-xs -mt-3">{errors.phone}</p>}
+            {errors.phone && <p id="farm-phone-error" role="alert" className="text-red-500 text-xs -mt-3">{errors.phone}</p>}
             <FormField id="farm-web" label="Webové stránky">
               <input
                 id="farm-web"

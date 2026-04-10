@@ -20,6 +20,7 @@ npm run merge-farms    # Merge scripts/output/farms-imported.json into src/data/
 npm run seed-supabase  # Batch-insert src/data/farms.json into Supabase (service role key required)
 npm run enrich-photos  # Scrape og:image from farm websites → updates farms-imported.json
 npm run update-photos  # Push enriched photos/descriptions from farms-imported.json to Supabase
+npm run claw           # Start NanoClaw interactive Claude REPL (requires ANTHROPIC_API_KEY)
 ```
 
 `import-farms` requires `GOOGLE_PLACES_API_KEY` in `.env.local`. It runs 30 region centers × 15 farm-type queries, saves progress after each query, and resumes from `scripts/output/farms-imported.json` on re-run. Output goes to `scripts/output/` (gitignored).
@@ -100,7 +101,7 @@ localStorage hooks (SSR-safe: hydrate via `useEffect` after mount):
 - `src/hooks/useUserPrefs.ts` — key `mf_prefs`. Stores `{ theme, radius, diet }`. `diet: DietPreference[]` where `DietPreference` is `'vegetarian' | 'vegan' | 'gluten-free' | 'lactose-free' | 'organic' | 'local' | 'carnivore' | 'pescatarian' | 'paleo' | 'keto'`. UI rendered in `ProfilClient.tsx` as toggle cards.
 - `src/hooks/useFavoriteFarms.ts` — key `mf_favorites`
 - `src/hooks/useBedynka.ts` — key `mf_bedynka`, item ids are `farmSlug__productId`; `totalItems` exposed for nav badge
-- `src/hooks/useRecentFarms.ts` — key `mf_recent_farms`, max 6 entries
+- `src/hooks/useRecentFarms.ts` — key `mf_recent_farms`, max 6 entries. `RecentFarmEntry` includes `image?: string` (first real photo URL, validated same way as farm photos).
 - `src/hooks/useRecentSearches.ts` — key `mf_recent_searches`, max 5 entries
 - `src/hooks/useCookieConsent.ts` — key `mf_cookie_consent`, values `'accepted' | 'rejected'`. Returns `{ consent, accept, reject, showBanner }`. `showBanner` is only `true` after hydration when no stored decision exists — prevents SSR flash.
 
@@ -246,6 +247,7 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `/admin/claimy` | Client shell | Farm claim requests — approve/reject |
 | `/admin/zadosti` | Client shell | Pending farm submission requests (`farm_claims` status=pending). Approve/reject via `/api/admin/zadosti/[id]`. |
 | `/admin/odbery` | Client shell | Newsletter subscribers + CSV export |
+| `/admin/trhy` | Client shell | Farmers market management — CRUD for markets table via Supabase. |
 | `/admin/recenze` | Client shell | All reviews — read and delete |
 | `/admin/blog` | Client shell | Blog article management — create/edit/delete entries in `articles` table. |
 
@@ -317,6 +319,8 @@ The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-m
 `src/components/ui/GTMScript.tsx` — conditionally loads GTM. Safe to leave in layout even without `NEXT_PUBLIC_GTM_ID` set.
 
 `@vercel/analytics` — `<Analytics />` is mounted in `layout.tsx` just before `<ThemeProvider>`. Tracks page views automatically on Vercel. No configuration needed.
+
+`@vercel/speed-insights` — `<SpeedInsights />` is mounted alongside `<Analytics />` in `layout.tsx`. Tracks Core Web Vitals on Vercel. No configuration needed.
 
 `src/app/not-found.tsx`, `src/app/error.tsx`, `src/app/loading.tsx` — custom 404, error boundary, and skeleton loader.
 

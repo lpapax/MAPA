@@ -102,7 +102,7 @@ export function ContactForm() {
           onChange={(e) => update('name', e.target.value)}
           placeholder="Jana Nováková"
           autoComplete="name"
-          className={`w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 ${
+          className={`w-full px-4 py-3 rounded-xl border text-sm transition-[border-color,box-shadow] focus:outline-none focus:ring-2 focus:ring-primary-400 ${
             errors.name ? 'border-red-300 bg-red-50' : 'border-neutral-200 focus:border-primary-400'
           }`}
           aria-describedby={errors.name ? 'contact-name-error' : undefined}
@@ -122,7 +122,7 @@ export function ContactForm() {
           onChange={(e) => update('email', e.target.value)}
           placeholder="jana@example.cz"
           autoComplete="email"
-          className={`w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 ${
+          className={`w-full px-4 py-3 rounded-xl border text-sm transition-[border-color,box-shadow] focus:outline-none focus:ring-2 focus:ring-primary-400 ${
             errors.email ? 'border-red-300 bg-red-50' : 'border-neutral-200 focus:border-primary-400'
           }`}
           aria-describedby={errors.email ? 'contact-email-error' : undefined}
@@ -139,7 +139,7 @@ export function ContactForm() {
           id="contact-subject"
           value={form.subject}
           onChange={(e) => update('subject', e.target.value)}
-          className={`w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 bg-white cursor-pointer ${
+          className={`w-full px-4 py-3 rounded-xl border text-sm transition-[border-color,box-shadow] focus:outline-none focus:ring-2 focus:ring-primary-400 bg-white cursor-pointer ${
             errors.subject ? 'border-red-300 bg-red-50' : 'border-neutral-200 focus:border-primary-400'
           }`}
           aria-describedby={errors.subject ? 'contact-subject-error' : undefined}
@@ -163,7 +163,7 @@ export function ContactForm() {
           onChange={(e) => update('message', e.target.value)}
           placeholder="Napište nám, jak vám můžeme pomoci…"
           rows={5}
-          className={`w-full px-4 py-3 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary-400 resize-none ${
+          className={`w-full px-4 py-3 rounded-xl border text-sm transition-[border-color,box-shadow] focus:outline-none focus:ring-2 focus:ring-primary-400 resize-none ${
             errors.message ? 'border-red-300 bg-red-50' : 'border-neutral-200 focus:border-primary-400'
           }`}
           aria-describedby={errors.message ? 'contact-message-error' : undefined}

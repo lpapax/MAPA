@@ -32,7 +32,7 @@ export function MobileBottomNav() {
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
                   'relative flex flex-col items-center justify-center w-full h-full gap-1 cursor-pointer',
-                  'transition-colors duration-200 active:scale-95',
+                  'transition-colors duration-200 active:scale-[0.97]',
                   isActive ? 'text-primary-600 dark:text-primary-400' : 'text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300',
                 )}
               >

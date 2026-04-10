@@ -102,7 +102,7 @@ export function HelpAccordion() {
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Hledat v nápovědě…"
           aria-label="Hledat v nápovědě"
-          className="w-full pl-11 pr-10 py-3.5 rounded-2xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-white shadow-sm"
+          className="w-full pl-11 pr-10 py-3.5 rounded-2xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-[border-color,box-shadow] bg-white shadow-sm"
         />
         {search && (
           <button

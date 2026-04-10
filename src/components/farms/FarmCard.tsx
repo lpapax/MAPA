@@ -40,7 +40,7 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
       onKeyDown={(e) => e.key === 'Enter' && handleClick()}
       className={cn(
         'group relative rounded-xl p-4 cursor-pointer',
-        'bg-white dark:bg-card border transition-all duration-200',
+        'bg-white dark:bg-card border transition-[border-color,box-shadow,transform] duration-200',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
         isSelected
           ? 'border-primary shadow-card-hover ring-1 ring-primary'
@@ -91,7 +91,7 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
             }}
             aria-label={favorited ? 'Odebrat z oblíbených' : 'Přidat do oblíbených'}
             aria-pressed={favorited}
-            className="p-1 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
+            className="p-2.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
           >
             <Heart
               className={cn('w-4 h-4 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-neutral-300 hover:text-rose-400')}
@@ -145,7 +145,7 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
             aria-label={comparing ? 'Odebrat z porovnání' : 'Přidat do porovnání'}
             aria-pressed={comparing}
             className={cn(
-              'text-[11px] px-2 py-0.5 rounded-full border transition-all cursor-pointer',
+              'text-[11px] px-3 py-1.5 rounded-full border transition-[border-color,background-color,color] cursor-pointer',
               comparing
                 ? 'bg-forest text-white border-forest'
                 : compareDisabled

@@ -123,7 +123,7 @@ function RegionBreakdown({ farms }: { farms: LeaderboardFarm[] }) {
             key={r.kraj}
             href={`/mapa?kraj=${encodeURIComponent(r.kraj)}`}
             className={cn(
-              'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer',
+              'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-[border-color,background-color,color] duration-150 cursor-pointer',
               i === 0
                 ? 'bg-forest text-white shadow-md hover:bg-primary-700'
                 : 'bg-white border border-neutral-200 text-neutral-700 hover:border-primary-300 hover:text-primary-700',
@@ -226,7 +226,7 @@ export function LeaderboardClient({ farms, totalFarms, verifiedCount, krajCount 
               aria-selected={activeTab === tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                'flex items-center gap-1.5 px-4 py-3.5 text-sm font-semibold border-b-2 transition-all whitespace-nowrap cursor-pointer',
+                'flex items-center gap-1.5 px-4 py-3.5 text-sm font-semibold border-b-2 transition-[border-color,color] duration-150 whitespace-nowrap cursor-pointer',
                 activeTab === tab.id
                   ? 'border-earth-400 text-forest'
                   : 'border-transparent text-neutral-500 hover:text-forest',

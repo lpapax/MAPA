@@ -88,7 +88,7 @@ export function LoginForm() {
                     placeholder="vas@email.cz"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-4 py-3 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all"
+                    className="w-full pl-9 pr-4 py-3 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-[border-color,box-shadow]"
                   />
                 </div>
               </div>
@@ -96,7 +96,7 @@ export function LoginForm() {
               <button
                 type="submit"
                 disabled={submitting || !email.trim()}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold transition-all duration-200 cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold transition-[background-color,transform] duration-150 cursor-pointer active:scale-[0.97]"
               >
                 {submitting ? 'Odesílám…' : 'Poslat magický odkaz'}
                 {!submitting && <ArrowRight className="w-4 h-4" aria-hidden="true" />}

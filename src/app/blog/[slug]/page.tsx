@@ -109,7 +109,7 @@ export default function BlogArticlePage({ params }: PageProps) {
               <h2 className="font-heading font-bold text-forest text-base mb-4">Další články</h2>
               {otherArticles.map((other) => (
                 <Link key={other.id} href={`/blog/${other.slug}`} className="group block">
-                  <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm hover:shadow-card transition-all duration-200 overflow-hidden flex">
+                  <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm hover:shadow-card transition-[box-shadow] duration-200 overflow-hidden flex">
                     <div className={cn('w-20 flex-shrink-0 bg-gradient-to-br', other.coverGradient)} aria-hidden="true" />
                     <div className="p-4">
                       <span className={cn('text-[10px] font-semibold px-1.5 py-0.5 rounded-full', other.categoryColor)}>

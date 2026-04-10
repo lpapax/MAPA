@@ -104,7 +104,7 @@ export function Newsletter() {
                 'flex-1 px-5 py-3.5 rounded-xl bg-white/12 border border-white/28',
                 'text-white placeholder:text-white/45 text-sm',
                 'focus:outline-none focus:ring-2 focus:ring-white/35 focus:border-white/45',
-                'backdrop-blur-sm transition-all duration-200',
+                'backdrop-blur-sm transition-[border-color,box-shadow] duration-200',
               )}
             />
             <button
@@ -113,7 +113,7 @@ export function Newsletter() {
               className={cn(
                 'flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl',
                 'bg-white text-forest font-semibold text-sm',
-                'hover:bg-primary-50 transition-all duration-200 cursor-pointer active:scale-95',
+                'hover:bg-primary-50 transition-[transform,background-color,box-shadow] duration-150 cursor-pointer active:scale-[0.97]',
                 'shadow-lg hover:shadow-xl flex-shrink-0',
                 loading && 'opacity-70 cursor-not-allowed',
               )}

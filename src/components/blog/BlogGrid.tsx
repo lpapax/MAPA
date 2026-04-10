@@ -50,7 +50,7 @@ export function BlogGrid() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Hledat v článcích…"
-            className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all bg-white"
+            className="w-full pl-9 pr-8 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-[border-color,box-shadow] bg-white"
             aria-label="Hledat v článcích"
           />
           {searchQuery && (
@@ -71,7 +71,7 @@ export function BlogGrid() {
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={cn(
-                'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer',
+                'px-4 py-2 rounded-xl text-sm font-medium transition-[background-color,border-color,color] duration-150 cursor-pointer active:scale-[0.97]',
                 activeCategory === cat
                   ? 'bg-primary-600 text-white shadow-sm'
                   : 'bg-white border border-neutral-200 text-neutral-600 hover:border-primary-400 hover:text-primary-600',

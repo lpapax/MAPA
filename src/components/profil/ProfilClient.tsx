@@ -144,7 +144,7 @@ export function ProfilClient() {
                 key={opt.value}
                 onClick={() => toggleDiet(opt.value)}
                 className={cn(
-                  'flex items-start gap-3 px-3 py-3 rounded-xl border text-left transition-all cursor-pointer',
+                  'flex items-start gap-3 px-3 py-3 rounded-xl border text-left transition-[border-color,background-color,color] duration-150 cursor-pointer',
                   active
                     ? 'bg-primary-50 border-primary-300 text-primary-700'
                     : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300',
@@ -205,7 +205,7 @@ export function ProfilClient() {
             <button
               onClick={() => update({ defaultView: 'map' })}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all cursor-pointer',
+                'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                 prefs.defaultView === 'map'
                   ? 'bg-primary-50 border-primary-300 text-primary-700'
                   : 'bg-white border-neutral-200 text-neutral-500 hover:border-neutral-300',
@@ -217,7 +217,7 @@ export function ProfilClient() {
             <button
               onClick={() => update({ defaultView: 'list' })}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all cursor-pointer',
+                'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                 prefs.defaultView === 'list'
                   ? 'bg-primary-50 border-primary-300 text-primary-700'
                   : 'bg-white border-neutral-200 text-neutral-500 hover:border-neutral-300',
@@ -236,7 +236,7 @@ export function ProfilClient() {
             <button
               onClick={() => update({ cardSize: 'full' })}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all cursor-pointer',
+                'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                 prefs.cardSize === 'full'
                   ? 'bg-primary-50 border-primary-300 text-primary-700'
                   : 'bg-white border-neutral-200 text-neutral-500 hover:border-neutral-300',
@@ -248,7 +248,7 @@ export function ProfilClient() {
             <button
               onClick={() => update({ cardSize: 'compact' })}
               className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all cursor-pointer',
+                'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                 prefs.cardSize === 'compact'
                   ? 'bg-primary-50 border-primary-300 text-primary-700'
                   : 'bg-white border-neutral-200 text-neutral-500 hover:border-neutral-300',
@@ -318,7 +318,7 @@ export function ProfilClient() {
                 key={cat}
                 onClick={() => toggleCategory(cat)}
                 className={cn(
-                  'px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer',
+                  'px-3 py-1.5 rounded-full text-xs font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                   prefs.categories.includes(cat)
                     ? 'bg-primary-600 border-primary-600 text-white'
                     : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-300 hover:text-primary-700',

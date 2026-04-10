@@ -63,7 +63,7 @@ export function HistorieClient() {
         <Link
           key={farm.slug}
           href={`/farmy/${farm.slug}`}
-          className="flex items-start gap-4 bg-white rounded-2xl border border-neutral-100 shadow-card p-4 hover:shadow-card-hover transition-all group"
+          className="flex items-start gap-4 bg-white rounded-2xl border border-neutral-100 shadow-card p-4 hover:shadow-card-hover transition-[box-shadow] group"
         >
           <div className="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0 font-heading font-bold text-primary-700 text-base group-hover:bg-primary-100 transition-colors">
             {farm.name.charAt(0)}

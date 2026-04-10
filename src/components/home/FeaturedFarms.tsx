@@ -66,7 +66,7 @@ function SpotlightCard({ farm }: { farm: MockFarm }) {
   return (
     <Link
       href={`/farmy/${farm.slug}`}
-      className="group relative flex flex-col sm:flex-row rounded-3xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer min-h-[280px] hover:scale-[1.01]"
+      className="group relative flex flex-col sm:flex-row rounded-3xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-[transform,box-shadow] duration-300 cursor-pointer min-h-[280px] hover:-translate-y-0.5"
       aria-label={`Farmář týdne: ${farm.name}`}
     >
       {/* Cover */}
@@ -112,10 +112,10 @@ function SpotlightCard({ farm }: { farm: MockFarm }) {
 
         <div className="flex items-center justify-end mt-5 pt-4 border-t border-neutral-50">
           <span
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 group-hover:gap-2.5 transition-all"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600"
             aria-hidden="true"
           >
-            Zobrazit farmu <ArrowRight className="w-3 h-3" />
+            Zobrazit farmu <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" />
           </span>
         </div>
       </div>
@@ -129,7 +129,7 @@ function FarmCard({ farm }: { farm: MockFarm }) {
   return (
     <Link
       href={`/farmy/${farm.slug}`}
-      className="group flex flex-col rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:scale-[1.01]"
+      className="group flex flex-col rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-[transform,box-shadow] duration-300 cursor-pointer hover:-translate-y-1"
       aria-label={`Farma: ${farm.name}`}
     >
       {/* Cover */}

@@ -92,7 +92,7 @@ export function FavoritesClient() {
         {favorites.map((farm) => (
           <div
             key={farm.slug}
-            className="bg-white rounded-2xl border border-neutral-100 shadow-sm hover:shadow-card transition-all p-5"
+            className="bg-white rounded-2xl border border-neutral-100 shadow-sm hover:shadow-card transition-[box-shadow] p-5"
           >
             <div className="flex items-start justify-between gap-3 mb-3">
               <div>

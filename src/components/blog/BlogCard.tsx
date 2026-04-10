@@ -10,7 +10,7 @@ interface BlogCardProps {
 export function BlogCard({ article, className }: BlogCardProps) {
   return (
     <Link href={`/blog/${article.slug}`} className={cn('group block', className)}>
-      <article className="bg-white rounded-xl border border-neutral-100 shadow-sm hover:shadow-card transition-all duration-200 overflow-hidden h-full flex flex-col">
+      <article className="bg-white rounded-xl border border-neutral-100 shadow-sm hover:shadow-card transition-[box-shadow] duration-200 overflow-hidden h-full flex flex-col">
         {/* Cover */}
         <div
           className={cn('h-44 bg-gradient-to-br flex-shrink-0', article.coverGradient)}

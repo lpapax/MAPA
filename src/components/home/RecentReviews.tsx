@@ -40,7 +40,7 @@ export async function RecentReviews() {
             <AnimatedSection
               key={review.id}
               delay={(i * 100) as 0 | 100 | 200}
-              className="relative flex flex-col bg-white rounded-xl p-7 shadow-card hover:shadow-card-hover transition-all duration-300"
+              className="relative flex flex-col bg-white rounded-xl p-7 shadow-card hover:shadow-card-hover transition-shadow duration-300"
             >
               {/* Decorative quote */}
               <div

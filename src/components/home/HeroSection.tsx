@@ -10,10 +10,12 @@ import { cn } from '@/lib/utils'
 import { staggerContainer, fadeUp, fadeIn } from '@/lib/motionVariants'
 
 const TRUST_ITEMS = [
-  '3 960+ farem',
-  '14 krajů',
-  'Přímý kontakt',
-  'Bez poplatků',
+  'Zelenina',
+  'Čerstvé maso',
+  'Mléčné výrobky',
+  'Med',
+  'Vejce',
+  'Byliny',
 ]
 
 export function HeroSection() {
@@ -108,7 +110,7 @@ export function HeroSection() {
                   'w-full pl-10 pr-4 py-3 rounded-lg text-sm',
                   'bg-white text-neutral-900 placeholder:text-neutral-400',
                   'border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-primary-400',
-                  'transition-all duration-150',
+                  'transition-[border-color,box-shadow] duration-150',
                 )}
               />
             </div>
@@ -117,7 +119,8 @@ export function HeroSection() {
               className={cn(
                 'flex items-center gap-2 px-5 py-3 rounded-lg',
                 'bg-primary-500 hover:bg-primary-600 text-white font-semibold text-sm',
-                'transition-colors duration-150 cursor-pointer flex-shrink-0',
+                'transition-[transform,background-color] duration-150 cursor-pointer flex-shrink-0',
+                'active:scale-[0.97]',
               )}
             >
               Hledat
@@ -144,11 +147,13 @@ export function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7, duration: 0.5, ease: 'easeOut' }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-6 overflow-x-auto scrollbar-none">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-5 overflow-x-auto scrollbar-none">
+          <span className="text-white/35 text-xs font-medium whitespace-nowrap flex-shrink-0 uppercase tracking-wider">Najdete u nás</span>
+          <span className="w-px h-4 bg-white/15 flex-shrink-0" aria-hidden="true" />
           {TRUST_ITEMS.map((item, i) => (
-            <div key={item} className="flex items-center gap-4 flex-shrink-0">
-              {i > 0 && <span className="w-px h-4 bg-white/20" aria-hidden="true" />}
-              <span className="text-white/65 text-sm font-medium whitespace-nowrap">{item}</span>
+            <div key={item} className="flex items-center gap-5 flex-shrink-0">
+              {i > 0 && <span className="w-px h-3.5 bg-white/15" aria-hidden="true" />}
+              <span className="text-white/60 text-sm whitespace-nowrap">{item}</span>
             </div>
           ))}
         </div>

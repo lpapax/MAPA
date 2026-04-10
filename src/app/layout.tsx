@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Playfair_Display, DM_Sans } from 'next/font/google'
+import { Spectral, Karla } from 'next/font/google'
 import './globals.css'
 import { ToastProvider } from '@/components/ui/Toast'
 import { ThemeProvider } from '@/components/ui/ThemeProvider'
@@ -7,9 +7,11 @@ import { AuthProvider } from '@/contexts/AuthContext'
 import { CookieConsent } from '@/components/ui/CookieConsent'
 import { GTMScript } from '@/components/ui/GTMScript'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { cn } from "@/lib/utils";
 
-const playfair = Playfair_Display({
+// Spectral — editorial serif for headings; feels like a Czech regional food magazine
+const spectral = Spectral({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '600', '700', '800'],
   style: ['normal', 'italic'],
@@ -17,7 +19,8 @@ const playfair = Playfair_Display({
   display: 'swap',
 })
 
-const dmSans = DM_Sans({
+// Karla — warm humanist grotesque for body; unpretentious and highly readable
+const karla = Karla({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-body',
@@ -82,7 +85,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="cs" suppressHydrationWarning className={cn(playfair.variable, dmSans.variable, "font-sans")}>
+    <html lang="cs" suppressHydrationWarning className={cn(spectral.variable, karla.variable, "font-sans")}>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -96,10 +99,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Přejít na obsah
         </a>
         <Analytics />
+        <SpeedInsights />
         <ThemeProvider>
           <AuthProvider>
             <ToastProvider>
-              <div id="main-content">{children}</div>
+              <div>{children}</div>
               <CookieConsent />
             </ToastProvider>
           </AuthProvider>

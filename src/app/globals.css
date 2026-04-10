@@ -59,7 +59,9 @@
     --card-foreground:  20 14% 11%;
     --popover:  0 0% 100%;
     --popover-foreground:  20 14% 11%;
-    --primary:  113 32% 40%;
+    /* NOTE: primary/ring match tailwind primary-500 (#4a8c3f). When updating
+       tailwind.config.ts primary-500, recompute HSL and update these vars too. */
+    --primary:  111 38% 40%;
     --primary-foreground:  0 0% 100%;
     --secondary:  30 8% 93%;
     --secondary-foreground:  20 14% 11%;
@@ -71,7 +73,7 @@
     --destructive-foreground: 0 0% 100%;
     --border:  30 13% 88%;
     --input:  30 13% 88%;
-    --ring:  113 32% 40%;
+    --ring:  111 38% 40%;  /* matches --primary */
     --chart-1:  oklch(0.87 0 0);
     --chart-2:  oklch(0.556 0 0);
     --chart-3:  oklch(0.439 0 0);
@@ -103,7 +105,7 @@
     --card-foreground:  38 18% 92%;
     --popover:  125 18% 12%;
     --popover-foreground:  38 18% 92%;
-    --primary:  113 38% 52%;
+    --primary:  106 43% 53%;   /* matches primary-400 #6bba52 */
     --primary-foreground:  0 0% 100%;
     --secondary:  125 15% 18%;
     --secondary-foreground:  38 18% 92%;

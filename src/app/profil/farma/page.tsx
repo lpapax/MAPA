@@ -244,7 +244,7 @@ export default function ProfilFarmaPage() {
                     type="button"
                     onClick={() => toggleCat(cat)}
                     className={cn(
-                      'px-3 py-2 rounded-xl text-xs font-medium border transition-all text-left',
+                      'px-3 py-2 rounded-xl text-xs font-medium border transition-[border-color,background-color,color] duration-150 text-left',
                       categories.includes(cat)
                         ? 'bg-primary-50 border-primary-300 text-primary-700'
                         : 'border-neutral-200 text-neutral-600 hover:border-primary-200 bg-white',

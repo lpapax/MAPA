@@ -50,7 +50,7 @@ function FarmCard({ farm }: { farm: Farm }) {
   return (
     <Link
       href={`/farmy/${farm.slug}`}
-      className="group bg-white rounded-2xl border border-neutral-100 shadow-card hover:shadow-card-hover transition-all overflow-hidden"
+      className="group bg-white rounded-2xl border border-neutral-100 shadow-card hover:shadow-card-hover transition-[transform,box-shadow] overflow-hidden"
     >
       <div className="relative h-36 bg-gradient-to-br from-primary-50 to-emerald-50 overflow-hidden">
         {photo ? (

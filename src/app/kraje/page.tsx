@@ -53,7 +53,7 @@ export default async function KrajePage() {
                   <div
                     className={cn(
                       'relative rounded-2xl overflow-hidden bg-white border border-neutral-100 shadow-sm',
-                      'hover:shadow-card transition-all duration-200 hover:-translate-y-0.5',
+                      'hover:shadow-card transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5',
                     )}
                   >
                     {/* Cover gradient */}

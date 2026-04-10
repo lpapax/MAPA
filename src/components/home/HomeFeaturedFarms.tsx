@@ -76,7 +76,7 @@ function SpotlightCard({ farm }: { farm: Farm }) {
   return (
     <Link
       href={`/farmy/${farm.slug}`}
-      className="group flex flex-col sm:flex-row rounded-xl overflow-hidden bg-white border border-neutral-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 cursor-pointer min-h-[260px]"
+      className="group flex flex-col sm:flex-row rounded-xl overflow-hidden bg-white border border-neutral-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 cursor-pointer min-h-[260px]"
       aria-label={`Farma: ${farm.name}`}
     >
       {/* Cover — photo or gradient */}
@@ -88,7 +88,8 @@ function SpotlightCard({ farm }: { farm: Farm }) {
           <img
             src={photo}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            loading="lazy"
           />
         ) : (
           <>
@@ -156,7 +157,7 @@ function FarmCard({ farm }: { farm: Farm }) {
   return (
     <Link
       href={`/farmy/${farm.slug}`}
-      className="group flex flex-col rounded-xl overflow-hidden bg-white border border-neutral-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+      className="group flex flex-col rounded-xl overflow-hidden bg-white border border-neutral-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 cursor-pointer"
       aria-label={`Farma: ${farm.name}`}
     >
       {/* Cover — photo or gradient */}
@@ -165,7 +166,8 @@ function FarmCard({ farm }: { farm: Farm }) {
           <img
             src={photo}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            loading="lazy"
           />
         ) : (
           <>
@@ -211,8 +213,8 @@ function FarmCard({ farm }: { farm: Farm }) {
         </div>
 
         <div className="flex items-center justify-end mt-auto pt-3 border-t border-neutral-100 mt-4">
-          <span className="text-xs font-semibold text-primary-600 inline-flex items-center gap-1 group-hover:gap-1.5 transition-all">
-            Zobrazit <ArrowRight className="w-3 h-3" aria-hidden="true" />
+          <span className="text-xs font-semibold text-primary-600 inline-flex items-center gap-1">
+            Zobrazit <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" aria-hidden="true" />
           </span>
         </div>
       </div>

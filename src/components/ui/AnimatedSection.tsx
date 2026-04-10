@@ -12,9 +12,9 @@ interface AnimatedSectionProps {
 }
 
 const INITIAL: Record<string, TargetAndTransition> = {
-  up:    { opacity: 0, y: 28 },
-  left:  { opacity: 0, x: -28 },
-  right: { opacity: 0, x: 28 },
+  up:    { opacity: 0, y: 20 },
+  left:  { opacity: 0, x: -20 },
+  right: { opacity: 0, x: 20 },
   none:  { opacity: 0 },
 }
 

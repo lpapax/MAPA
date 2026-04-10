@@ -89,7 +89,7 @@ export function RecentlyViewed() {
                 key={farm.slug}
                 href={`/farmy/${farm.slug}`}
                 role="listitem"
-                className="group flex-shrink-0 snap-start w-52 rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-0.5 cursor-pointer"
+                className="group flex-shrink-0 snap-start w-52 rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 cursor-pointer"
                 aria-label={`${farm.name} — naposledy zobrazeno ${timeAgo(farm.visitedAt)}`}
               >
                 {/* Mini cover — photo or gradient */}
@@ -101,6 +101,8 @@ export function RecentlyViewed() {
                     <img
                       src={farm.image}
                       alt=""
+                      aria-hidden="true"
+                      loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   )}
@@ -132,8 +134,8 @@ export function RecentlyViewed() {
                     ))}
                   </div>
                   <div className="flex items-center justify-end mt-2">
-                    <span className="text-[11px] font-semibold text-primary-600 group-hover:gap-1.5 flex items-center gap-1 transition-all">
-                      Zobrazit <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                    <span className="text-[11px] font-semibold text-primary-600 flex items-center gap-1">
+                      Zobrazit <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" aria-hidden="true" />
                     </span>
                   </div>
                 </div>

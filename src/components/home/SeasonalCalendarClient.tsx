@@ -32,7 +32,7 @@ export function SeasonalCalendarClient() {
             onClick={() => setActiveCategory(cat.value)}
             aria-pressed={activeCategory === cat.value}
             className={cn(
-              'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer',
+              'px-4 py-2 rounded-xl text-sm font-medium transition-[background-color,border-color,color] duration-150 cursor-pointer active:scale-[0.97]',
               activeCategory === cat.value
                 ? 'bg-primary-600 text-white shadow-sm'
                 : 'bg-white border border-neutral-200 text-neutral-600 hover:border-primary-400 hover:text-primary-600',
@@ -54,7 +54,7 @@ export function SeasonalCalendarClient() {
             <div
               key={month}
               className={cn(
-                'rounded-2xl border p-4 transition-all duration-200',
+                'rounded-2xl border p-4 transition-[border-color,background-color,box-shadow] duration-200',
                 isCurrent
                   ? 'bg-primary-50 border-primary-300 shadow-card ring-2 ring-primary-200'
                   : 'bg-white border-neutral-100 shadow-sm',

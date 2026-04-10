@@ -12,9 +12,6 @@ const STEPS = [
     iconColor: 'text-primary-600',
     iconBg: 'bg-primary-50',
     iconBorder: 'border-primary-200',
-    numColor: 'text-primary-100',
-    cardBg: 'bg-white',
-    accent: 'bg-primary-500',
   },
   {
     number: '02',
@@ -25,9 +22,6 @@ const STEPS = [
     iconColor: 'text-cta-DEFAULT',
     iconBg: 'bg-cta-50',
     iconBorder: 'border-cta-100',
-    numColor: 'text-cyan-100',
-    cardBg: 'bg-white',
-    accent: 'bg-cta-DEFAULT',
   },
   {
     number: '03',
@@ -38,84 +32,73 @@ const STEPS = [
     iconColor: 'text-earth-600',
     iconBg: 'bg-earth-50',
     iconBorder: 'border-earth-200',
-    numColor: 'text-earth-100',
-    cardBg: 'bg-white',
-    accent: 'bg-earth-500',
   },
 ]
 
 export function HowItWorks() {
   return (
     <section className="py-16 lg:py-24 bg-white" aria-labelledby="how-heading">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-14">
-          <span className="inline-block text-xs font-semibold text-primary-600 uppercase tracking-widest mb-3">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <AnimatedSection className="mb-14">
+          <span className="text-xs font-semibold text-primary-600 uppercase tracking-widest">
             Jak to funguje
           </span>
           <h2
             id="how-heading"
-            className="font-heading text-3xl lg:text-4xl font-bold text-forest mb-4"
+            className="font-heading text-3xl lg:text-4xl font-bold text-forest mt-3 max-w-lg"
           >
             Tři kroky k čerstvým potravinám
           </h2>
-          <p className="text-neutral-500 max-w-xl mx-auto leading-relaxed">
-            Propojujeme zákazníky s farmáři co nejjednodušeji. Žádná registrace, žádné poplatky —
-            jen přímý kontakt.
-          </p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 relative">
-          {/* Connector line (desktop) */}
-          <div
-            className="hidden md:flex absolute top-14 left-[calc(33%+2.5rem)] right-[calc(33%+2.5rem)] items-center"
-            aria-hidden="true"
-          >
-            <div className="flex-1 border-t-2 border-dashed border-neutral-200" />
-          </div>
-
+        <div>
           {STEPS.map((step, i) => {
             const Icon = step.icon
             return (
               <AnimatedSection
                 key={step.number}
-                delay={(i * 200) as 0 | 200 | 400}
-                className={cn(
-                  'relative flex flex-col items-center text-center p-7 rounded-xl border border-neutral-100',
-                  'shadow-card hover:shadow-card-hover transition-shadow duration-300',
-                  step.cardBg,
-                )}
+                delay={(i * 120) as 0 | 120 | 240}
               >
-                {/* Accent bar at top */}
-                <div className={cn('absolute top-0 left-8 right-8 h-1 rounded-b-full', step.accent)} aria-hidden="true" />
+                <div className="grid grid-cols-[64px_1fr] sm:grid-cols-[100px_1fr] lg:grid-cols-[140px_1fr] gap-6 lg:gap-10 py-10 border-t border-neutral-100 group">
 
-                {/* Step number */}
-                <span
-                  className={cn(
-                    'font-heading font-bold text-7xl leading-none mb-3 select-none',
-                    step.numColor,
-                  )}
-                  aria-hidden="true"
-                >
-                  {step.number}
-                </span>
+                  {/* Step number — pure typographic weight */}
+                  <div className="pt-1">
+                    <span
+                      className="font-heading font-bold text-6xl sm:text-7xl lg:text-8xl text-neutral-100 leading-none select-none group-hover:text-primary-100 transition-colors duration-500 tabular-nums"
+                      aria-hidden="true"
+                    >
+                      {step.number}
+                    </span>
+                  </div>
 
-                {/* Icon circle */}
-                <div
-                  className={cn(
-                    'w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm mb-5',
-                    step.iconBg,
-                    step.iconBorder,
-                    'border',
-                  )}
-                >
-                  <Icon className={cn('w-6 h-6', step.iconColor)} aria-hidden="true" />
+                  {/* Content */}
+                  <div className="flex flex-col sm:flex-row gap-5 sm:gap-8 items-start">
+                    <div
+                      className={cn(
+                        'w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5',
+                        'border',
+                        step.iconBg,
+                        step.iconBorder,
+                      )}
+                    >
+                      <Icon className={cn('w-5 h-5', step.iconColor)} aria-hidden="true" />
+                    </div>
+                    <div>
+                      <h3 className="font-heading font-bold text-xl text-forest mb-2">
+                        {step.title}
+                      </h3>
+                      <p className="text-neutral-500 leading-relaxed max-w-[55ch] text-[15px]">
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-
-                <h3 className="font-heading font-bold text-lg text-forest mb-2">{step.title}</h3>
-                <p className="text-sm text-neutral-500 leading-relaxed">{step.description}</p>
               </AnimatedSection>
             )
           })}
+          {/* Closing rule */}
+          <div className="border-t border-neutral-100" aria-hidden="true" />
         </div>
       </div>
     </section>

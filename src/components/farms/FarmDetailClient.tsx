@@ -112,15 +112,15 @@ export function FarmDetailClient({ farm, similarFarms = [] }: { farm: Farm; simi
           className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         />
-        <button onClick={closeLightbox} aria-label="Zavřít" className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer transition-colors">
+        <button onClick={closeLightbox} aria-label="Zavřít" className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer transition-colors">
           <X className="w-5 h-5" />
         </button>
         {lightbox.photos.length > 1 && (
           <>
-            <button onClick={(e) => { e.stopPropagation(); prevPhoto() }} aria-label="Předchozí foto" className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer transition-colors">
+            <button onClick={(e) => { e.stopPropagation(); prevPhoto() }} aria-label="Předchozí foto" className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer transition-colors">
               <ChevronLeft className="w-5 h-5" />
             </button>
-            <button onClick={(e) => { e.stopPropagation(); nextPhoto() }} aria-label="Další foto" className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer transition-colors">
+            <button onClick={(e) => { e.stopPropagation(); nextPhoto() }} aria-label="Další foto" className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer transition-colors">
               <ChevronRight className="w-5 h-5" />
             </button>
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-sm">
@@ -186,7 +186,7 @@ export function FarmDetailClient({ farm, similarFarms = [] }: { farm: Farm; simi
                 aria-controls={`panel-${tab.id}`}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  'px-5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap flex-shrink-0 active:scale-95',
+                  'px-5 py-2.5 text-sm font-semibold rounded-xl transition-[background-color,border-color,color] duration-150 cursor-pointer whitespace-nowrap flex-shrink-0 active:scale-[0.97]',
                   activeTab === tab.id
                     ? 'text-primary-700 bg-primary-50 border border-primary-200 shadow-sm'
                     : 'text-neutral-500 hover:text-forest hover:bg-surface border border-transparent',
@@ -439,10 +439,10 @@ export function FarmDetailClient({ farm, similarFarms = [] }: { farm: Farm; simi
                   >
                     <div className="grid sm:grid-cols-2 gap-4">
                       <FormField id="review-name" label="Vaše jméno" required>
-                        <input id="review-name" type="text" required placeholder="Jana N." value={reviewForm.name} onChange={(e) => setReviewForm((s) => ({ ...s, name: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
+                        <input id="review-name" type="text" required placeholder="Jana N." value={reviewForm.name} onChange={(e) => setReviewForm((s) => ({ ...s, name: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition-[border-color,box-shadow]" />
                       </FormField>
                       <FormField id="review-city" label="Město">
-                        <input id="review-city" type="text" placeholder="Praha" value={reviewForm.city} onChange={(e) => setReviewForm((s) => ({ ...s, city: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
+                        <input id="review-city" type="text" placeholder="Praha" value={reviewForm.city} onChange={(e) => setReviewForm((s) => ({ ...s, city: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition-[border-color,box-shadow]" />
                       </FormField>
                     </div>
                     <div>
@@ -478,7 +478,7 @@ export function FarmDetailClient({ farm, similarFarms = [] }: { farm: Farm; simi
                                 tags: active ? s.tags.filter((t) => t !== tag.label) : [...s.tags, tag.label],
                               }))}
                               className={cn(
-                                'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer',
+                                'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer',
                                 active
                                   ? 'bg-primary-600 border-primary-600 text-white'
                                   : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-400',
@@ -492,7 +492,7 @@ export function FarmDetailClient({ farm, similarFarms = [] }: { farm: Farm; simi
                       </div>
                     </div>
                     <FormField id="review-text" label="Recenze" required>
-                      <textarea id="review-text" required minLength={20} rows={3} placeholder="Popište svou zkušenost s farmou…" value={reviewForm.text} onChange={(e) => setReviewForm((s) => ({ ...s, text: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all" />
+                      <textarea id="review-text" required minLength={20} rows={3} placeholder="Popište svou zkušenost s farmou…" value={reviewForm.text} onChange={(e) => setReviewForm((s) => ({ ...s, text: e.target.value }))} className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-[border-color,box-shadow]" />
                     </FormField>
                     <button
                       type="submit"
@@ -527,14 +527,14 @@ export function FarmDetailClient({ farm, similarFarms = [] }: { farm: Farm; simi
                 <form onSubmit={handleFormSubmit} className="space-y-4" aria-label="Kontaktní formulář">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <FormField id="contact-name" label="Vaše jméno" required>
-                      <input id="contact-name" type="text" required placeholder="Jana Nováková" value={formState.name} onChange={(e) => setFormState((s) => ({ ...s, name: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all" />
+                      <input id="contact-name" type="text" required placeholder="Jana Nováková" value={formState.name} onChange={(e) => setFormState((s) => ({ ...s, name: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-[border-color,box-shadow]" />
                     </FormField>
                     <FormField id="contact-email" label="E-mail" required>
-                      <input id="contact-email" type="email" required placeholder="jana@email.cz" value={formState.email} onChange={(e) => setFormState((s) => ({ ...s, email: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all" />
+                      <input id="contact-email" type="email" required placeholder="jana@email.cz" value={formState.email} onChange={(e) => setFormState((s) => ({ ...s, email: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-[border-color,box-shadow]" />
                     </FormField>
                   </div>
                   <FormField id="contact-message" label="Zpráva" required>
-                    <textarea id="contact-message" required rows={5} placeholder="Dobrý den, rád bych se zeptal na..." value={formState.message} onChange={(e) => setFormState((s) => ({ ...s, message: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all" />
+                    <textarea id="contact-message" required rows={5} placeholder="Dobrý den, rád bych se zeptal na..." value={formState.message} onChange={(e) => setFormState((s) => ({ ...s, message: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-[border-color,box-shadow]" />
                   </FormField>
                   <button type="submit" className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-semibold text-sm transition-colors duration-200 cursor-pointer shadow-sm hover:shadow-md">
                     <Send className="w-4 h-4" aria-hidden="true" />

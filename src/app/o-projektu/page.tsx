@@ -136,7 +136,7 @@ export default function OProjektuPage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
               {FARMER_BENEFITS.map((b) => (
-                <div key={b.title} className="bg-white/10 rounded-2xl p-5 backdrop-blur-sm">
+                <div key={b.title} className="bg-white/10 rounded-2xl p-5 border border-white/8">
                   <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center mb-3" aria-hidden="true">
                     <b.Icon className="w-4 h-4 text-white" />
                   </div>

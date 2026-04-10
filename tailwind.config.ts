@@ -11,8 +11,8 @@ const config: Config = {
     extend: {
       fontFamily: {
         // Uses CSS vars injected by next/font/google in layout.tsx
-        sans:    ['var(--font-body)', 'DM Sans', 'system-ui', 'sans-serif'],
-        heading: ['var(--font-heading)', 'Playfair Display', 'Georgia', 'serif'],
+        sans:    ['var(--font-body)', 'Karla', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-heading)', 'Spectral', 'Georgia', 'serif'],
       },
       colors: {
         // ── Primary — deep forest green ──────────────────

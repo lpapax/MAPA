@@ -2,32 +2,31 @@ import type { Variants } from 'framer-motion'
 
 // ── Spring presets ────────────────────────────────────────────
 export const SPRING_GENTLE  = { type: 'spring', stiffness: 200, damping: 30 } as const
-export const SPRING_BOUNCY  = { type: 'spring', stiffness: 400, damping: 20 } as const
 export const SPRING_STIFF   = { type: 'spring', stiffness: 600, damping: 35 } as const
 
 // ── Entry variants ────────────────────────────────────────────
 export const fadeUp: Variants = {
-  hidden:  { opacity: 0, y: 28 },
+  hidden:  { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: SPRING_GENTLE },
 }
 
 export const fadeIn: Variants = {
   hidden:  { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.45, ease: 'easeOut' } },
+  visible: { opacity: 1, transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] } },
 }
 
 export const fadeLeft: Variants = {
-  hidden:  { opacity: 0, x: -28 },
+  hidden:  { opacity: 0, x: -20 },
   visible: { opacity: 1, x: 0, transition: SPRING_GENTLE },
 }
 
 export const fadeRight: Variants = {
-  hidden:  { opacity: 0, x: 28 },
+  hidden:  { opacity: 0, x: 20 },
   visible: { opacity: 1, x: 0, transition: SPRING_GENTLE },
 }
 
 export const scaleIn: Variants = {
-  hidden:  { opacity: 0, scale: 0.90 },
+  hidden:  { opacity: 0, scale: 0.96 },
   visible: { opacity: 1, scale: 1, transition: SPRING_GENTLE },
 }
 

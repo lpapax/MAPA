@@ -171,7 +171,7 @@ export default function ProFarmaryPage() {
               </Link>
               <Link
                 href="/pro-farmary/narokovat"
-                className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl border-2 border-white/30 text-white font-heading font-semibold text-sm hover:border-white/60 hover:bg-white/10 transition-all duration-200 cursor-pointer"
+                className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl border-2 border-white/30 text-white font-heading font-semibold text-sm hover:border-white/60 hover:bg-white/10 transition-[border-color,background-color] duration-200 cursor-pointer"
               >
                 Spravovat existující farmu
               </Link>
@@ -216,22 +216,23 @@ export default function ProFarmaryPage() {
                 Přidejte svou farmu do adresáře a dostaňte se k zákazníkům, kteří hledají lokální produkty ve vašem regionu.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {BENEFITS.map((benefit) => {
+            <div className="divide-y divide-neutral-100 max-w-2xl mx-auto lg:max-w-none">
+              {BENEFITS.map((benefit, i) => {
                 const Icon = benefit.icon
                 return (
                   <div
                     key={benefit.title}
-                    className="bg-white rounded-2xl border border-primary-100 shadow-card p-6 flex gap-4"
+                    className="flex gap-6 py-8 items-start"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-5 h-5 text-primary-600" aria-hidden="true" />
-                    </div>
-                    <div>
-                      <h3 className="font-heading font-bold text-forest text-sm mb-1.5">
-                        {benefit.title}
-                      </h3>
-                      <p className="text-neutral-500 text-sm leading-relaxed">{benefit.description}</p>
+                    <span className="font-heading text-5xl font-bold text-primary-100 leading-none flex-shrink-0 w-14 text-right select-none" aria-hidden="true">
+                      0{i + 1}
+                    </span>
+                    <div className="pt-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Icon className="w-4 h-4 text-primary-600 flex-shrink-0" aria-hidden="true" />
+                        <h3 className="font-heading font-bold text-forest">{benefit.title}</h3>
+                      </div>
+                      <p className="text-neutral-500 text-sm leading-relaxed max-w-lg">{benefit.description}</p>
                     </div>
                   </div>
                 )

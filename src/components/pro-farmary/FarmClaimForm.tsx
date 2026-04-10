@@ -103,7 +103,7 @@ export function FarmClaimForm() {
             placeholder="napr. farma-u-lesa"
             value={farmSlug}
             onChange={(e) => setFarmSlug(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
+            className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition-[border-color,box-shadow]"
           />
           <p className="text-xs text-neutral-400 mt-1">
             Najdete jej v URL: mapafarem.cz/farmy/<strong>zde-je-slug</strong>
@@ -120,7 +120,7 @@ export function FarmClaimForm() {
             placeholder="Jsem provozovatel farmy Jana Nováková, IČO 12345678…"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all"
+            className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary-400 transition-[border-color,box-shadow]"
           />
         </div>
 

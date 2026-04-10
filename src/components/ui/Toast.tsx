@@ -81,7 +81,7 @@ function ToastMessage({
       role="status"
       className={cn(
         'flex items-center gap-3 px-4 py-3 bg-white rounded-xl shadow-2xl border border-neutral-100',
-        'max-w-xs w-full transition-all duration-300',
+        'max-w-xs w-full transition-[transform,opacity] duration-300',
         visible ? 'translate-x-0 opacity-100' : 'translate-x-6 opacity-0',
       )}
     >

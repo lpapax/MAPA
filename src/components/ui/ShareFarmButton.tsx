@@ -36,7 +36,7 @@ export function ShareFarmButton({ name }: ShareFarmButtonProps) {
     <div className="relative">
       <button
         onClick={handleShare}
-        className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-sm text-neutral-600 hover:text-forest transition-all duration-200 cursor-pointer"
+        className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-sm text-neutral-600 hover:text-forest transition-[background-color,color,border-color] duration-150 cursor-pointer"
         aria-label="Sdílet farmu"
       >
         <Share2 className="w-4 h-4" aria-hidden="true" />

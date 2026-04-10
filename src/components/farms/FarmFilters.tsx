@@ -101,7 +101,7 @@ export function FarmFilters() {
               onClick={() => toggleCategory(cat)}
               aria-pressed={active}
               className={cn(
-                'px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all duration-150 cursor-pointer',
+                'px-2.5 py-1 rounded-full text-[11px] font-medium border transition-[border-color,background-color,color] duration-150 cursor-pointer active:scale-[0.97]',
                 active
                   ? 'bg-primary text-white border-primary'
                   : 'bg-white border-border text-muted-foreground hover:border-primary/50 hover:text-primary',
