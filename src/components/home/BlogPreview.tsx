@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { Clock, ArrowRight } from 'lucide-react'
@@ -6,19 +8,22 @@ import { cn } from '@/lib/utils'
 import { AnimatedSection } from '@/components/ui/AnimatedSection'
 
 export function BlogPreview() {
+  const [feature, ...rest] = BLOG_ARTICLES.slice(0, 3)
+  const secondary = rest.slice(0, 2)
+
   return (
     <section className="py-16 lg:py-24 bg-white" aria-labelledby="blog-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Header */}
+        {/* Header — left-aligned, no centering */}
         <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
           <div>
-            <span className="inline-block text-xs font-semibold text-earth-700 uppercase tracking-widest mb-3">
+            <span className="inline-block text-earth-700 text-sm font-medium italic mb-3">
               Blog
             </span>
             <h2
               id="blog-heading"
-              className="font-heading text-3xl lg:text-4xl font-bold text-forest"
+              className="font-heading text-3xl lg:text-4xl font-bold text-forest tracking-tight"
             >
               Tipy a inspirace
             </h2>
@@ -32,59 +37,95 @@ export function BlogPreview() {
           </Link>
         </AnimatedSection>
 
-        {/* Article cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {BLOG_ARTICLES.map((article, i) => (
-            <AnimatedSection key={article.id} delay={(i * 100) as 0 | 100 | 200}>
-              <Link
-                href={`/blog/${article.slug}`}
-                className="group flex flex-col rounded-2xl overflow-hidden bg-surface border border-earth-50 hover:shadow-card-hover transition-[transform,box-shadow] duration-300 cursor-pointer hover:-translate-y-1"
-                aria-label={`Číst článek: ${article.title}`}
-              >
-                {/* Cover */}
-                <div className="h-48 relative overflow-hidden" aria-hidden="true">
-                  <Image
-                    src={article.coverImage}
-                    alt={article.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  {/* Reading time badge */}
-                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-sm text-white text-[10px] font-medium z-10">
+        {/* Asymmetric grid: feature 7/12 + two stacked 5/12 */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+          {/* Feature article */}
+          <AnimatedSection className="lg:col-span-7">
+            <Link
+              href={`/blog/${feature.slug}`}
+              className="group flex flex-col h-full rounded-2xl overflow-hidden bg-surface border border-neutral-100 hover:shadow-card-hover transition-[transform,box-shadow] duration-300 cursor-pointer hover:-translate-y-1"
+              aria-label={`Číst článek: ${feature.title}`}
+            >
+              <div className="relative h-64 lg:h-80 overflow-hidden" aria-hidden="true">
+                <Image
+                  src={feature.coverImage}
+                  alt={feature.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                  <span className={cn('px-3 py-1 rounded-full text-xs font-semibold', feature.categoryColor)}>
+                    {feature.category}
+                  </span>
+                  <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-sm text-white text-[10px] font-medium">
                     <Clock className="w-3 h-3" aria-hidden="true" />
-                    {article.readTime}
+                    {feature.readTime}
+                  </span>
+                </div>
+              </div>
+              <div className="p-6 flex flex-col flex-1 bg-white">
+                <h3 className="font-heading font-bold text-forest text-xl leading-snug mb-3 group-hover:text-primary-700 transition-colors line-clamp-2">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-neutral-500 leading-relaxed line-clamp-3 mb-5 flex-1">
+                  {feature.excerpt}
+                </p>
+                <span className="text-sm font-semibold text-primary-600 inline-flex items-center gap-1.5">
+                  Číst více
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150" aria-hidden="true" />
+                </span>
+              </div>
+            </Link>
+          </AnimatedSection>
+
+          {/* Two stacked secondary articles */}
+          <div className="lg:col-span-5 flex flex-col gap-5">
+            {secondary.map((article, i) => (
+              <AnimatedSection key={article.id} delay={(i * 120) as 0 | 120}>
+                <Link
+                  href={`/blog/${article.slug}`}
+                  className="group flex gap-4 rounded-2xl overflow-hidden bg-surface border border-neutral-100 hover:shadow-card-hover transition-[transform,box-shadow] duration-300 cursor-pointer hover:-translate-y-0.5 flex-1"
+                  aria-label={`Číst článek: ${article.title}`}
+                >
+                  {/* Thumbnail */}
+                  <div className="relative w-32 sm:w-40 flex-shrink-0 overflow-hidden" aria-hidden="true">
+                    <Image
+                      src={article.coverImage}
+                      alt={article.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="160px"
+                    />
                   </div>
-                </div>
 
-                {/* Content */}
-                <div className="p-5 flex flex-col flex-1 bg-white">
-                  {/* Category */}
-                  <span
-                    className={cn(
-                      'self-start px-2.5 py-0.5 rounded-full text-[10px] font-semibold mb-3',
-                      article.categoryColor,
-                    )}
-                  >
-                    {article.category}
-                  </span>
-
-                  <h3 className="font-heading font-bold text-forest text-base leading-snug mb-2 line-clamp-2 group-hover:text-primary-700 transition-colors">
-                    {article.title}
-                  </h3>
-
-                  <p className="text-xs text-neutral-500 leading-relaxed line-clamp-2 mb-4 flex-1">
-                    {article.excerpt}
-                  </p>
-
-                  <span className="text-xs font-semibold text-primary-600 inline-flex items-center gap-1.5">
-                    Číst více <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" aria-hidden="true" />
-                  </span>
-                </div>
-              </Link>
-            </AnimatedSection>
-          ))}
+                  {/* Content */}
+                  <div className="p-4 flex flex-col justify-between flex-1 min-w-0">
+                    <div>
+                      <span className={cn('inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold mb-2', article.categoryColor)}>
+                        {article.category}
+                      </span>
+                      <h3 className="font-heading font-bold text-forest text-sm leading-snug line-clamp-2 group-hover:text-primary-700 transition-colors">
+                        {article.title}
+                      </h3>
+                    </div>
+                    <div className="flex items-center gap-3 mt-2">
+                      <span className="flex items-center gap-1 text-neutral-400 text-xs">
+                        <Clock className="w-3 h-3" aria-hidden="true" />
+                        {article.readTime}
+                      </span>
+                      <span className="text-xs font-semibold text-primary-600 inline-flex items-center gap-1 ml-auto">
+                        Číst
+                        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </AnimatedSection>
+            ))}
+          </div>
         </div>
       </div>
     </section>

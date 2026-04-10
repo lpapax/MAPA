@@ -2,7 +2,7 @@
 
 import { useCallback } from 'react'
 import Link from 'next/link'
-import { MapPin, Phone, Globe, CheckCircle, Clock, Heart } from 'lucide-react'
+import { MapPin, Phone, Globe, CheckCircle, Clock, Heart, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { useFavoriteFarms } from '@/hooks/useFavoriteFarms'
@@ -153,7 +153,10 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
                   : 'border-neutral-200 text-neutral-400 hover:border-forest hover:text-forest',
             )}
           >
-            {comparing ? '✓ Porovnat' : 'Porovnat'}
+            {comparing
+            ? <><Check className="w-3 h-3" aria-hidden="true" /> Porovnat</>
+            : 'Porovnat'
+          }
           </button>
 
           <Link

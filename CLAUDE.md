@@ -284,6 +284,14 @@ npx vercel env ls     # list env vars
 npx vercel env add NEXT_PUBLIC_GTM_ID production
 ```
 
+### Brand context
+
+`.impeccable.md` (project root) — read this before making design decisions. Key points:
+- **Target user:** Urban Czech families, 25–45, buying direct from farmers. Mobile Saturday morning or desktop evenings. Trust > speed.
+- **Brand:** Fresh · Local · Genuine. Feels like a well-designed Czech food magazine, not a delivery app.
+- **Anti-reference:** scuk.cz — avoid the restaurant-discovery, grid-of-cards-with-ratings, transactional feel.
+- **Design principles:** Trust through warmth, seasonal and alive, discovery over transaction, local specificity, legibility first.
+
 ### Design system
 
 Typography: `font-sans` = Karla, `font-heading` = Spectral. Both loaded via `next/font/google` in `layout.tsx` with `latin-ext` subset (required for Czech characters). Body background is warm parchment `#faf7f0`.
@@ -304,6 +312,23 @@ Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw 
 
 The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge).
 
+**Background gradient utilities** — `tailwind.config.ts` defines `backgroundImage` tokens used as bg classes:
+
+| Class | Use for |
+|---|---|
+| `bg-newsletter` | Newsletter section — diagonal dark green gradient |
+| `bg-seasonal` | Seasonal banner — green→earth diagonal |
+| `bg-hero-overlay` | Hero image overlay (usually applied inline) |
+| `bg-hero-map` | `/mapa` empty-state hero background |
+| `bg-warm-section` | White→surface vertical gradient for section transitions |
+| `bg-earth-soft` | Warm earth tinted section background |
+
+**Dark mode** — A partial dark mode exists via `ThemeProvider`. `globals.css` has `!important` overrides that remap `bg-white`, `bg-surface`, `bg-neutral-*`, `bg-primary-50/100`, and text colors for the `.dark` class. Do not add new background colors without adding a corresponding dark override. Light mode is the primary design — dark mode is secondary and not all sections are optimised.
+
+**`grain` utility** — `globals.css` defines `.grain::after` which applies a subtle SVG noise texture via a pseudo-element. Apply to `relative` containers only (the pseudo-element uses `position: absolute; inset: 0`). Do not apply to scrolling containers — causes continuous GPU repaints.
+
+**`scrollbar-none` / `scrollbar-thin`** — Custom utilities in `globals.css`. Use `scrollbar-none` on horizontal overflow strips (category filter, trust bar). Use `scrollbar-thin` on vertical scroll areas where a thin scrollbar is desirable.
+
 **Transitions:** Never use `transition-all` — it recalculates every CSS property on every frame. Always specify the exact properties: `transition-[border-color,box-shadow]` for inputs, `transition-[transform,box-shadow]` for cards, `transition-[border-color,background-color,color]` for buttons/pills.
 
 **CSS token alignment:** `--primary` and `--ring` in `globals.css` are manually kept in sync with `primary-500` (`#4a8c3f` = `hsl(111 38% 40%)`). When changing either, update both files. Comments in `globals.css` mark these sync points.
@@ -315,6 +340,21 @@ The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-m
 `CATEGORY_META` in `src/lib/farms.ts` — maps every `FarmCategory` to `{ label, emoji, color }`. Used by map layer paint expressions, leaderboard badges, markets pills, and `SimilarFarms` sidebar.
 
 **Icons:** Lucide React SVGs only — no emoji characters as decorative icons in JSX.
+
+**Hero sections** — Always use `min-h-[100dvh]` (not `h-screen` or `min-h-screen`). iOS Safari's collapsing toolbar causes visible layout jumps with `vh` units. `dvh` accounts for the dynamic viewport.
+
+### Homepage layout conventions
+
+Homepage sections follow editorial layout rules — **do not "fix" them to equal grids**:
+
+- **No equal 3-column card grids.** This feels like a restaurant-listing app (the anti-reference). Use asymmetric `col-span` layouts instead.
+- `HomeFeaturedFarms` — spotlight card (`lg:col-span-2`) + 4 smaller cards is intentional. Do not normalise to 3 equal columns.
+- `BlogPreview` — feature article `lg:col-span-7` + two stacked horizontal cards `lg:col-span-5`. All three articles have the same visual weight in a 3-col grid — this breaks that.
+- `RecentReviews` — one featured review on dark `forest` background (`lg:col-span-6`) + two stacked on white (`lg:col-span-5`). Only rendered when Supabase has reviews; returns `null` otherwise.
+- `StatsBar` — uses `divide-x` horizontal band with left-aligned stat + label + sub-note per column. Not a centred card grid.
+- `Newsletter` — split layout: text/benefit list left, form card right (`grid-cols-1 lg:grid-cols-2`). Not a centred column.
+
+**Mapbox popup CSS classes** — `globals.css` contains all styling for `.farm-popup`, `.farm-click-popup`, `.farm-click-popup-inner`, `.farm-click-popup-name`, etc. When changing popup HTML in `MapView.tsx`, update the matching CSS classes in `globals.css`. The popup content is built as a raw HTML string — see the `esc()` XSS-escape function inline in that component.
 
 ### Global UI components
 

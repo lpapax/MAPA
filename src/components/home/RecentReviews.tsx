@@ -18,46 +18,47 @@ export async function RecentReviews() {
   if (error || !data || data.length === 0) return null
 
   const reviews = data as ReviewRow[]
+  const [featured, ...rest] = reviews
 
   return (
     <section className="py-16 lg:py-24 bg-surface" aria-labelledby="reviews-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <AnimatedSection className="text-center mb-14">
-          <span className="inline-block text-xs font-semibold text-earth-700 uppercase tracking-widest mb-3">
+        {/* Header — left-aligned */}
+        <AnimatedSection className="mb-12">
+          <span className="inline-block text-earth-700 text-sm font-medium italic mb-3">
             Recenze zákazníků
           </span>
           <h2
             id="reviews-heading"
-            className="font-heading text-3xl lg:text-4xl font-bold text-forest"
+            className="font-heading text-3xl lg:text-4xl font-bold text-forest tracking-tight"
           >
             Co říkají zákazníci
           </h2>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {reviews.map((review, i) => (
-            <AnimatedSection
-              key={review.id}
-              delay={(i * 100) as 0 | 100 | 200}
-              className="relative flex flex-col bg-white rounded-xl p-7 shadow-card hover:shadow-card-hover transition-shadow duration-300"
-            >
-              {/* Decorative quote */}
-              <div
-                className="absolute top-4 right-5 font-heading text-8xl text-primary-100 leading-none select-none pointer-events-none"
+        {/* Asymmetric layout: featured left 55% + stacked right 45% */}
+        <div className="grid grid-cols-1 lg:grid-cols-11 gap-5">
+
+          {/* Featured review — large quote treatment */}
+          <AnimatedSection className="lg:col-span-6">
+            <div className="relative h-full flex flex-col bg-forest rounded-2xl p-8 lg:p-10 overflow-hidden">
+              {/* Large decorative opening quote */}
+              <span
+                className="absolute top-4 left-6 font-heading text-[8rem] leading-none text-primary-800 select-none pointer-events-none"
                 aria-hidden="true"
               >
                 &ldquo;
-              </div>
+              </span>
 
               {/* Stars */}
-              <div className="flex gap-0.5 mb-5" aria-label={`${review.rating} z 5 hvězd`} role="img">
+              <div className="flex gap-1 mb-6 relative z-10" aria-label={`${featured.rating} z 5 hvězd`} role="img">
                 {Array.from({ length: 5 }).map((_, idx) => (
                   <Star
                     key={idx}
                     className={cn(
-                      'w-4 h-4',
-                      idx < review.rating ? 'text-earth-400 fill-earth-400' : 'text-neutral-200 fill-neutral-200',
+                      'w-5 h-5',
+                      idx < featured.rating ? 'text-earth-400 fill-earth-400' : 'text-white/20 fill-white/20',
                     )}
                     aria-hidden="true"
                   />
@@ -65,32 +66,86 @@ export async function RecentReviews() {
               </div>
 
               {/* Quote */}
-              <blockquote className="flex-1 mb-6">
-                <p className="text-sm text-neutral-600 leading-relaxed italic">
-                  &ldquo;{review.text}&rdquo;
+              <blockquote className="flex-1 relative z-10">
+                <p className="text-white/90 text-lg lg:text-xl leading-relaxed font-heading">
+                  &ldquo;{featured.text}&rdquo;
                 </p>
               </blockquote>
 
               {/* Author */}
-              <div className="flex items-center gap-3 pt-5 border-t border-neutral-100">
+              <div className="flex items-center gap-4 mt-8 pt-6 border-t border-white/10 relative z-10">
                 <div
-                  className="w-10 h-10 rounded-2xl bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xs flex-shrink-0 shadow-sm"
+                  className="w-11 h-11 rounded-xl bg-primary-700 flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
                   aria-hidden="true"
                 >
-                  {review.display_name.charAt(0).toUpperCase()}
+                  {featured.display_name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <div className="font-heading font-semibold text-forest text-sm">{review.display_name}</div>
-                  <div className="text-xs text-neutral-400 mt-0.5">
-                    {review.city} ·{' '}
-                    <Link href={`/farmy/${review.farm_slug}`} className="hover:text-primary-600 transition-colors">
+                  <div className="font-heading font-semibold text-white text-sm">{featured.display_name}</div>
+                  <div className="text-white/45 text-xs mt-0.5">
+                    {featured.city} ·{' '}
+                    <Link
+                      href={`/farmy/${featured.farm_slug}`}
+                      className="hover:text-primary-300 transition-colors"
+                    >
                       zobrazit farmu
                     </Link>
                   </div>
                 </div>
               </div>
-            </AnimatedSection>
-          ))}
+            </div>
+          </AnimatedSection>
+
+          {/* Stacked secondary reviews */}
+          <div className="lg:col-span-5 flex flex-col gap-5">
+            {rest.slice(0, 2).map((review, i) => (
+              <AnimatedSection
+                key={review.id}
+                delay={(i * 100) as 0 | 100}
+                className="flex flex-col bg-white rounded-xl p-6 border border-neutral-100 shadow-card hover:shadow-card-hover transition-shadow duration-300 flex-1"
+              >
+                {/* Stars */}
+                <div className="flex gap-0.5 mb-4" aria-label={`${review.rating} z 5 hvězd`} role="img">
+                  {Array.from({ length: 5 }).map((_, idx) => (
+                    <Star
+                      key={idx}
+                      className={cn(
+                        'w-3.5 h-3.5',
+                        idx < review.rating ? 'text-earth-400 fill-earth-400' : 'text-neutral-200 fill-neutral-200',
+                      )}
+                      aria-hidden="true"
+                    />
+                  ))}
+                </div>
+
+                {/* Quote */}
+                <blockquote className="flex-1 mb-5">
+                  <p className="text-sm text-neutral-600 leading-relaxed italic line-clamp-4">
+                    &ldquo;{review.text}&rdquo;
+                  </p>
+                </blockquote>
+
+                {/* Author */}
+                <div className="flex items-center gap-3 pt-4 border-t border-neutral-100">
+                  <div
+                    className="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xs flex-shrink-0"
+                    aria-hidden="true"
+                  >
+                    {review.display_name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <div className="font-heading font-semibold text-forest text-xs">{review.display_name}</div>
+                    <div className="text-xs text-neutral-400 mt-0.5">
+                      {review.city} ·{' '}
+                      <Link href={`/farmy/${review.farm_slug}`} className="hover:text-primary-600 transition-colors">
+                        zobrazit farmu
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
         </div>
       </div>
     </section>

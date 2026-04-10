@@ -37,22 +37,27 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section className="py-16 lg:py-24 bg-white" aria-labelledby="how-heading">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative py-16 lg:py-24 bg-white grain overflow-hidden" aria-labelledby="how-heading">
+      {/* Ambient radial glow — top right */}
+      <div
+        className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-primary-50/60 -translate-y-1/3 translate-x-1/4 pointer-events-none blur-3xl"
+        aria-hidden="true"
+      />
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <AnimatedSection className="mb-14">
-          <span className="text-xs font-semibold text-primary-600 uppercase tracking-widest">
+          <p className="text-primary-600 text-sm font-medium italic mb-3">
             Jak to funguje
-          </span>
+          </p>
           <h2
             id="how-heading"
-            className="font-heading text-3xl lg:text-4xl font-bold text-forest mt-3 max-w-lg"
+            className="font-heading text-3xl lg:text-4xl font-bold text-forest max-w-lg"
           >
             Tři kroky k čerstvým potravinám
           </h2>
         </AnimatedSection>
 
-        <div>
+        <div className="relative">
           {STEPS.map((step, i) => {
             const Icon = step.icon
             return (

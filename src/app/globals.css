@@ -227,6 +227,7 @@
     font-family: var(--font-heading), 'Playfair Display', Georgia, serif;
     line-height: 1.15;
     color: var(--color-text-primary);
+    text-wrap: balance;
   }
 
   ::selection {
