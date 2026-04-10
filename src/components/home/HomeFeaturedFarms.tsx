@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { MapPin, ArrowRight, CheckCircle } from 'lucide-react'
 import { getHomepageFarms, CATEGORY_LABELS } from '@/lib/farms'
-import { cn } from '@/lib/utils'
 import type { Farm } from '@/types/farm'
 
 export async function HomeFeaturedFarms() {
@@ -50,28 +49,30 @@ export async function HomeFeaturedFarms() {
   )
 }
 
-const CATEGORY_GRADIENT: Record<string, string> = {
-  zelenina: 'from-emerald-600 to-teal-700',
-  ovoce:    'from-rose-500 to-pink-700',
-  maso:     'from-amber-600 to-orange-800',
-  mléko:    'from-sky-500 to-blue-700',
-  vejce:    'from-yellow-500 to-amber-700',
-  med:      'from-amber-400 to-yellow-600',
-  byliny:   'from-lime-500 to-green-700',
-  víno:     'from-purple-600 to-violet-800',
-  default:  'from-primary-600 to-forest',
+// Category-specific fallback photos — shown when farm has no real image
+const CATEGORY_PHOTO: Record<string, string> = {
+  zelenina: 'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=800&q=70',
+  ovoce:    'https://images.unsplash.com/photo-1569870499705-504209102861?w=800&q=70',
+  maso:     'https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=800&q=70',
+  mléko:    'https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?w=800&q=70',
+  vejce:    'https://images.unsplash.com/photo-1569761316261-9a8696fa2ca3?w=800&q=70',
+  med:      'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800&q=70',
+  byliny:   'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=800&q=70',
+  víno:     'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800&q=70',
+  chléb:    'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=70',
+  ryby:     'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=70',
+  default:  'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=70',
 }
 
-function farmGradient(farm: Farm) {
-  return CATEGORY_GRADIENT[farm.categories[0]] ?? CATEGORY_GRADIENT.default
+function farmFallbackPhoto(farm: Farm): string {
+  return CATEGORY_PHOTO[farm.categories[0]] ?? CATEGORY_PHOTO.default
 }
 
 // ── Spotlight card ────────────────────────────────────────
 
 function SpotlightCard({ farm }: { farm: Farm }) {
-  const gradient = farmGradient(farm)
   const img = farm.images?.[0] ?? ''
-  const photo = img.startsWith('http') && !img.includes('placeholder') ? img : null
+  const photo = img.startsWith('http') && !img.includes('placeholder') ? img : farmFallbackPhoto(farm)
 
   return (
     <Link
@@ -79,33 +80,16 @@ function SpotlightCard({ farm }: { farm: Farm }) {
       className="group flex flex-col sm:flex-row rounded-xl overflow-hidden bg-white border border-neutral-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 cursor-pointer min-h-[260px]"
       aria-label={`Farma: ${farm.name}`}
     >
-      {/* Cover — photo or gradient */}
-      <div
-        className={cn('relative sm:w-[42%] min-h-[180px] sm:min-h-0 flex-shrink-0 overflow-hidden', photo ? 'bg-neutral-200' : cn('bg-gradient-to-br', gradient))}
-        aria-hidden="true"
-      >
-        {photo ? (
-          <img
-            src={photo}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-            loading="lazy"
-          />
-        ) : (
-          <>
-            <svg className="absolute inset-0 w-full h-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern id="sp-dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
-                  <circle cx="2" cy="2" r="1.5" fill="white" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#sp-dots)" />
-            </svg>
-            <div className="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center text-white font-bold text-xl font-heading">
-              {farm.name.charAt(0)}
-            </div>
-          </>
-        )}
+      {/* Cover — always a photo */}
+      <div className="relative sm:w-[42%] min-h-[200px] sm:min-h-0 flex-shrink-0 overflow-hidden bg-neutral-200" aria-hidden="true">
+        <img
+          src={photo}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          loading="lazy"
+        />
+        {/* Gradient for legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent sm:bg-gradient-to-r sm:from-transparent sm:to-black/10" />
       </div>
 
       {/* Content */}
@@ -150,9 +134,8 @@ function SpotlightCard({ farm }: { farm: Farm }) {
 // ── Regular card ──────────────────────────────────────────
 
 function FarmCard({ farm }: { farm: Farm }) {
-  const gradient = farmGradient(farm)
   const img = farm.images?.[0] ?? ''
-  const photo = img.startsWith('http') && !img.includes('placeholder') ? img : null
+  const photo = img.startsWith('http') && !img.includes('placeholder') ? img : farmFallbackPhoto(farm)
 
   return (
     <Link
@@ -160,32 +143,17 @@ function FarmCard({ farm }: { farm: Farm }) {
       className="group flex flex-col rounded-xl overflow-hidden bg-white border border-neutral-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 cursor-pointer"
       aria-label={`Farma: ${farm.name}`}
     >
-      {/* Cover — photo or gradient */}
-      <div className={cn('relative h-36 overflow-hidden flex-shrink-0', photo ? 'bg-neutral-200' : cn('bg-gradient-to-br', gradient))} aria-hidden="true">
-        {photo ? (
-          <img
-            src={photo}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-            loading="lazy"
-          />
-        ) : (
-          <>
-            <svg className="absolute inset-0 w-full h-full opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern id={`dots-${farm.id}`} x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
-                  <circle cx="2" cy="2" r="1.5" fill="white" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill={`url(#dots-${farm.id})`} />
-            </svg>
-            <div className="absolute bottom-3 left-3 w-9 h-9 rounded-lg bg-white/20 border border-white/30 flex items-center justify-center text-white font-bold text-sm font-heading">
-              {farm.name.charAt(0)}
-            </div>
-          </>
-        )}
+      {/* Cover — always a photo */}
+      <div className="relative h-40 overflow-hidden flex-shrink-0 bg-neutral-200" aria-hidden="true">
+        <img
+          src={photo}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
         {farm.verified && (
-          <div className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-white/90 flex items-center justify-center">
+          <div className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-white/90 flex items-center justify-center shadow-sm">
             <CheckCircle className="w-3.5 h-3.5 text-primary-600" aria-label="Ověřená farma" />
           </div>
         )}

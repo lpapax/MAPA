@@ -47,9 +47,14 @@ export function Newsletter() {
       className="bg-newsletter grain relative overflow-hidden"
       aria-labelledby="newsletter-heading"
     >
-      {/* Subtle texture blobs */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-white/[0.04] -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full bg-white/[0.04] translate-y-1/2 -translate-x-1/4 pointer-events-none" aria-hidden="true" />
+      {/* Background farm photo — blended into the gradient */}
+      <img
+        src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=1920&q=60"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.12] mix-blend-luminosity pointer-events-none select-none"
+        loading="lazy"
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
         {/* Split layout: text left, form right */}

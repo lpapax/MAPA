@@ -9,8 +9,19 @@ const STATS = [
 
 export function StatsBar() {
   return (
-    <section className="bg-forest" aria-label="Statistiky">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative bg-forest overflow-hidden" aria-label="Statistiky">
+      {/* Background farm photo — very low opacity for depth */}
+      <img
+        src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1920&q=60"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover object-center opacity-[0.18] pointer-events-none select-none"
+        loading="lazy"
+      />
+      {/* Subtle vignette so edges don't compete with text */}
+      <div className="absolute inset-0 bg-gradient-to-r from-forest/60 via-transparent to-forest/60 pointer-events-none" aria-hidden="true" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-primary-800/60">
           {STATS.map((stat) => (
             <div

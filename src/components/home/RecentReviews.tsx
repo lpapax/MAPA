@@ -21,8 +21,16 @@ export async function RecentReviews() {
   const [featured, ...rest] = reviews
 
   return (
-    <section className="py-16 lg:py-24 bg-surface" aria-labelledby="reviews-heading">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative py-16 lg:py-24 bg-surface overflow-hidden" aria-labelledby="reviews-heading">
+      {/* Subtle background photo — very low opacity for warmth */}
+      <img
+        src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1920&q=50"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.06] pointer-events-none select-none"
+        loading="lazy"
+      />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header — left-aligned */}
         <AnimatedSection className="mb-12">
