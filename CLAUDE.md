@@ -156,7 +156,7 @@ The Mapbox token (`NEXT_PUBLIC_MAPBOX_TOKEN`) is inlined at **build time** — c
 ### Animation
 
 All framer-motion animations use shared presets from `src/lib/motionVariants.ts`:
-- Spring presets: `SPRING_GENTLE` (200/30), `SPRING_BOUNCY` (400/20), `SPRING_STIFF` (600/35)
+- Spring presets: `SPRING_GENTLE` (stiffness 200, damping 30), `SPRING_STIFF` (600/35) — `SPRING_BOUNCY` was deleted (underdamped, produced visible overshoot)
 - Entry variants: `fadeUp`, `fadeIn`, `fadeLeft`, `fadeRight`, `scaleIn`
 - Stagger containers: `staggerContainer` (0.1s children), `staggerContainerFast` (0.07s)
 - Tab transitions: `tabSlide`
@@ -286,7 +286,7 @@ npx vercel env add NEXT_PUBLIC_GTM_ID production
 
 ### Design system
 
-Typography: `font-sans` = DM Sans, `font-heading` = Playfair Display. Both loaded via `next/font/google` in `layout.tsx` with `latin-ext` subset (required for Czech characters). Body background is warm parchment `#faf7f0`.
+Typography: `font-sans` = Karla, `font-heading` = Spectral. Both loaded via `next/font/google` in `layout.tsx` with `latin-ext` subset (required for Czech characters). Body background is warm parchment `#faf7f0`.
 
 Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw colors:
 
@@ -303,6 +303,12 @@ Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw 
 | `shadow-card-hover` | green-tinted hover | Card on hover |
 
 The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge).
+
+**Transitions:** Never use `transition-all` — it recalculates every CSS property on every frame. Always specify the exact properties: `transition-[border-color,box-shadow]` for inputs, `transition-[transform,box-shadow]` for cards, `transition-[border-color,background-color,color]` for buttons/pills.
+
+**CSS token alignment:** `--primary` and `--ring` in `globals.css` are manually kept in sync with `primary-500` (`#4a8c3f` = `hsl(111 38% 40%)`). When changing either, update both files. Comments in `globals.css` mark these sync points.
+
+**Form accessibility pattern:** Validated inputs use `aria-invalid={!!errors.field}` + `aria-describedby={errors.field ? 'field-error-id' : undefined}`. Error `<p>` elements use `id="field-error-id" role="alert"`. See `AddFarmForm.tsx` for the complete pattern across all 5 steps.
 
 `src/lib/geo.ts` — `haversineKm(lat1, lng1, lat2, lng2)` and `formatDistance(km)`.
 
