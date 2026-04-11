@@ -17,7 +17,7 @@ interface Market {
   time: string
   vendors: number
   tags: string[]
-  photo: string
+  photo?: string
   is_daily: boolean
   dow: number | null
   nextDate: Date
@@ -34,7 +34,7 @@ interface MarketRow {
   time: string
   vendors: number
   tags: string[]
-  photo: string
+  photo?: string
   is_daily: boolean
   dow: number | null
 }
@@ -146,7 +146,8 @@ const TAG_STYLES: Record<string, string> = {
   Tradiční:   'bg-sky-50 text-sky-700 border border-sky-200',
 }
 
-function photoUrl(photo: string): string {
+function photoUrl(photo?: string): string {
+  if (!photo) return 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=160&h=160&fit=crop&q=80'
   if (photo.startsWith('http')) return photo
   return `https://images.unsplash.com/photo-${photo}?w=160&h=160&fit=crop&q=80`
 }
