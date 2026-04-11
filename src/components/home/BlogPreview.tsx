@@ -15,22 +15,32 @@ export function BlogPreview() {
     <section className="py-16 lg:py-24 bg-white" aria-labelledby="blog-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Header — left-aligned, no centering */}
-        <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-          <div>
-            <span className="inline-block text-earth-700 text-sm font-medium italic mb-3">
-              Blog
-            </span>
-            <h2
-              id="blog-heading"
-              className="font-heading text-3xl lg:text-4xl font-bold text-forest tracking-tight"
+        {/* Header */}
+        <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
+          <div className="relative">
+            <span
+              className="absolute -left-1 -top-4 font-heading font-bold text-neutral-100 select-none pointer-events-none leading-none"
+              style={{ fontSize: 'clamp(4rem, 10vw, 8rem)' }}
+              aria-hidden="true"
             >
-              Tipy a inspirace
-            </h2>
+              03
+            </span>
+            <div className="relative">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-primary-500 font-bold mb-3">
+                Blog
+              </p>
+              <h2
+                id="blog-heading"
+                className="font-heading font-bold text-forest leading-tight tracking-tight"
+                style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+              >
+                Tipy a inspirace
+              </h2>
+            </div>
           </div>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors cursor-pointer flex-shrink-0 group"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors cursor-pointer flex-shrink-0 group pb-1"
           >
             Všechny články
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />

@@ -46,15 +46,27 @@ export function HowItWorks() {
           {/* Left — heading + steps */}
           <div>
             <AnimatedSection className="mb-14">
-              <p className="text-primary-600 text-sm font-medium italic mb-3">
-                Jak to funguje
-              </p>
-              <h2
-                id="how-heading"
-                className="font-heading text-3xl lg:text-4xl font-bold text-forest max-w-lg"
-              >
-                Tři kroky k čerstvým potravinám
-              </h2>
+              <div className="relative">
+                <span
+                  className="absolute -left-1 -top-4 font-heading font-bold text-neutral-100 select-none pointer-events-none leading-none"
+                  style={{ fontSize: 'clamp(4rem, 10vw, 8rem)' }}
+                  aria-hidden="true"
+                >
+                  02
+                </span>
+                <div className="relative">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-primary-500 font-bold mb-3">
+                    Jak to funguje
+                  </p>
+                  <h2
+                    id="how-heading"
+                    className="font-heading font-bold text-forest leading-tight max-w-lg"
+                    style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+                  >
+                    Tři kroky k čerstvým potravinám
+                  </h2>
+                </div>
+              </div>
             </AnimatedSection>
 
             <div>

@@ -15,21 +15,32 @@ export async function HomeFeaturedFarms() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-          <div>
-            <p className="text-earth-700 text-sm font-medium italic mb-2">
-              Farmy v adresáři
-            </p>
-            <h2
-              id="featured-farms-heading"
-              className="font-heading text-3xl lg:text-4xl font-bold text-forest"
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
+          <div className="relative">
+            {/* Large muted section number */}
+            <span
+              className="absolute -left-1 -top-4 font-heading font-bold text-neutral-100 select-none pointer-events-none leading-none"
+              style={{ fontSize: 'clamp(4rem, 10vw, 8rem)' }}
+              aria-hidden="true"
             >
-              Objevte místní farmáře
-            </h2>
+              01
+            </span>
+            <div className="relative">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-primary-500 font-bold mb-3">
+                Farmy v adresáři
+              </p>
+              <h2
+                id="featured-farms-heading"
+                className="font-heading font-bold text-forest leading-tight"
+                style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+              >
+                Objevte místní farmáře
+              </h2>
+            </div>
           </div>
           <Link
             href="/mapa"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors cursor-pointer flex-shrink-0 group"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors cursor-pointer flex-shrink-0 group pb-1"
           >
             Zobrazit všechny farmy
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
