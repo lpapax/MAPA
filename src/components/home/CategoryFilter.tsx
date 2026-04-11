@@ -3,38 +3,27 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import {
-  LayoutGrid,
-  Flame,
-  Milk,
-  Egg,
-  Apple,
-  Leaf,
-  Sun,
-  Flower2,
-  Fish,
-  Wheat,
-} from 'lucide-react'
+import { LayoutGrid } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { CategoryIcon } from '@/components/ui/CategoryIcon'
 
 interface Category {
   id: string
   label: string
-  icon: React.ElementType
   mapQuery?: string
 }
 
 const CATEGORIES: Category[] = [
-  { id: 'all',      label: 'Všechny',  icon: LayoutGrid },
-  { id: 'zelenina', label: 'Zelenina', icon: Leaf,    mapQuery: 'zelenina' },
-  { id: 'ovoce',    label: 'Ovoce',    icon: Apple,   mapQuery: 'ovoce' },
-  { id: 'maso',     label: 'Maso',     icon: Flame,   mapQuery: 'maso' },
-  { id: 'mléko',    label: 'Mléčné',   icon: Milk,    mapQuery: 'mléko' },
-  { id: 'vejce',    label: 'Vejce',    icon: Egg,     mapQuery: 'vejce' },
-  { id: 'med',      label: 'Med',      icon: Sun,     mapQuery: 'med' },
-  { id: 'byliny',   label: 'Byliny',   icon: Flower2, mapQuery: 'byliny' },
-  { id: 'ryby',     label: 'Ryby',     icon: Fish,    mapQuery: 'ryby' },
-  { id: 'chléb',    label: 'Pečivo',   icon: Wheat,   mapQuery: 'chléb' },
+  { id: 'all',      label: 'Všechny'  },
+  { id: 'zelenina', label: 'Zelenina', mapQuery: 'zelenina' },
+  { id: 'ovoce',    label: 'Ovoce',    mapQuery: 'ovoce'    },
+  { id: 'maso',     label: 'Maso',     mapQuery: 'maso'     },
+  { id: 'mléko',    label: 'Mléčné',   mapQuery: 'mléko'    },
+  { id: 'vejce',    label: 'Vejce',    mapQuery: 'vejce'    },
+  { id: 'med',      label: 'Med',      mapQuery: 'med'      },
+  { id: 'byliny',   label: 'Byliny',   mapQuery: 'byliny'   },
+  { id: 'ryby',     label: 'Ryby',     mapQuery: 'ryby'     },
+  { id: 'chléb',    label: 'Pečivo',   mapQuery: 'chléb'    },
 ]
 
 export function CategoryFilter() {
@@ -49,9 +38,8 @@ export function CategoryFilter() {
   return (
     <div className="bg-cream border-b border-neutral-100 shadow-sm sticky top-[72px] z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        {/* Fade — left edge */}
+        {/* Fade edges on mobile */}
         <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-cream to-transparent z-10 sm:hidden" aria-hidden="true" />
-        {/* Fade — right edge */}
         <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-cream to-transparent z-10 sm:hidden" aria-hidden="true" />
 
         <div
@@ -60,11 +48,10 @@ export function CategoryFilter() {
           className="flex items-center gap-2 overflow-x-auto scrollbar-none py-3"
         >
           {CATEGORIES.map((cat) => {
-            const { id, label, icon: Icon } = cat
-            const isActive = active === id
+            const isActive = active === cat.id
             return (
               <button
-                key={id}
+                key={cat.id}
                 onClick={() => handleClick(cat)}
                 aria-pressed={isActive}
                 className={cn(
@@ -85,11 +72,21 @@ export function CategoryFilter() {
                   />
                 )}
 
-                <Icon
-                  className={cn('w-4 h-4 relative z-10', isActive ? 'text-white' : 'text-neutral-400')}
-                  aria-hidden="true"
-                />
-                <span className="relative z-10">{label}</span>
+                <span className="relative z-10 flex items-center gap-2">
+                  {cat.id === 'all' ? (
+                    <LayoutGrid
+                      className={cn('w-4 h-4', isActive ? 'text-white' : 'text-neutral-400')}
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <CategoryIcon
+                      category={cat.id}
+                      size={18}
+                      className={isActive ? 'brightness-0 invert' : ''}
+                    />
+                  )}
+                  {cat.label}
+                </span>
               </button>
             )
           })}
