@@ -1,31 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-async function verifyAdmin(req: NextRequest): Promise<boolean> {
-  const adminEmail = process.env.ADMIN_EMAIL
-  if (!adminEmail) return false
-  const token = req.headers.get('authorization')?.startsWith('Bearer ')
-    ? req.headers.get('authorization')!.slice(7)
-    : null
-  if (!token) return false
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  if (!url || !key) return false
-  const { data: { user } } = await createClient(url, key).auth.getUser(token)
-  return user?.email === adminEmail
-}
-
-function getServiceClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!url || !key) return null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return createClient<any>(url, key)
-}
+import { verifyAdmin, getSupabaseServiceClient } from '@/lib/adminAuth'
+import { pickArticleFields } from '../articleFields'
 
 export async function GET(req: NextRequest) {
   if (!(await verifyAdmin(req))) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
-  const sb = getServiceClient()
+  const sb = getSupabaseServiceClient()
   if (!sb) return NextResponse.json({ error: 'Server error' }, { status: 500 })
 
   const { data, error } = await sb
@@ -33,17 +12,25 @@ export async function GET(req: NextRequest) {
     .select('id,slug,title,category,draft,published_at,author,read_time')
     .order('published_at', { ascending: false })
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) {
+    console.error('[admin/blog GET]', error)
+    return NextResponse.json({ error: 'Nepodařilo se načíst články.' }, { status: 500 })
+  }
   return NextResponse.json({ data })
 }
 
+
 export async function POST(req: NextRequest) {
   if (!(await verifyAdmin(req))) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
-  const sb = getServiceClient()
+  const sb = getSupabaseServiceClient()
   if (!sb) return NextResponse.json({ error: 'Server error' }, { status: 500 })
 
   const body = await req.json()
-  const { data, error } = await sb.from('articles').insert(body).select('id,slug').single()
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  const payload = pickArticleFields(body)
+  const { data, error } = await sb.from('articles').insert(payload).select('id,slug').single()
+  if (error) {
+    console.error('[admin/blog POST]', error)
+    return NextResponse.json({ error: 'Článek se nepodařilo vytvořit.' }, { status: 500 })
+  }
   return NextResponse.json({ data })
 }

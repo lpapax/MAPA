@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseClient } from '@/lib/supabase'
+import { rateLimit, getIp } from '@/lib/rateLimit'
 
 export async function POST(req: NextRequest) {
+  // 5 signups per IP per hour
+  if (!rateLimit(`newsletter:${getIp(req)}`, { limit: 5, windowMs: 60 * 60_000 })) {
+    return NextResponse.json({ success: false, error: 'Příliš mnoho požadavků. Zkuste to za chvíli.' }, { status: 429 })
+  }
+
   let email: string | undefined
   try {
     const body = await req.json() as { email?: unknown }
@@ -17,7 +23,6 @@ export async function POST(req: NextRequest) {
   const supabase = getSupabaseClient()
 
   if (supabase) {
-    // Try to save to Supabase `subscribers` table
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (supabase as any)
       .from('subscribers')
@@ -30,7 +35,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Chyba při uložení. Zkuste to prosím znovu.' }, { status: 500 })
     }
   }
-  // If no Supabase, we simply accept and return success (e.g. logged elsewhere)
 
   return NextResponse.json({ success: true })
 }

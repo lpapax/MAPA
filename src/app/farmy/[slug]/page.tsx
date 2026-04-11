@@ -10,7 +10,7 @@ import { FavoriteButton } from '@/components/farms/FavoriteButton'
 import { Navbar } from '@/components/ui/Navbar'
 import { Footer } from '@/components/ui/Footer'
 import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
-import { cn } from '@/lib/utils'
+import { cn, safeJsonLd } from '@/lib/utils'
 
 interface PageProps {
   params: { slug: string }
@@ -128,7 +128,7 @@ export default async function FarmDetailPage({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <Navbar />
 

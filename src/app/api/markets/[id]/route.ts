@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getSupabaseRaw } from '@/lib/supabase'
+import { pickMarketFields } from '../marketFields'
 
 async function verifyAdmin(req: Request): Promise<boolean> {
   const token = (req.headers.get('authorization') ?? '').replace('Bearer ', '')
@@ -18,15 +19,18 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   const sb = getSupabaseRaw()
   if (!sb) return NextResponse.json({ error: 'DB unavailable' }, { status: 503 })
 
-  const body = await req.json() as Record<string, unknown>
+  const payload = pickMarketFields(await req.json() as Record<string, unknown>)
   const { data, error } = await sb
     .from('markets')
-    .update(body)
+    .update(payload)
     .eq('id', params.id)
     .select()
     .single()
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) {
+    console.error('[markets PUT]', error)
+    return NextResponse.json({ error: 'Trh se nepodařilo aktualizovat.' }, { status: 500 })
+  }
   return NextResponse.json(data)
 }
 
@@ -37,6 +41,9 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   if (!sb) return NextResponse.json({ error: 'DB unavailable' }, { status: 503 })
 
   const { error } = await sb.from('markets').delete().eq('id', params.id)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) {
+    console.error('[markets DELETE]', error)
+    return NextResponse.json({ error: 'Trh se nepodařilo smazat.' }, { status: 500 })
+  }
   return NextResponse.json({ ok: true })
 }

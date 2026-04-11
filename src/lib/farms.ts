@@ -34,7 +34,7 @@ function rowToFarm(row: FarmRow): Farm {
 
 // ── Seed fallback ─────────────────────────────────────────────
 
-const seedFarms: Farm[] = farmsData as Farm[]
+const seedFarms: Farm[] = farmsData as unknown as Farm[]
 
 // ── Data access layer (async) ─────────────────────────────────
 

@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllFarms } from '@/lib/farms'
+import { rateLimit, getIp } from '@/lib/rateLimit'
 
 export async function GET(req: NextRequest) {
+  // 30 searches per IP per minute — search loads all 4,009 farms from Supabase
+  if (!rateLimit(`search:${getIp(req)}`, { limit: 30, windowMs: 60_000 })) {
+    return NextResponse.json({ results: [] }, { status: 429 })
+  }
+
   const q = req.nextUrl.searchParams.get('q')?.trim() ?? ''
 
   if (q.length < 2) {
@@ -15,7 +21,7 @@ export async function GET(req: NextRequest) {
     .filter((farm) => {
       return (
         farm.name.toLowerCase().includes(lower) ||
-        farm.description.toLowerCase().includes(lower) ||
+        farm.description?.toLowerCase().includes(lower) ||
         farm.location.city.toLowerCase().includes(lower) ||
         farm.location.kraj.toLowerCase().includes(lower)
       )

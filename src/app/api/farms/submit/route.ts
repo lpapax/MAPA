@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseRaw } from '@/lib/supabase'
+import { rateLimit, getIp } from '@/lib/rateLimit'
 
 interface SubmitBody {
   name?: unknown
@@ -18,6 +19,11 @@ interface SubmitBody {
 }
 
 export async function POST(req: NextRequest) {
+  // 3 submissions per IP per day — prevents spam that floods admin inbox
+  if (!rateLimit(`farm-submit:${getIp(req)}`, { limit: 3, windowMs: 24 * 60 * 60_000 })) {
+    return NextResponse.json({ success: false, error: 'Příliš mnoho požadavků. Zkuste to za chvíli.' }, { status: 429 })
+  }
+
   let body: SubmitBody
   try {
     body = await req.json() as SubmitBody

@@ -29,6 +29,10 @@ const CLUSTER_LAYER_ID = 'clusters'
 const CLUSTER_COUNT_LAYER_ID = 'cluster-count'
 const UNCLUSTERED_LAYER_ID = 'unclustered-point'
 
+/** XSS-safe HTML escape for values injected into Mapbox popup HTML strings. */
+const esc = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
 interface MapViewProps {
   markers: FarmMapMarker[]
 }
@@ -191,7 +195,6 @@ export function MapView({ markers }: MapViewProps) {
           const coords = (feature.geometry as GeoJSON.Point).coordinates as [number, number]
           const emoji = CATEGORY_META[cat]?.emoji ?? '🏪'
           const label = CATEGORY_META[cat]?.label ?? 'Farma'
-          const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
           const verifiedHtml = verified
             ? `<span class="farm-click-popup-verified">✓ Ověřeno</span>`
             : ''
@@ -245,7 +248,7 @@ export function MapView({ markers }: MapViewProps) {
           const emoji = CATEGORY_META[cat]?.emoji ?? '🏪'
           popup
             .setLngLat(coords)
-            .setHTML(`<div class="farm-popup-inner"><span class="farm-popup-emoji">${emoji}</span>${name}</div>`)
+            .setHTML(`<div class="farm-popup-inner"><span class="farm-popup-emoji">${emoji}</span>${esc(name)}</div>`)
             .addTo(map)
         }
       })

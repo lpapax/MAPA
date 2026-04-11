@@ -33,7 +33,8 @@ export async function DELETE(req: NextRequest) {
   const { error: deleteError } = await adminClient.auth.admin.deleteUser(user.id)
 
   if (deleteError) {
-    return NextResponse.json({ error: deleteError.message }, { status: 500 })
+    console.error('[delete-account] Supabase error:', deleteError)
+    return NextResponse.json({ error: 'Smazání účtu se nezdařilo. Zkuste to prosím znovu.' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

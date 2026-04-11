@@ -9,6 +9,7 @@ import { getAllFarms } from '@/lib/farms'
 import { KRAJ_LIST } from '@/data/mockData'
 import { CATEGORY_META } from '@/lib/farms'
 import type { Farm } from '@/types/farm'
+import { safeJsonLd } from '@/lib/utils'
 
 export const revalidate = 3600
 
@@ -139,7 +140,7 @@ export default async function KrajPage({ params }: { params: { slug: string } })
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <Navbar />
       <main className="min-h-screen bg-surface pt-20 pb-20">

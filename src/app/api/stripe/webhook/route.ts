@@ -5,11 +5,12 @@ import { getSupabaseRaw } from '@/lib/supabase'
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
-type Tier = 'profesional' | 'premium'
+type Tier = 'free' | 'profesional' | 'premium'
 
 function getTierFromPriceId(priceId: string): Tier {
   if (priceId === process.env.STRIPE_PRICE_PREMIUM) return 'premium'
-  return 'profesional' // default — safer than 'free'
+  if (priceId === process.env.STRIPE_PRICE_PROFESIONAL) return 'profesional'
+  return 'free' // unknown price — do not grant paid tier
 }
 
 export async function POST(req: NextRequest) {
@@ -89,18 +90,14 @@ export async function POST(req: NextRequest) {
           ? new Date((sub.current_period_end as number) * 1000).toISOString()
           : null
 
+        // Fetch farm_slug and update subscription row in parallel — both target the same row by id
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data: row } = await (supabase as any)
-          .from('subscriptions')
-          .select('farm_slug')
-          .eq('stripe_subscription_id', sub.id)
-          .single()
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await (supabase as any)
-          .from('subscriptions')
-          .update({ tier, status: sub.status, current_period_end: periodEnd, stripe_price_id: priceId })
-          .eq('stripe_subscription_id', sub.id)
+        const [{ data: row }] = await Promise.all([
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (supabase as any).from('subscriptions').select('farm_slug').eq('stripe_subscription_id', sub.id).single(),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (supabase as any).from('subscriptions').update({ tier, status: sub.status, current_period_end: periodEnd, stripe_price_id: priceId }).eq('stripe_subscription_id', sub.id),
+        ])
 
         if (row?.farm_slug) {
           await supabase.from('farms').update({ tier }).eq('slug', row.farm_slug as string)
@@ -112,18 +109,14 @@ export async function POST(req: NextRequest) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const sub = event.data.object as any
 
+        // Fetch farm_slug and mark canceled in parallel
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data: row } = await (supabase as any)
-          .from('subscriptions')
-          .select('farm_slug')
-          .eq('stripe_subscription_id', sub.id)
-          .single()
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await (supabase as any)
-          .from('subscriptions')
-          .update({ status: 'canceled' })
-          .eq('stripe_subscription_id', sub.id)
+        const [{ data: row }] = await Promise.all([
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (supabase as any).from('subscriptions').select('farm_slug').eq('stripe_subscription_id', sub.id).single(),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (supabase as any).from('subscriptions').update({ status: 'canceled' }).eq('stripe_subscription_id', sub.id),
+        ])
 
         if (row?.farm_slug) {
           await supabase.from('farms').update({ tier: 'free' }).eq('slug', row.farm_slug as string)
