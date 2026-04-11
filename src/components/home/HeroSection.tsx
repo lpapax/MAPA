@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Search, ArrowRight, MapPin } from 'lucide-react'
@@ -143,36 +142,21 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      {/* ── Right panel — photo ──────────────────────────────── */}
-      <div className="relative overflow-hidden order-1 lg:order-2 h-[52vw] sm:h-64 lg:h-auto min-h-0">
-        <motion.div
-          className="absolute inset-0"
-          initial={{ scale: 1.06 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.4, ease: [0.23, 1, 0.32, 1] }}
-        >
-          <Image
-            src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1400&h=1800&fit=crop&q=85"
-            alt=""
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="(max-width: 1024px) 100vw, 42vw"
-          />
-        </motion.div>
-
-        {/* Gradient left edge — blends into content panel */}
+      {/* ── Right panel — decorative pattern ────────────────── */}
+      <div className="relative overflow-hidden order-1 lg:order-2 h-24 lg:h-auto min-h-0 bg-[#0b1e08]" aria-hidden="true">
+        {/* Subtle grid pattern */}
         <div
-          className="absolute inset-y-0 left-0 w-24 hidden lg:block"
-          style={{ background: 'linear-gradient(to right, #0b1e08 0%, transparent 100%)' }}
-          aria-hidden="true"
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: 'linear-gradient(#7bbf6e 1px, transparent 1px), linear-gradient(90deg, #7bbf6e 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+          }}
         />
 
-        {/* Bottom fade on mobile into content below */}
+        {/* Large decorative leaf / circle accent */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-16 lg:hidden"
-          style={{ background: 'linear-gradient(to top, #0b1e08 0%, transparent 100%)' }}
-          aria-hidden="true"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full hidden lg:block"
+          style={{ background: 'radial-gradient(circle, rgba(122,191,110,0.07) 0%, transparent 70%)' }}
         />
 
         {/* Floating farm count badge */}
@@ -180,13 +164,13 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 12, scale: 0.94 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 0.7, duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-          className="absolute bottom-8 right-6 hidden lg:block"
+          className="absolute bottom-8 right-8 hidden lg:block"
         >
-          <div className="flex items-center gap-3 bg-white/90 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-xl">
-            <div className="w-2 h-2 rounded-full bg-primary-500 flex-shrink-0" aria-hidden="true" />
+          <div className="flex items-center gap-3 bg-white/8 border border-white/10 backdrop-blur-sm rounded-2xl px-4 py-3">
+            <div className="w-2 h-2 rounded-full bg-primary-500 flex-shrink-0" />
             <div>
-              <p className="font-heading font-bold text-forest text-sm leading-none">3 960+ farem</p>
-              <p className="text-neutral-400 text-[11px] mt-0.5 leading-none">ve všech 14 krajích</p>
+              <p className="font-heading font-bold text-white text-sm leading-none">3 960+ farem</p>
+              <p className="text-white/40 text-[11px] mt-0.5 leading-none">ve všech 14 krajích</p>
             </div>
           </div>
         </motion.div>
