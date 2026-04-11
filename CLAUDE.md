@@ -10,7 +10,18 @@ npm run build    # Production build (also type-checks and lints)
 npm run lint     # ESLint check only
 ```
 
-No test suite is configured. The build (`npm run build`) is the primary correctness check — it runs TypeScript type-checking and ESLint as part of Next.js compilation. Always run it after making changes.
+The build (`npm run build`) is the primary correctness check — it runs TypeScript type-checking and ESLint as part of Next.js compilation. Always run it after making changes.
+
+### E2E tests (Playwright)
+
+```bash
+npx playwright test                          # Run all tests (Chromium, starts dev server automatically)
+npx playwright test tests/mapafarem.spec.ts  # Run only the mapafarem tests
+npx playwright test --ui                     # Interactive UI mode
+npx playwright show-report                   # Open last HTML report
+```
+
+`playwright.config.ts` — Chromium only, screenshots always on, HTML + list reporters. `webServer` block starts `npm run dev` automatically when no server is already running on port 3000 (`reuseExistingServer: true`). Test screenshots land in `tests/screenshots/`.
 
 ### Data import scripts
 
@@ -20,6 +31,9 @@ npm run merge-farms    # Merge scripts/output/farms-imported.json into src/data/
 npm run seed-supabase  # Batch-insert src/data/farms.json into Supabase (service role key required)
 npm run enrich-photos  # Scrape og:image from farm websites → updates farms-imported.json
 npm run update-photos  # Push enriched photos/descriptions from farms-imported.json to Supabase
+npm run scrape-emails  # Scrape contact emails from farm websites → src/data/farms.json + scripts/output/
+npm run send-outreach  # Send personalised outreach emails to farmers via Resend (requires RESEND_API_KEY + verified domain)
+npm run send-outreach-dry  # Preview outreach emails without sending
 npm run claw           # Start NanoClaw interactive Claude REPL (requires ANTHROPIC_API_KEY)
 ```
 
@@ -30,6 +44,10 @@ npm run claw           # Start NanoClaw interactive Claude REPL (requires ANTHRO
 `enrich-photos` scrapes og:image and meta description from farm websites (20 concurrent, 6s timeout). Skips farms that already have real photos. Saves progress every 50 farms. Also outputs `scripts/output/enrich-photos.sql` for manual Supabase updates.
 
 `update-photos` requires `SUPABASE_SERVICE_ROLE_KEY`. Updates `images` and `description` fields in batches of 50 for all farms in `farms-imported.json` that have real photos.
+
+`scrape-emails` visits each farm's website (and `/kontakt`, `/contact`, `/o-nas` sub-pages) looking for `mailto:` links and plain-text email patterns. 15 concurrent, 7s timeout. Saves progress into `src/data/farms.json` and outputs `scripts/output/outreach-list.csv` (Mailchimp/Brevo-ready), `scripts/output/scrape-emails.sql` (Supabase UPDATE statements), and `scripts/output/farms-with-emails.json`. Skips farms that already have an email — safe to re-run.
+
+`send-outreach` reads `scripts/output/outreach-list.csv` and sends personalised HTML emails via Resend. Requires `RESEND_API_KEY` in `.env.local` and `mapafarem.cz` verified in Resend → Domains. Progress (sent/failed per email address) is saved to `scripts/output/outreach-progress.json` — already-sent emails are never re-sent on resume. Use `--dry-run` to preview, `--limit N` to send only N emails.
 
 To force a Vercel redeploy without code changes:
 ```bash
@@ -52,7 +70,7 @@ All server-side farm data access goes through these functions: `getAllFarms()`, 
 
 `getFarmMapMarkers()` calls `getAllFarms()` internally. The `/mapa` page derives markers from farms directly (not by calling both) to avoid a duplicate Supabase fetch.
 
-`src/data/farms.json` contains ~4,009 real Czech farms. This is the fallback when Supabase is unavailable — it is not placeholder data. Farm photos (`images[]`) in this JSON may be stale — Supabase is the authoritative source for photos.
+`src/data/farms.json` contains ~4,001 real Czech farms (8 fake hand-crafted demo farms were deleted; use `node scripts/clean-fake-farms.js` to re-run the cleanup if re-seeding). Auto-generated descriptions were nulled — farms with `description: null` have no copy yet. This is the fallback when Supabase is unavailable — it is not placeholder data. Farm photos (`images[]`) in this JSON may be stale — Supabase is the authoritative source for photos. `src/data/farms.backup.json` is the pre-cleanup snapshot — gitignore it if it exists.
 
 `src/lib/supabase.ts` exports three functions, all returning `null` when env vars are missing:
 - `getSupabaseClient()` — new typed client per call (server components)
@@ -225,7 +243,7 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `/cookies` | Static | Cookie policy |
 | `/certifikace` | Static | Bio certification guide |
 | `/prihlasit` | Static shell | Magic link login |
-| `/auth/callback` | Dynamic | Exchanges Supabase auth code, redirects to `/profil` |
+| `/auth/callback` | Dynamic | Server-side `route.ts` — exchanges PKCE `?code=` via `@supabase/ssr`, sets session cookie, redirects to `/profil`. No `page.tsx`. |
 | `/profil` | Static shell | Requires auth |
 | `/profil/recenze` | Static shell | Requires auth |
 | `/profil/historie` | Static shell | `mf_recent_farms` localStorage |
@@ -251,6 +269,29 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `/admin/recenze` | Client shell | All reviews — read and delete |
 | `/admin/blog` | Client shell | Blog article management — create/edit/delete entries in `articles` table. |
 
+### Security utilities
+
+`src/lib/rateLimit.ts` — in-memory sliding-window rate limiter. Works per-serverless-instance (no Redis). Call `rateLimit(key, { limit, windowMs })` — returns `false` when the caller should be rejected. `getIp(req)` reads `x-forwarded-for` / `x-real-ip`. Applied to every public endpoint:
+
+| Route | Key prefix | Limit |
+|---|---|---|
+| `/api/search` | `search:<ip>` | 30/min |
+| `/api/newsletter` | `newsletter:<ip>` | 5/hr |
+| `/api/farms/submit` | `farm-submit:<ip>` | 3/day |
+| `/api/farms/[slug]/view` | `view:<ip>` | 30/hr |
+
+`src/lib/adminAuth.ts` — shared helpers for admin routes: `verifyAdmin(req)` checks Bearer token against Supabase + `ADMIN_EMAIL`; `getSupabaseServiceClient()` returns a service-role client. Import from here — do not copy-paste into individual routes.
+
+`src/app/api/admin/articleFields.ts` — `ARTICLE_ALLOWED_FIELDS` allowlist + `pickArticleFields(body)`. Import in all `/api/admin/blog` routes to prevent mass assignment.
+
+`src/app/api/markets/marketFields.ts` — `MARKET_ALLOWED_FIELDS` allowlist + `pickMarketFields(body)`. Import in all `/api/markets` routes.
+
+`safeJsonLd(obj)` in `src/lib/utils.ts` — serialises an object for `<script type="application/ld+json">`, escaping `</` to prevent script injection. Use instead of bare `JSON.stringify` in `dangerouslySetInnerHTML`.
+
+**XSS in map popups:** `esc(s)` in `MapView.tsx` escapes `&`, `<`, `>`, `"` — defined at module scope and applied to every string interpolated into popup HTML.
+
+**Auth callback** (`src/app/auth/callback/route.ts`) — server-side GET handler. Exchanges the Supabase PKCE `?code=` parameter using `@supabase/ssr` `createServerClient`, sets the session cookie, then redirects to `/profil`. There is no `page.tsx` at this path.
+
 ### Admin panel
 
 `src/app/admin/layout.tsx` — client-side auth guard. On mount, calls `GET /api/admin/check` with the Supabase Bearer token. Redirects to `/prihlasit` if not logged in, to `/` if logged in but not admin. Shows spinner until check resolves.
@@ -268,6 +309,7 @@ farm.images?.[0]?.startsWith('http') && !farm.images[0].includes('placeholder')
 | `NEXT_PUBLIC_GTM_ID` | Google Tag Manager container ID (e.g. `GTM-XXXXXXX`). GTM is not loaded when this is absent or when user has not accepted cookies. |
 | `ADMIN_EMAIL` | Private — email allowed to access `/admin`. Checked server-side only in `/api/admin/check`. No `NEXT_PUBLIC_` prefix. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role — server-side only |
+| `RESEND_API_KEY` | Resend email API — required for `send-outreach` script. Domain `mapafarem.cz` must also be verified in Resend → Domains. |
 | `GOOGLE_PLACES_API_KEY` | Google Places API — only for `import-farms` script |
 | `STRIPE_SECRET_KEY` | Stripe secret key (`sk_test_...` / `sk_live_...`) — all `/api/stripe/*` routes return 503 when absent |
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret (`whsec_...`) — used by `/api/stripe/webhook` to verify event signatures |
@@ -310,7 +352,7 @@ Custom Tailwind tokens in `tailwind.config.ts` — always prefer these over raw 
 | `shadow-card` | subtle drop shadow | Default card |
 | `shadow-card-hover` | green-tinted hover | Card on hover |
 
-The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge).
+The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-merge). The same file exports `safeJsonLd(obj)` — use it for all JSON-LD script tags (see above).
 
 **Background gradient utilities** — `tailwind.config.ts` defines `backgroundImage` tokens used as bg classes:
 
@@ -354,7 +396,7 @@ Homepage sections follow editorial layout rules — **do not "fix" them to equal
 - `StatsBar` — uses `divide-x` horizontal band with left-aligned stat + label + sub-note per column. Not a centred card grid.
 - `Newsletter` — split layout: text/benefit list left, form card right (`grid-cols-1 lg:grid-cols-2`). Not a centred column.
 
-**Mapbox popup CSS classes** — `globals.css` contains all styling for `.farm-popup`, `.farm-click-popup`, `.farm-click-popup-inner`, `.farm-click-popup-name`, etc. When changing popup HTML in `MapView.tsx`, update the matching CSS classes in `globals.css`. The popup content is built as a raw HTML string — see the `esc()` XSS-escape function inline in that component.
+**Mapbox popup CSS classes** — `globals.css` contains all styling for `.farm-popup`, `.farm-click-popup`, `.farm-click-popup-inner`, `.farm-click-popup-name`, etc. When changing popup HTML in `MapView.tsx`, update the matching CSS classes in `globals.css`. The popup content is built as a raw HTML string — escape every interpolated string with `esc()` (defined at module scope in `MapView.tsx`).
 
 ### Global UI components
 
