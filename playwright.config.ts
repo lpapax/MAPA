@@ -10,6 +10,7 @@ export default defineConfig({
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
   ],
   use: {
+    baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'on',
     actionTimeout: 10000,
@@ -21,4 +22,10 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: true,
+    timeout: 120000,
+  },
 })
