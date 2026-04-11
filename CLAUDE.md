@@ -367,7 +367,7 @@ The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-m
 
 **Dark mode** — A partial dark mode exists via `ThemeProvider`. `globals.css` has `!important` overrides that remap `bg-white`, `bg-surface`, `bg-neutral-*`, `bg-primary-50/100`, and text colors for the `.dark` class. Do not add new background colors without adding a corresponding dark override. Light mode is the primary design — dark mode is secondary and not all sections are optimised.
 
-**`grain` utility** — `globals.css` defines `.grain::after` which applies a subtle SVG noise texture via a pseudo-element. Apply to `relative` containers only (the pseudo-element uses `position: absolute; inset: 0`). Do not apply to scrolling containers — causes continuous GPU repaints.
+**`grain` utility** — `globals.css` defines `.grain::after` which applies a subtle SVG noise texture via a pseudo-element (`position: absolute; inset: 0; z-index: 1; pointer-events: none`). Apply to `relative` containers only. Content inside a grain container that should render above the texture needs `position: relative` (no explicit z-index required — `z-index: auto` stacks below `z-index: 1` only when the parent creates a stacking context, so add `isolation: isolate` or an explicit z-index to the content wrapper if layering issues occur). Do not apply to scrolling containers — causes continuous GPU repaints.
 
 **`scrollbar-none` / `scrollbar-thin`** — Custom utilities in `globals.css`. Use `scrollbar-none` on horizontal overflow strips (category filter, trust bar). Use `scrollbar-thin` on vertical scroll areas where a thin scrollbar is desirable.
 
@@ -385,6 +385,12 @@ The `cn()` utility from `src/lib/utils.ts` merges class names (clsx + tailwind-m
 
 **Hero sections** — Always use `min-h-[100dvh]` (not `h-screen` or `min-h-screen`). iOS Safari's collapsing toolbar causes visible layout jumps with `vh` units. `dvh` accounts for the dynamic viewport.
 
+**Homepage HeroSection layout** — Split-screen grid (`grid-cols-[58fr_42fr]`). Left panel is `bg-[#0b1e08]` with `grain` class applied; content uses `staggerContainer` + `fadeUp` variants from `motionVariants.ts`. Right panel is the farm photo (`next/image` with `fill`, `sizes="42vw"`). On mobile (`grid-cols-1`) the photo stacks first (`order-1`) above the content panel (`order-2`). The trust strip is `absolute bottom-0` inside the left panel — `hidden lg:flex` only.
+
+**`CategoryIcon` sprite sheet** — `src/components/ui/CategoryIcon.tsx` renders category icons from `public/Gemini_Generated_Image_.png`, a 5-col × 3-row PNG sprite. Position formula: `x = col * 25%`, `y = row * 50%`, `background-size: 500% 300%`. The `SPRITE` map in that file records `[col, row]` for each category. For the active (white-on-green) state, pass `className="brightness-0 invert"` — works only if sprite cells have a dark icon on a transparent background. The `'all'` category uses Lucide `LayoutGrid` instead of the sprite.
+
+**Section header numbered watermark system** — Homepage content sections (`HomeFeaturedFarms`, `HowItWorks`, `BlogPreview`) use a shared editorial pattern: a large muted number (`01`/`02`/`03`) as `absolute -left-1 -top-4` inside a `relative overflow-hidden` wrapper, with an ALL-CAPS eyebrow label (`text-[10px] tracking-[0.2em]`) and a fluid heading via `clamp(2rem, 4vw, 3rem)`. The `overflow-hidden` is essential — without it the large number bleeds outside the section boundary.
+
 ### Homepage layout conventions
 
 Homepage sections follow editorial layout rules — **do not "fix" them to equal grids**:
@@ -393,7 +399,7 @@ Homepage sections follow editorial layout rules — **do not "fix" them to equal
 - `HomeFeaturedFarms` — spotlight card (`lg:col-span-2`) + 4 smaller cards is intentional. Do not normalise to 3 equal columns.
 - `BlogPreview` — feature article `lg:col-span-7` + two stacked horizontal cards `lg:col-span-5`. All three articles have the same visual weight in a 3-col grid — this breaks that.
 - `RecentReviews` — one featured review on dark `forest` background (`lg:col-span-6`) + two stacked on white (`lg:col-span-5`). Only rendered when Supabase has reviews; returns `null` otherwise.
-- `StatsBar` — uses `divide-x` horizontal band with left-aligned stat + label + sub-note per column. Not a centred card grid.
+- `StatsBar` — single editorial prose sentence with inline `AnimatedCounter` on a `bg-forest` panel with a low-opacity farm photo at 18%. Not a metric grid.
 - `Newsletter` — split layout: text/benefit list left, form card right (`grid-cols-1 lg:grid-cols-2`). Not a centred column.
 
 **Mapbox popup CSS classes** — `globals.css` contains all styling for `.farm-popup`, `.farm-click-popup`, `.farm-click-popup-inner`, `.farm-click-popup-name`, etc. When changing popup HTML in `MapView.tsx`, update the matching CSS classes in `globals.css`. The popup content is built as a raw HTML string — escape every interpolated string with `esc()` (defined at module scope in `MapView.tsx`).
