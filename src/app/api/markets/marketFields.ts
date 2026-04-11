@@ -1,5 +1,6 @@
 export const MARKET_ALLOWED_FIELDS = [
-  'name', 'city', 'address', 'lat', 'lng', 'schedule', 'url', 'active', 'isDaily',
+  'name', 'city', 'region', 'lat', 'lng', 'schedule', 'time',
+  'vendors', 'tags', 'is_daily', 'dow', 'active',
 ] as const
 
 export type MarketField = typeof MARKET_ALLOWED_FIELDS[number]

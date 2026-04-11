@@ -38,11 +38,6 @@ const STEPS = [
 export function HowItWorks() {
   return (
     <section className="relative py-16 lg:py-24 bg-white grain overflow-hidden" aria-labelledby="how-heading">
-      {/* Ambient glow */}
-      <div
-        className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-primary-50/60 -translate-y-1/3 translate-x-1/4 pointer-events-none blur-3xl"
-        aria-hidden="true"
-      />
 
       {/* Two-column at xl: steps left, atmospheric photo right */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

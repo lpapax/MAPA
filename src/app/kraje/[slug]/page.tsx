@@ -143,7 +143,7 @@ export default async function KrajPage({ params }: { params: { slug: string } })
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <Navbar />
-      <main className="min-h-screen bg-surface pt-20 pb-20">
+      <main className="min-h-[100dvh] bg-surface pt-20 pb-20">
 
         {/* Hero */}
         <section className="bg-white border-b border-neutral-100">

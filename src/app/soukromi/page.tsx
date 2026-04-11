@@ -30,7 +30,7 @@ export default function SoukromiPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-surface pb-20 pt-24">
+      <main className="min-h-[100dvh] bg-surface pb-20 pt-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="mb-10">
             <h1 className="font-heading text-4xl font-bold text-forest mb-3">Ochrana soukromí</h1>

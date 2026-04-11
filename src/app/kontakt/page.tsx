@@ -43,7 +43,7 @@ export default function KontaktPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-surface pb-20 pt-24">
+      <main className="min-h-[100dvh] bg-surface pb-20 pt-24">
         {/* Hero */}
         <AnimatedSection className="bg-gradient-to-br from-forest via-primary-800 to-teal-700 py-16 mb-14">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

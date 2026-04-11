@@ -287,9 +287,14 @@ export function Navbar() {
                   {searchLoading ? (
                     <div className="px-4 py-3 text-sm text-neutral-400">Hledám…</div>
                   ) : (
-                    searchResults.map((r) => (
-                      <Link
+                    searchResults.map((r, i) => (
+                      <motion.div
                         key={r.id}
+                        initial={{ opacity: 0, x: -6 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.15, delay: i * 0.04, ease: [0.23, 1, 0.32, 1] }}
+                      >
+                      <Link
                         href={`/farmy/${r.slug}`}
                         onClick={() => setSearchOpen(false)}
                         className="flex items-center gap-3 px-4 py-3 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors border-b border-neutral-50 dark:border-neutral-800 last:border-0 cursor-pointer"
@@ -302,6 +307,7 @@ export function Navbar() {
                           <div className="text-xs text-neutral-400 dark:text-neutral-500">{r.city} · {r.kraj}</div>
                         </div>
                       </Link>
+                      </motion.div>
                     ))
                   )}
                   {!searchLoading && searchResults.length > 0 && (

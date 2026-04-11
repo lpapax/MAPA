@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Send, CheckCircle, Loader2 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 const BENEFITS = [
@@ -89,16 +90,36 @@ export function Newsletter() {
 
           {/* Right — form block */}
           <div>
+            <AnimatePresence mode="wait">
             {submitted ? (
-              <div className="flex items-center gap-4 px-7 py-5 rounded-2xl bg-white/12 border border-white/20 text-white font-semibold">
-                <CheckCircle className="w-6 h-6 text-primary-300 flex-shrink-0" aria-hidden="true" />
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, scale: 0.96, y: 8 }}
+                animate={{ opacity: 1, scale: 1,    y: 0 }}
+                transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+                className="flex items-center gap-4 px-7 py-5 rounded-2xl bg-white/12 border border-white/20 text-white font-semibold"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.12, type: 'spring', stiffness: 500, damping: 22 }}
+                >
+                  <CheckCircle className="w-6 h-6 text-primary-300 flex-shrink-0" aria-hidden="true" />
+                </motion.div>
                 <div>
                   <p className="font-heading font-semibold text-white">Přihlásili jste se úspěšně.</p>
                   <p className="text-white/55 text-sm font-normal mt-0.5">Těšte se na první vydání.</p>
                 </div>
-              </div>
+              </motion.div>
             ) : (
-              <div className="rounded-2xl bg-white/[0.07] border border-white/15 p-7 lg:p-8 backdrop-blur-sm">
+              <motion.div
+                key="form"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.18 }}
+                className="rounded-2xl bg-white/10 border border-white/10 p-7 lg:p-8"
+              >
                 <form
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-4"
@@ -165,8 +186,9 @@ export function Newsletter() {
                   </a>
                   . Odhlásit se lze kdykoliv.
                 </p>
-              </div>
+              </motion.div>
             )}
+            </AnimatePresence>
           </div>
         </div>
       </div>

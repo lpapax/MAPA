@@ -36,7 +36,7 @@ export default function OProjektuPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-surface pb-20 pt-24">
+      <main className="min-h-[100dvh] bg-surface pb-20 pt-24">
         {/* Hero */}
         <AnimatedSection className="bg-gradient-to-br from-forest via-primary-800 to-teal-700 py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

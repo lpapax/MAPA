@@ -15,7 +15,7 @@ export default function BlogPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-surface pt-24 pb-20">
+      <main className="min-h-[100dvh] bg-surface pt-24 pb-20">
         {/* Hero */}
         <AnimatedSection className="bg-gradient-to-br from-forest via-primary-800 to-teal-700 py-16 mb-12">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

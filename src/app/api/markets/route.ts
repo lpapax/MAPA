@@ -1,16 +1,26 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseRaw } from '@/lib/supabase'
+import { verifyAdmin } from '@/lib/adminAuth'
 import { pickMarketFields } from './marketFields'
 
-export async function GET() {
+const MARKET_COLUMNS = 'id,name,city,region,lat,lng,schedule,time,vendors,tags,is_daily,dow,active'
+
+export async function GET(req: NextRequest) {
   const sb = getSupabaseRaw()
   if (!sb) return NextResponse.json([], { status: 200 })
 
-  const { data, error } = await sb
+  const isAdmin = await verifyAdmin(req)
+
+  let query = sb
     .from('markets')
-    .select('*')
-    .eq('active', true)
+    .select(MARKET_COLUMNS)
     .order('id', { ascending: true })
+
+  if (!isAdmin) {
+    query = query.eq('active', true)
+  }
+
+  const { data, error } = await query
 
   if (error) {
     console.error('[markets GET]', error)

@@ -84,7 +84,7 @@ export function HeroSection() {
             id="hero-heading"
             variants={fadeUp}
             className="font-heading font-bold text-white leading-[1.02] mb-6 tracking-tight"
-            style={{ fontSize: 'clamp(2.75rem, 7vw, 5.5rem)' }}
+            style={{ fontSize: 'clamp(3.25rem, 8vw, 6.5rem)' }}
           >
             Nakupujte přímo
             <br />

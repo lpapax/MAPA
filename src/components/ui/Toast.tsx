@@ -1,7 +1,8 @@
 'use client'
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useRef, useState } from 'react'
 import { CheckCircle, XCircle, Info, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 type ToastType = 'success' | 'error' | 'info'
@@ -48,9 +49,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         aria-atomic="false"
         className="fixed bottom-20 right-4 z-[200] flex flex-col gap-2 md:bottom-6"
       >
-        {toasts.map((toast) => (
-          <ToastMessage key={toast.id} toast={toast} onDismiss={dismiss} />
-        ))}
+        <AnimatePresence mode="popLayout">
+          {toasts.map((toast) => (
+            <ToastMessage key={toast.id} toast={toast} onDismiss={dismiss} />
+          ))}
+        </AnimatePresence>
       </div>
     </ToastContext.Provider>
   )
@@ -63,26 +66,22 @@ function ToastMessage({
   toast: ToastItem
   onDismiss: (id: string) => void
 }) {
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 10)
-    return () => clearTimeout(t)
-  }, [])
-
   const icons: Record<ToastType, React.ReactNode> = {
     success: <CheckCircle className="w-4 h-4 text-primary-600 flex-shrink-0" aria-hidden="true" />,
-    error: <XCircle className="w-4 h-4 text-red-500 flex-shrink-0" aria-hidden="true" />,
-    info: <Info className="w-4 h-4 text-cta flex-shrink-0" aria-hidden="true" />,
+    error:   <XCircle    className="w-4 h-4 text-red-500 flex-shrink-0"     aria-hidden="true" />,
+    info:    <Info       className="w-4 h-4 text-cta flex-shrink-0"         aria-hidden="true" />,
   }
 
   return (
-    <div
+    <motion.div
       role="status"
+      initial={{ opacity: 0, x: 20, scale: 0.95 }}
+      animate={{ opacity: 1, x: 0,  scale: 1    }}
+      exit={{    opacity: 0, x: 20, scale: 0.95 }}
+      transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
       className={cn(
         'flex items-center gap-3 px-4 py-3 bg-white rounded-xl shadow-2xl border border-neutral-100',
-        'max-w-xs w-full transition-[transform,opacity] duration-300',
-        visible ? 'translate-x-0 opacity-100' : 'translate-x-6 opacity-0',
+        'max-w-xs w-full',
       )}
     >
       {icons[toast.type]}
@@ -94,6 +93,6 @@ function ToastMessage({
       >
         <X className="w-3.5 h-3.5" />
       </button>
-    </div>
+    </motion.div>
   )
 }

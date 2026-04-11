@@ -85,15 +85,15 @@ const TIME_FILTERS = [
   { id: 'month',   label: 'Tento měsíc' },
 ]
 
-function getCountdown(nextDate: Date, isDaily?: boolean): { text: string; color: string } {
-  if (isDaily) return { text: 'Otevřeno denně', color: '#059669' }
+function getCountdown(nextDate: Date, isDaily?: boolean): { text: string; cls: string } {
+  if (isDaily) return { text: 'Otevřeno denně', cls: 'text-emerald-600' }
   const today = new Date(); today.setHours(0, 0, 0, 0)
   const nextDay = new Date(nextDate); nextDay.setHours(0, 0, 0, 0)
   const diffDays = Math.round((nextDay.getTime() - today.getTime()) / 86400000)
-  if (diffDays < 0)   return { text: 'Skončil',    color: '#9CA3AF' }
-  if (diffDays === 0) return { text: 'Dnes',       color: '#059669' }
-  if (diffDays === 1) return { text: 'Zítra',      color: '#C8963E' }
-  return { text: `Za ${diffDays} dní`, color: '#4a8c3f' }
+  if (diffDays < 0)   return { text: 'Skončil',    cls: 'text-neutral-400' }
+  if (diffDays === 0) return { text: 'Dnes',       cls: 'text-emerald-600' }
+  if (diffDays === 1) return { text: 'Zítra',      cls: 'text-amber-600' }
+  return { text: `Za ${diffDays} dní`, cls: 'text-primary-600' }
 }
 
 function parseTimeForICS(timeStr: string): [string, string] {
@@ -373,7 +373,7 @@ export function MarketsClient() {
                       <h2 className="font-heading font-bold text-forest text-base leading-tight flex-1 min-w-0">
                         {market.name}
                       </h2>
-                      <span className="text-xs font-bold flex-shrink-0" style={{ color: countdown.color }}>
+                      <span className={cn('text-xs font-bold flex-shrink-0', countdown.cls)}>
                         {countdown.text}
                       </span>
                     </div>

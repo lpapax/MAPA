@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseRaw } from '@/lib/supabase'
+import { rateLimit, getIp } from '@/lib/rateLimit'
 
 interface ContactBody {
   name?: unknown
@@ -9,6 +10,11 @@ interface ContactBody {
 }
 
 export async function POST(req: NextRequest) {
+  const ip = getIp(req)
+  if (!rateLimit(`contact:${ip}`, { limit: 3, windowMs: 60 * 60 * 1000 })) {
+    return NextResponse.json({ success: false, error: 'Příliš mnoho požadavků. Zkuste to za hodinu.' }, { status: 429 })
+  }
+
   let body: ContactBody
   try {
     body = await req.json() as ContactBody

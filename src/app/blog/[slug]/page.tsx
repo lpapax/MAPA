@@ -8,18 +8,66 @@ import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
 import { ArticleContent } from '@/components/blog/ArticleContent'
 import { ShareButton } from '@/components/blog/ShareButton'
 import { BLOG_ARTICLES } from '@/data/mockData'
+import { getSupabaseRaw } from '@/lib/supabase'
+import { mapArticleRow } from '@/lib/blogHelpers'
 import { cn } from '@/lib/utils'
+import type { BlogArticle } from '@/data/mockData'
+
+export const revalidate = 300
+
+const ARTICLE_COLUMNS = 'id,slug,title,excerpt,content,cover_image,cover_gradient,category,author,author_initials,read_time,published_at'
 
 interface PageProps {
   params: { slug: string }
 }
 
-export function generateStaticParams() {
-  return BLOG_ARTICLES.map((article) => ({ slug: article.slug }))
+async function getArticle(slug: string): Promise<BlogArticle | null> {
+  const sb = getSupabaseRaw()
+  if (sb) {
+    const { data } = await sb
+      .from('articles')
+      .select(ARTICLE_COLUMNS)
+      .eq('slug', slug)
+      .eq('draft', false)
+      .single()
+    if (data) return mapArticleRow(data as Record<string, unknown>)
+  }
+  return BLOG_ARTICLES.find(a => a.slug === slug) ?? null
+}
+
+async function getOtherArticles(excludeId: string): Promise<BlogArticle[]> {
+  const sb = getSupabaseRaw()
+  if (sb) {
+    const { data } = await sb
+      .from('articles')
+      .select(ARTICLE_COLUMNS)
+      .eq('draft', false)
+      .neq('id', excludeId)
+      .order('published_at', { ascending: false })
+      .limit(4)
+    if (data && data.length > 0) {
+      return (data as Record<string, unknown>[]).map(mapArticleRow)
+    }
+  }
+  return BLOG_ARTICLES.filter(a => a.id !== excludeId)
+}
+
+export async function generateStaticParams() {
+  const sb = getSupabaseRaw()
+  if (sb) {
+    const { data } = await sb
+      .from('articles')
+      .select('slug')
+      .eq('draft', false)
+    if (data && data.length > 0) {
+      return (data as { slug: string }[]).map(r => ({ slug: r.slug }))
+    }
+  }
+  return BLOG_ARTICLES.map(a => ({ slug: a.slug }))
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const article = BLOG_ARTICLES.find((a) => a.slug === params.slug)
+  const article = await getArticle(params.slug)
   if (!article) return {}
   return {
     title: `${article.title} – Blog – Mapa Farem`,
@@ -33,17 +81,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default function BlogArticlePage({ params }: PageProps) {
-  const article = BLOG_ARTICLES.find((a) => a.slug === params.slug)
+export default async function BlogArticlePage({ params }: PageProps) {
+  const article = await getArticle(params.slug)
   if (!article) notFound()
 
-  const otherArticles = BLOG_ARTICLES.filter((a) => a.id !== article.id)
+  const otherArticles = await getOtherArticles(article.id)
 
   return (
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-surface pb-20 pt-24">
+      <main className="min-h-[100dvh] bg-surface pb-20 pt-24">
         {/* Hero */}
         <div className={cn('relative h-64 sm:h-80 bg-gradient-to-br', article.coverGradient)}>
           <div className="absolute inset-0 bg-black/20" aria-hidden="true" />

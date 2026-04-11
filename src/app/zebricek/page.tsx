@@ -49,7 +49,7 @@ export default async function ZebricekPage() {
   return (
     <>
       <Navbar />
-      <main id="main-content" className="min-h-screen bg-surface pb-20">
+      <main id="main-content" className="min-h-[100dvh] bg-surface pb-20">
         <LeaderboardClient
           farms={farmData}
           totalFarms={farmData.length}

@@ -16,7 +16,7 @@ export function MainLayout({ farms, markers }: MainLayoutProps) {
   const [mobileView, setMobileView] = useState<'map' | 'list'>('map')
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="h-[100dvh] flex flex-col overflow-hidden">
       {/* Desktop: side-by-side | Mobile: stacked with toggle */}
       <div className="flex-1 flex overflow-hidden relative">
         {/* Sidebar — 30% on desktop, full on mobile list view */}

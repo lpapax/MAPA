@@ -215,7 +215,7 @@
   body {
     background-color: var(--color-background);
     color: var(--color-text-primary);
-    font-family: var(--font-body), 'DM Sans', system-ui, sans-serif;
+    font-family: var(--font-body), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.65;
@@ -224,7 +224,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading), 'Playfair Display', Georgia, serif;
+    font-family: var(--font-heading), Georgia, serif;
     line-height: 1.15;
     color: var(--color-text-primary);
     text-wrap: balance;

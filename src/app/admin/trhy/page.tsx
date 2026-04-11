@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { getSupabaseRaw } from '@/lib/supabase'
+import { useAuth } from '@/contexts/AuthContext'
 import { Plus, Pencil, Trash2, Check, X, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -35,6 +35,9 @@ const REGIONS = [
 const DOW_LABELS = ['Neděle','Pondělí','Úterý','Středa','Čtvrtek','Pátek','Sobota']
 
 export default function AdminTrhy() {
+  const { session } = useAuth()
+  const token = session?.access_token ?? ''
+
   const [markets, setMarkets]   = useState<MarketRow[]>([])
   const [loading, setLoading]   = useState(true)
   const [saving, setSaving]     = useState(false)
@@ -43,13 +46,15 @@ export default function AdminTrhy() {
   const [deleteId, setDeleteId] = useState<number | null>(null)
 
   const load = useCallback(async () => {
+    if (!token) return
     setLoading(true)
-    const sb = getSupabaseRaw()
-    if (!sb) { setLoading(false); return }
-    const { data } = await sb.from('markets').select('*').order('id')
-    setMarkets((data as MarketRow[]) ?? [])
+    const res = await fetch('/api/markets', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    const data = await res.json() as MarketRow[]
+    setMarkets(Array.isArray(data) ? data : [])
     setLoading(false)
-  }, [])
+  }, [token])
 
   useEffect(() => { void load() }, [load])
 
@@ -67,8 +72,6 @@ export default function AdminTrhy() {
 
   async function handleSave() {
     setSaving(true)
-    const sb = getSupabaseRaw()
-    if (!sb) { setSaving(false); return }
 
     const payload = {
       ...form,
@@ -76,11 +79,17 @@ export default function AdminTrhy() {
     }
 
     if (editId === 'new') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (sb.from('markets') as any).insert([payload])
+      await fetch('/api/markets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload),
+      })
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (sb.from('markets') as any).update(payload).eq('id', editId)
+      await fetch(`/api/markets/${editId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload),
+      })
     }
 
     setSaving(false)
@@ -89,18 +98,20 @@ export default function AdminTrhy() {
   }
 
   async function handleDelete(id: number) {
-    const sb = getSupabaseRaw()
-    if (!sb) return
-    await sb.from('markets').delete().eq('id', id)
+    await fetch(`/api/markets/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    })
     setDeleteId(null)
     void load()
   }
 
   async function toggleActive(m: MarketRow) {
-    const sb = getSupabaseRaw()
-    if (!sb) return
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await (sb.from('markets') as any).update({ active: !m.active }).eq('id', m.id)
+    await fetch(`/api/markets/${m.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ active: !m.active }),
+    })
     void load()
   }
 

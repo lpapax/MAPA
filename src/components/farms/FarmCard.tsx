@@ -3,6 +3,7 @@
 import { useCallback } from 'react'
 import Link from 'next/link'
 import { MapPin, Phone, Globe, CheckCircle, Clock, Heart, Check } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { CATEGORY_LABELS, isFarmOpenNow } from '@/lib/farms'
 import { useFavoriteFarms } from '@/hooks/useFavoriteFarms'
@@ -78,7 +79,7 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
             </div>
           )}
           {/* Favorite button */}
-          <button
+          <motion.button
             onClick={(e) => {
               e.stopPropagation()
               toggleFavorite({
@@ -91,13 +92,22 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
             }}
             aria-label={favorited ? 'Odebrat z oblíbených' : 'Přidat do oblíbených'}
             aria-pressed={favorited}
+            whileTap={{ scale: 0.72 }}
+            transition={{ type: 'spring', stiffness: 600, damping: 25 }}
             className="p-2.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
           >
-            <Heart
-              className={cn('w-4 h-4 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-neutral-300 hover:text-rose-400')}
-              aria-hidden="true"
-            />
-          </button>
+            <motion.div
+              key={favorited ? 'filled' : 'empty'}
+              initial={{ scale: 0.7 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 600, damping: 22 }}
+            >
+              <Heart
+                className={cn('w-4 h-4 transition-colors', favorited ? 'fill-rose-500 text-rose-500' : 'text-neutral-300 hover:text-rose-400')}
+                aria-hidden="true"
+              />
+            </motion.div>
+          </motion.button>
         </div>
       </div>
 

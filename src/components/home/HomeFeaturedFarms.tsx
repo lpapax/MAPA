@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { MapPin, ArrowRight, CheckCircle } from 'lucide-react'
 import { getHomepageFarms, CATEGORY_LABELS } from '@/lib/farms'
+import { AnimatedSection } from '@/components/ui/AnimatedSection'
 import type { Farm } from '@/types/farm'
 
 export async function HomeFeaturedFarms() {
@@ -37,11 +38,13 @@ export async function HomeFeaturedFarms() {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div className="sm:col-span-2 lg:col-span-2">
+          <AnimatedSection className="sm:col-span-2 lg:col-span-2">
             <SpotlightCard farm={spotlight} />
-          </div>
-          {rest.slice(0, 4).map((farm) => (
-            <FarmCard key={farm.id} farm={farm} />
+          </AnimatedSection>
+          {rest.slice(0, 4).map((farm, i) => (
+            <AnimatedSection key={farm.id} delay={(i + 1) * 70}>
+              <FarmCard farm={farm} />
+            </AnimatedSection>
           ))}
         </div>
       </div>

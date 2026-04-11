@@ -143,7 +143,7 @@ export default function ProFarmaryPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-surface pb-20 pt-24">
+      <main className="min-h-[100dvh] bg-surface pb-20 pt-24">
         {/* Hero */}
         <AnimatedSection className="bg-gradient-to-br from-forest via-primary-800 to-teal-700 py-20 relative overflow-hidden">
           <div className="absolute inset-0 opacity-10" aria-hidden="true">

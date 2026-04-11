@@ -9,6 +9,7 @@ import { MobileBottomNav } from '@/components/ui/MobileBottomNav'
 import { Check, Loader2, Plus, Trash2, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CATEGORY_LABELS } from '@/lib/farms'
+import { useToast } from '@/components/ui/Toast'
 import type { FarmCategory } from '@/types/farm'
 
 const CATEGORIES: FarmCategory[] = [
@@ -56,8 +57,8 @@ export default function ProfilFarmaPage() {
   const router = useRouter()
   const [farm, setFarm] = useState<FarmData | null>(null)
   const [loading, setLoading] = useState(true)
+  const { show: showToast } = useToast()
   const [saving, setSaving] = useState(false)
-  const [saved, setSaved] = useState(false)
 
   // Editable fields
   const [description, setDescription] = useState('')
@@ -114,31 +115,38 @@ export default function ProfilFarmaPage() {
   async function handleSave() {
     if (!farm) return
     setSaving(true)
-    setSaved(false)
 
     const opening_hours = Object.fromEntries(
       DAYS.filter(d => hours[d.key]?.enabled)
         .map(d => [d.key, { open: hours[d.key].open, close: hours[d.key].close }])
     )
 
-    await fetch(`/api/farms/${farm.slug}/edit`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({
-        description,
-        categories,
-        bio,
-        delivery,
-        pick_your_own: pickYourOwn,
-        contact,
-        opening_hours: Object.keys(opening_hours).length > 0 ? opening_hours : null,
-        images,
-      }),
-    })
-
-    setSaving(false)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 3000)
+    try {
+      const res = await fetch(`/api/farms/${farm.slug}/edit`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          description,
+          categories,
+          bio,
+          delivery,
+          pick_your_own: pickYourOwn,
+          contact,
+          opening_hours: Object.keys(opening_hours).length > 0 ? opening_hours : null,
+          images,
+        }),
+      })
+      const json = await res.json() as { ok?: boolean; error?: string }
+      if (res.ok && json.ok) {
+        showToast('Změny byly uloženy.', 'success')
+      } else {
+        showToast(json.error ?? 'Nepodařilo se uložit změny.', 'error')
+      }
+    } catch {
+      showToast('Nastala síťová chyba.', 'error')
+    } finally {
+      setSaving(false)
+    }
   }
 
   function toggleCat(cat: FarmCategory) {
@@ -158,7 +166,7 @@ export default function ProfilFarmaPage() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen bg-surface pt-24 flex items-center justify-center">
+        <main className="min-h-[100dvh] bg-surface pt-24 flex items-center justify-center">
           <Loader2 className="w-6 h-6 animate-spin text-neutral-400" />
         </main>
         <Footer />
@@ -170,7 +178,7 @@ export default function ProfilFarmaPage() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen bg-surface pt-24 pb-20">
+        <main className="min-h-[100dvh] bg-surface pt-24 pb-20">
           <div className="max-w-xl mx-auto px-4 text-center py-20">
             <div className="w-16 h-16 rounded-2xl bg-neutral-100 flex items-center justify-center mx-auto mb-5">
               <span className="text-3xl">🌾</span>
@@ -196,7 +204,7 @@ export default function ProfilFarmaPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-surface pt-24 pb-20">
+      <main className="min-h-[100dvh] bg-surface pt-24 pb-20">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Header */}
@@ -232,6 +240,7 @@ export default function ProfilFarmaPage() {
                 rows={4}
                 className={cn(inputCls, 'resize-none')}
                 placeholder="Popište vaši farmu…"
+                aria-label="Popis farmy"
               />
             </Card>
 
@@ -285,8 +294,9 @@ export default function ProfilFarmaPage() {
               <div className="grid sm:grid-cols-2 gap-3">
                 {(['phone','email','web','instagram','facebook'] as const).map(field => (
                   <div key={field}>
-                    <label className="text-xs font-semibold text-neutral-500 block mb-1 capitalize">{field}</label>
+                    <label htmlFor={`contact-${field}`} className="text-xs font-semibold text-neutral-500 block mb-1 capitalize">{field}</label>
                     <input
+                      id={`contact-${field}`}
                       value={contact[field]}
                       onChange={e => setContact(prev => ({ ...prev, [field]: e.target.value }))}
                       className={inputCls}
@@ -366,11 +376,6 @@ export default function ProfilFarmaPage() {
 
             {/* Save */}
             <div className="flex items-center justify-end gap-3 pt-2">
-              {saved && (
-                <span className="flex items-center gap-1.5 text-sm text-primary-600">
-                  <Check size={15} /> Uloženo
-                </span>
-              )}
               <button
                 onClick={handleSave}
                 disabled={saving}

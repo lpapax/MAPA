@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, Map, Store, BookOpen, Heart } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
@@ -42,7 +43,11 @@ export function MobileBottomNav() {
                 />
                 <span className="text-[10px] font-medium leading-none">{label}</span>
                 {isActive && (
-                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-primary-600 rounded-full" />
+                  <motion.span
+                    layoutId="mobile-nav-indicator"
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-primary-600 rounded-full"
+                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  />
                 )}
               </Link>
             </li>

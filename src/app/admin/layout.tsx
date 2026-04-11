@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
-import { LayoutDashboard, Tractor, FileText, Mail, Star, LogOut, ChevronRight, ClipboardList, BookOpen } from 'lucide-react'
+import { LayoutDashboard, Tractor, FileText, Mail, Star, LogOut, ChevronRight, ClipboardList, BookOpen, Store } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const NAV = [
@@ -13,6 +13,7 @@ const NAV = [
   { href: '/admin/zadosti', label: 'Žádosti', icon: ClipboardList },
   { href: '/admin/claimy', label: 'Claimy', icon: FileText },
   { href: '/admin/blog', label: 'Blog', icon: BookOpen },
+  { href: '/admin/trhy', label: 'Trhy', icon: Store },
   { href: '/admin/odbery', label: 'Odběry', icon: Mail },
   { href: '/admin/recenze', label: 'Recenze', icon: Star },
 ]
@@ -40,14 +41,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!checked) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-surface">
+      <div className="flex items-center justify-center min-h-[100dvh] bg-surface">
         <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-[100dvh] bg-neutral-50">
       {/* Sidebar */}
       <aside className="w-56 bg-forest text-white flex flex-col shrink-0">
         <div className="px-5 py-4 border-b border-white/10">

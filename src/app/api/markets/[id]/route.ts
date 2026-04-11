@@ -1,17 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getSupabaseRaw } from '@/lib/supabase'
+import { verifyAdmin } from '@/lib/adminAuth'
 import { pickMarketFields } from '../marketFields'
-
-async function verifyAdmin(req: Request): Promise<boolean> {
-  const token = (req.headers.get('authorization') ?? '').replace('Bearer ', '')
-  if (!token) return false
-  const adminEmail = process.env.ADMIN_EMAIL
-  if (!adminEmail) return false
-  const sb = getSupabaseRaw()
-  if (!sb) return false
-  const { data: { user } } = await sb.auth.getUser(token)
-  return user?.email === adminEmail
-}
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   if (!await verifyAdmin(req)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
