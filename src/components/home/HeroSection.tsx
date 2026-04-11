@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { Search, ArrowRight, MapPin } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { staggerContainer, fadeUp } from '@/lib/motionVariants'
 
 const TRUST_ITEMS = [
   'Zelenina',
@@ -34,23 +35,17 @@ export function HeroSection() {
       aria-labelledby="hero-heading"
     >
       {/* ── Left panel — dark green content ─────────────────── */}
-      <div className="relative z-10 flex flex-col justify-center bg-[#0b1e08] px-6 sm:px-10 lg:px-16 xl:px-20 pt-28 pb-16 lg:pt-0 lg:pb-0 order-2 lg:order-1">
+      <div className="relative z-10 flex flex-col justify-center grain bg-[#0b1e08] px-6 sm:px-10 lg:px-16 xl:px-20 pt-28 pb-16 lg:pt-0 lg:pb-0 order-2 lg:order-1">
 
-        {/* Subtle noise grain on content panel */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")", backgroundSize: '200px 200px' }}
-          aria-hidden="true"
-        />
-
-        <div className="relative max-w-[560px] lg:max-w-none">
+        {/* Content — stagger orchestrated via variants */}
+        <motion.div
+          className="relative max-w-[560px] lg:max-w-none"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+        >
           {/* Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
-            className="flex items-center gap-2 mb-8"
-          >
+          <motion.div variants={fadeUp} className="flex items-center gap-2 mb-8">
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary-700/60 text-primary-400 text-[11px] font-semibold tracking-widest uppercase">
               <MapPin className="w-3 h-3" aria-hidden="true" />
               Farmářský adresář · Česká republika
@@ -60,9 +55,7 @@ export function HeroSection() {
           {/* Heading */}
           <motion.h1
             id="hero-heading"
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.08, ease: [0.23, 1, 0.32, 1] }}
+            variants={fadeUp}
             className="font-heading font-bold text-white leading-[1.0] tracking-tight mb-7"
             style={{ fontSize: 'clamp(3.25rem, 6.5vw, 6rem)' }}
           >
@@ -74,9 +67,7 @@ export function HeroSection() {
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.16, ease: [0.23, 1, 0.32, 1] }}
+            variants={fadeUp}
             className="text-white/50 text-base leading-relaxed mb-10 max-w-[42ch]"
           >
             Přes 3 960 ověřených farem v celé České republice.
@@ -85,9 +76,7 @@ export function HeroSection() {
 
           {/* Search form */}
           <motion.form
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.22, ease: [0.23, 1, 0.32, 1] }}
+            variants={fadeUp}
             onSubmit={handleSearch}
             className="flex gap-2 mb-6 max-w-[480px]"
             aria-label="Vyhledat farmu"
@@ -105,8 +94,8 @@ export function HeroSection() {
                 aria-label="Hledat farmu"
                 className={cn(
                   'w-full pl-10 pr-4 py-3.5 rounded-xl text-sm',
-                  'bg-white/8 text-white placeholder:text-white/30',
-                  'border border-white/12 focus:outline-none focus:ring-2 focus:ring-primary-500/60 focus:border-primary-500/50',
+                  'bg-white/10 text-white placeholder:text-white/30',
+                  'border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary-500/60 focus:border-primary-500/50',
                   'transition-[border-color,box-shadow] duration-150',
                 )}
               />
@@ -125,11 +114,7 @@ export function HeroSection() {
           </motion.form>
 
           {/* Map CTA */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3, ease: 'easeOut' }}
-          >
+          <motion.div variants={fadeUp}>
             <Link
               href="/mapa"
               className="inline-flex items-center gap-2 text-white/35 hover:text-white/70 text-sm font-medium transition-colors duration-200 group"
@@ -138,13 +123,13 @@ export function HeroSection() {
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
             </Link>
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* Trust strip at the very bottom of left panel */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5, ease: 'easeOut' }}
+          transition={{ delay: 0.4, duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
           className="absolute bottom-0 left-0 right-0 px-6 sm:px-10 lg:px-16 xl:px-20 py-5 border-t border-white/6 hidden lg:flex items-center gap-4 overflow-x-auto scrollbar-none"
         >
           <span className="text-white/20 text-[10px] font-semibold whitespace-nowrap flex-shrink-0 uppercase tracking-widest">
@@ -168,7 +153,7 @@ export function HeroSection() {
         >
           <Image
             src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1400&h=1800&fit=crop&q=85"
-            alt="Čerstvé produkty z farmy"
+            alt=""
             fill
             priority
             className="object-cover object-center"
@@ -176,12 +161,10 @@ export function HeroSection() {
           />
         </motion.div>
 
-        {/* Diagonal left edge — feathers into panel boundary */}
+        {/* Gradient left edge — blends into content panel */}
         <div
           className="absolute inset-y-0 left-0 w-24 hidden lg:block"
-          style={{
-            background: 'linear-gradient(to right, #0b1e08 0%, transparent 100%)',
-          }}
+          style={{ background: 'linear-gradient(to right, #0b1e08 0%, transparent 100%)' }}
           aria-hidden="true"
         />
 
@@ -196,7 +179,7 @@ export function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 12, scale: 0.94 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 0.9, duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
+          transition={{ delay: 0.7, duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
           className="absolute bottom-8 right-6 hidden lg:block"
         >
           <div className="flex items-center gap-3 bg-white/90 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-xl">

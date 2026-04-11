@@ -46,7 +46,7 @@ export function HowItWorks() {
           {/* Left — heading + steps */}
           <div>
             <AnimatedSection className="mb-14">
-              <div className="relative">
+              <div className="relative overflow-hidden">
                 <span
                   className="absolute -left-1 -top-4 font-heading font-bold text-neutral-100 select-none pointer-events-none leading-none"
                   style={{ fontSize: 'clamp(4rem, 10vw, 8rem)' }}

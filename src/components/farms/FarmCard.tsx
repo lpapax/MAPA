@@ -92,13 +92,13 @@ export function FarmCard({ farm, isSelected, isHovered, onSelect, onHover }: Far
             }}
             aria-label={favorited ? 'Odebrat z oblíbených' : 'Přidat do oblíbených'}
             aria-pressed={favorited}
-            whileTap={{ scale: 0.72 }}
+            whileTap={{ scale: 0.88 }}
             transition={{ type: 'spring', stiffness: 600, damping: 25 }}
             className="p-2.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
           >
             <motion.div
               key={favorited ? 'filled' : 'empty'}
-              initial={{ scale: 0.7 }}
+              initial={{ scale: 0.85 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 600, damping: 22 }}
             >

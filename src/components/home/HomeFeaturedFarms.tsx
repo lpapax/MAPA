@@ -16,7 +16,7 @@ export async function HomeFeaturedFarms() {
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
-          <div className="relative">
+          <div className="relative overflow-hidden">
             {/* Large muted section number */}
             <span
               className="absolute -left-1 -top-4 font-heading font-bold text-neutral-100 select-none pointer-events-none leading-none"
